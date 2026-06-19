@@ -1,6 +1,6 @@
 # Formal Switching Lemma in Lean 4
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20757628.svg)](https://doi.org/10.5281/zenodo.20757628)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20757627.svg)](https://doi.org/10.5281/zenodo.20757627)
 
 This repository is a curated Lean 4 publication artifact for the `PvNP`
 SimpleDNF switching-lemma line, CNF-dual bridge, and bounded-depth explicit
@@ -75,11 +75,15 @@ lake env lean lean/PvNP/Audit.lean
 
 ## DOI
 
-Version `v0.1.0` is archived on Zenodo under the repository concept DOI:
+Repository concept DOI: `10.5281/zenodo.20757627`.
+
+Version `v0.1.0` is archived on Zenodo:
 
 - DOI: `10.5281/zenodo.20757628`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.1.0`
 
 Version `v0.2.0` adds the audited CNF-dual bridge and explicit three-layer and
-list-indexed k-layer schedule certificates. The release should be archived under
-the same Zenodo concept DOI when the GitHub release is published.
+list-indexed k-layer schedule certificates:
+
+- DOI: `10.5281/zenodo.20764338`
+- Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.2.0`
