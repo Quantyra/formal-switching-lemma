@@ -1,11 +1,11 @@
 {
-  "title": "A Lean 4 formalization of a SimpleDNF switching lemma and bounded-depth layer-collapse infrastructure",
+  "title": "A Lean 4 formalization of a SimpleDNF switching lemma with CNF-dual and explicit layer-schedule infrastructure",
   "upload_type": "software",
   "creators": [
     { "name": "Fredriksen, Daniel" }
   ],
   "license": "Apache-2.0",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "keywords": [
     "Lean 4",
     "formal verification",
@@ -15,5 +15,5 @@
     "AC0",
     "decision trees"
   ],
-  "description": "<p>A curated Lean 4 artifact for a SimpleDNF switching lemma in a canonical decision-tree encoding, together with bounded-depth formula bridge infrastructure and explicit DNF/CNF layer-collapse schedules.</p><p><strong>Non-claims:</strong> this artifact does not prove P != NP, P = NP, an NP or circuit lower bound, a Frege/PHP lower bound, or arbitrary AC0 collapse. The two-layer CNF side is an explicit schedule/premise record, not a proved general CNF switching lemma.</p>"
+  "description": "<p>A curated Lean 4 artifact for a SimpleDNF switching lemma in a canonical decision-tree encoding, together with a CNF-dual bridge, complemented decision trees, bounded-depth formula bridge infrastructure, explicit three-layer schedules, and list-indexed alternating DNF/CNF schedule certificates.</p><p><strong>Non-claims:</strong> this artifact does not prove P != NP, P = NP, an NP or circuit lower bound, a Frege/PHP lower bound, arbitrary AC0 collapse, arbitrary bounded-depth formula collapse, or a general CNF switching lemma independent of the explicit dualization bridge.</p>"
 }

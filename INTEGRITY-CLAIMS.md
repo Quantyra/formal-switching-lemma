@@ -11,7 +11,8 @@ This repository does **not** establish or imply:
 - `P != NP` or `P = NP`;
 - an NP or circuit lower bound;
 - a Frege/PHP lower bound;
-- arbitrary AC0 collapse or arbitrary bounded-depth formula collapse.
+- arbitrary AC0 collapse or arbitrary bounded-depth formula collapse;
+- a general CNF switching lemma independent of the explicit dualization bridge.
 
 ## Pinned Declarations
 
@@ -23,10 +24,19 @@ This repository does **not** establish or imply:
 | `PvNP.BoundedDepthLayerView.emptyDNFView_switching_collapse` | `propext`, `Classical.choice`, `Quot.sound` | proven-standard witness |
 | `PvNP.BoundedDepthIteratedCollapse.twoLayerCollapse_exists_from_stagePremises` | `propext`, `Quot.sound` | proven-elementary |
 | `PvNP.BoundedDepthIteratedCollapse.oneLitTwoLayerCollapse_example` | `propext`, `Quot.sound` | proven-elementary witness |
+| `PvNP.BoundedDepthIteratedCollapse.dnfEval_cnfDualDNF` | `propext` | proven-elementary duality |
+| `PvNP.BoundedDepthIteratedCollapse.simpleDNF_cnfDualDNF_of_simpleCNF` | `propext`, `Quot.sound` | proven-elementary duality |
+| `PvNP.BoundedDepthIteratedCollapse.bdFormula_cnfView_dual_switching_collapse` | `propext`, `Classical.choice`, `Quot.sound` | proven-standard CNF-dual bridge |
+| `PvNP.BoundedDepthIteratedCollapse.threeLayerCollapse_exists_from_stagePremises` | `propext`, `Quot.sound` | proven-elementary schedule certificate |
+| `PvNP.BoundedDepthIteratedCollapse.oneLitThreeLayerCollapse_example_nonvacuous` | `propext`, `Quot.sound` | proven-elementary witness |
+| `PvNP.BoundedDepthIteratedCollapse.kLayerCollapse_exists_from_schedule` | `propext`, `Quot.sound` | proven-elementary schedule certificate |
+| `PvNP.BoundedDepthIteratedCollapse.oneLitKLayerSchedule3_nonempty` | `propext`, `Quot.sound` | proven-elementary witness |
 
-No declaration above depends on `sorryAx`. The two-layer theorem is a
-schedule-composition result under explicit hypotheses; it is not a general CNF
-switching theorem.
+No declaration above depends on `sorryAx`. The CNF-facing bridge dualizes simple
+CNF views into simple DNF views and reuses the proved DNF switching bridge. The
+two-layer, three-layer, and k-layer theorems are schedule-composition results
+under explicit hypotheses; they are not arbitrary bounded-depth collapse
+theorems.
 
 ## Re-Verification
 

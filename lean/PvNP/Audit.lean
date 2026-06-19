@@ -33,3 +33,34 @@ This module pins the axiom profile of the publication-facing theorem surface.
 /-- info: 'PvNP.BoundedDepthIteratedCollapse.oneLitTwoLayerCollapse_example' depends on axioms: [propext, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.BoundedDepthIteratedCollapse.oneLitTwoLayerCollapse_example
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.dnfEval_cnfDualDNF' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.dnfEval_cnfDualDNF
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.simpleDNF_cnfDualDNF_of_simpleCNF' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.simpleDNF_cnfDualDNF_of_simpleCNF
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.bdFormula_cnfView_dual_switching_collapse' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.bdFormula_cnfView_dual_switching_collapse
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.threeLayerCollapse_exists_from_stagePremises' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.threeLayerCollapse_exists_from_stagePremises
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.oneLitThreeLayerCollapse_example_nonvacuous' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.oneLitThreeLayerCollapse_example_nonvacuous
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.kLayerCollapse_exists_from_schedule' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.kLayerCollapse_exists_from_schedule
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.oneLitKLayerSchedule3_nonempty' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.oneLitKLayerSchedule3_nonempty
