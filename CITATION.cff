@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata from this file."
+title: "A Lean 4 formalization of a SimpleDNF switching lemma and bounded-depth layer-collapse infrastructure"
+type: software
+authors:
+  - family-names: Fredriksen
+    given-names: Daniel
+doi: 10.5281/zenodo.20757628
+version: 0.1.0
+date-released: 2026-06-19
+url: "https://github.com/Quantyra/formal-switching-lemma"
+repository-code: "https://github.com/Quantyra/formal-switching-lemma"
+license: Apache-2.0

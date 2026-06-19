@@ -1,5 +1,7 @@
 # Formal Switching Lemma in Lean 4
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20757628.svg)](https://doi.org/10.5281/zenodo.20757628)
+
 This repository is a curated Lean 4 publication artifact for the `PvNP`
 SimpleDNF switching-lemma line and its bounded-depth formula bridge.
 
@@ -51,8 +53,9 @@ Run the audit surface:
 lake env lean lean/PvNP/Audit.lean
 ```
 
-## DOI Preparation
+## DOI
 
-This repository includes `.zenodo.json` and is ready for Zenodo activation. After
-Zenodo is enabled by the owner, create a version tag such as `v0.1.0` and publish
-the GitHub release to mint the DOI.
+Version `v0.1.0` is archived on Zenodo:
+
+- DOI: `10.5281/zenodo.20757628`
+- Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.1.0`
