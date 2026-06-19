@@ -38,6 +38,15 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   and `PvNP.BoundedDepthIteratedCollapse.oneLitKLayerSchedule3_nonempty`:
   non-empty one-literal witnesses for the three-layer and list-indexed schedule
   machinery.
+- `PvNP.CertifiedAffine.certifiedAffineExtraction_completeOn` and
+  `PvNP.CertifiedAffine.incident_collision_endpoints`: arbitrary finite
+  Tseitin-graph extraction metadata, low-degree/simple-edge certificate surface,
+  and a reusable non-loop incidence collision lemma connected to
+  `SemanticExtractorCompleteOn`.
+- `PvNP.RestrictedPHPFloor.restrictedPHPFormula` and
+  `PvNP.RestrictedPHPFloor.PHPDepthFloorStatement`: a restricted PHP formula
+  surface and isolated decision-tree depth-floor interface.  The floor statement
+  is not asserted as proved for Frege.
 
 ## Non-Claims Boundary
 
@@ -46,6 +55,7 @@ This artifact does **not** prove or imply:
 - `P != NP` or `P = NP`;
 - an NP or circuit lower bound;
 - a Frege/PHP lower bound;
+- a proved PHP decision-tree floor beyond explicitly supplied boundary records;
 - arbitrary AC0 or arbitrary bounded-depth formula collapse;
 - a general CNF switching lemma independent of the explicit dualization bridge.
 
@@ -71,6 +81,12 @@ Run the audit surface:
 
 ```bash
 lake env lean lean/PvNP/Audit.lean
+```
+
+Release-candidate audit helper:
+
+```powershell
+./scripts/audit-release.ps1
 ```
 
 ## DOI

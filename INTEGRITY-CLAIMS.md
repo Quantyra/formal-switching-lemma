@@ -11,6 +11,7 @@ This repository does **not** establish or imply:
 - `P != NP` or `P = NP`;
 - an NP or circuit lower bound;
 - a Frege/PHP lower bound;
+- a proved PHP decision-tree floor beyond explicitly supplied boundary records;
 - arbitrary AC0 collapse or arbitrary bounded-depth formula collapse;
 - a general CNF switching lemma independent of the explicit dualization bridge.
 
@@ -31,6 +32,10 @@ This repository does **not** establish or imply:
 | `PvNP.BoundedDepthIteratedCollapse.oneLitThreeLayerCollapse_example_nonvacuous` | `propext`, `Quot.sound` | proven-elementary witness |
 | `PvNP.BoundedDepthIteratedCollapse.kLayerCollapse_exists_from_schedule` | `propext`, `Quot.sound` | proven-elementary schedule certificate |
 | `PvNP.BoundedDepthIteratedCollapse.oneLitKLayerSchedule3_nonempty` | `propext`, `Quot.sound` | proven-elementary witness |
+| `PvNP.CertifiedAffine.incidentExtractor_completeOn` | none | proven extractor interface |
+| `PvNP.CertifiedAffine.incident_collision_endpoints` | none | proven collision-handling lemma |
+| `PvNP.CertifiedAffine.certifiedAffineExtraction_completeOn` | none | proven extractor certificate connection |
+| `PvNP.RestrictedPHPFloor.phpBoundary_formula_eq` | `propext`, `Quot.sound` | proven restricted-PHP boundary identity |
 
 No declaration above depends on `sorryAx`. The CNF-facing bridge dualizes simple
 CNF views into simple DNF views and reuses the proved DNF switching bridge. The
@@ -42,4 +47,10 @@ theorems.
 
 ```bash
 lake env lean lean/PvNP/Audit.lean
+```
+
+Release-candidate audit helper:
+
+```powershell
+./scripts/audit-release.ps1
 ```

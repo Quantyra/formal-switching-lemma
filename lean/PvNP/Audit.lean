@@ -1,4 +1,6 @@
 import PvNP.BoundedDepthIteratedCollapse
+import PvNP.CertifiedAffine
+import PvNP.RestrictedPHPFloor
 
 /-!
 # Formal Switching Lemma Audit Surface
@@ -64,3 +66,19 @@ This module pins the axiom profile of the publication-facing theorem surface.
 /-- info: 'PvNP.BoundedDepthIteratedCollapse.oneLitKLayerSchedule3_nonempty' depends on axioms: [propext, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.BoundedDepthIteratedCollapse.oneLitKLayerSchedule3_nonempty
+
+/-- info: 'PvNP.CertifiedAffine.incidentExtractor_completeOn' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.CertifiedAffine.incidentExtractor_completeOn
+
+/-- info: 'PvNP.CertifiedAffine.incident_collision_endpoints' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.CertifiedAffine.incident_collision_endpoints
+
+/-- info: 'PvNP.CertifiedAffine.certifiedAffineExtraction_completeOn' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.CertifiedAffine.certifiedAffineExtraction_completeOn
+
+/-- info: 'PvNP.RestrictedPHPFloor.phpBoundary_formula_eq' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.RestrictedPHPFloor.phpBoundary_formula_eq
