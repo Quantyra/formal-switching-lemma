@@ -38,6 +38,12 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   and `PvNP.BoundedDepthIteratedCollapse.oneLitKLayerSchedule3_nonempty`:
   non-empty one-literal witnesses for the three-layer and list-indexed schedule
   machinery.
+- `PvNP.BoundedDepthIteratedCollapse.GeneratedDNFLayerStage`,
+  `generatedDNFStage_exists`, `GeneratedCNFLayerStage`, `generatedCNFStage_exists`,
+  `dnfPremiseOfGenerated`, `cnfPremiseOfGenerated`, `generatedTwoLayerCollapse_exists`:
+  generated one-step DNF/CNF stage witnesses directly from the switching collapse
+  (with exact `depthBound = s` accounting) and their composition into two-layer
+  certificates under common-extension compatibility.
 - `PvNP.CertifiedAffine.certifiedAffineExtraction_completeOn` and
   `PvNP.CertifiedAffine.incident_collision_endpoints`: arbitrary finite
   Tseitin-graph extraction metadata, low-degree/simple-edge certificate surface,
@@ -98,7 +104,16 @@ Version `v0.1.0` is archived on Zenodo:
 - DOI: `10.5281/zenodo.20757628`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.1.0`
 
-Version `v0.2.0` adds the audited CNF-dual bridge and explicit three-layer and
+Version `v0.3.0` adds the audited generated-stage infrastructure
+(`GeneratedDNFLayerStage`, `generatedDNFStage_exists`, `GeneratedCNFLayerStage`,
+`generatedCNFStage_exists`, `dnfPremiseOfGenerated`, `cnfPremiseOfGenerated`,
+`generatedTwoLayerCollapse_exists`) for explicit one-step DNF/CNF stages
+with exact depth accounting and common-extension two-layer composition:
+
+- DOI: (version DOI pending Zenodo auto-archive; concept DOI is `10.5281/zenodo.20757627`)
+- Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.3.0`
+
+Version `v0.2.0` (prior) adds the audited CNF-dual bridge and explicit three-layer and
 list-indexed k-layer schedule certificates:
 
 - DOI: `10.5281/zenodo.20764338`

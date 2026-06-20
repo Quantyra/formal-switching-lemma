@@ -50,6 +50,20 @@ This module pins the axiom profile of the publication-facing theorem surface.
 #guard_msgs in
 #print axioms PvNP.BoundedDepthIteratedCollapse.bdFormula_cnfView_dual_switching_collapse
 
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.generatedDNFStage_exists' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.generatedDNFStage_exists
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.generatedCNFStage_exists' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.generatedCNFStage_exists
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.generatedTwoLayerCollapse_exists' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.generatedTwoLayerCollapse_exists
+
 /-- info: 'PvNP.BoundedDepthIteratedCollapse.threeLayerCollapse_exists_from_stagePremises' depends on axioms: [propext,
  Quot.sound] -/
 #guard_msgs in

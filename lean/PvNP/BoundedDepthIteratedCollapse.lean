@@ -195,6 +195,119 @@ structure CNFLayerCollapsePremise {n : Nat} (F : BDFormula n) where
   depth_lt : dtDepth T < depthBound
   computes : ∀ a : Assignment n, Agree ρ a → dtEval a T = eval a (restrict ρ F)
 
+/-! ## Generated one-step stages from switching collapse -/
+
+/-- A DNF layer stage generated directly by the one-step DNF-view switching
+collapse theorem.  The `depthBound` field is intentionally retained, together
+with `depthBound_eq`, so downstream schedules can audit exact accounting rather
+than treating the generated witness as an opaque explicit premise. -/
+structure GeneratedDNFLayerStage {n : Nat} (F : BDFormula n) where
+  view : DNFView F
+  w : Nat
+  s : Nat
+  ℓ : Nat
+  width_le : widthDNF view.D ≤ w
+  ρ : Restriction n
+  stars : ρ ∈ restrictionsWithStars n ℓ
+  good : ρ ∉ badSetTerm view.D s ℓ
+  T : DTree n
+  depthBound : Nat
+  depthBound_eq : depthBound = s
+  depth_lt : dtDepth T < depthBound
+  computes : ∀ a : Assignment n, Agree ρ a → dtEval a T = eval a (restrict ρ F)
+
+/-- A CNF layer stage generated directly by the dual-DNF CNF-view switching
+collapse theorem.  This is still collapse infrastructure only: it records the
+dual switching witness for a named CNF view, not any lower-bound consequence. -/
+structure GeneratedCNFLayerStage {n : Nat} (F : BDFormula n) where
+  view : CNFView F
+  w : Nat
+  s : Nat
+  ℓ : Nat
+  width_le : widthDNF (cnfDualDNF view.C) ≤ w
+  ρ : Restriction n
+  stars : ρ ∈ restrictionsWithStars n ℓ
+  good : ρ ∉ badSetTerm (cnfDualDNF view.C) s ℓ
+  T : DTree n
+  depthBound : Nat
+  depthBound_eq : depthBound = s
+  depth_lt : dtDepth T < depthBound
+  computes : ∀ a : Assignment n, Agree ρ a → dtEval a T = eval a (restrict ρ F)
+
+/-- Good restrictions for a DNF view generate a concrete DNF stage with exact
+depth accounting (`depthBound = s`) and a nonempty decision-tree witness. -/
+theorem generatedDNFStage_exists {n : Nat} {F : BDFormula n}
+    (V : DNFView F) (w s ℓ : Nat) (hw : widthDNF V.D ≤ w)
+    (ρ : Restriction n) (hρstars : ρ ∈ restrictionsWithStars n ℓ)
+    (hρgood : ρ ∉ badSetTerm V.D s ℓ) :
+    ∃ S : GeneratedDNFLayerStage F,
+      S.view = V ∧ S.w = w ∧ S.s = s ∧ S.ℓ = ℓ ∧ S.ρ = ρ ∧
+        S.depthBound = s := by
+  rcases (bdFormula_dnfView_switching_collapse V w s ℓ hw).2 ρ hρstars hρgood with
+    ⟨T, hdepth, hT⟩
+  refine ⟨{
+    view := V
+    w := w
+    s := s
+    ℓ := ℓ
+    width_le := hw
+    ρ := ρ
+    stars := hρstars
+    good := hρgood
+    T := T
+    depthBound := s
+    depthBound_eq := rfl
+    depth_lt := hdepth
+    computes := hT }, rfl, rfl, rfl, rfl, rfl, rfl⟩
+
+/-- Good restrictions for a CNF view generate a concrete CNF stage with exact
+depth accounting (`depthBound = s`) and a nonempty decision-tree witness. -/
+theorem generatedCNFStage_exists {n : Nat} {F : BDFormula n}
+    (V : CNFView F) (w s ℓ : Nat) (hw : widthDNF (cnfDualDNF V.C) ≤ w)
+    (ρ : Restriction n) (hρstars : ρ ∈ restrictionsWithStars n ℓ)
+    (hρgood : ρ ∉ badSetTerm (cnfDualDNF V.C) s ℓ) :
+    ∃ S : GeneratedCNFLayerStage F,
+      S.view = V ∧ S.w = w ∧ S.s = s ∧ S.ℓ = ℓ ∧ S.ρ = ρ ∧
+        S.depthBound = s := by
+  rcases (bdFormula_cnfView_dual_switching_collapse V w s ℓ hw).2 ρ hρstars hρgood with
+    ⟨T, hdepth, hT⟩
+  refine ⟨{
+    view := V
+    w := w
+    s := s
+    ℓ := ℓ
+    width_le := hw
+    ρ := ρ
+    stars := hρstars
+    good := hρgood
+    T := T
+    depthBound := s
+    depthBound_eq := rfl
+    depth_lt := hdepth
+    computes := hT }, rfl, rfl, rfl, rfl, rfl, rfl⟩
+
+/-- Forget the generated-stage provenance and expose the explicit DNF premise
+interface used by schedule composition. -/
+def dnfPremiseOfGenerated {n : Nat} {F : BDFormula n}
+    (S : GeneratedDNFLayerStage F) : DNFLayerCollapsePremise F where
+  view := S.view
+  ρ := S.ρ
+  T := S.T
+  depthBound := S.depthBound
+  depth_lt := S.depth_lt
+  computes := S.computes
+
+/-- Forget the generated-stage provenance and expose the explicit CNF premise
+interface used by schedule composition. -/
+def cnfPremiseOfGenerated {n : Nat} {F : BDFormula n}
+    (S : GeneratedCNFLayerStage F) : CNFLayerCollapsePremise F where
+  view := S.view
+  ρ := S.ρ
+  T := S.T
+  depthBound := S.depthBound
+  depth_lt := S.depth_lt
+  computes := S.computes
+
 /-- The explicit two-layer schedule: first a DNF-view layer, then a CNF-view
 layer, together with a compatibility field saying that the two restrictions are
 used only on common extensions. -/
@@ -262,6 +375,24 @@ theorem twoLayerCollapse_exists_from_stagePremises {n : Nat} {F₁ F₂ : BDForm
       C.ρ₁ = S.dnfStage.ρ ∧ C.ρ₂ = S.cnfStage.ρ ∧
         C.bound₁ = S.dnfStage.depthBound ∧ C.bound₂ = S.cnfStage.depthBound := by
   exact ⟨twoLayerCollapse_from_stagePremises S, rfl, rfl, rfl, rfl⟩
+
+/-- Two generated one-step stages compose into a two-layer collapse certificate,
+provided their concrete restrictions have a common total extension.  The result
+preserves the generated restrictions and exact generated depth bounds. -/
+theorem generatedTwoLayerCollapse_exists {n : Nat} {F₁ F₂ : BDFormula n}
+    (S₁ : GeneratedDNFLayerStage F₁) (S₂ : GeneratedCNFLayerStage F₂)
+    (hcompat : ∃ a : Assignment n, Agree S₁.ρ a ∧ Agree S₂.ρ a) :
+    ∃ C : TwoLayerCollapseCertificate F₁ F₂,
+      C.ρ₁ = S₁.ρ ∧ C.ρ₂ = S₂.ρ ∧ C.bound₁ = S₁.s ∧ C.bound₂ = S₂.s ∧
+        ∃ a : Assignment n, Agree C.ρ₁ a ∧ Agree C.ρ₂ a := by
+  let S : TwoLayerSchedule F₁ F₂ := {
+    dnfStage := dnfPremiseOfGenerated S₁
+    cnfStage := cnfPremiseOfGenerated S₂
+    compatible := hcompat }
+  refine ⟨twoLayerCollapse_from_stagePremises S, rfl, rfl, ?_, ?_, ?_⟩
+  · exact S₁.depthBound_eq
+  · exact S₂.depthBound_eq
+  · exact hcompat
 
 /-! ## Three-stage schedule extension -/
 
