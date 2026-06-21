@@ -6,8 +6,8 @@ authors:
   - family-names: Fredriksen
     given-names: Daniel
 doi: 10.5281/zenodo.20757627
-version: 0.3.0
-date-released: 2026-06-19
+version: 0.3.1
+date-released: 2026-06-21
 url: "https://github.com/Quantyra/formal-switching-lemma"
 repository-code: "https://github.com/Quantyra/formal-switching-lemma"
 license: Apache-2.0

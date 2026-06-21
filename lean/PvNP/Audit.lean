@@ -73,13 +73,49 @@ This module pins the axiom profile of the publication-facing theorem surface.
 #guard_msgs in
 #print axioms PvNP.BoundedDepthIteratedCollapse.oneLitThreeLayerCollapse_example_nonvacuous
 
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.generatedThreeLayerCollapse_exists' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.generatedThreeLayerCollapse_exists
+
 /-- info: 'PvNP.BoundedDepthIteratedCollapse.kLayerCollapse_exists_from_schedule' depends on axioms: [propext, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.BoundedDepthIteratedCollapse.kLayerCollapse_exists_from_schedule
 
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.GeneratedExplicitLayerStage.toExplicit_depthBound_eq_stageS' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.GeneratedExplicitLayerStage.toExplicit_depthBound_eq_stageS
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.generatedKLayerCollapse_exists' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.generatedKLayerCollapse_exists
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.generatedNonemptyKLayerCollapse_exists' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.generatedNonemptyKLayerCollapse_exists
+
 /-- info: 'PvNP.BoundedDepthIteratedCollapse.oneLitKLayerSchedule3_nonempty' depends on axioms: [propext, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.BoundedDepthIteratedCollapse.oneLitKLayerSchedule3_nonempty
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.emptyGeneratedKLayerSchedule3_nonempty' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.emptyGeneratedKLayerSchedule3_nonempty
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.emptyGeneratedKLayerSchedule4_nonempty' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.emptyGeneratedKLayerSchedule4_nonempty
 
 /-- info: 'PvNP.CertifiedAffine.incidentExtractor_completeOn' does not depend on any axioms -/
 #guard_msgs in

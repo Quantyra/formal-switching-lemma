@@ -45,9 +45,9 @@ Invoke-Step "Non-claims language present" {
   $matches
 }
 
-Invoke-Step "Zenodo/CITATION v0.2.0 metadata" {
-  $matches = Select-String -LiteralPath @("README.md", "CITATION.cff", ".zenodo.json") -Pattern "v0\.2\.0|10\.5281/zenodo\.20764338"
-  if (-not $matches) { throw "v0.2.0 DOI/release metadata missing" }
+Invoke-Step "Zenodo/CITATION v0.3.1 metadata" {
+  $matches = Select-String -LiteralPath @("README.md", "CITATION.cff", ".zenodo.json") -Pattern "v0\.3\.1|0\.3\.1"
+  if (-not $matches) { throw "v0.3.1 DOI/release metadata missing" }
   $matches
 }
 

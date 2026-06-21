@@ -477,6 +477,29 @@ theorem threeLayerCollapse_exists_from_stagePremises {n : Nat} {F₁ F₂ F₃ :
           C.bound₃ = S.dnfStage₃.depthBound := by
   exact ⟨threeLayerCollapse_from_stagePremises S, rfl, rfl, rfl, rfl, rfl, rfl⟩
 
+/-- Three generated one-step stages compose into a three-layer DNF/CNF/DNF
+collapse certificate, replacing the explicit premise records for this concrete
+alternating schedule.  The theorem preserves each generated restriction and exact
+generated depth parameter; it does not assert an arbitrary formula collapse. -/
+theorem generatedThreeLayerCollapse_exists {n : Nat} {F₁ F₂ F₃ : BDFormula n}
+    (S₁ : GeneratedDNFLayerStage F₁) (S₂ : GeneratedCNFLayerStage F₂)
+    (S₃ : GeneratedDNFLayerStage F₃)
+    (hcompat : ∃ a : Assignment n, Agree S₁.ρ a ∧ Agree S₂.ρ a ∧ Agree S₃.ρ a) :
+    ∃ C : ThreeLayerCollapseCertificate F₁ F₂ F₃,
+      C.ρ₁ = S₁.ρ ∧ C.ρ₂ = S₂.ρ ∧ C.ρ₃ = S₃.ρ ∧
+        C.bound₁ = S₁.s ∧ C.bound₂ = S₂.s ∧ C.bound₃ = S₃.s ∧
+          ∃ a : Assignment n, Agree C.ρ₁ a ∧ Agree C.ρ₂ a ∧ Agree C.ρ₃ a := by
+  let S : ThreeLayerSchedule F₁ F₂ F₃ := {
+    dnfStage₁ := dnfPremiseOfGenerated S₁
+    cnfStage₂ := cnfPremiseOfGenerated S₂
+    dnfStage₃ := dnfPremiseOfGenerated S₃
+    compatible := hcompat }
+  refine ⟨threeLayerCollapse_from_stagePremises S, rfl, rfl, rfl, ?_, ?_, ?_, ?_⟩
+  · exact S₁.depthBound_eq
+  · exact S₂.depthBound_eq
+  · exact S₃.depthBound_eq
+  · exact hcompat
+
 /-! ## List-indexed alternating schedules -/
 
 /-- The declared view kind of a bottom layer in a list-indexed schedule. -/
@@ -508,6 +531,10 @@ structure ExplicitLayerStage (n : Nat) where
   depth_lt : dtDepth T < depthBound
   computes : ∀ a : Assignment n, Agree ρ a → dtEval a T = eval a (restrict ρ F)
 
+/-- Aggregate depth accounting for an explicit list-indexed schedule. -/
+def stageDepthSum {n : Nat} (stages : List (ExplicitLayerStage n)) : Nat :=
+  (stages.map (fun S => S.depthBound)).sum
+
 /-- Convert an explicit DNF stage premise to the list-indexed stage format. -/
 def explicitStageOfDNF {n : Nat} {F : BDFormula n}
     (P : DNFLayerCollapsePremise F) : ExplicitLayerStage n where
@@ -530,12 +557,90 @@ def explicitStageOfCNF {n : Nat} {F : BDFormula n}
   depth_lt := P.depth_lt
   computes := P.computes
 
+/-- Convert a generated DNF stage directly to the list-indexed explicit-stage
+format, preserving its concrete restriction, tree, and audited depth bound. -/
+def explicitStageOfGeneratedDNF {n : Nat} {F : BDFormula n}
+    (S : GeneratedDNFLayerStage F) : ExplicitLayerStage n where
+  kind := LayerKind.dnf
+  F := F
+  ρ := S.ρ
+  T := S.T
+  depthBound := S.depthBound
+  depth_lt := S.depth_lt
+  computes := S.computes
+
+/-- Convert a generated CNF stage directly to the list-indexed explicit-stage
+format, preserving its concrete restriction, tree, and audited depth bound. -/
+def explicitStageOfGeneratedCNF {n : Nat} {F : BDFormula n}
+    (S : GeneratedCNFLayerStage F) : ExplicitLayerStage n where
+  kind := LayerKind.cnf
+  F := F
+  ρ := S.ρ
+  T := S.T
+  depthBound := S.depthBound
+  depth_lt := S.depth_lt
+  computes := S.computes
+
+/-- A generated stage tagged by the view kind that generated it.  This wrapper
+keeps generated provenance available for list-indexed schedules without claiming
+that arbitrary layers admit such generated witnesses. -/
+inductive GeneratedExplicitLayerStage (n : Nat) where
+  | dnf {F : BDFormula n} (S : GeneratedDNFLayerStage F)
+  | cnf {F : BDFormula n} (S : GeneratedCNFLayerStage F)
+
+namespace GeneratedExplicitLayerStage
+
+/-- Forget generated provenance to the explicit-stage format used by k-layer
+schedule certificates. -/
+def toExplicit {n : Nat} : GeneratedExplicitLayerStage n → ExplicitLayerStage n
+  | dnf S => explicitStageOfGeneratedDNF S
+  | cnf S => explicitStageOfGeneratedCNF S
+
+/-- The switching-lemma stage parameter whose equality with `depthBound` is
+stored by each generated stage. -/
+def stageS {n : Nat} : GeneratedExplicitLayerStage n → Nat
+  | dnf S => S.s
+  | cnf S => S.s
+
+/-- Aggregate generated switching-depth parameters for a generated stage list. -/
+def stageDepthSum {n : Nat} (stages : List (GeneratedExplicitLayerStage n)) : Nat :=
+  (stages.map (fun G => G.stageS)).sum
+
+/-- Generated-to-explicit conversion preserves exact per-stage depth accounting. -/
+theorem toExplicit_depthBound_eq_stageS {n : Nat} (G : GeneratedExplicitLayerStage n) :
+    G.toExplicit.depthBound = G.stageS := by
+  cases G with
+  | dnf S => exact S.depthBound_eq
+  | cnf S => exact S.depthBound_eq
+
+end GeneratedExplicitLayerStage
+
 /-- A list-indexed alternating schedule with explicit depth accounting and a
 common-extension witness for all scheduled restrictions. -/
 structure KLayerSchedule (n : Nat) where
   stages : List (ExplicitLayerStage n)
   alternating : LayerKind.Alternating (stages.map (fun S => S.kind))
   compatible : ∃ a : Assignment n, ∀ S, S ∈ stages → Agree S.ρ a
+
+/-- A list-indexed schedule whose stages are explicitly generated DNF/CNF stages,
+with alternating-kind and common-extension evidence on their explicit images. -/
+structure GeneratedKLayerSchedule (n : Nat) where
+  generatedStages : List (GeneratedExplicitLayerStage n)
+  alternating : LayerKind.Alternating
+    ((generatedStages.map (fun G => G.toExplicit)).map (fun S => S.kind))
+  compatible : ∃ a : Assignment n, ∀ G, G ∈ generatedStages → Agree G.toExplicit.ρ a
+
+/-- Forget generated provenance to the existing explicit k-layer schedule. -/
+def generatedKLayerSchedule_to_KLayerSchedule {n : Nat} (S : GeneratedKLayerSchedule n) :
+    KLayerSchedule n where
+  stages := S.generatedStages.map (fun G => G.toExplicit)
+  alternating := S.alternating
+  compatible := by
+    rcases S.compatible with ⟨a, ha⟩
+    refine ⟨a, ?_⟩
+    intro H hH
+    rcases List.mem_map.1 hH with ⟨G, hG, rfl⟩
+    exact ha G hG
 
 /-- A list-indexed collapse certificate.  It deliberately certifies the named
 stage witnesses and common extension rather than claiming arbitrary AC0 collapse. -/
@@ -564,6 +669,53 @@ def kLayerCollapse_from_schedule {n : Nat} (S : KLayerSchedule n) :
 theorem kLayerCollapse_exists_from_schedule {n : Nat} (S : KLayerSchedule n) :
     ∃ C : KLayerCollapseCertificate n, C.stages = S.stages := by
   exact ⟨kLayerCollapse_from_schedule S, rfl⟩
+
+/-- Generated k-layer schedules produce k-layer certificates while preserving the
+literal generated-stage list and reflecting each generated stage's exact
+`depthBound = s` accounting in the output certificate. -/
+theorem generatedKLayerCollapse_exists {n : Nat} (S : GeneratedKLayerSchedule n) :
+    ∃ C : KLayerCollapseCertificate n,
+      C.stages = S.generatedStages.map (fun G => G.toExplicit) ∧
+        (∀ G, G ∈ S.generatedStages →
+          ∃ H, H ∈ C.stages ∧ H = G.toExplicit ∧ H.depthBound = G.stageS) ∧
+        (∃ a : Assignment n, ∀ H, H ∈ C.stages → Agree H.ρ a) := by
+  let S' := generatedKLayerSchedule_to_KLayerSchedule S
+  refine ⟨kLayerCollapse_from_schedule S', rfl, ?_, ?_⟩
+  · intro G hG
+    refine ⟨G.toExplicit, ?_, rfl, GeneratedExplicitLayerStage.toExplicit_depthBound_eq_stageS G⟩
+    exact List.mem_map_of_mem (fun G => G.toExplicit) hG
+  · exact (kLayerCollapse_from_schedule S').compatible
+
+/-- Nonempty generated k-layer schedules produce certificates preserving the exact
+generated list, per-stage `depthBound = s`, aggregate depth accounting, and a
+whole-list common-extension witness.  This is generated schedule/collapse
+infrastructure only, not an arbitrary bounded-depth collapse theorem. -/
+theorem generatedNonemptyKLayerCollapse_exists {n : Nat} (S : GeneratedKLayerSchedule n)
+    (hnonempty : S.generatedStages ≠ []) :
+    ∃ C : KLayerCollapseCertificate n,
+      S.generatedStages ≠ [] ∧
+        C.stages = S.generatedStages.map (fun G => G.toExplicit) ∧
+        (∀ G, G ∈ S.generatedStages →
+          ∃ H, H ∈ C.stages ∧ H = G.toExplicit ∧ H.depthBound = G.stageS) ∧
+        stageDepthSum C.stages =
+          GeneratedExplicitLayerStage.stageDepthSum S.generatedStages ∧
+        (∃ a : Assignment n, ∀ H, H ∈ C.stages → Agree H.ρ a) := by
+  let S' := generatedKLayerSchedule_to_KLayerSchedule S
+  refine ⟨kLayerCollapse_from_schedule S', hnonempty, rfl, ?_, ?_, ?_⟩
+  · intro G hG
+    refine ⟨G.toExplicit, ?_, rfl, GeneratedExplicitLayerStage.toExplicit_depthBound_eq_stageS G⟩
+    exact List.mem_map_of_mem (fun G => G.toExplicit) hG
+  · have hsum : ∀ stages : List (GeneratedExplicitLayerStage n),
+        (List.map ((fun H : ExplicitLayerStage n => H.depthBound) ∘ fun G => G.toExplicit)
+          stages).sum = (List.map (fun G => G.stageS) stages).sum := by
+      intro stages
+      induction stages with
+      | nil => simp
+      | cons G rest ih =>
+          simp [GeneratedExplicitLayerStage.toExplicit_depthBound_eq_stageS, ih]
+    simpa [S', kLayerCollapse_from_schedule, generatedKLayerSchedule_to_KLayerSchedule,
+      stageDepthSum, GeneratedExplicitLayerStage.stageDepthSum] using hsum S.generatedStages
+  · exact (kLayerCollapse_from_schedule S').compatible
 
 /-! ## Small non-vacuous example -/
 
@@ -672,6 +824,64 @@ def emptyCNFStage (n : Nat) :
   ρ := freeRestriction n
   T := DTree.leaf true
   depthBound := 1
+  depth_lt := by simp
+  computes := by
+    intro a _ha
+    simp [eval_tru, restrict_tru]
+
+/-- The free restriction has all variables starred. -/
+theorem stars_freeRestriction (n : Nat) : stars (freeRestriction n) = n := by
+  classical
+  simp [stars, freeRestriction]
+
+/-- Generated empty-DNF stage using the free restriction.  This is a generated
+record witness with exact `depthBound = s`; it does not assert any arbitrary
+collapse theorem. -/
+def emptyGeneratedDNFStage (n : Nat) :
+    GeneratedDNFLayerStage (BoundedDepthFregeSwitchingBridge.dnfToBD ([] : DNF n)) where
+  view := emptyDNFView n
+  w := 0
+  s := 1
+  ℓ := n
+  width_le := by simp [emptyDNFView, dnfToBD_dnfView]
+  ρ := freeRestriction n
+  stars := by
+    rw [mem_restrictionsWithStars]
+    exact stars_freeRestriction n
+  good := by
+    rw [mem_badSetTerm]
+    simp [emptyDNFView, dnfToBD_dnfView, dnfRestrict, termCanonicalDT, stars_freeRestriction]
+  T := DTree.leaf false
+  depthBound := 1
+  depthBound_eq := rfl
+  depth_lt := by simp
+  computes := by
+    intro a ha
+    rw [dtEval_leaf]
+    rw [eval_restrict (freeRestriction n) a
+      (BoundedDepthFregeSwitchingBridge.dnfToBD ([] : DNF n)) ha]
+    rw [BoundedDepthFregeSwitchingBridge.eval_dnfToBD]
+    rfl
+
+/-- Generated empty-CNF stage using the dual empty-DNF view and the free
+restriction. -/
+def emptyGeneratedCNFStage (n : Nat) :
+    GeneratedCNFLayerStage (BDFormula.tru : BDFormula n) where
+  view := emptyCNFView n
+  w := 0
+  s := 1
+  ℓ := n
+  width_le := by simp [emptyCNFView, cnfDualDNF]
+  ρ := freeRestriction n
+  stars := by
+    rw [mem_restrictionsWithStars]
+    exact stars_freeRestriction n
+  good := by
+    rw [mem_badSetTerm]
+    simp [emptyCNFView, cnfDualDNF, dnfRestrict, termCanonicalDT, stars_freeRestriction]
+  T := DTree.leaf true
+  depthBound := 1
+  depthBound_eq := rfl
   depth_lt := by simp
   computes := by
     intro a _ha
@@ -798,6 +1008,118 @@ theorem oneLitKLayerSchedule3_nonempty (n : Nat) :
   refine ⟨kLayerCollapse_from_schedule (oneLitKLayerSchedule3 n), ?_, ?_⟩
   · simp [kLayerCollapse_from_schedule, oneLitKLayerSchedule3]
   · exact (kLayerCollapse_from_schedule (oneLitKLayerSchedule3 n)).compatible
+
+/-- A three-stage generated DNF/CNF/DNF schedule built from generated empty-stage
+witnesses.  It is nonempty as schedule infrastructure while remaining strictly
+within the generated-stage claims boundary. -/
+def emptyGeneratedKLayerSchedule3 (n : Nat) : GeneratedKLayerSchedule n where
+  generatedStages := [
+    GeneratedExplicitLayerStage.dnf (emptyGeneratedDNFStage n),
+    GeneratedExplicitLayerStage.cnf (emptyGeneratedCNFStage n),
+    GeneratedExplicitLayerStage.dnf (emptyGeneratedDNFStage n)]
+  alternating := by
+    simp [GeneratedExplicitLayerStage.toExplicit, explicitStageOfGeneratedDNF,
+      explicitStageOfGeneratedCNF, LayerKind.Alternating]
+  compatible := by
+    refine ⟨fun _ => false, ?_⟩
+    intro G hG
+    simp only [List.mem_cons, List.mem_singleton] at hG
+    rcases hG with hG | hG
+    · subst G
+      simpa [GeneratedExplicitLayerStage.toExplicit, explicitStageOfGeneratedDNF,
+        emptyGeneratedDNFStage] using agree_freeRestriction (fun _ : Fin n => false)
+    · rcases hG with hG | hG
+      · subst G
+        simpa [GeneratedExplicitLayerStage.toExplicit, explicitStageOfGeneratedCNF,
+          emptyGeneratedCNFStage] using agree_freeRestriction (fun _ : Fin n => false)
+      · rcases hG with hG | hG
+        · subst G
+          simpa [GeneratedExplicitLayerStage.toExplicit, explicitStageOfGeneratedDNF,
+            emptyGeneratedDNFStage] using agree_freeRestriction (fun _ : Fin n => false)
+        · cases hG
+
+/-- Nonempty generated list-indexed alternating DNF/CNF/DNF witness with exact
+per-stage generated depth accounting reflected in the resulting certificate. -/
+theorem emptyGeneratedKLayerSchedule3_nonempty (n : Nat) :
+    ∃ C : KLayerCollapseCertificate n,
+      C.stages.length = 3 ∧
+        (∀ H, H ∈ C.stages → H.depthBound = 1) ∧
+        ∃ a : Assignment n, ∀ H, H ∈ C.stages → Agree H.ρ a := by
+  refine ⟨kLayerCollapse_from_schedule
+    (generatedKLayerSchedule_to_KLayerSchedule (emptyGeneratedKLayerSchedule3 n)), ?_, ?_, ?_⟩
+  · simp [kLayerCollapse_from_schedule, generatedKLayerSchedule_to_KLayerSchedule,
+      emptyGeneratedKLayerSchedule3]
+  · intro H hH
+    simp [kLayerCollapse_from_schedule, generatedKLayerSchedule_to_KLayerSchedule,
+      emptyGeneratedKLayerSchedule3, GeneratedExplicitLayerStage.toExplicit,
+      explicitStageOfGeneratedDNF, explicitStageOfGeneratedCNF, emptyGeneratedDNFStage,
+      emptyGeneratedCNFStage] at hH ⊢
+    rcases hH with hH | hH | hH <;> subst H <;> rfl
+  · exact (kLayerCollapse_from_schedule
+      (generatedKLayerSchedule_to_KLayerSchedule (emptyGeneratedKLayerSchedule3 n))).compatible
+
+/-- A four-stage generated DNF/CNF/DNF/CNF schedule built from generated empty
+stages.  It is a concrete nonempty generated schedule witness with no arbitrary
+collapse claim. -/
+def emptyGeneratedKLayerSchedule4 (n : Nat) : GeneratedKLayerSchedule n where
+  generatedStages := [
+    GeneratedExplicitLayerStage.dnf (emptyGeneratedDNFStage n),
+    GeneratedExplicitLayerStage.cnf (emptyGeneratedCNFStage n),
+    GeneratedExplicitLayerStage.dnf (emptyGeneratedDNFStage n),
+    GeneratedExplicitLayerStage.cnf (emptyGeneratedCNFStage n)]
+  alternating := by
+    simp [GeneratedExplicitLayerStage.toExplicit, explicitStageOfGeneratedDNF,
+      explicitStageOfGeneratedCNF, LayerKind.Alternating]
+  compatible := by
+    refine ⟨fun _ => false, ?_⟩
+    intro G hG
+    simp only [List.mem_cons, List.mem_singleton] at hG
+    rcases hG with hG | hG
+    · subst G
+      simpa [GeneratedExplicitLayerStage.toExplicit, explicitStageOfGeneratedDNF,
+        emptyGeneratedDNFStage] using agree_freeRestriction (fun _ : Fin n => false)
+    · rcases hG with hG | hG
+      · subst G
+        simpa [GeneratedExplicitLayerStage.toExplicit, explicitStageOfGeneratedCNF,
+          emptyGeneratedCNFStage] using agree_freeRestriction (fun _ : Fin n => false)
+      · rcases hG with hG | hG
+        · subst G
+          simpa [GeneratedExplicitLayerStage.toExplicit, explicitStageOfGeneratedDNF,
+            emptyGeneratedDNFStage] using agree_freeRestriction (fun _ : Fin n => false)
+        · rcases hG with hG | hG
+          · subst G
+            simpa [GeneratedExplicitLayerStage.toExplicit, explicitStageOfGeneratedCNF,
+              emptyGeneratedCNFStage] using agree_freeRestriction (fun _ : Fin n => false)
+          · cases hG
+
+/-- Nonempty generated four-layer DNF/CNF/DNF/CNF witness with exact per-stage
+and aggregate generated depth accounting plus a whole-list common extension. -/
+theorem emptyGeneratedKLayerSchedule4_nonempty (n : Nat) :
+    ∃ C : KLayerCollapseCertificate n,
+      (emptyGeneratedKLayerSchedule4 n).generatedStages ≠ [] ∧
+        C.stages = (emptyGeneratedKLayerSchedule4 n).generatedStages.map (fun G => G.toExplicit) ∧
+        C.stages.length = 4 ∧
+        (∀ H, H ∈ C.stages → H.depthBound = 1) ∧
+        stageDepthSum C.stages = 4 ∧
+        ∃ a : Assignment n, ∀ H, H ∈ C.stages → Agree H.ρ a := by
+  refine ⟨kLayerCollapse_from_schedule
+    (generatedKLayerSchedule_to_KLayerSchedule (emptyGeneratedKLayerSchedule4 n)), ?_, ?_, ?_, ?_, ?_, ?_⟩
+  · simp [emptyGeneratedKLayerSchedule4]
+  · rfl
+  · simp [kLayerCollapse_from_schedule, generatedKLayerSchedule_to_KLayerSchedule,
+      emptyGeneratedKLayerSchedule4]
+  · intro H hH
+    simp [kLayerCollapse_from_schedule, generatedKLayerSchedule_to_KLayerSchedule,
+      emptyGeneratedKLayerSchedule4, GeneratedExplicitLayerStage.toExplicit,
+      explicitStageOfGeneratedDNF, explicitStageOfGeneratedCNF, emptyGeneratedDNFStage,
+      emptyGeneratedCNFStage] at hH ⊢
+    rcases hH with hH | hH | hH | hH <;> subst H <;> rfl
+  · simp [kLayerCollapse_from_schedule, generatedKLayerSchedule_to_KLayerSchedule,
+      emptyGeneratedKLayerSchedule4, stageDepthSum, GeneratedExplicitLayerStage.toExplicit,
+      explicitStageOfGeneratedDNF, explicitStageOfGeneratedCNF, emptyGeneratedDNFStage,
+      emptyGeneratedCNFStage]
+  · exact (kLayerCollapse_from_schedule
+      (generatedKLayerSchedule_to_KLayerSchedule (emptyGeneratedKLayerSchedule4 n))).compatible
 
 end BoundedDepthIteratedCollapse
 end PvNP
