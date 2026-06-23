@@ -1,5 +1,6 @@
 import PvNP.BoundedDepthIteratedCollapse
 import PvNP.CertifiedAffine
+import PvNP.GraphIndexedBridge
 import PvNP.RestrictedPHPFloor
 
 /-!
@@ -128,6 +129,28 @@ This module pins the axiom profile of the publication-facing theorem surface.
 /-- info: 'PvNP.CertifiedAffine.certifiedAffineExtraction_completeOn' does not depend on any axioms -/
 #guard_msgs in
 #print axioms PvNP.CertifiedAffine.certifiedAffineExtraction_completeOn
+
+/-- info: 'PvNP.GraphIndexedBridge.bridgeWitness_completeOn' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.bridgeWitness_completeOn
+
+/-- info: 'PvNP.GraphIndexedBridge.bridgeWitness_generatedNonemptyKLayerCollapse_exists' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.bridgeWitness_generatedNonemptyKLayerCollapse_exists
+
+/-- info: 'PvNP.GraphIndexedBridge.emptyGeneratedBridgeWitness3_nonempty' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.emptyGeneratedBridgeWitness3_nonempty
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_nonempty' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_nonempty
 
 /-- info: 'PvNP.RestrictedPHPFloor.phpBoundary_formula_eq' depends on axioms: [propext, Quot.sound] -/
 #guard_msgs in

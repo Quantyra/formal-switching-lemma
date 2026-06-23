@@ -9,6 +9,7 @@ import PvNP.BoundedDepthLayerView
 import PvNP.BoundedDepthRestriction
 import PvNP.CNFModel
 import PvNP.CertifiedAffine
+import PvNP.GraphIndexedBridge
 import PvNP.RestrictedPHPFloor
 import PvNP.SwitchingAssemble
 import PvNP.SwitchingCardLemma
