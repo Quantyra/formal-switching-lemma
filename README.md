@@ -58,8 +58,24 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   `SemanticExtractorCompleteOn`.
 - `PvNP.RestrictedPHPFloor.restrictedPHPFormula` and
   `PvNP.RestrictedPHPFloor.PHPDepthFloorStatement`: a restricted PHP formula
-  surface and isolated decision-tree depth-floor interface.  The floor statement
-  is not asserted as proved for Frege.
+  surface and isolated decision-tree depth-floor interface.  Collision clauses in
+  this restricted view are proper-pair only.
+- `PvNP.RestrictedPHPFloor.eval_tinyOneOneRestrictedPHPFormula` and
+  `PvNP.RestrictedPHPFloor.tinyOneOnePHPDepthFloor`: a concrete `1 × 1`
+  restricted PHP semantic witness and bounded decision-tree/query-depth floor
+  under the empty restriction.  This is not a Frege/PHP lower bound.
+- `PvNP.RestrictedPHPFloor.twoOnePHPFalsifiedClauseSearchDepthFloor`: a concrete
+  `2 × 1` bounded query/search floor for outputting a falsified clause of the
+  fixed restricted PHP formula.  This is only a certificate-search result; it is
+  not a Frege/PHP lower bound and not a positive Boolean depth floor for the
+  identically false unsatisfiable formula.
+- `PvNP.RestrictedPHPFloor.queryTree_depth_ge_two_of_two_unqueried_ambiguity`:
+  a reusable output-valued query-tree ambiguity lemma for proving depth-at-least
+  two certificate-search floors from branch-invalidity witnesses.
+- `PvNP.RestrictedPHPFloor.threeTwoPHPFalsifiedClauseSearchDepthFloor`: a concrete
+  `3 × 2` bounded query/search floor (`2 ≤` worst-case query depth) for outputting
+  a falsified clause of the fixed restricted PHP formula.  This is only a
+  certificate-search result; it is not a Frege/PHP lower bound.
 
 ## Non-Claims Boundary
 
@@ -68,7 +84,14 @@ This artifact does **not** prove or imply:
 - `P != NP` or `P = NP`;
 - an NP or circuit lower bound;
 - a Frege/PHP lower bound;
-- a proved PHP decision-tree floor beyond explicitly supplied boundary records;
+- a proved PHP decision-tree floor beyond explicitly supplied boundary records
+  such as the tiny `1 × 1` restricted view, or the bounded `2 × 1`
+  and `3 × 2` falsified-clause search floors;
+- a positive Boolean decision-tree depth floor for the full `2 × 1` PHP formula
+  (that formula is identically false, so a constant-false Boolean tree has depth
+  `0`);
+- any positive Boolean decision-tree depth floor for an unsatisfiable PHP formula
+  merely from the bounded falsified-clause search floors;
 - arbitrary AC0 or arbitrary bounded-depth formula collapse;
 - a general CNF switching lemma independent of the explicit dualization bridge.
 

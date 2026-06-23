@@ -132,3 +132,23 @@ This module pins the axiom profile of the publication-facing theorem surface.
 /-- info: 'PvNP.RestrictedPHPFloor.phpBoundary_formula_eq' depends on axioms: [propext, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.RestrictedPHPFloor.phpBoundary_formula_eq
+
+/-- info: 'PvNP.RestrictedPHPFloor.eval_tinyOneOneRestrictedPHPFormula' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.RestrictedPHPFloor.eval_tinyOneOneRestrictedPHPFormula
+
+/-- info: 'PvNP.RestrictedPHPFloor.tinyOneOnePHPDepthFloor' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.RestrictedPHPFloor.tinyOneOnePHPDepthFloor
+
+/-- info: 'PvNP.RestrictedPHPFloor.twoOnePHPFalsifiedClauseSearchDepthFloor' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.RestrictedPHPFloor.twoOnePHPFalsifiedClauseSearchDepthFloor
+
+/-- info: 'PvNP.RestrictedPHPFloor.queryTree_depth_ge_two_of_two_unqueried_ambiguity' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.RestrictedPHPFloor.queryTree_depth_ge_two_of_two_unqueried_ambiguity
+
+/-- info: 'PvNP.RestrictedPHPFloor.threeTwoPHPFalsifiedClauseSearchDepthFloor' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.RestrictedPHPFloor.threeTwoPHPFalsifiedClauseSearchDepthFloor

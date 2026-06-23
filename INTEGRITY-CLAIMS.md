@@ -11,7 +11,14 @@ This repository does **not** establish or imply:
 - `P != NP` or `P = NP`;
 - an NP or circuit lower bound;
 - a Frege/PHP lower bound;
-- a proved PHP decision-tree floor beyond explicitly supplied boundary records;
+- a proved PHP decision-tree floor beyond explicitly supplied boundary records
+  such as the tiny `1 × 1` restricted view, or the bounded `2 × 1`
+  and `3 × 2` falsified-clause search floors;
+- a positive Boolean decision-tree depth floor for the full `2 × 1` PHP formula
+  (the formula is identically false, so a constant-false Boolean tree has depth
+  `0`);
+- any positive Boolean decision-tree depth floor for an unsatisfiable PHP formula
+  merely from the bounded falsified-clause search floors;
 - arbitrary AC0 collapse or arbitrary bounded-depth formula collapse;
 - a general CNF switching lemma independent of the explicit dualization bridge.
 
@@ -46,6 +53,11 @@ This repository does **not** establish or imply:
 | `PvNP.CertifiedAffine.incident_collision_endpoints` | none | proven collision-handling lemma |
 | `PvNP.CertifiedAffine.certifiedAffineExtraction_completeOn` | none | proven extractor certificate connection |
 | `PvNP.RestrictedPHPFloor.phpBoundary_formula_eq` | `propext`, `Quot.sound` | proven restricted-PHP boundary identity |
+| `PvNP.RestrictedPHPFloor.eval_tinyOneOneRestrictedPHPFormula` | `propext`, `Quot.sound` | proven tiny restricted-PHP semantic witness |
+| `PvNP.RestrictedPHPFloor.tinyOneOnePHPDepthFloor` | `propext`, `Quot.sound` | proven tiny bounded decision-tree floor |
+| `PvNP.RestrictedPHPFloor.twoOnePHPFalsifiedClauseSearchDepthFloor` | `propext` | proven bounded `2 × 1` falsified-clause search floor |
+| `PvNP.RestrictedPHPFloor.queryTree_depth_ge_two_of_two_unqueried_ambiguity` | `propext` | reusable bounded certificate-search ambiguity lemma |
+| `PvNP.RestrictedPHPFloor.threeTwoPHPFalsifiedClauseSearchDepthFloor` | `propext` | proven bounded `3 × 2` falsified-clause search floor |
 
 No declaration above depends on `sorryAx`. The CNF-facing bridge dualizes simple
 CNF views into simple DNF views and reuses the proved DNF switching bridge. The
