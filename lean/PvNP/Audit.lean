@@ -6,6 +6,7 @@ import PvNP.CertifiedAffine
 import PvNP.GraphIndexedBridge
 import PvNP.ProfiledRoutePHPBoundary
 import PvNP.RestrictedPHPFloor
+import PvNP.PHPFamilyCoverage
 
 /-!
 # Formal Switching Lemma Audit Surface
@@ -2530,3 +2531,193 @@ info: 'PvNP.RestrictedPHPFloor.threeTwoPHPFalsifiedClauseSearchDepthFloorStateme
 -/
 #guard_msgs in
 #print axioms PvNP.RestrictedPHPFloor.threeTwoPHPFalsifiedClauseSearchDepthFloorStatement_three
+
+/-! ## M-C1: variable-coverage floors, parameterized PHP search floor of `2h`,
+and the genuinely trace-dependent extraction
+
+Pins for the M-C1 milestone: non-standard-semantics soundness and the
+variable-coverage theorem (`PvNP.BDVariableCoverage`), the PHP CNF and its
+concrete `3 x 2` full-coverage floors (`PvNP.PHPCNFCoverage`), the
+parameterized `p x h` falsified-clause search depth floor of `2 * h` via a
+reusable generic stateful adversary with `3 x 2` non-vacuity and the
+strengthened bespoke floor of four (`PvNP.PHPSearchFloor`), the unpadded
+trace-dependent extraction and the composed refutation-to-search route
+(`PvNP.TraceSearchConnection`), and the growing-family coverage floors for
+`phpCNF (h+1) h` (`PvNP.PHPFamilyCoverage`).
+
+HONEST SCOPE: coverage floors are LINEAR-in-formula-size structural bounds on
+refutation traces of the LOCAL cut-free bounded-depth Tait system; the search
+floor is a decision-tree bound for the falsified-clause SEARCH family.  None
+of these is a Frege/PHP proof-size lower bound for a system with cut, an
+NP/circuit lower bound, or a statement about P vs NP.  The genuine open
+proof-complexity route obligation remains the untouched empty
+`twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_unresolvedProofComplexityRouteObligation`.
+-/
+
+/--
+info: 'PvNP.BDVariableCoverage.evalNS' depends on axioms: [propext, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDVariableCoverage.evalNS
+
+/--
+info: 'PvNP.BDVariableCoverage.bdProofTrace_sound_nonstandard' depends on axioms: [propext, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDVariableCoverage.bdProofTrace_sound_nonstandard
+
+/--
+info: 'PvNP.BDVariableCoverage.evalNS_neg_cnf' depends on axioms: [propext, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDVariableCoverage.evalNS_neg_cnf
+
+/--
+info: 'PvNP.BDVariableCoverage.refutationTrace_falsifiedClause_in_cover' depends on axioms: [propext, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDVariableCoverage.refutationTrace_falsifiedClause_in_cover
+
+/--
+info: 'PvNP.BDVariableCoverage.refutationTrace_queries_var' depends on axioms: [propext, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDVariableCoverage.refutationTrace_queries_var
+
+/--
+info: 'PvNP.BDVariableCoverage.traceQueryOrder_length_le_size' depends on axioms: [propext]
+-/
+#guard_msgs in
+#print axioms PvNP.BDVariableCoverage.traceQueryOrder_length_le_size
+
+/--
+info: 'PvNP.PHPCNFCoverage.phpCNF' depends on axioms: [propext, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPCNFCoverage.phpCNF
+
+/--
+info: 'PvNP.PHPCNFCoverage.phpCNF32_refutationTrace_queries_all' depends on axioms: [propext, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPCNFCoverage.phpCNF32_refutationTrace_queries_all
+
+/--
+info: 'PvNP.PHPCNFCoverage.phpCNF32_traceQueryOrder_length_ge_six' depends on axioms: [propext, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPCNFCoverage.phpCNF32_traceQueryOrder_length_ge_six
+
+/--
+info: 'PvNP.PHPCNFCoverage.phpCNF32_traceSize_ge_six' depends on axioms: [propext, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPCNFCoverage.phpCNF32_traceSize_ge_six
+
+/-- info: 'PvNP.PHPSearchFloor.PHPFalsifiedClause.Valid' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.PHPSearchFloor.PHPFalsifiedClause.Valid
+
+/--
+info: 'PvNP.PHPSearchFloor.queryTree_depth_floor_of_stateful_adversary' depends on axioms: [propext, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPSearchFloor.queryTree_depth_floor_of_stateful_adversary
+
+/--
+info: 'PvNP.PHPSearchFloor.phpInv_update' depends on axioms: [propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPSearchFloor.phpInv_update
+
+/--
+info: 'PvNP.PHPSearchFloor.phpLeaf_refutable' depends on axioms: [propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPSearchFloor.phpLeaf_refutable
+
+/--
+info: 'PvNP.PHPSearchFloor.phpFalsifiedClauseSearchDepthFloor' depends on axioms: [propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPSearchFloor.phpFalsifiedClauseSearchDepthFloor
+
+/--
+info: 'PvNP.PHPSearchFloor.phpFalsifiedClauseSearchDepthFloorStatement' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPSearchFloor.phpFalsifiedClauseSearchDepthFloorStatement
+
+/--
+info: 'PvNP.PHPSearchFloor.phpFalsifiedClause32_correctTree_exists' depends on axioms: [propext, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPSearchFloor.phpFalsifiedClause32_correctTree_exists
+
+/--
+info: 'PvNP.PHPSearchFloor.threeTwoPHPFalsifiedClauseSearchDepthFloor_four' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPSearchFloor.threeTwoPHPFalsifiedClauseSearchDepthFloor_four
+
+/--
+info: 'PvNP.TraceSearchConnection.extractQueryTreeUnpadded' depends on axioms: [propext, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.TraceSearchConnection.extractQueryTreeUnpadded
+
+/--
+info: 'PvNP.TraceSearchConnection.extractQueryTreeUnpadded_evalSelector' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.TraceSearchConnection.extractQueryTreeUnpadded_evalSelector
+
+/--
+info: 'PvNP.TraceSearchConnection.extractQueryTreeUnpadded_searchCorrect' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.TraceSearchConnection.extractQueryTreeUnpadded_searchCorrect
+
+/-- info: 'PvNP.TraceSearchConnection.buildTree_nil_incorrect' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.TraceSearchConnection.buildTree_nil_incorrect
+
+/--
+info: 'PvNP.TraceSearchConnection.extractQueryTreeUnpadded_depth' depends on axioms: [propext, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.TraceSearchConnection.extractQueryTreeUnpadded_depth
+
+/--
+info: 'PvNP.TraceSearchConnection.phpCNF32_traceQueryOrder_length_ge_four_via_search' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.TraceSearchConnection.phpCNF32_traceQueryOrder_length_ge_four_via_search
+
+/--
+info: 'PvNP.PHPFamilyCoverage.phpCNF_family_refutationTrace_queries_var' depends on axioms: [propext, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPFamilyCoverage.phpCNF_family_refutationTrace_queries_var
+
+/--
+info: 'PvNP.PHPFamilyCoverage.phpCNF_family_traceQueryOrder_length' depends on axioms: [propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPFamilyCoverage.phpCNF_family_traceQueryOrder_length
+
+/--
+info: 'PvNP.PHPFamilyCoverage.phpCNF_family_traceSize' depends on axioms: [propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPFamilyCoverage.phpCNF_family_traceSize
