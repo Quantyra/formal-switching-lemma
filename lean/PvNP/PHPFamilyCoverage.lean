@@ -20,10 +20,11 @@ traces of the local system: query-order length and trace size at least
   the classical exponential AC0-Frege/PHP lower bound, NOT a bound for any
   proof system with cut, NOT an NP/circuit lower bound, and NOT a statement
   about P vs NP.
-* NON-VACUITY OBLIGATION (disclosed): no concrete refutation-trace
-  inhabitant for `phpCNF (h+1) h` is constructed in this repository yet;
-  formalizing one (or a completeness lemma for the local system) is the
-  queued successor obligation.
+* NON-VACUITY: the refutation-trace types these floors quantify over are
+  nonempty for every `h` — see
+  `BDTaitCompleteness.phpCNF_family_refutationTrace_nonempty` (completeness
+  of the local system + finite pigeonhole, S2068; that module imports this
+  one, so the witness lives downstream).
 
 INTEGRITY: no `sorry`, no `admit`, no new `axiom`, no `native_decide`.
 -/

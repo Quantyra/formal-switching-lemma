@@ -6,7 +6,7 @@ import PvNP.CertifiedAffine
 import PvNP.GraphIndexedBridge
 import PvNP.ProfiledRoutePHPBoundary
 import PvNP.RestrictedPHPFloor
-import PvNP.PHPFamilyCoverage
+import PvNP.PHPSearchFloorTightness
 
 /-!
 # Formal Switching Lemma Audit Surface
@@ -2721,3 +2721,73 @@ info: 'PvNP.PHPFamilyCoverage.phpCNF_family_traceSize' depends on axioms: [prope
 -/
 #guard_msgs in
 #print axioms PvNP.PHPFamilyCoverage.phpCNF_family_traceSize
+
+/-! ## S2068: completeness of the local Tait system, PHP-family non-vacuity,
+and formalized `3 x 2` search-floor tightness
+
+Pins for `PvNP.BDTaitCompleteness` (every unsatisfiable CNF admits a
+bounded-depth refutation trace; `PHP(h+1,h)` unsatisfiability via the finite
+pigeonhole principle; nonemptiness of the refutation-trace types the M-C1
+coverage floors quantify over) and `PvNP.PHPSearchFloorTightness` (explicit
+correct depth-four `3 x 2` search tree; optimal worst-case query count exactly
+four).  Completeness alone proves no hardness; none of this is a Frege/PHP,
+NP/circuit, or P vs NP statement.
+-/
+
+/--
+info: 'PvNP.BDTaitCompleteness.tait_cubes_complete' depends on axioms: [propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTaitCompleteness.tait_cubes_complete
+
+/-- info: 'PvNP.BDTaitCompleteness.neg_cnfToBD_eq' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTaitCompleteness.neg_cnfToBD_eq
+
+/--
+info: 'PvNP.BDTaitCompleteness.bdTait_complete' depends on axioms: [propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTaitCompleteness.bdTait_complete
+
+/--
+info: 'PvNP.BDTaitCompleteness.phpCNF_family_unsat' depends on axioms: [propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTaitCompleteness.phpCNF_family_unsat
+
+/--
+info: 'PvNP.BDTaitCompleteness.phpCNF_family_refutationTrace_nonempty' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTaitCompleteness.phpCNF_family_refutationTrace_nonempty
+
+/--
+info: 'PvNP.BDTaitCompleteness.phpCNF32_refutationTrace_nonempty' depends on axioms: [propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTaitCompleteness.phpCNF32_refutationTrace_nonempty
+
+/-- info: 'PvNP.PHPSearchFloorTightness.optimalThreeTwoTree' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.PHPSearchFloorTightness.optimalThreeTwoTree
+
+/--
+info: 'PvNP.PHPSearchFloorTightness.optimalThreeTwoTree_searchCorrect' depends on axioms: [propext]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPSearchFloorTightness.optimalThreeTwoTree_searchCorrect
+
+/-- info: 'PvNP.PHPSearchFloorTightness.optimalThreeTwoTree_depth' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.PHPSearchFloorTightness.optimalThreeTwoTree_depth
+
+/--
+info: 'PvNP.PHPSearchFloorTightness.threeTwoPHPFalsifiedClauseSearch_optimal_depth_eq_four' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPSearchFloorTightness.threeTwoPHPFalsifiedClauseSearch_optimal_depth_eq_four

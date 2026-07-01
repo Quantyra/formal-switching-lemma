@@ -18,10 +18,10 @@ size at least six.
   They are NOT Frege/PHP lower bounds, NOT proof-size lower bounds for any
   standard proof system with cut, NOT NP/circuit lower bounds, and NOT
   statements about P vs NP.
-* NON-VACUITY OBLIGATION (disclosed): no concrete
-  `BDRefutationTrace [cnfToBD (phpCNF 3 2)]` inhabitant is constructed in
-  this repository yet; formalizing one (or a completeness lemma for the
-  local system) is the queued successor obligation.
+* NON-VACUITY: the refutation-trace type these floors quantify over is
+  nonempty — see `BDTaitCompleteness.phpCNF32_refutationTrace_nonempty`
+  (completeness of the local system, S2068; that module imports this one, so
+  the witness lives downstream).
 
 INTEGRITY: no `sorry`, no `admit`, no new `axiom`, no `native_decide`.
 -/

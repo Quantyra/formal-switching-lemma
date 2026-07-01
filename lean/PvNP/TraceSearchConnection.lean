@@ -35,15 +35,10 @@ adversary floor → lower bound on the trace's query-order length.
   vary with the specific trace; the correctness ARGUMENT consumes only
   refutation-hood (coverage holds uniformly for every refutation trace), not
   the identity of the trace.
-* NON-VACUITY OBLIGATION (disclosed): no concrete
-  `BDRefutationTrace [cnfToBD (phpCNF 3 2)]` inhabitant is constructed in
-  this repository yet, so the coverage-side floors are, within this
-  development, statements about all inhabitants of a type whose
-  inhabitation (true mathematically: the cut-free system refutes any
-  unsatisfiable CNF by full case analysis) is not yet formalized.
-  Constructing a concrete refutation trace of `phpCNF 3 2` (or a
-  completeness lemma for the local system) is the queued successor
-  obligation.
+* NON-VACUITY: the refutation-trace type quantified over here is nonempty —
+  see `BDTaitCompleteness.phpCNF32_refutationTrace_nonempty` (completeness
+  of the local system, S2068; that module imports this one, so the witness
+  lives downstream).
 
 INTEGRITY: no `sorry`, no `admit`, no new `axiom`, no `native_decide`.
 -/
