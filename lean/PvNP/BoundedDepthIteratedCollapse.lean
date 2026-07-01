@@ -3,9 +3,9 @@ import PvNP.BoundedDepthLayerView
 /-!
 # Two-layer explicit-view bounded-depth collapse schedules
 
-P-vs-NP-relevant proof-complexity progress under the repository's claims
-boundary: this module advances the one-step DNF-view collapse infrastructure to a
-two-layer explicit-view/schedule collapse certificate.  It records only named
+Conditional, schedule-specific proof-complexity infrastructure under the
+repository's claims boundary: this module advances the one-step DNF-view collapse
+infrastructure to a two-layer explicit-view/schedule collapse certificate.  It records only named
 bottom-layer views, concrete restrictions, semantic compatibility, and explicit
 decision-tree witnesses for two stages.  It is **not** an arbitrary AC0 collapse,
 not a Frege/PHP lower bound, and not a `P ≠ NP` or NP lower-bound claim.
@@ -716,6 +716,453 @@ theorem generatedNonemptyKLayerCollapse_exists {n : Nat} (S : GeneratedKLayerSch
     simpa [S', kLayerCollapse_from_schedule, generatedKLayerSchedule_to_KLayerSchedule,
       stageDepthSum, GeneratedExplicitLayerStage.stageDepthSum] using hsum S.generatedStages
   · exact (kLayerCollapse_from_schedule S').compatible
+
+/-! ## Singleton generated CNF-stage certificate connection -/
+
+/-- A canonical total assignment extending a restriction, choosing `false` for
+free variables.  This provides the common-extension witness needed by singleton
+generated schedules without adding any satisfiability claim. -/
+def defaultAssignmentOfRestriction {n : Nat} (ρ : Restriction n) : Assignment n :=
+  fun v => match ρ v with
+    | some b => b
+    | none => false
+
+/-- The default total assignment extends its source restriction. -/
+theorem agree_defaultAssignmentOfRestriction {n : Nat} (ρ : Restriction n) :
+    Agree ρ (defaultAssignmentOfRestriction ρ) := by
+  intro v b hρ
+  simp [defaultAssignmentOfRestriction, hρ]
+
+/-- Singleton generated k-layer schedule containing one concrete generated CNF
+stage.  This is the reusable form of the S2018 singleton construction: it stays
+inside the same variable arity and records only the generated CNF stage supplied
+as data. -/
+def generatedCNFSingletonSchedule {n : Nat} {F : BDFormula n}
+    (S : GeneratedCNFLayerStage F) : GeneratedKLayerSchedule n where
+  generatedStages := [GeneratedExplicitLayerStage.cnf S]
+  alternating := by
+    simp [GeneratedExplicitLayerStage.toExplicit, explicitStageOfGeneratedCNF,
+      LayerKind.Alternating]
+  compatible := by
+    refine ⟨defaultAssignmentOfRestriction S.ρ, ?_⟩
+    intro G hG
+    simp only [List.mem_singleton] at hG
+    subst G
+    simpa [GeneratedExplicitLayerStage.toExplicit, explicitStageOfGeneratedCNF] using
+      agree_defaultAssignmentOfRestriction S.ρ
+
+/-- Reusable singleton generated-CNF-stage certificate connection.  Any concrete
+`GeneratedCNFLayerStage` over `n` yields a singleton `KLayerCollapseCertificate`
+over the same `n`, preserving exact depth accounting, restriction membership,
+goodness, a common-extension witness, and the assignment semantics connecting the
+decision tree, restricted formula, and CNF view. -/
+theorem generatedCNFSingletonSchedule_certificateConnection {n : Nat} {F : BDFormula n}
+    (S : GeneratedCNFLayerStage F) :
+    ∃ C : KLayerCollapseCertificate n,
+      (generatedCNFSingletonSchedule S).generatedStages ≠ [] ∧
+        C.stages = (generatedCNFSingletonSchedule S).generatedStages.map
+          (fun G => G.toExplicit) ∧
+        stageDepthSum C.stages = S.s ∧
+        S.ρ ∈ restrictionsWithStars n S.ℓ ∧
+        S.ρ ∉ badSetTerm (cnfDualDNF S.view.C) S.s S.ℓ ∧
+        (∃ a : Assignment n, ∀ H, H ∈ C.stages → Agree H.ρ a) ∧
+        (∀ a : Assignment n,
+          Agree S.ρ a →
+            dtEval a S.T = eval a (restrict S.ρ F) ∧
+            eval a (restrict S.ρ F) = cnfEval a S.view.C) := by
+  have hnonempty : (generatedCNFSingletonSchedule S).generatedStages ≠ [] := by
+    simp [generatedCNFSingletonSchedule]
+  rcases generatedNonemptyKLayerCollapse_exists
+      (generatedCNFSingletonSchedule S) hnonempty with
+    ⟨C, hne, hstages, _hstageEach, hsum, hcompat⟩
+  refine ⟨C, hne, hstages, ?_, S.stars, S.good, hcompat, ?_⟩
+  · calc
+      stageDepthSum C.stages =
+          GeneratedExplicitLayerStage.stageDepthSum
+            (generatedCNFSingletonSchedule S).generatedStages := hsum
+      _ = S.s := by
+          simp [generatedCNFSingletonSchedule,
+            GeneratedExplicitLayerStage.stageDepthSum,
+            GeneratedExplicitLayerStage.stageS]
+  · intro a hagree
+    refine ⟨S.computes a hagree, ?_⟩
+    calc
+      eval a (restrict S.ρ F) = eval a F := eval_restrict S.ρ a F hagree
+      _ = cnfEval a S.view.C := S.view.sem_eq a
+
+/-! ## Cross-arity schedule-to-generated-CNF alignment -/
+
+/-- Cross-arity alignment from one explicit stage over `m` variables to one
+generated CNF stage over `n` variables.  The explicit assignment lift is part of
+the invariant: it must send every stage assignment agreeing with the source
+restriction to a target assignment agreeing with the generated CNF restriction,
+and it must preserve the restricted source-stage value against both the generated
+decision tree and the generated CNF view. -/
+def ExplicitStageGeneratedCNFStageAlignment {m n : Nat} {F : BDFormula n}
+    (S : ExplicitLayerStage m) (G : GeneratedCNFLayerStage F) : Prop :=
+  ∃ lift : Assignment m → Assignment n,
+    ∀ aStage : Assignment m,
+      Agree S.ρ aStage →
+        Agree G.ρ (lift aStage) ∧
+        eval aStage (restrict S.ρ S.F) = dtEval (lift aStage) G.T ∧
+        eval aStage (restrict S.ρ S.F) = cnfEval (lift aStage) G.view.C
+
+/-- Structured same-arity assignment-lift alignment from one explicit stage to a
+generated CNF stage over the same variable set.  This keeps the lift function and
+its three preservation obligations as reusable data before coercing back to the
+older existential cross-arity predicate. -/
+structure SameArityStageGeneratedCNFStageAlignment {n : Nat} {F : BDFormula n}
+    (S : ExplicitLayerStage n) (G : GeneratedCNFLayerStage F) where
+  lift : Assignment n → Assignment n
+  lift_agree : ∀ aStage : Assignment n,
+    Agree S.ρ aStage → Agree G.ρ (lift aStage)
+  lift_tree_eval : ∀ aStage : Assignment n,
+    Agree S.ρ aStage →
+      eval aStage (restrict S.ρ S.F) = dtEval (lift aStage) G.T
+  lift_cnf_eval : ∀ aStage : Assignment n,
+    Agree S.ρ aStage →
+      eval aStage (restrict S.ρ S.F) = cnfEval (lift aStage) G.view.C
+
+/-- Forget the structured same-arity assignment-lift record to the existing
+cross-arity existential alignment predicate. -/
+theorem sameArityStageGeneratedCNFStageAlignment_toExplicitStageGeneratedCNFStageAlignment
+    {n : Nat} {F : BDFormula n} {S : ExplicitLayerStage n}
+    {G : GeneratedCNFLayerStage F}
+    (A : SameArityStageGeneratedCNFStageAlignment S G) :
+    ExplicitStageGeneratedCNFStageAlignment S G := by
+  refine ⟨A.lift, ?_⟩
+  intro aStage hagree
+  exact ⟨A.lift_agree aStage hagree, A.lift_tree_eval aStage hagree,
+    A.lift_cnf_eval aStage hagree⟩
+
+/-- A generated schedule aligns to a generated CNF stage exactly by aligning each
+generated member after forgetting generated provenance to its explicit stage. -/
+def GeneratedScheduleGeneratedCNFStageAlignment {m n : Nat} {F : BDFormula n}
+    (S : GeneratedKLayerSchedule m) (G : GeneratedCNFLayerStage F) : Prop :=
+  ∀ H, H ∈ S.generatedStages → ExplicitStageGeneratedCNFStageAlignment H.toExplicit G
+
+/-- Structured same-arity alignment for an entire generated schedule: every
+generated member carries explicit same-arity lift data to the target generated
+CNF stage. -/
+def SameArityGeneratedScheduleGeneratedCNFStageAlignment {n : Nat} {F : BDFormula n}
+    (S : GeneratedKLayerSchedule n) (G : GeneratedCNFLayerStage F) : Prop :=
+  ∀ H, H ∈ S.generatedStages → Nonempty (SameArityStageGeneratedCNFStageAlignment H.toExplicit G)
+
+/-- Forget structured same-arity schedule alignment to the existing whole-schedule
+existential alignment predicate. -/
+theorem sameArityGeneratedScheduleGeneratedCNFStageAlignment_toGeneratedScheduleGeneratedCNFStageAlignment
+    {n : Nat} {F : BDFormula n} (S : GeneratedKLayerSchedule n)
+    (G : GeneratedCNFLayerStage F) :
+    SameArityGeneratedScheduleGeneratedCNFStageAlignment S G →
+      GeneratedScheduleGeneratedCNFStageAlignment S G := by
+  intro hstructured H hH
+  exact sameArityStageGeneratedCNFStageAlignment_toExplicitStageGeneratedCNFStageAlignment
+    (Classical.choice (hstructured H hH))
+
+/-- Whole-schedule alignment is definitionally equivalent to per-member
+alignment.  This theorem gives downstream files a stable theorem name rather
+than requiring them to unfold the schedule predicate directly. -/
+theorem generatedScheduleGeneratedCNFStageAlignment_iff_each {m n : Nat}
+    {F : BDFormula n} (S : GeneratedKLayerSchedule m) (G : GeneratedCNFLayerStage F) :
+    GeneratedScheduleGeneratedCNFStageAlignment S G ↔
+      ∀ H, H ∈ S.generatedStages → ExplicitStageGeneratedCNFStageAlignment H.toExplicit G := by
+  rfl
+
+/-- A single failing generated member blocks whole-schedule alignment to the
+target generated CNF stage. -/
+theorem not_generatedScheduleGeneratedCNFStageAlignment_of_failing_member {m n : Nat}
+    {F : BDFormula n} (S : GeneratedKLayerSchedule m) (G : GeneratedCNFLayerStage F)
+    {H : GeneratedExplicitLayerStage m} (hH : H ∈ S.generatedStages)
+    (hfail : ¬ ExplicitStageGeneratedCNFStageAlignment H.toExplicit G) :
+    ¬ GeneratedScheduleGeneratedCNFStageAlignment S G := by
+  intro halign
+  exact hfail (halign H hH)
+
+/-! ## Bounded positive same-arity alignment families -/
+
+/-- A supplied parameterized family of positive same-arity generated schedules.
+For each index, the schedule and target generated CNF stage live over the same
+arity, the schedule is nonempty, its length is uniformly bounded by `B`, and
+each member carries S2022 structured same-arity lift data to the target. -/
+structure BoundedPositiveSameArityGeneratedScheduleAlignmentFamily
+    (ι : Type) (B : Nat) where
+  arity : ι → Nat
+  formula : (i : ι) → BDFormula (arity i)
+  target : (i : ι) → GeneratedCNFLayerStage (formula i)
+  schedule : (i : ι) → GeneratedKLayerSchedule (arity i)
+  schedule_nonempty : ∀ i, (schedule i).generatedStages ≠ []
+  schedule_length_le : ∀ i, (schedule i).generatedStages.length ≤ B
+  sameArityAlignment : ∀ i,
+    SameArityGeneratedScheduleGeneratedCNFStageAlignment (schedule i) (target i)
+
+/-- Every member of a bounded positive same-arity family is positive. -/
+theorem boundedPositiveSameArityGeneratedScheduleAlignmentFamily_nonempty
+    {ι : Type} {B : Nat}
+    (𝓕 : BoundedPositiveSameArityGeneratedScheduleAlignmentFamily ι B)
+    (i : ι) :
+    (𝓕.schedule i).generatedStages ≠ [] :=
+  𝓕.schedule_nonempty i
+
+/-- Every member of a bounded positive same-arity family satisfies the uniform
+schedule-length bound. -/
+theorem boundedPositiveSameArityGeneratedScheduleAlignmentFamily_length_le
+    {ι : Type} {B : Nat}
+    (𝓕 : BoundedPositiveSameArityGeneratedScheduleAlignmentFamily ι B)
+    (i : ι) :
+    (𝓕.schedule i).generatedStages.length ≤ B :=
+  𝓕.schedule_length_le i
+
+/-- Forget a member's structured same-arity lift data to the existing S2020
+whole-schedule alignment predicate. -/
+theorem boundedPositiveSameArityGeneratedScheduleAlignmentFamily_alignment
+    {ι : Type} {B : Nat}
+    (𝓕 : BoundedPositiveSameArityGeneratedScheduleAlignmentFamily ι B)
+    (i : ι) :
+    GeneratedScheduleGeneratedCNFStageAlignment (𝓕.schedule i) (𝓕.target i) := by
+  exact sameArityGeneratedScheduleGeneratedCNFStageAlignment_toGeneratedScheduleGeneratedCNFStageAlignment
+    (𝓕.schedule i) (𝓕.target i) (𝓕.sameArityAlignment i)
+
+/-- A supplied bounded positive same-arity generated-schedule family member has
+the existing generated nonempty k-layer certificate, preserving its stages,
+per-stage generated accounting, aggregate depth accounting, common-extension
+payload, uniform length bound, and whole-schedule alignment payload.  This is
+only certificate plumbing for supplied concrete-family data. -/
+theorem boundedPositiveSameArityGeneratedScheduleAlignmentFamily_certificate
+    {ι : Type} {B : Nat}
+    (𝓕 : BoundedPositiveSameArityGeneratedScheduleAlignmentFamily ι B)
+    (i : ι) :
+    ∃ C : KLayerCollapseCertificate (𝓕.arity i),
+      (𝓕.schedule i).generatedStages ≠ [] ∧
+        C.stages = (𝓕.schedule i).generatedStages.map (fun G => G.toExplicit) ∧
+        (∀ G, G ∈ (𝓕.schedule i).generatedStages →
+          ∃ H, H ∈ C.stages ∧ H = G.toExplicit ∧ H.depthBound = G.stageS) ∧
+        stageDepthSum C.stages =
+          GeneratedExplicitLayerStage.stageDepthSum (𝓕.schedule i).generatedStages ∧
+        (∃ a : Assignment (𝓕.arity i), ∀ H, H ∈ C.stages → Agree H.ρ a) ∧
+        (𝓕.schedule i).generatedStages.length ≤ B ∧
+        GeneratedScheduleGeneratedCNFStageAlignment (𝓕.schedule i) (𝓕.target i) := by
+  rcases generatedNonemptyKLayerCollapse_exists (𝓕.schedule i)
+      (boundedPositiveSameArityGeneratedScheduleAlignmentFamily_nonempty 𝓕 i) with
+    ⟨C, hnonempty, hstages, hstageEach, hsum, hcompat⟩
+  exact ⟨C, hnonempty, hstages, hstageEach, hsum, hcompat,
+    boundedPositiveSameArityGeneratedScheduleAlignmentFamily_length_le 𝓕 i,
+    boundedPositiveSameArityGeneratedScheduleAlignmentFamily_alignment 𝓕 i⟩
+
+/-! ## Theorem shell over supplied bounded positive same-arity families -/
+
+/-- A theorem shell consuming a supplied bounded positive same-arity family.  The
+family data is supplied separately in `𝓕`; the remaining proof-complexity
+hypotheses and any conditional target stay abstract here.  This shell does not
+assert those hypotheses, prove a lower bound, or claim any P-vs-NP consequence. -/
+structure BoundedPositiveSameArityGeneratedScheduleTheoremShell
+    {ι : Type} {B : Nat}
+    (𝓕 : BoundedPositiveSameArityGeneratedScheduleAlignmentFamily ι B) where
+  remainingProofComplexityHypotheses : Prop
+  conditionalTarget : Prop
+  conditionalStep : remainingProofComplexityHypotheses → conditionalTarget
+
+/-- The theorem shell consumes the supplied family data: for every supplied index,
+the schedule is nonempty, satisfies the recorded length bound, and aligns to the
+target after forgetting the S2022 structured same-arity lift data. -/
+theorem boundedPositiveSameArityGeneratedScheduleTheoremShell_familyData
+    {ι : Type} {B : Nat}
+    {𝓕 : BoundedPositiveSameArityGeneratedScheduleAlignmentFamily ι B}
+    (_shell : BoundedPositiveSameArityGeneratedScheduleTheoremShell 𝓕)
+    (i : ι) :
+    (𝓕.schedule i).generatedStages ≠ [] ∧
+      (𝓕.schedule i).generatedStages.length ≤ B ∧
+      GeneratedScheduleGeneratedCNFStageAlignment (𝓕.schedule i) (𝓕.target i) := by
+  exact ⟨
+    boundedPositiveSameArityGeneratedScheduleAlignmentFamily_nonempty 𝓕 i,
+    boundedPositiveSameArityGeneratedScheduleAlignmentFamily_length_le 𝓕 i,
+    boundedPositiveSameArityGeneratedScheduleAlignmentFamily_alignment 𝓕 i⟩
+
+/-- The only theorem-level move made by the shell is the explicitly supplied
+conditional step from the remaining proof-complexity hypotheses to the abstract
+conditional target. -/
+theorem boundedPositiveSameArityGeneratedScheduleTheoremShell_conditional
+    {ι : Type} {B : Nat}
+    {𝓕 : BoundedPositiveSameArityGeneratedScheduleAlignmentFamily ι B}
+    (shell : BoundedPositiveSameArityGeneratedScheduleTheoremShell 𝓕) :
+    shell.remainingProofComplexityHypotheses → shell.conditionalTarget :=
+  shell.conditionalStep
+
+/-! ## Named remaining-hypothesis taxonomy for theorem shells -/
+
+/-- Classification labels for theorem-local hypotheses that remain around the
+bounded positive same-arity generated-schedule route.  These labels are
+bookkeeping only: they do not prove any lower bound or P-vs-NP consequence. -/
+inductive BoundedPositiveSameArityGeneratedScheduleHypothesisClass where
+  | suppliedData
+  | alreadyAuditedFiniteBridgeFact
+  | importedClassicalBoundary
+  | localTheoremTarget
+  | unresolvedMathematicalBlocker
+
+/-- A named theorem-local hypothesis together with its audit classification. -/
+structure BoundedPositiveSameArityGeneratedScheduleNamedHypothesis where
+  proposition : Prop
+  classification : BoundedPositiveSameArityGeneratedScheduleHypothesisClass
+
+/-- The theorem-local taxonomy used to keep supplied data, audited finite bridge
+facts, imported/classical boundaries, local targets, and unresolved mathematical
+blockers separate before a theorem shell consumes their conjunction. -/
+structure BoundedPositiveSameArityGeneratedScheduleHypothesisTaxonomy where
+  suppliedData : BoundedPositiveSameArityGeneratedScheduleNamedHypothesis
+  alreadyAuditedFiniteBridgeFact : BoundedPositiveSameArityGeneratedScheduleNamedHypothesis
+  importedClassicalBoundary : BoundedPositiveSameArityGeneratedScheduleNamedHypothesis
+  localTheoremTarget : BoundedPositiveSameArityGeneratedScheduleNamedHypothesis
+  unresolvedMathematicalBlocker : BoundedPositiveSameArityGeneratedScheduleNamedHypothesis
+  suppliedData_classification :
+    suppliedData.classification =
+      BoundedPositiveSameArityGeneratedScheduleHypothesisClass.suppliedData
+  alreadyAuditedFiniteBridgeFact_classification :
+    alreadyAuditedFiniteBridgeFact.classification =
+      BoundedPositiveSameArityGeneratedScheduleHypothesisClass.alreadyAuditedFiniteBridgeFact
+  importedClassicalBoundary_classification :
+    importedClassicalBoundary.classification =
+      BoundedPositiveSameArityGeneratedScheduleHypothesisClass.importedClassicalBoundary
+  localTheoremTarget_classification :
+    localTheoremTarget.classification =
+      BoundedPositiveSameArityGeneratedScheduleHypothesisClass.localTheoremTarget
+  unresolvedMathematicalBlocker_classification :
+    unresolvedMathematicalBlocker.classification =
+      BoundedPositiveSameArityGeneratedScheduleHypothesisClass.unresolvedMathematicalBlocker
+
+/-- Conjoin every named hypothesis in the taxonomy.  Supplying this proposition
+to a theorem shell records exactly what remains; it does not prove any member of
+the taxonomy. -/
+def boundedPositiveSameArityGeneratedScheduleHypothesisTaxonomy_remainingProofComplexityHypotheses
+    (taxonomy : BoundedPositiveSameArityGeneratedScheduleHypothesisTaxonomy) : Prop :=
+  taxonomy.suppliedData.proposition ∧
+    taxonomy.alreadyAuditedFiniteBridgeFact.proposition ∧
+    taxonomy.importedClassicalBoundary.proposition ∧
+    taxonomy.localTheoremTarget.proposition ∧
+    taxonomy.unresolvedMathematicalBlocker.proposition
+
+/-- The local target exposed by the taxonomy to a theorem shell. -/
+def boundedPositiveSameArityGeneratedScheduleHypothesisTaxonomy_conditionalTarget
+    (taxonomy : BoundedPositiveSameArityGeneratedScheduleHypothesisTaxonomy) : Prop :=
+  taxonomy.localTheoremTarget.proposition
+
+/-- If all named remaining hypotheses are supplied, the taxonomy exposes its
+local theorem target. -/
+theorem boundedPositiveSameArityGeneratedScheduleHypothesisTaxonomy_conditional
+    (taxonomy : BoundedPositiveSameArityGeneratedScheduleHypothesisTaxonomy) :
+    boundedPositiveSameArityGeneratedScheduleHypothesisTaxonomy_remainingProofComplexityHypotheses
+        taxonomy →
+      boundedPositiveSameArityGeneratedScheduleHypothesisTaxonomy_conditionalTarget taxonomy := by
+  intro h
+  exact h.2.2.2.1
+
+/-- The taxonomy records the intended classification of each named hypothesis. -/
+theorem boundedPositiveSameArityGeneratedScheduleHypothesisTaxonomy_classifications
+    (taxonomy : BoundedPositiveSameArityGeneratedScheduleHypothesisTaxonomy) :
+    taxonomy.suppliedData.classification =
+        BoundedPositiveSameArityGeneratedScheduleHypothesisClass.suppliedData ∧
+      taxonomy.alreadyAuditedFiniteBridgeFact.classification =
+        BoundedPositiveSameArityGeneratedScheduleHypothesisClass.alreadyAuditedFiniteBridgeFact ∧
+      taxonomy.importedClassicalBoundary.classification =
+        BoundedPositiveSameArityGeneratedScheduleHypothesisClass.importedClassicalBoundary ∧
+      taxonomy.localTheoremTarget.classification =
+        BoundedPositiveSameArityGeneratedScheduleHypothesisClass.localTheoremTarget ∧
+      taxonomy.unresolvedMathematicalBlocker.classification =
+        BoundedPositiveSameArityGeneratedScheduleHypothesisClass.unresolvedMathematicalBlocker := by
+  exact ⟨taxonomy.suppliedData_classification,
+    taxonomy.alreadyAuditedFiniteBridgeFact_classification,
+    taxonomy.importedClassicalBoundary_classification,
+    taxonomy.localTheoremTarget_classification,
+    taxonomy.unresolvedMathematicalBlocker_classification⟩
+
+/-! ## Named route obligations for theorem-shell planning -/
+
+/-- Classification labels for route obligations.  These are narrower than the
+S2025 hypothesis buckets: supplied data and audited finite bridge facts are both
+classified as finite bridge facts for route-planning purposes. -/
+inductive BoundedPositiveSameArityGeneratedScheduleRouteObligationClass where
+  | suppliedAuditedFiniteBridgeFact
+  | importedClassicalBoundary
+  | localTheoremTarget
+  | unresolvedMathematicalBlocker
+
+/-- A named, still-undischarged route obligation together with its planning
+classification.  The name is audit metadata; the proposition is not proved by
+creating this record. -/
+structure BoundedPositiveSameArityGeneratedScheduleRouteObligation where
+  name : String
+  proposition : Prop
+  classification : BoundedPositiveSameArityGeneratedScheduleRouteObligationClass
+
+/-- The theorem-local route-obligations record used to replace an opaque blocker
+with named obligations.  Classification proofs keep every field in its intended
+boundary class without discharging the field's proposition. -/
+structure BoundedPositiveSameArityGeneratedScheduleRouteObligations where
+  suppliedFamilyData : BoundedPositiveSameArityGeneratedScheduleRouteObligation
+  auditedFiniteBridgeFact : BoundedPositiveSameArityGeneratedScheduleRouteObligation
+  importedClassicalBoundary : BoundedPositiveSameArityGeneratedScheduleRouteObligation
+  firstLocalTheoremTarget : BoundedPositiveSameArityGeneratedScheduleRouteObligation
+  unresolvedMathematicalBlocker : BoundedPositiveSameArityGeneratedScheduleRouteObligation
+  suppliedFamilyData_classification :
+    suppliedFamilyData.classification =
+      BoundedPositiveSameArityGeneratedScheduleRouteObligationClass.suppliedAuditedFiniteBridgeFact
+  auditedFiniteBridgeFact_classification :
+    auditedFiniteBridgeFact.classification =
+      BoundedPositiveSameArityGeneratedScheduleRouteObligationClass.suppliedAuditedFiniteBridgeFact
+  importedClassicalBoundary_classification :
+    importedClassicalBoundary.classification =
+      BoundedPositiveSameArityGeneratedScheduleRouteObligationClass.importedClassicalBoundary
+  firstLocalTheoremTarget_classification :
+    firstLocalTheoremTarget.classification =
+      BoundedPositiveSameArityGeneratedScheduleRouteObligationClass.localTheoremTarget
+  unresolvedMathematicalBlocker_classification :
+    unresolvedMathematicalBlocker.classification =
+      BoundedPositiveSameArityGeneratedScheduleRouteObligationClass.unresolvedMathematicalBlocker
+
+/-- Conjoin the named route obligations.  This is the proposition a theorem
+shell may require as remaining route work; defining it does not prove any route
+obligation. -/
+def boundedPositiveSameArityGeneratedScheduleRouteObligations_remainingProofComplexityHypotheses
+    (obligations : BoundedPositiveSameArityGeneratedScheduleRouteObligations) : Prop :=
+  obligations.suppliedFamilyData.proposition ∧
+    obligations.auditedFiniteBridgeFact.proposition ∧
+    obligations.importedClassicalBoundary.proposition ∧
+    obligations.firstLocalTheoremTarget.proposition ∧
+    obligations.unresolvedMathematicalBlocker.proposition
+
+/-- The first local theorem target selected by the route obligations. -/
+def boundedPositiveSameArityGeneratedScheduleRouteObligations_conditionalTarget
+    (obligations : BoundedPositiveSameArityGeneratedScheduleRouteObligations) : Prop :=
+  obligations.firstLocalTheoremTarget.proposition
+
+/-- If all named route obligations are supplied, the selected local theorem
+target is available.  This is only conjunction projection. -/
+theorem boundedPositiveSameArityGeneratedScheduleRouteObligations_conditional
+    (obligations : BoundedPositiveSameArityGeneratedScheduleRouteObligations) :
+    boundedPositiveSameArityGeneratedScheduleRouteObligations_remainingProofComplexityHypotheses
+        obligations →
+      boundedPositiveSameArityGeneratedScheduleRouteObligations_conditionalTarget obligations := by
+  intro h
+  exact h.2.2.2.1
+
+/-- The route-obligations record preserves the intended classification of each
+named obligation. -/
+theorem boundedPositiveSameArityGeneratedScheduleRouteObligations_classifications
+    (obligations : BoundedPositiveSameArityGeneratedScheduleRouteObligations) :
+    obligations.suppliedFamilyData.classification =
+        BoundedPositiveSameArityGeneratedScheduleRouteObligationClass.suppliedAuditedFiniteBridgeFact ∧
+      obligations.auditedFiniteBridgeFact.classification =
+        BoundedPositiveSameArityGeneratedScheduleRouteObligationClass.suppliedAuditedFiniteBridgeFact ∧
+      obligations.importedClassicalBoundary.classification =
+        BoundedPositiveSameArityGeneratedScheduleRouteObligationClass.importedClassicalBoundary ∧
+      obligations.firstLocalTheoremTarget.classification =
+        BoundedPositiveSameArityGeneratedScheduleRouteObligationClass.localTheoremTarget ∧
+      obligations.unresolvedMathematicalBlocker.classification =
+        BoundedPositiveSameArityGeneratedScheduleRouteObligationClass.unresolvedMathematicalBlocker := by
+  exact ⟨obligations.suppliedFamilyData_classification,
+    obligations.auditedFiniteBridgeFact_classification,
+    obligations.importedClassicalBoundary_classification,
+    obligations.firstLocalTheoremTarget_classification,
+    obligations.unresolvedMathematicalBlocker_classification⟩
 
 /-! ## Small non-vacuous example -/
 

@@ -228,6 +228,75 @@ inductive BDProof {n : Nat} : List (BDFormula n) → Prop where
   | andIntro {Γ : List (BDFormula n)} {l : List (BDFormula n)}
       (h : ∀ f, f ∈ l → BDProof (f :: Γ)) : BDProof (BDFormula.and l :: Γ)
 
+/-! ## 2a. Type-valued measured proof traces
+
+The Prop-valued `BDProof` surface is enough for soundness, but proof-complexity
+work also needs first-class proof objects with explicit resource accessors.  The
+following trace type mirrors the existing sound rules and erases back to
+`BDProof`; it does not assert completeness or any lower bound. -/
+
+/-- A Type-valued bounded-depth proof trace mirroring the existing `BDProof`
+rules.  Its constructors carry the same sound premises, while the trace itself
+can be measured by the resource accessors below. -/
+inductive BDProofTrace {n : Nat} : List (BDFormula n) → Type where
+  /-- Constant axiom trace. -/
+  | truAx (Γ : List (BDFormula n)) (h : BDFormula.tru ∈ Γ) : BDProofTrace Γ
+  /-- Literal excluded-middle axiom trace. -/
+  | litEM (Γ : List (BDFormula n)) (v : Fin n)
+      (hpos : BDFormula.lit ⟨v, true⟩ ∈ Γ)
+      (hneg : BDFormula.lit ⟨v, false⟩ ∈ Γ) : BDProofTrace Γ
+  /-- Weakening trace. -/
+  | weaken {Γ Δ : List (BDFormula n)} (h : BDProofTrace Γ)
+      (hsub : ∀ f, f ∈ Γ → f ∈ Δ) : BDProofTrace Δ
+  /-- `or`-introduction trace. -/
+  | orIntro {Γ : List (BDFormula n)} {l : List (BDFormula n)}
+      (h : BDProofTrace (l ++ Γ)) : BDProofTrace (BDFormula.or l :: Γ)
+  /-- `and`-introduction trace with one trace per child premise. -/
+  | andIntro {Γ : List (BDFormula n)} {l : List (BDFormula n)}
+      (h : ∀ f, f ∈ l → BDProofTrace (f :: Γ)) : BDProofTrace (BDFormula.and l :: Γ)
+
+namespace BDProofTrace
+
+/-- Erase a Type-valued trace to the existing Prop-valued proof surface. -/
+def erase {n : Nat} {Γ : List (BDFormula n)} : BDProofTrace Γ → BDProof Γ
+  | .truAx Γ h => BDProof.truAx Γ h
+  | .litEM Γ v hpos hneg => BDProof.litEM Γ v hpos hneg
+  | .weaken h hsub => BDProof.weaken (erase h) hsub
+  | .orIntro h => BDProof.orIntro (erase h)
+  | .andIntro h => BDProof.andIntro (fun f hf => erase (h f hf))
+
+/-- Count trace nodes, summing all `and`-premise branches. -/
+def size {n : Nat} {Γ : List (BDFormula n)} : BDProofTrace Γ → Nat
+  | .truAx _ _ => 1
+  | .litEM _ _ _ _ => 1
+  | .weaken h _ => 1 + size h
+  | .orIntro h => 1 + size h
+  | @BDProofTrace.andIntro _ Γ l h =>
+      1 + (l.attach.map (fun f => size (h f.1 f.2))).foldr Nat.add 0
+
+/-- Alias for the first line-count resource surface. -/
+def lineCount {n : Nat} {Γ : List (BDFormula n)} (π : BDProofTrace Γ) : Nat :=
+  size π
+
+/-- Maximum inference nesting depth of the trace. -/
+def derivationDepth {n : Nat} {Γ : List (BDFormula n)} : BDProofTrace Γ → Nat
+  | .truAx _ _ => 1
+  | .litEM _ _ _ _ => 1
+  | .weaken h _ => 1 + derivationDepth h
+  | .orIntro h => 1 + derivationDepth h
+  | @BDProofTrace.andIntro _ Γ l h =>
+      1 + (l.attach.map (fun f => derivationDepth (h f.1 f.2))).foldr Nat.max 0
+
+/-- Maximum formula depth in a sequent. -/
+def sequentMaxFormulaDepth {n : Nat} (Γ : List (BDFormula n)) : Nat :=
+  (Γ.attach.map (fun f => depth f.1)).foldr Nat.max 0
+
+/-- Conclusion-sequent maximum formula depth exposed as a trace resource. -/
+def maxFormulaDepth {n : Nat} {Γ : List (BDFormula n)} (_π : BDProofTrace Γ) : Nat :=
+  sequentMaxFormulaDepth Γ
+
+end BDProofTrace
+
 /-! ## 3. Soundness of the proof system -/
 
 /-- `sequentTrue` over a cons. -/
@@ -295,6 +364,12 @@ theorem bdProof_sound {n : Nat} {Γ : List (BDFormula n)} (h : BDProof Γ) :
           · exact hf
           · exact absurd hg hΓ
         rw [hall, Bool.true_or]
+
+/-- Soundness for Type-valued measured traces, by erasure to `BDProof`. -/
+theorem bdProofTrace_sound {n : Nat} {Γ : List (BDFormula n)}
+    (π : BDProofTrace Γ) :
+    SequentValid Γ :=
+  bdProof_sound π.erase
 
 /-! ## 4. Refutations and the unsatisfiability deliverable
 
@@ -378,6 +453,60 @@ sound system that the sequent of negated hypotheses is valid. -/
 structure BDRefutation {n : Nat} (F : List (BDFormula n)) : Prop where
   proof : BDProof (F.map neg)
 
+/-- A Type-valued bounded-depth refutation trace with explicit measurable proof
+data before erasure to the Prop-valued `BDRefutation` surface. -/
+structure BDRefutationTrace {n : Nat} (F : List (BDFormula n)) : Type where
+  proof : BDProofTrace (F.map neg)
+
+namespace BDRefutationTrace
+
+/-- Erase a Type-valued refutation trace to the existing Prop-valued refutation. -/
+def erase {n : Nat} {F : List (BDFormula n)}
+    (π : BDRefutationTrace F) : BDRefutation F where
+  proof := π.proof.erase
+
+/-- Node-count resource for a refutation trace. -/
+def size {n : Nat} {F : List (BDFormula n)} (π : BDRefutationTrace F) : Nat :=
+  π.proof.size
+
+/-- Line-count resource for a refutation trace. -/
+def lineCount {n : Nat} {F : List (BDFormula n)} (π : BDRefutationTrace F) : Nat :=
+  π.proof.lineCount
+
+/-- Derivation-depth resource for a refutation trace. -/
+def derivationDepth {n : Nat} {F : List (BDFormula n)} (π : BDRefutationTrace F) : Nat :=
+  π.proof.derivationDepth
+
+/-- Conclusion-sequent formula-depth resource for a refutation trace. -/
+def maxFormulaDepth {n : Nat} {F : List (BDFormula n)} (π : BDRefutationTrace F) : Nat :=
+  π.proof.maxFormulaDepth
+
+end BDRefutationTrace
+
+/-- A proof-carrying measured refutation trace together with explicit resource
+budgets.  The budget fields are data only; the proof fields certify that the
+existing measured trace accessors stay within those supplied budgets. -/
+structure BDRefutationTraceProfile {n : Nat} (F : List (BDFormula n)) : Type where
+  trace : BDRefutationTrace F
+  sizeBudget : Nat
+  lineCountBudget : Nat
+  derivationDepthBudget : Nat
+  maxFormulaDepthBudget : Nat
+  size_le_budget : trace.size ≤ sizeBudget
+  lineCount_le_budget : trace.lineCount ≤ lineCountBudget
+  derivationDepth_le_budget : trace.derivationDepth ≤ derivationDepthBudget
+  maxFormulaDepth_le_budget : trace.maxFormulaDepth ≤ maxFormulaDepthBudget
+
+namespace BDRefutationTraceProfile
+
+/-- Erase a profiled measured refutation trace to the existing Prop-valued
+refutation surface. -/
+def erase {n : Nat} {F : List (BDFormula n)}
+    (π : BDRefutationTraceProfile F) : BDRefutation F :=
+  π.trace.erase
+
+end BDRefutationTraceProfile
+
 /-- **`bdFrege_sound` — the deliverable.** A `BDRefutation F` witnesses real
 unsatisfiability: no assignment satisfies every hypothesis in `F`. -/
 theorem bdFrege_sound {n : Nat} {F : List (BDFormula n)}
@@ -392,6 +521,20 @@ theorem bdFrege_sound {n : Nat} {F : List (BDFormula n)}
   have hf : eval a f = true := hsat f hfmem
   rw [hf] at hfeval
   simp at hfeval
+
+/-- Soundness for Type-valued measured refutation traces, by erasure to
+`BDRefutation`. -/
+theorem bdFregeTrace_sound {n : Nat} {F : List (BDFormula n)}
+    (π : BDRefutationTrace F) :
+    ¬ ∃ a : Assignment n, ∀ f ∈ F, eval a f = true :=
+  bdFrege_sound π.erase
+
+/-- Soundness for profiled measured refutation traces, by consuming the measured
+trace through the existing trace soundness theorem. -/
+theorem bdFregeTraceProfile_sound {n : Nat} {F : List (BDFormula n)}
+    (π : BDRefutationTraceProfile F) :
+    ¬ ∃ a : Assignment n, ∀ f ∈ F, eval a f = true :=
+  bdFregeTrace_sound π.trace
 
 /-! ## 5. Non-vacuity sanity check
 

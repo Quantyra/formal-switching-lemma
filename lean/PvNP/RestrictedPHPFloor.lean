@@ -403,7 +403,152 @@ def Valid (a : Assignment (Nat.succ (3 * 2))) :
   | collision12h0 => a threeTwoPHPVar10 = true ∧ a threeTwoPHPVar20 = true
   | collision12h1 => a threeTwoPHPVar11 = true ∧ a threeTwoPHPVar21 = true
 
+/-- Validity of a named falsified clause is decidable (each case is a finite
+conjunction of Boolean equalities).  Bookkeeping instance only. -/
+instance validDecidable (a : Assignment (Nat.succ (3 * 2))) :
+    (out : ThreeTwoPHPFalsifiedClause) → Decidable (Valid a out)
+  | pigeon0 =>
+      inferInstanceAs (Decidable (a threeTwoPHPVar00 = false ∧ a threeTwoPHPVar01 = false))
+  | pigeon1 =>
+      inferInstanceAs (Decidable (a threeTwoPHPVar10 = false ∧ a threeTwoPHPVar11 = false))
+  | pigeon2 =>
+      inferInstanceAs (Decidable (a threeTwoPHPVar20 = false ∧ a threeTwoPHPVar21 = false))
+  | collision01h0 =>
+      inferInstanceAs (Decidable (a threeTwoPHPVar00 = true ∧ a threeTwoPHPVar10 = true))
+  | collision01h1 =>
+      inferInstanceAs (Decidable (a threeTwoPHPVar01 = true ∧ a threeTwoPHPVar11 = true))
+  | collision02h0 =>
+      inferInstanceAs (Decidable (a threeTwoPHPVar00 = true ∧ a threeTwoPHPVar20 = true))
+  | collision02h1 =>
+      inferInstanceAs (Decidable (a threeTwoPHPVar01 = true ∧ a threeTwoPHPVar21 = true))
+  | collision12h0 =>
+      inferInstanceAs (Decidable (a threeTwoPHPVar10 = true ∧ a threeTwoPHPVar20 = true))
+  | collision12h1 =>
+      inferInstanceAs (Decidable (a threeTwoPHPVar11 = true ∧ a threeTwoPHPVar21 = true))
+
 end ThreeTwoPHPFalsifiedClause
+
+/-- Fixed finite semantic selector for the `3 x 2` PHP falsified-clause search
+interface.  It inspects only the six named PHP variables in the ambient
+`Nat.succ (3 * 2)` assignment space and returns one falsified pigeon or collision
+clause. -/
+def threeTwoPHPFalsifiedClauseSelector
+    (a : Assignment (Nat.succ (3 * 2))) :
+    ThreeTwoPHPFalsifiedClause :=
+  if a threeTwoPHPVar00 || a threeTwoPHPVar01 then
+    if a threeTwoPHPVar10 || a threeTwoPHPVar11 then
+      if a threeTwoPHPVar20 || a threeTwoPHPVar21 then
+        if a threeTwoPHPVar00 then
+          if a threeTwoPHPVar10 then
+            ThreeTwoPHPFalsifiedClause.collision01h0
+          else if a threeTwoPHPVar20 then
+            ThreeTwoPHPFalsifiedClause.collision02h0
+          else
+            ThreeTwoPHPFalsifiedClause.collision12h1
+        else if a threeTwoPHPVar11 then
+          ThreeTwoPHPFalsifiedClause.collision01h1
+        else if a threeTwoPHPVar21 then
+          ThreeTwoPHPFalsifiedClause.collision02h1
+        else
+          ThreeTwoPHPFalsifiedClause.collision12h0
+      else
+        ThreeTwoPHPFalsifiedClause.pigeon2
+    else
+      ThreeTwoPHPFalsifiedClause.pigeon1
+  else
+    ThreeTwoPHPFalsifiedClause.pigeon0
+
+/-- The fixed finite selector always names a falsified clause for the `3 x 2` PHP
+search interface.  This is semantic selector validity only; it does not construct
+or verify any query tree. -/
+theorem threeTwoPHPFalsifiedClauseSelector_valid
+    (a : Assignment (Nat.succ (3 * 2))) :
+    ThreeTwoPHPFalsifiedClause.Valid a
+      (threeTwoPHPFalsifiedClauseSelector a) := by
+  cases h00 : a threeTwoPHPVar00 <;>
+    cases h01 : a threeTwoPHPVar01 <;>
+    cases h10 : a threeTwoPHPVar10 <;>
+    cases h11 : a threeTwoPHPVar11 <;>
+    cases h20 : a threeTwoPHPVar20 <;>
+    cases h21 : a threeTwoPHPVar21 <;>
+    simp [threeTwoPHPFalsifiedClauseSelector,
+      ThreeTwoPHPFalsifiedClause.Valid, h00, h01, h10, h11, h20, h21]
+
+/-- Premise-reduction helper for S2044-style consumers: it is enough to show that
+a supplied query tree evaluates to the fixed finite semantic selector.  The tree
+itself is still supplied here. -/
+theorem threeTwoPHPFalsifiedClauseSearchCorrect_of_evalSelector
+    (T : QueryTree (Nat.succ (3 * 2)) ThreeTwoPHPFalsifiedClause)
+    (hEval :
+      ∀ a : Assignment (Nat.succ (3 * 2)),
+        queryEval a T = threeTwoPHPFalsifiedClauseSelector a) :
+    ∀ a : Assignment (Nat.succ (3 * 2)),
+      ThreeTwoPHPFalsifiedClause.Valid a (queryEval a T) := by
+  intro a
+  rw [hEval a]
+  exact threeTwoPHPFalsifiedClauseSelector_valid a
+
+private def queryBool {n : Nat} {α : Type} (v : Fin n)
+    (next : Bool → QueryTree n α) : QueryTree n α :=
+  QueryTree.node v (next false) (next true)
+
+private def threeTwoPHPFalsifiedClauseSelectorOfBools
+    (b00 b01 b10 b11 b20 b21 : Bool) :
+    ThreeTwoPHPFalsifiedClause :=
+  if b00 || b01 then
+    if b10 || b11 then
+      if b20 || b21 then
+        if b00 then
+          if b10 then
+            ThreeTwoPHPFalsifiedClause.collision01h0
+          else if b20 then
+            ThreeTwoPHPFalsifiedClause.collision02h0
+          else
+            ThreeTwoPHPFalsifiedClause.collision12h1
+        else if b11 then
+          ThreeTwoPHPFalsifiedClause.collision01h1
+        else if b21 then
+          ThreeTwoPHPFalsifiedClause.collision02h1
+        else
+          ThreeTwoPHPFalsifiedClause.collision12h0
+      else
+        ThreeTwoPHPFalsifiedClause.pigeon2
+    else
+      ThreeTwoPHPFalsifiedClause.pigeon1
+  else
+    ThreeTwoPHPFalsifiedClause.pigeon0
+
+/-- Concrete fixed finite `3 x 2` PHP query tree that queries the six named PHP
+variables and returns the corresponding semantic selector output.  This is only a
+finite search tree for the existing bounded interface. -/
+def threeTwoPHPFalsifiedClauseQueryTree :
+    QueryTree (Nat.succ (3 * 2)) ThreeTwoPHPFalsifiedClause :=
+  queryBool threeTwoPHPVar00 (fun b00 =>
+    queryBool threeTwoPHPVar01 (fun b01 =>
+      queryBool threeTwoPHPVar10 (fun b10 =>
+        queryBool threeTwoPHPVar11 (fun b11 =>
+          queryBool threeTwoPHPVar20 (fun b20 =>
+            queryBool threeTwoPHPVar21 (fun b21 =>
+              QueryTree.leaf
+                (threeTwoPHPFalsifiedClauseSelectorOfBools
+                  b00 b01 b10 b11 b20 b21)))))))
+
+/-- Evaluation theorem for the concrete fixed finite `3 x 2` PHP query tree: for
+every ambient assignment, the tree returns exactly the S2046 semantic selector. -/
+theorem threeTwoPHPFalsifiedClauseQueryTree_evalSelector
+    (a : Assignment (Nat.succ (3 * 2))) :
+    queryEval a threeTwoPHPFalsifiedClauseQueryTree =
+      threeTwoPHPFalsifiedClauseSelector a := by
+  cases h00 : a threeTwoPHPVar00 <;>
+    cases h01 : a threeTwoPHPVar01 <;>
+    cases h10 : a threeTwoPHPVar10 <;>
+    cases h11 : a threeTwoPHPVar11 <;>
+    cases h20 : a threeTwoPHPVar20 <;>
+    cases h21 : a threeTwoPHPVar21 <;>
+    simp [threeTwoPHPFalsifiedClauseQueryTree,
+      threeTwoPHPFalsifiedClauseSelectorOfBools,
+      threeTwoPHPFalsifiedClauseSelector, queryBool, queryEval,
+      h00, h01, h10, h11, h20, h21]
 
 private def branchOnly {n : Nat} (v : Fin n) : Assignment n :=
   fun w => w = v
@@ -475,6 +620,253 @@ theorem threeTwoPHPFalsifiedClauseSearchDepthFloor
     2 ≤ queryDepth T := by
   exact queryTree_depth_ge_two_of_two_unqueried_ambiguity
     ThreeTwoPHPFalsifiedClause.Valid T hT threeTwo_leaf_invalid threeTwo_trueBranch_invalid
+
+/-! ## S2066: bounded `3 × 2` falsified-clause search floor of three
+
+This section strengthens the fixed `3 × 2` falsified-clause search floor from
+two queries to three, by a genuine adversary argument: answer the first query
+`false`; if the second query is the pigeon-partner of the first, answer `true`,
+otherwise answer `false`.  After any two queries answered this way, every
+possible output is invalidated by some consistent assignment.
+
+As before, this is only a bounded certificate-search statement for one fixed
+finite view; it is not a Frege/PHP lower bound and not a positive Boolean depth
+floor for the identically false unsatisfiable formula.
+-/
+
+/-- The three same-pigeon variable pairs of the fixed `3 × 2` view, in both
+orders. -/
+private def pigeonPair (v w : Fin (Nat.succ (3 * 2))) : Prop :=
+  (v = threeTwoPHPVar00 ∧ w = threeTwoPHPVar01) ∨
+    (v = threeTwoPHPVar01 ∧ w = threeTwoPHPVar00) ∨
+    (v = threeTwoPHPVar10 ∧ w = threeTwoPHPVar11) ∨
+    (v = threeTwoPHPVar11 ∧ w = threeTwoPHPVar10) ∨
+    (v = threeTwoPHPVar20 ∧ w = threeTwoPHPVar21) ∨
+    (v = threeTwoPHPVar21 ∧ w = threeTwoPHPVar20)
+
+/-- Adversary step 1: after one query answered `false`, every output is invalid
+on some consistent assignment. -/
+private theorem threeTwo_falseBranch_invalid
+    (out : ThreeTwoPHPFalsifiedClause) (v : Fin (Nat.succ (3 * 2))) :
+    ∃ a : Assignment (Nat.succ (3 * 2)), a v = false ∧
+      ¬ ThreeTwoPHPFalsifiedClause.Valid a out := by
+  cases out
+  case pigeon0 =>
+    by_cases hv : v = threeTwoPHPVar00
+    · exact ⟨branchOnly threeTwoPHPVar01, by subst hv; decide, by decide⟩
+    · exact ⟨branchOnly threeTwoPHPVar00, by simp [branchOnly, hv], by decide⟩
+  case pigeon1 =>
+    by_cases hv : v = threeTwoPHPVar10
+    · exact ⟨branchOnly threeTwoPHPVar11, by subst hv; decide, by decide⟩
+    · exact ⟨branchOnly threeTwoPHPVar10, by simp [branchOnly, hv], by decide⟩
+  case pigeon2 =>
+    by_cases hv : v = threeTwoPHPVar20
+    · exact ⟨branchOnly threeTwoPHPVar21, by subst hv; decide, by decide⟩
+    · exact ⟨branchOnly threeTwoPHPVar20, by simp [branchOnly, hv], by decide⟩
+  all_goals exact ⟨fun _ => false, rfl, by decide⟩
+
+/-- Adversary step 2, partner branch: with a pigeon pair queried `false` then
+`true`, every output is invalid on some consistent assignment. -/
+private theorem threeTwo_partnerTrue_invalid
+    (out : ThreeTwoPHPFalsifiedClause) (v w : Fin (Nat.succ (3 * 2)))
+    (hpair : pigeonPair v w) :
+    ∃ a : Assignment (Nat.succ (3 * 2)), a v = false ∧ a w = true ∧
+      ¬ ThreeTwoPHPFalsifiedClause.Valid a out := by
+  rcases hpair with ⟨hv, hw⟩ | ⟨hv, hw⟩ | ⟨hv, hw⟩ | ⟨hv, hw⟩ | ⟨hv, hw⟩ | ⟨hv, hw⟩ <;>
+    subst hv <;> subst hw <;> cases out <;>
+    first
+      | exact ⟨branchOr threeTwoPHPVar00 threeTwoPHPVar00, by decide, by decide, by decide⟩
+      | exact ⟨branchOr threeTwoPHPVar01 threeTwoPHPVar01, by decide, by decide, by decide⟩
+      | exact ⟨branchOr threeTwoPHPVar10 threeTwoPHPVar10, by decide, by decide, by decide⟩
+      | exact ⟨branchOr threeTwoPHPVar11 threeTwoPHPVar11, by decide, by decide, by decide⟩
+      | exact ⟨branchOr threeTwoPHPVar20 threeTwoPHPVar20, by decide, by decide, by decide⟩
+      | exact ⟨branchOr threeTwoPHPVar21 threeTwoPHPVar21, by decide, by decide, by decide⟩
+      | exact ⟨branchOr threeTwoPHPVar00 threeTwoPHPVar10, by decide, by decide, by decide⟩
+      | exact ⟨branchOr threeTwoPHPVar00 threeTwoPHPVar20, by decide, by decide, by decide⟩
+      | exact ⟨branchOr threeTwoPHPVar01 threeTwoPHPVar10, by decide, by decide, by decide⟩
+      | exact ⟨branchOr threeTwoPHPVar01 threeTwoPHPVar20, by decide, by decide, by decide⟩
+      | exact ⟨branchOr threeTwoPHPVar10 threeTwoPHPVar00, by decide, by decide, by decide⟩
+      | exact ⟨branchOr threeTwoPHPVar10 threeTwoPHPVar20, by decide, by decide, by decide⟩
+      | exact ⟨branchOr threeTwoPHPVar11 threeTwoPHPVar00, by decide, by decide, by decide⟩
+      | exact ⟨branchOr threeTwoPHPVar11 threeTwoPHPVar20, by decide, by decide, by decide⟩
+      | exact ⟨branchOr threeTwoPHPVar20 threeTwoPHPVar00, by decide, by decide, by decide⟩
+      | exact ⟨branchOr threeTwoPHPVar20 threeTwoPHPVar10, by decide, by decide, by decide⟩
+      | exact ⟨branchOr threeTwoPHPVar21 threeTwoPHPVar00, by decide, by decide, by decide⟩
+      | exact ⟨branchOr threeTwoPHPVar21 threeTwoPHPVar10, by decide, by decide, by decide⟩
+
+/-- Adversary step 2, non-partner branch: with two non-pigeon-pair queries both
+answered `false`, every output is invalid on some consistent assignment. -/
+private theorem threeTwo_bothFalse_invalid
+    (out : ThreeTwoPHPFalsifiedClause) (v w : Fin (Nat.succ (3 * 2)))
+    (hpair : ¬ pigeonPair v w) :
+    ∃ a : Assignment (Nat.succ (3 * 2)), a v = false ∧ a w = false ∧
+      ¬ ThreeTwoPHPFalsifiedClause.Valid a out := by
+  cases out
+  case pigeon0 =>
+    by_cases hxv : threeTwoPHPVar00 = v
+    · by_cases hyw : threeTwoPHPVar01 = w
+      · exact absurd (Or.inl ⟨hxv.symm, hyw.symm⟩) hpair
+      · refine ⟨branchOnly threeTwoPHPVar01, ?_, ?_, by decide⟩
+        · rw [← hxv]; decide
+        · simp [branchOnly, Ne.symm hyw]
+    · by_cases hxw : threeTwoPHPVar00 = w
+      · by_cases hyv : threeTwoPHPVar01 = v
+        · exact absurd (Or.inr (Or.inl ⟨hyv.symm, hxw.symm⟩)) hpair
+        · refine ⟨branchOnly threeTwoPHPVar01, ?_, ?_, by decide⟩
+          · simp [branchOnly, Ne.symm hyv]
+          · rw [← hxw]; decide
+      · refine ⟨branchOnly threeTwoPHPVar00, ?_, ?_, by decide⟩
+        · simp [branchOnly, Ne.symm hxv]
+        · simp [branchOnly, Ne.symm hxw]
+  case pigeon1 =>
+    by_cases hxv : threeTwoPHPVar10 = v
+    · by_cases hyw : threeTwoPHPVar11 = w
+      · exact absurd (Or.inr (Or.inr (Or.inl ⟨hxv.symm, hyw.symm⟩))) hpair
+      · refine ⟨branchOnly threeTwoPHPVar11, ?_, ?_, by decide⟩
+        · rw [← hxv]; decide
+        · simp [branchOnly, Ne.symm hyw]
+    · by_cases hxw : threeTwoPHPVar10 = w
+      · by_cases hyv : threeTwoPHPVar11 = v
+        · exact absurd (Or.inr (Or.inr (Or.inr (Or.inl ⟨hyv.symm, hxw.symm⟩)))) hpair
+        · refine ⟨branchOnly threeTwoPHPVar11, ?_, ?_, by decide⟩
+          · simp [branchOnly, Ne.symm hyv]
+          · rw [← hxw]; decide
+      · refine ⟨branchOnly threeTwoPHPVar10, ?_, ?_, by decide⟩
+        · simp [branchOnly, Ne.symm hxv]
+        · simp [branchOnly, Ne.symm hxw]
+  case pigeon2 =>
+    by_cases hxv : threeTwoPHPVar20 = v
+    · by_cases hyw : threeTwoPHPVar21 = w
+      · exact absurd
+          (Or.inr (Or.inr (Or.inr (Or.inr (Or.inl ⟨hxv.symm, hyw.symm⟩))))) hpair
+      · refine ⟨branchOnly threeTwoPHPVar21, ?_, ?_, by decide⟩
+        · rw [← hxv]; decide
+        · simp [branchOnly, Ne.symm hyw]
+    · by_cases hxw : threeTwoPHPVar20 = w
+      · by_cases hyv : threeTwoPHPVar21 = v
+        · exact absurd
+            (Or.inr (Or.inr (Or.inr (Or.inr (Or.inr ⟨hyv.symm, hxw.symm⟩))))) hpair
+        · refine ⟨branchOnly threeTwoPHPVar21, ?_, ?_, by decide⟩
+          · simp [branchOnly, Ne.symm hyv]
+          · rw [← hxw]; decide
+      · refine ⟨branchOnly threeTwoPHPVar20, ?_, ?_, by decide⟩
+        · simp [branchOnly, Ne.symm hxv]
+        · simp [branchOnly, Ne.symm hxw]
+  all_goals exact ⟨fun _ => false, rfl, rfl, by decide⟩
+
+/-- **Reusable generic adversary floor of three.**  If every constant answer is
+invalid somewhere, every single query answered `false` leaves every answer
+invalid somewhere on that branch, and — for an arbitrary adversary "partner"
+relation on query variables — two queries answered `false`,`true` (partner
+case) or `false`,`false` (non-partner case) also leave every answer invalid
+somewhere on the corresponding branch, then a correct output-valued query tree
+has worst-case depth at least three.  This is only generic query-tree
+infrastructure for certificate search; it is not a Boolean PHP lower bound. -/
+theorem queryTree_depth_ge_three_of_adversary {n : Nat} {α : Type}
+    (Valid : Assignment n → α → Prop)
+    (Partner : Fin n → Fin n → Prop)
+    (T : QueryTree n α)
+    (hT : ∀ a : Assignment n, Valid a (queryEval a T))
+    (hLeaf : ∀ out : α, ∃ a : Assignment n, ¬ Valid a out)
+    (hFalse : ∀ (out : α) (v : Fin n),
+      ∃ a : Assignment n, a v = false ∧ ¬ Valid a out)
+    (hPartner : ∀ (out : α) (v w : Fin n), Partner v w →
+      ∃ a : Assignment n, a v = false ∧ a w = true ∧ ¬ Valid a out)
+    (hNonPartner : ∀ (out : α) (v w : Fin n), ¬ Partner v w →
+      ∃ a : Assignment n, a v = false ∧ a w = false ∧ ¬ Valid a out) :
+    3 ≤ queryDepth T := by
+  cases T with
+  | leaf out =>
+      rcases hLeaf out with ⟨a, ha⟩
+      exact absurd (hT a) ha
+  | node v t0 t1 =>
+      have h2 : 2 ≤ queryDepth t0 := by
+        cases t0 with
+        | leaf out0 =>
+            rcases hFalse out0 v with ⟨a, hav, hinv⟩
+            have hval := hT a
+            simp [queryEval, hav] at hval
+            exact absurd hval hinv
+        | node w s0 s1 =>
+            cases s0 with
+            | node w0 u0 u1 =>
+                exact Nat.succ_le_succ (Nat.le_trans (Nat.succ_le_succ (Nat.zero_le _))
+                  (Nat.le_max_left _ _))
+            | leaf out00 =>
+                cases s1 with
+                | node w1 u0 u1 =>
+                    exact Nat.succ_le_succ (Nat.le_trans (Nat.succ_le_succ (Nat.zero_le _))
+                      (Nat.le_max_right _ _))
+                | leaf out01 =>
+                    by_cases hpair : Partner v w
+                    · rcases hPartner out01 v w hpair with ⟨a, hav, haw, hinv⟩
+                      have hval := hT a
+                      simp [queryEval, hav, haw] at hval
+                      exact absurd hval hinv
+                    · rcases hNonPartner out00 v w hpair with ⟨a, hav, haw, hinv⟩
+                      have hval := hT a
+                      simp [queryEval, hav, haw] at hval
+                      exact absurd hval hinv
+      exact Nat.succ_le_succ (Nat.le_trans h2 (Nat.le_max_left _ _))
+
+/-- **Concrete `3 × 2` bounded falsified-clause search-query depth floor of
+three.**  Any output-valued query tree that always returns a falsified clause of
+the fixed `3 × 2` view makes at least three queries in the worst case.  This is
+only a bounded search/certificate result for the fixed `3 × 2` view; it is not a
+Frege/PHP lower bound and not a positive Boolean depth floor for the identically
+false unsatisfiable formula. -/
+theorem threeTwoPHPFalsifiedClauseSearchDepthFloor_three
+    (T : QueryTree (Nat.succ (3 * 2)) ThreeTwoPHPFalsifiedClause)
+    (hT : ∀ a : Assignment (Nat.succ (3 * 2)),
+      ThreeTwoPHPFalsifiedClause.Valid a (queryEval a T)) :
+    3 ≤ queryDepth T :=
+  queryTree_depth_ge_three_of_adversary
+    ThreeTwoPHPFalsifiedClause.Valid pigeonPair T hT
+    threeTwo_leaf_invalid
+    (fun out v => threeTwo_falseBranch_invalid out v)
+    (fun out v w h => threeTwo_partnerTrue_invalid out v w h)
+    (fun out v w h => threeTwo_bothFalse_invalid out v w h)
+
+/-- Non-vacuity: the floor of three applies to the concrete correct fixed tree,
+whose depth is six. -/
+theorem threeTwoPHPFalsifiedClauseQueryTree_depth_ge_three :
+    3 ≤ queryDepth threeTwoPHPFalsifiedClauseQueryTree :=
+  threeTwoPHPFalsifiedClauseSearchDepthFloor_three
+    threeTwoPHPFalsifiedClauseQueryTree
+    (threeTwoPHPFalsifiedClauseSearchCorrect_of_evalSelector
+      threeTwoPHPFalsifiedClauseQueryTree
+      threeTwoPHPFalsifiedClauseQueryTree_evalSelector)
+
+/-! ## S2066: general falsified-clause search depth-floor statement shape
+
+The following statement shape names, for arbitrary output-valued search
+problems over the ambient PHP variable space, what a search depth floor says.
+It is only a statement shape plus its already-proved concrete instances; no
+general floor for growing PHP families is stated or claimed.
+-/
+
+/-- Statement shape for a falsified-clause search depth floor over an ambient
+variable space: every always-valid output-valued query tree has worst-case
+query depth at least `floor`.  This is a `Prop`-valued shape, not a proved
+general theorem. -/
+def FalsifiedClauseSearchDepthFloorStatement (n : Nat) (Out : Type)
+    (Valid : Assignment n → Out → Prop) (floor : Nat) : Prop :=
+  ∀ T : QueryTree n Out,
+    (∀ a : Assignment n, Valid a (queryEval a T)) →
+    floor ≤ queryDepth T
+
+/-- The `2 × 1` floor of two as an instance of the general statement shape. -/
+theorem twoOnePHPFalsifiedClauseSearchDepthFloorStatement_two :
+    FalsifiedClauseSearchDepthFloorStatement (Nat.succ (2 * 1))
+      TwoOnePHPFalsifiedClause TwoOnePHPFalsifiedClause.Valid 2 :=
+  twoOnePHPFalsifiedClauseSearchDepthFloor
+
+/-- The `3 × 2` floor of three as an instance of the general statement shape.
+This is the first non-trivial adversary-argument witness of the shape. -/
+theorem threeTwoPHPFalsifiedClauseSearchDepthFloorStatement_three :
+    FalsifiedClauseSearchDepthFloorStatement (Nat.succ (3 * 2))
+      ThreeTwoPHPFalsifiedClause ThreeTwoPHPFalsifiedClause.Valid 3 :=
+  threeTwoPHPFalsifiedClauseSearchDepthFloor_three
 
 end RestrictedPHPFloor
 end PvNP

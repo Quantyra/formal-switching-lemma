@@ -1,6 +1,10 @@
+import PvNP.BoundedDepthFrege
+import PvNP.BDResourceNormalization
+import PvNP.BDTraceToSearchPremise
 import PvNP.BoundedDepthIteratedCollapse
 import PvNP.CertifiedAffine
 import PvNP.GraphIndexedBridge
+import PvNP.ProfiledRoutePHPBoundary
 import PvNP.RestrictedPHPFloor
 
 /-!
@@ -8,6 +12,78 @@ import PvNP.RestrictedPHPFloor
 
 This module pins the axiom profile of the publication-facing theorem surface.
 -/
+
+/-- info: 'PvNP.BoundedDepthFrege.BDProofTrace' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthFrege.BDProofTrace
+
+/-- info: 'PvNP.BoundedDepthFrege.BDProofTrace.erase' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthFrege.BDProofTrace.erase
+
+/-- info: 'PvNP.BoundedDepthFrege.BDProofTrace.size' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthFrege.BDProofTrace.size
+
+/-- info: 'PvNP.BoundedDepthFrege.BDProofTrace.lineCount' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthFrege.BDProofTrace.lineCount
+
+/-- info: 'PvNP.BoundedDepthFrege.BDProofTrace.derivationDepth' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthFrege.BDProofTrace.derivationDepth
+
+/-- info: 'PvNP.BoundedDepthFrege.BDProofTrace.sequentMaxFormulaDepth' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthFrege.BDProofTrace.sequentMaxFormulaDepth
+
+/-- info: 'PvNP.BoundedDepthFrege.BDProofTrace.maxFormulaDepth' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthFrege.BDProofTrace.maxFormulaDepth
+
+/-- info: 'PvNP.BoundedDepthFrege.bdProofTrace_sound' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthFrege.bdProofTrace_sound
+
+/-- info: 'PvNP.BoundedDepthFrege.BDRefutationTrace' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthFrege.BDRefutationTrace
+
+/-- info: 'PvNP.BoundedDepthFrege.BDRefutationTrace.erase' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthFrege.BDRefutationTrace.erase
+
+/-- info: 'PvNP.BoundedDepthFrege.BDRefutationTrace.size' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthFrege.BDRefutationTrace.size
+
+/-- info: 'PvNP.BoundedDepthFrege.BDRefutationTrace.lineCount' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthFrege.BDRefutationTrace.lineCount
+
+/-- info: 'PvNP.BoundedDepthFrege.BDRefutationTrace.derivationDepth' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthFrege.BDRefutationTrace.derivationDepth
+
+/-- info: 'PvNP.BoundedDepthFrege.BDRefutationTrace.maxFormulaDepth' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthFrege.BDRefutationTrace.maxFormulaDepth
+
+/-- info: 'PvNP.BoundedDepthFrege.bdFregeTrace_sound' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthFrege.bdFregeTrace_sound
+
+/-- info: 'PvNP.BoundedDepthFrege.BDRefutationTraceProfile' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthFrege.BDRefutationTraceProfile
+
+/-- info: 'PvNP.BoundedDepthFrege.BDRefutationTraceProfile.erase' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthFrege.BDRefutationTraceProfile.erase
+
+/-- info: 'PvNP.BoundedDepthFrege.bdFregeTraceProfile_sound' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthFrege.bdFregeTraceProfile_sound
 
 /-- info: 'PvNP.SwitchingClose2.switchingLemmaTermSimple_proved' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
@@ -102,6 +178,178 @@ This module pins the axiom profile of the publication-facing theorem surface.
 #guard_msgs in
 #print axioms PvNP.BoundedDepthIteratedCollapse.generatedNonemptyKLayerCollapse_exists
 
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.defaultAssignmentOfRestriction' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.defaultAssignmentOfRestriction
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.agree_defaultAssignmentOfRestriction' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.agree_defaultAssignmentOfRestriction
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.generatedCNFSingletonSchedule' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.generatedCNFSingletonSchedule
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.generatedCNFSingletonSchedule_certificateConnection' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.generatedCNFSingletonSchedule_certificateConnection
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.ExplicitStageGeneratedCNFStageAlignment' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.ExplicitStageGeneratedCNFStageAlignment
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.GeneratedScheduleGeneratedCNFStageAlignment' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.GeneratedScheduleGeneratedCNFStageAlignment
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.generatedScheduleGeneratedCNFStageAlignment_iff_each' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.generatedScheduleGeneratedCNFStageAlignment_iff_each
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.not_generatedScheduleGeneratedCNFStageAlignment_of_failing_member' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.not_generatedScheduleGeneratedCNFStageAlignment_of_failing_member
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.SameArityStageGeneratedCNFStageAlignment' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.SameArityStageGeneratedCNFStageAlignment
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.sameArityStageGeneratedCNFStageAlignment_toExplicitStageGeneratedCNFStageAlignment' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.sameArityStageGeneratedCNFStageAlignment_toExplicitStageGeneratedCNFStageAlignment
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.SameArityGeneratedScheduleGeneratedCNFStageAlignment' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.SameArityGeneratedScheduleGeneratedCNFStageAlignment
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.sameArityGeneratedScheduleGeneratedCNFStageAlignment_toGeneratedScheduleGeneratedCNFStageAlignment' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.sameArityGeneratedScheduleGeneratedCNFStageAlignment_toGeneratedScheduleGeneratedCNFStageAlignment
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.BoundedPositiveSameArityGeneratedScheduleAlignmentFamily' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.BoundedPositiveSameArityGeneratedScheduleAlignmentFamily
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.boundedPositiveSameArityGeneratedScheduleAlignmentFamily_nonempty' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.boundedPositiveSameArityGeneratedScheduleAlignmentFamily_nonempty
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.boundedPositiveSameArityGeneratedScheduleAlignmentFamily_length_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.boundedPositiveSameArityGeneratedScheduleAlignmentFamily_length_le
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.boundedPositiveSameArityGeneratedScheduleAlignmentFamily_alignment' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.boundedPositiveSameArityGeneratedScheduleAlignmentFamily_alignment
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.boundedPositiveSameArityGeneratedScheduleAlignmentFamily_certificate' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.boundedPositiveSameArityGeneratedScheduleAlignmentFamily_certificate
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.BoundedPositiveSameArityGeneratedScheduleTheoremShell' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.BoundedPositiveSameArityGeneratedScheduleTheoremShell
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.boundedPositiveSameArityGeneratedScheduleTheoremShell_familyData' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.boundedPositiveSameArityGeneratedScheduleTheoremShell_familyData
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.boundedPositiveSameArityGeneratedScheduleTheoremShell_conditional' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.boundedPositiveSameArityGeneratedScheduleTheoremShell_conditional
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.BoundedPositiveSameArityGeneratedScheduleHypothesisClass' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.BoundedPositiveSameArityGeneratedScheduleHypothesisClass
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.BoundedPositiveSameArityGeneratedScheduleNamedHypothesis' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.BoundedPositiveSameArityGeneratedScheduleNamedHypothesis
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.BoundedPositiveSameArityGeneratedScheduleHypothesisTaxonomy' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.BoundedPositiveSameArityGeneratedScheduleHypothesisTaxonomy
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.boundedPositiveSameArityGeneratedScheduleHypothesisTaxonomy_remainingProofComplexityHypotheses' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.boundedPositiveSameArityGeneratedScheduleHypothesisTaxonomy_remainingProofComplexityHypotheses
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.boundedPositiveSameArityGeneratedScheduleHypothesisTaxonomy_conditionalTarget' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.boundedPositiveSameArityGeneratedScheduleHypothesisTaxonomy_conditionalTarget
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.boundedPositiveSameArityGeneratedScheduleHypothesisTaxonomy_conditional' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.boundedPositiveSameArityGeneratedScheduleHypothesisTaxonomy_conditional
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.boundedPositiveSameArityGeneratedScheduleHypothesisTaxonomy_classifications' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.boundedPositiveSameArityGeneratedScheduleHypothesisTaxonomy_classifications
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.BoundedPositiveSameArityGeneratedScheduleRouteObligationClass' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.BoundedPositiveSameArityGeneratedScheduleRouteObligationClass
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.BoundedPositiveSameArityGeneratedScheduleRouteObligation' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.BoundedPositiveSameArityGeneratedScheduleRouteObligation
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.BoundedPositiveSameArityGeneratedScheduleRouteObligations' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.BoundedPositiveSameArityGeneratedScheduleRouteObligations
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.boundedPositiveSameArityGeneratedScheduleRouteObligations_remainingProofComplexityHypotheses' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.boundedPositiveSameArityGeneratedScheduleRouteObligations_remainingProofComplexityHypotheses
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.boundedPositiveSameArityGeneratedScheduleRouteObligations_conditionalTarget' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.boundedPositiveSameArityGeneratedScheduleRouteObligations_conditionalTarget
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.boundedPositiveSameArityGeneratedScheduleRouteObligations_conditional' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.boundedPositiveSameArityGeneratedScheduleRouteObligations_conditional
+
+/-- info: 'PvNP.BoundedDepthIteratedCollapse.boundedPositiveSameArityGeneratedScheduleRouteObligations_classifications' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BoundedDepthIteratedCollapse.boundedPositiveSameArityGeneratedScheduleRouteObligations_classifications
+
 /-- info: 'PvNP.BoundedDepthIteratedCollapse.oneLitKLayerSchedule3_nonempty' depends on axioms: [propext, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.BoundedDepthIteratedCollapse.oneLitKLayerSchedule3_nonempty
@@ -152,6 +400,1802 @@ This module pins the axiom profile of the publication-facing theorem surface.
 #guard_msgs in
 #print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_nonempty
 
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3Charge_eq_zero' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3Charge_eq_zero
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3ChargeProfile_eq' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3ChargeProfile_eq
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3LaneANatCharge_eq_zero' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3LaneANatCharge_eq_zero
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3Charge_eq_laneANatCharge' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3Charge_eq_laneANatCharge
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3Charge_fin5NatBridge' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3Charge_fin5NatBridge
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3Charge_eq_laneAChargeInterfaceShim' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3Charge_eq_laneAChargeInterfaceShim
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3Charge_laneAChargeInterfaceShim_fin5NatBridge' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3Charge_laneAChargeInterfaceShim_fin5NatBridge
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3Charge_eq_importedLaneACharge' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3Charge_eq_importedLaneACharge
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3Charge_imported_fin5NatBridge' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3Charge_imported_fin5NatBridge
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3TseitinGraph_chargeProfile' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3TseitinGraph_chargeProfile
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3TseitinGraph_edges_eq_importedLaneAEndpoints' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3TseitinGraph_edges_eq_importedLaneAEndpoints
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfClauseProjection_eq_importedLaneA' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfClauseProjection_eq_importedLaneA
+
+/-- info: 'PvNP.GraphIndexedBridge.projectedLiteralEval_cnfLiteralProjection' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.projectedLiteralEval_cnfLiteralProjection
+
+/-- info: 'PvNP.GraphIndexedBridge.projectedClauseEval_cnfClauseProjection' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.projectedClauseEval_cnfClauseProjection
+
+/-- info: 'PvNP.GraphIndexedBridge.projectedCNFEval_cnfViewClauseProjection' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.projectedCNFEval_cnfViewClauseProjection
+
+/-- info: 'PvNP.GraphIndexedBridge.projectedCNFClauseEvaluations_cnfViewClauseProjection' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.projectedCNFClauseEvaluations_cnfViewClauseProjection
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfSemanticEval_eq_importedLaneA' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfSemanticEval_eq_importedLaneA
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_clauseSemanticEval_eq_importedLaneA' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_clauseSemanticEval_eq_importedLaneA
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_edges_eq_importedLaneAEndpoints' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_edges_eq_importedLaneAEndpoints
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_chargeProfile' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_chargeProfile
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_charge_eq_laneANatCharge' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_charge_eq_laneANatCharge
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_charge_fin5NatBridge' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_charge_fin5NatBridge
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_charge_eq_laneAChargeInterfaceShim' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_charge_eq_laneAChargeInterfaceShim
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_charge_laneAChargeInterfaceShim_fin5NatBridge' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_charge_laneAChargeInterfaceShim_fin5NatBridge
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_charge_eq_importedLaneACharge' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_charge_eq_importedLaneACharge
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_charge_imported_fin5NatBridge' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_charge_imported_fin5NatBridge
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_importedGraphChargeAlignment' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_importedGraphChargeAlignment
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_importedGraphChargeFormulaAlignment' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_importedGraphChargeFormulaAlignment
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_importedGraphChargeFormulaSemanticAlignment' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_importedGraphChargeFormulaSemanticAlignment
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_finiteCNFSemanticBridgeConsumer' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_finiteCNFSemanticBridgeConsumer
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfEval_eq_false' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfEval_eq_false
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_emptyDNFStage_sixCNFCompatible' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_emptyDNFStage_sixCNFCompatible
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_emptyCNFStage_not_sixCNFCompatible' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_emptyCNFStage_not_sixCNFCompatible
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_finiteCNFCompatibilityGate' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_finiteCNFCompatibilityGate
+
+/-- info: 'PvNP.GraphIndexedBridge.eval_cnfToBD' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.eval_cnfToBD
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_semantics' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_semantics
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfViewStage' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfViewStage
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_sixCNFExplicitStage_compatible' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_sixCNFExplicitStage_compatible
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_sixCNFConcreteInvariant' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_sixCNFConcreteInvariant
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_dualDNF_width_le_four' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_dualDNF_width_le_four
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_dualDNF_freeRestriction_dnfSize' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_dualDNF_freeRestriction_dnfSize
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_dualDNF_freeRestriction_good' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_dualDNF_freeRestriction_good
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_generatedCNFStage' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_generatedCNFStage
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_generatedCNFStage_concreteInvariant' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_generatedCNFStage_concreteInvariant
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_generatedCNFSingletonSchedule' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_generatedCNFSingletonSchedule
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_generatedCNFStage_kLayerCompatibility' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_generatedCNFStage_kLayerCompatibility
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_generatedCNFStage_reusableCertificateConnection' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_generatedCNFStage_reusableCertificateConnection
+
+/-- info: 'PvNP.GraphIndexedBridge.ExplicitStageGeneratedCNFStageInvariant' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.ExplicitStageGeneratedCNFStageInvariant
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_emptyDNFStage_generatedCNFStageInvariant' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_emptyDNFStage_generatedCNFStageInvariant
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_emptyCNFStage_no_generatedCNFStageInvariant' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_emptyCNFStage_no_generatedCNFStageInvariant
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_generatedCNFStage_certificateBoundary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_generatedCNFStage_certificateBoundary
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_generatedCNFStage_scheduleAlignmentObstruction' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_generatedCNFStage_scheduleAlignmentObstruction
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_generatedCNFStage_scheduleAlignment_iff_each' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_generatedCNFStage_scheduleAlignment_iff_each
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_generatedCNFStage_no_scheduleAlignment' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_generatedCNFStage_no_scheduleAlignment
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_generatedCNFStage_crossArityScheduleAlignmentBoundary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_generatedCNFStage_crossArityScheduleAlignmentBoundary
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_emptyDNFStage6_sameArityAssignmentLiftAlignment' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_emptyDNFStage6_sameArityAssignmentLiftAlignment
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_generatedCNFStage_sameAritySelfAlignment' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_generatedCNFStage_sameAritySelfAlignment
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_sameArityAlignment' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_sameArityAlignment
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_emptyDNFStage6_generatedCNFStageAlignment' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_emptyDNFStage6_generatedCNFStageAlignment
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_generatedCNFStage_selfAlignment' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_generatedCNFStage_selfAlignment
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_length' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_length
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_aligns_each' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_aligns_each
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_alignment' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_alignment
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveVsOldScheduleAlignmentBoundary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveVsOldScheduleAlignmentBoundary
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleFamily' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleFamily
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleFamily_specializes' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleFamily_specializes
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleFamily_length_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleFamily_length_le
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleFamily_alignment' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleFamily_alignment
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleFamilyBoundary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleFamilyBoundary
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_suppliedDataHypothesis' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_suppliedDataHypothesis
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_auditedFiniteBridgeFactHypothesis' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_auditedFiniteBridgeFactHypothesis
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_importedClassicalBoundaryHypothesis' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_importedClassicalBoundaryHypothesis
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_localTheoremTargetHypothesis' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_localTheoremTargetHypothesis
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_unresolvedMathematicalBlocker' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_unresolvedMathematicalBlocker
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_unresolvedMathematicalBlockerHypothesis' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_unresolvedMathematicalBlockerHypothesis
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleRemainingHypothesisTaxonomy' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleRemainingHypothesisTaxonomy
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleRemainingHypothesisTaxonomyClassifications' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleRemainingHypothesisTaxonomyClassifications
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleRemainingHypothesisTaxonomy_classifications' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleRemainingHypothesisTaxonomy_classifications
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_suppliedFamilyDataRouteObligation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_suppliedFamilyDataRouteObligation
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_auditedFiniteBridgeFactRouteObligation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_auditedFiniteBridgeFactRouteObligation
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_importedClassicalBoundaryRouteObligation' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_importedClassicalBoundaryRouteObligation
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_firstLocalTheoremTarget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_firstLocalTheoremTarget
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_firstLocalTheoremTargetRouteObligation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_firstLocalTheoremTargetRouteObligation
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_unresolvedProofComplexityRouteObligation' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_unresolvedProofComplexityRouteObligation
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_unresolvedMathematicalBlockerRouteObligation' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_unresolvedMathematicalBlockerRouteObligation
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleRouteObligations' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleRouteObligations
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleRouteObligationsClassifications' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleRouteObligationsClassifications
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleRouteObligations_classifications' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleRouteObligations_classifications
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleRouteObligations_firstLocalTheoremTarget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleRouteObligations_firstLocalTheoremTarget
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleTheoremShell' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleTheoremShell
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleTheoremShell_nonvacuous' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleTheoremShell_nonvacuous
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleTheoremShellBoundary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedScheduleTheoremShellBoundary
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_firstLocalTheoremTarget_proved' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_firstLocalTheoremTarget_proved
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_provedFirstLocalTargetAuditedFiniteFactRouteObligation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_provedFirstLocalTargetAuditedFiniteFactRouteObligation
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_postS2027AuditedLocalFiniteFacts' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_postS2027AuditedLocalFiniteFacts
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_postS2027AuditedLocalFiniteFacts_proved' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_postS2027AuditedLocalFiniteFacts_proved
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_postS2027RemainingUnresolvedProofComplexityRoute' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_postS2027RemainingUnresolvedProofComplexityRoute
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_postS2027RouteObligationBookkeeping' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_postS2027RouteObligationBookkeeping
+
+/-- info: 'PvNP.GraphIndexedBridge.TwoCyclePath3PositiveAlignedSuppliedBDRefutationRoute' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.TwoCyclePath3PositiveAlignedSuppliedBDRefutationRoute
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_suppliedBDRefutationRoute_of_refutation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_suppliedBDRefutationRoute_of_refutation
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_unsat_of_suppliedBDRefutationRoute' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_unsat_of_suppliedBDRefutationRoute
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_negTargetSequent_normalization' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_negTargetSequent_normalization
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_fourMintermNegatedSequent' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_fourMintermNegatedSequent
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_fourMintermNegatedSequent_bdProof' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_fourMintermNegatedSequent_bdProof
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_fourMintermNegatedSequent_bdProofTrace' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_fourMintermNegatedSequent_bdProofTrace
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_vars23FourMintermNegatedSequent_bdProof' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_vars23FourMintermNegatedSequent_bdProof
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_firstFourNegatedClauses_bdProof' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_firstFourNegatedClauses_bdProof
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_firstFourNegatedClauses_bdProofTrace' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_firstFourNegatedClauses_bdProofTrace
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_negTargetSequent_bdProof' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_negTargetSequent_bdProof
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_negTargetSequent_bdProofTrace' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_negTargetSequent_bdProofTrace
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_negTargetSequent_bdProofTrace_erases_to_bdProof' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_negTargetSequent_bdProofTrace_erases_to_bdProof
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_suppliedBDRefutationTrace' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_suppliedBDRefutationTrace
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_suppliedBDRefutationTrace_erasedBDRefutation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_suppliedBDRefutationTrace_erasedBDRefutation
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_suppliedBDRefutation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_suppliedBDRefutation
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_suppliedBDRefutationTrace_erases_to_suppliedBDRefutation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_suppliedBDRefutationTrace_erases_to_suppliedBDRefutation
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_suppliedBDRefutationTrace_size' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_suppliedBDRefutationTrace_size
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_suppliedBDRefutationTrace_lineCount' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_suppliedBDRefutationTrace_lineCount
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_suppliedBDRefutationTrace_derivationDepth' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_suppliedBDRefutationTrace_derivationDepth
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_suppliedBDRefutationTrace_maxFormulaDepth' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_suppliedBDRefutationTrace_maxFormulaDepth
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_suppliedBDRefutationTraceProfile' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_suppliedBDRefutationTraceProfile
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_suppliedBDRefutationTraceProfile_erasedBDRefutation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_suppliedBDRefutationTraceProfile_erasedBDRefutation
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_unsat_of_concreteSuppliedBDRefutationTraceProfile' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_unsat_of_concreteSuppliedBDRefutationTraceProfile
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_suppliedBDRefutationRoute' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_suppliedBDRefutationRoute
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_unsat_of_concreteSuppliedBDRefutationTrace' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_unsat_of_concreteSuppliedBDRefutationTrace
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_unsat_of_concreteSuppliedBDRefutation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_unsat_of_concreteSuppliedBDRefutation
+
+/-- info: 'PvNP.GraphIndexedBridge.TwoCyclePath3PositiveAlignedProfiledBDRefutationRoute' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.TwoCyclePath3PositiveAlignedProfiledBDRefutationRoute
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_profiledBDRefutationRoute' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_profiledBDRefutationRoute
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_profiledBDRefutationRoute_erases_to_suppliedBDRefutationRoute' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_profiledBDRefutationRoute_erases_to_suppliedBDRefutationRoute
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_suppliedBDRefutationTrace_resourceNormalization' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_suppliedBDRefutationTrace_resourceNormalization
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_suppliedBDRefutationTraceProfile_budgetEqualities' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_suppliedBDRefutationTraceProfile_budgetEqualities
+
+/-- info: 'PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_suppliedBDRefutationTraceProfile_budgetPins' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GraphIndexedBridge.twoCyclePath3GeneratedBridgeWitness_cnfBDFormula_suppliedBDRefutationTraceProfile_budgetPins
+
+/-- info: 'PvNP.BDTraceToSearchPremise.ThreeTwoPHPSearchPremiseForProfile' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.ThreeTwoPHPSearchPremiseForProfile
+
+/-- info: 'PvNP.BDTraceToSearchPremise.ThreeTwoPHPSearchPremiseForProfile.ofCorrectTree' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.ThreeTwoPHPSearchPremiseForProfile.ofCorrectTree
+
+/-- info: 'PvNP.BDTraceToSearchPremise.ThreeTwoPHPSearchPremiseForProfile.ofEvalSelector' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.ThreeTwoPHPSearchPremiseForProfile.ofEvalSelector
+
+/-- info: 'PvNP.BDTraceToSearchPremise.ThreeTwoPHPSearchPremiseForProfile.depthFloor' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.ThreeTwoPHPSearchPremiseForProfile.depthFloor
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToThreeTwoPHPSearchPremiseRouteShell' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToThreeTwoPHPSearchPremiseRouteShell
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToThreeTwoPHPSearchPremiseRouteShell.ofCorrectTree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToThreeTwoPHPSearchPremiseRouteShell.ofCorrectTree
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToThreeTwoPHPSearchPremiseRouteShell.ofEvalSelector' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToThreeTwoPHPSearchPremiseRouteShell.ofEvalSelector
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToThreeTwoPHPSearchPremiseRouteShell.boundaryFacts' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToThreeTwoPHPSearchPremiseRouteShell.boundaryFacts
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceToSearchRouteObligationClass' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceToSearchRouteObligationClass
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceToSearchRouteObligation' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceToSearchRouteObligation
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceToSearchRouteObligations' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceToSearchRouteObligations
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceToSearchRouteObligations_remainingRouteObligations' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceToSearchRouteObligations_remainingRouteObligations
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceToSearchRouteObligations_suppliedProfiledRouteResourceFacts' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceToSearchRouteObligations_suppliedProfiledRouteResourceFacts
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceToSearchRouteObligations_suppliedFixedFiniteSearchPremiseFacts' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceToSearchRouteObligations_suppliedFixedFiniteSearchPremiseFacts
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceToSearchRouteObligations_localFutureBridgeTarget' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceToSearchRouteObligations_localFutureBridgeTarget
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceToSearchRouteObligations_classifications' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceToSearchRouteObligations_classifications
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_suppliedProfiledRouteResourceFacts' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_suppliedProfiledRouteResourceFacts
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_suppliedFixedFiniteSearchPremiseFacts' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_suppliedFixedFiniteSearchPremiseFacts
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_localFutureBridgeRouteObligation' depends on axioms: [propext,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_localFutureBridgeRouteObligation
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_suppliedProfiledRouteResourceFactsRouteObligation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_suppliedProfiledRouteResourceFactsRouteObligation
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_suppliedFixedFiniteSearchPremiseFactsRouteObligation' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_suppliedFixedFiniteSearchPremiseFactsRouteObligation
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_localFutureBridgeRouteObligationNamed' depends on axioms: [propext,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_localFutureBridgeRouteObligationNamed
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_unresolvedProofComplexityBlockerRouteObligation' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_unresolvedProofComplexityBlockerRouteObligation
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremiseRouteObligations' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremiseRouteObligations
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremiseRouteObligationsClassifications' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremiseRouteObligationsClassifications
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremiseRouteObligations_classifications' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremiseRouteObligations_classifications
+
+/-- info: 'PvNP.BDTraceToSearchPremise.ThreeTwoPHPSearchPremiseInputsForProfile' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.ThreeTwoPHPSearchPremiseInputsForProfile
+
+/-- info: 'PvNP.BDTraceToSearchPremise.ThreeTwoPHPSearchPremiseInputsForProfile.ofCorrectTree' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.ThreeTwoPHPSearchPremiseInputsForProfile.ofCorrectTree
+
+/-- info: 'PvNP.BDTraceToSearchPremise.ThreeTwoPHPSearchPremiseInputsForProfile.ofEvalSelector' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.ThreeTwoPHPSearchPremiseInputsForProfile.ofEvalSelector
+
+/-- info: 'PvNP.BDTraceToSearchPremise.ThreeTwoPHPSearchPremiseInputsForProfile.toSearchPremise' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.ThreeTwoPHPSearchPremiseInputsForProfile.toSearchPremise
+
+/-- info: 'PvNP.BDTraceToSearchPremise.ThreeTwoPHPSearchPremiseInputsForProfile.depthFloor' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.ThreeTwoPHPSearchPremiseInputsForProfile.depthFloor
+
+/-- info: 'PvNP.BDTraceToSearchPremise.ThreeTwoPHPSearchPremiseInputsForProfile.toSearchPremise_tree' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.ThreeTwoPHPSearchPremiseInputsForProfile.toSearchPremise_tree
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToThreeTwoPHPSearchPremiseLocalBridgeEvidence' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToThreeTwoPHPSearchPremiseLocalBridgeEvidence
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToThreeTwoPHPSearchPremiseLocalBridgeEvidence.localBridgeObligation_project' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToThreeTwoPHPSearchPremiseLocalBridgeEvidence.localBridgeObligation_project
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToThreeTwoPHPSearchPremiseLocalBridgeEvidence.searchPremise' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToThreeTwoPHPSearchPremiseLocalBridgeEvidence.searchPremise
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToThreeTwoPHPSearchPremiseLocalBridgeEvidence.routeShell' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToThreeTwoPHPSearchPremiseLocalBridgeEvidence.routeShell
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToThreeTwoPHPSearchPremiseLocalBridgeEvidence.routeShell_boundaryFacts' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToThreeTwoPHPSearchPremiseLocalBridgeEvidence.routeShell_boundaryFacts
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_explicitLocalFutureBridgeTarget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_explicitLocalFutureBridgeTarget
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_explicitLocalFutureBridgeTarget_concrete' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_explicitLocalFutureBridgeTarget_concrete
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceToSearchLocalBridgeAntecedentClass' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceToSearchLocalBridgeAntecedentClass
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceToSearchLocalBridgeAntecedent' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceToSearchLocalBridgeAntecedent
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceToSearchLocalBridgeAntecedents' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceToSearchLocalBridgeAntecedents
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceToSearchLocalBridgeAntecedents_remainingAntecedents' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceToSearchLocalBridgeAntecedents_remainingAntecedents
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceToSearchLocalBridgeAntecedents_suppliedProfiledRouteResourceFacts' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceToSearchLocalBridgeAntecedents_suppliedProfiledRouteResourceFacts
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceToSearchLocalBridgeAntecedents_suppliedFixedFiniteSearchPremiseFacts' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceToSearchLocalBridgeAntecedents_suppliedFixedFiniteSearchPremiseFacts
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceToSearchLocalBridgeAntecedents_traceToSearchExtraction' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceToSearchLocalBridgeAntecedents_traceToSearchExtraction
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceToSearchLocalBridgeAntecedents_selectorTransfer' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceToSearchLocalBridgeAntecedents_selectorTransfer
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceToSearchLocalBridgeAntecedents_profileCompatibility' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceToSearchLocalBridgeAntecedents_profileCompatibility
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceToSearchLocalBridgeAntecedents_classifications' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceToSearchLocalBridgeAntecedents_classifications
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_traceToSearchExtractionObligation' depends on axioms: [propext,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_traceToSearchExtractionObligation
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_selectorTransferObligation' depends on axioms: [propext,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_selectorTransferObligation
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_profileCompatibilityObligation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_profileCompatibilityObligation
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_suppliedProfiledRouteResourceFactsAntecedent' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_suppliedProfiledRouteResourceFactsAntecedent
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_suppliedFixedFiniteSearchPremiseFactsAntecedent' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_suppliedFixedFiniteSearchPremiseFactsAntecedent
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_missingTraceToSearchExtractionAntecedent' depends on axioms: [propext,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_missingTraceToSearchExtractionAntecedent
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_missingSelectorTransferAntecedent' depends on axioms: [propext,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_missingSelectorTransferAntecedent
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_missingProfileCompatibilityAntecedent' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_missingProfileCompatibilityAntecedent
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremiseLocalBridgeAntecedents' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremiseLocalBridgeAntecedents
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremiseLocalBridgeAntecedentsClassifications' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremiseLocalBridgeAntecedentsClassifications
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremiseLocalBridgeAntecedents_classifications' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremiseLocalBridgeAntecedents_classifications
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceProfileToQueryExtractionBridgeObligation' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceProfileToQueryExtractionBridgeObligation
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceToSearchExtractionConstructorFieldObligation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceToSearchExtractionConstructorFieldObligation
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceToSearchExtractionConstructorFieldObligation.profile_eq_project' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceToSearchExtractionConstructorFieldObligation.profile_eq_project
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceToSearchExtractionConstructorFieldObligation.tree_eq_project' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceToSearchExtractionConstructorFieldObligation.tree_eq_project
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceToSearchExtractionConstructorFieldObligation.profileBudgetPins_project' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceToSearchExtractionConstructorFieldObligation.profileBudgetPins_project
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceToSearchExtractionConstructorFieldObligation.selectorEval_project' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceToSearchExtractionConstructorFieldObligation.selectorEval_project
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceToSearchExtractionConstructorFieldObligation.traceProfileToQueryBridge_project' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceToSearchExtractionConstructorFieldObligation.traceProfileToQueryBridge_project
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceToSearchExtractionConstructorFieldObligation.ofSemanticFields' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceToSearchExtractionConstructorFieldObligation.ofSemanticFields
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceToSearchExtractionRelation' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceToSearchExtractionRelation
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceToSearchExtractionRelation.constructorField_project' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceToSearchExtractionRelation.constructorField_project
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceToSearchExtractionRelation.ofConstructorField' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceToSearchExtractionRelation.ofConstructorField
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceToSearchSelectorTransferEvidence' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceToSearchSelectorTransferEvidence
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceToSearchSelectorTransferEvidence.searchCorrect' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceToSearchSelectorTransferEvidence.searchCorrect
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceToSearchExtractionWitnessForProfile' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceToSearchExtractionWitnessForProfile
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceToSearchExtractionWitnessForProfile.extractionRelation_project' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceToSearchExtractionWitnessForProfile.extractionRelation_project
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceToSearchExtractionWitnessForProfile.selectorTransfer_project' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceToSearchExtractionWitnessForProfile.selectorTransfer_project
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceToSearchExtractionWitnessForProfile.toSearchPremiseInputs' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceToSearchExtractionWitnessForProfile.toSearchPremiseInputs
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceToSearchExtractionWitnessForProfile.toSearchPremiseInputs_tree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceToSearchExtractionWitnessForProfile.toSearchPremiseInputs_tree
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceToSearchExtractionWitnessForProfile.toSearchPremise' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceToSearchExtractionWitnessForProfile.toSearchPremise
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceToSearchExtractionWitnessForProfile.depthFloor' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceToSearchExtractionWitnessForProfile.depthFloor
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToSearchProfileCompatibility' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToSearchProfileCompatibility
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToSearchExtractionWitnessContract' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToSearchExtractionWitnessContract
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToSearchExtractionWitnessContract.profileCompatibility_project' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToSearchExtractionWitnessContract.profileCompatibility_project
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToSearchExtractionWitnessContract.extractionWitness_project' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToSearchExtractionWitnessContract.extractionWitness_project
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToSearchExtractionWitnessContract.toSearchPremiseInputs' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToSearchExtractionWitnessContract.toSearchPremiseInputs
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToSearchExtractionWitnessContract.toSearchPremise' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToSearchExtractionWitnessContract.toSearchPremise
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToSearchExtractionWitnessContract.routeShell' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToSearchExtractionWitnessContract.routeShell
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToSearchExtractionWitnessContract.routeShell_boundaryFacts' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TwoCyclePath3TraceToSearchExtractionWitnessContract.routeShell_boundaryFacts
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_extractionWitnessContractTarget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_extractionWitnessContractTarget
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteSelectorTransferEvidence' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteSelectorTransferEvidence
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteProfileCompatibility' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteProfileCompatibility
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_profileWitnessShell_of_suppliedConcreteExtractionRelation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_profileWitnessShell_of_suppliedConcreteExtractionRelation
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_routeContractShell_of_suppliedConcreteExtractionRelation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_routeContractShell_of_suppliedConcreteExtractionRelation
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_extractionWitnessContractTarget_of_suppliedConcreteExtractionRelation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_extractionWitnessContractTarget_of_suppliedConcreteExtractionRelation
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_searchPremiseInputs_of_suppliedConcreteExtractionRelation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_searchPremiseInputs_of_suppliedConcreteExtractionRelation
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_searchPremiseInputs_tree_of_suppliedConcreteExtractionRelation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_searchPremiseInputs_tree_of_suppliedConcreteExtractionRelation
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_searchPremise_of_suppliedConcreteExtractionRelation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_searchPremise_of_suppliedConcreteExtractionRelation
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_routeShell_of_suppliedConcreteExtractionRelation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_routeShell_of_suppliedConcreteExtractionRelation
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_routeShell_boundaryFacts_of_suppliedConcreteExtractionRelation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_routeShell_boundaryFacts_of_suppliedConcreteExtractionRelation
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionRelationTarget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionRelationTarget
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionRelationAntecedent' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionRelationAntecedent
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TwoCyclePath3ConcreteTraceToSearchExtractionObstructionMap' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TwoCyclePath3ConcreteTraceToSearchExtractionObstructionMap
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceToSearchConcreteExtractionObstructionMap_remainingExtractionObligation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceToSearchConcreteExtractionObstructionMap_remainingExtractionObligation
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceToSearchConcreteExtractionObstructionMap_concreteExtractionRelation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceToSearchConcreteExtractionObstructionMap_concreteExtractionRelation
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceToSearchConcreteExtractionObstructionMap_selectorTransferEvidence' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceToSearchConcreteExtractionObstructionMap_selectorTransferEvidence
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceToSearchConcreteExtractionObstructionMap_profileCompatibilityEvidence' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceToSearchConcreteExtractionObstructionMap_profileCompatibilityEvidence
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceToSearchConcreteExtractionObstructionMap_concreteExtractionRelation_classification' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceToSearchConcreteExtractionObstructionMap_concreteExtractionRelation_classification
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionObstructionMap' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionObstructionMap
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionObstructionMap_remainingTarget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionObstructionMap_remainingTarget
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionObstructionMap_selectorTransferEvidence' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionObstructionMap_selectorTransferEvidence
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionObstructionMap_profileCompatibilityEvidence' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionObstructionMap_profileCompatibilityEvidence
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionObstructionMap_classification' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionObstructionMap_classification
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionConstructorFieldTarget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionConstructorFieldTarget
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionRelationTarget_constructorField' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionRelationTarget_constructorField
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_constructorField_to_concreteTraceToSearchExtractionRelationTarget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_constructorField_to_concreteTraceToSearchExtractionRelationTarget
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionRelationTarget_iff_constructorFieldTarget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionRelationTarget_iff_constructorFieldTarget
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionConstructorFieldAntecedent' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionConstructorFieldAntecedent
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TwoCyclePath3ConcreteTraceToSearchExtractionConstructorFieldObstructionMap' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TwoCyclePath3ConcreteTraceToSearchExtractionConstructorFieldObstructionMap
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceToSearchConcreteExtractionConstructorFieldObstructionMap_remainingConstructorFieldObligation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceToSearchConcreteExtractionConstructorFieldObstructionMap_remainingConstructorFieldObligation
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceToSearchConcreteExtractionConstructorFieldObstructionMap_constructorField_classification' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceToSearchConcreteExtractionConstructorFieldObstructionMap_constructorField_classification
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionConstructorFieldObstructionMap' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionConstructorFieldObstructionMap
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionConstructorFieldObstructionMap_remainingTarget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionConstructorFieldObstructionMap_remainingTarget
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionConstructorFieldObstructionMap_classification' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionConstructorFieldObstructionMap_classification
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryExtractionBridgeTarget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryExtractionBridgeTarget
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteConstructorFieldTarget_traceProfileToQueryBridge' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteConstructorFieldTarget_traceProfileToQueryBridge
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_traceProfileToQueryBridge_to_concreteConstructorFieldTarget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_traceProfileToQueryBridge_to_concreteConstructorFieldTarget
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteConstructorFieldTarget_iff_traceProfileToQueryBridgeTarget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteConstructorFieldTarget_iff_traceProfileToQueryBridgeTarget
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryExtractionBridgeAntecedent' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryExtractionBridgeAntecedent
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TwoCyclePath3ConcreteTraceToSearchExtractionConstructorFieldSemanticDecomposition' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TwoCyclePath3ConcreteTraceToSearchExtractionConstructorFieldSemanticDecomposition
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceToSearchConstructorFieldSemanticDecomposition_remainingTraceProfileToQueryBridge' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceToSearchConstructorFieldSemanticDecomposition_remainingTraceProfileToQueryBridge
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceToSearchConstructorFieldSemanticDecomposition_selectorTransferEvidence' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceToSearchConstructorFieldSemanticDecomposition_selectorTransferEvidence
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceToSearchConstructorFieldSemanticDecomposition_profileCompatibilityEvidence' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceToSearchConstructorFieldSemanticDecomposition_profileCompatibilityEvidence
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceToSearchConstructorFieldSemanticDecomposition_traceProfileToQueryBridge_classification' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceToSearchConstructorFieldSemanticDecomposition_traceProfileToQueryBridge_classification
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteConstructorFieldSemanticDecomposition' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteConstructorFieldSemanticDecomposition
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteConstructorFieldSemanticDecomposition_remainingTarget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteConstructorFieldSemanticDecomposition_remainingTarget
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteConstructorFieldSemanticDecomposition_classification' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteConstructorFieldSemanticDecomposition_classification
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteConstructorFieldSemanticDecomposition_selectorTransferEvidence' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteConstructorFieldSemanticDecomposition_selectorTransferEvidence
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteConstructorFieldSemanticDecomposition_profileCompatibilityEvidence' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteConstructorFieldSemanticDecomposition_profileCompatibilityEvidence
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TwoCyclePath3ConcreteTraceProfileToQueryExtractionBridgeSuppliedFiniteSemantics' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TwoCyclePath3ConcreteTraceProfileToQueryExtractionBridgeSuppliedFiniteSemantics
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryExtractionBridgeSuppliedFiniteSemantics' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryExtractionBridgeSuppliedFiniteSemantics
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TwoCyclePath3ConcreteTraceProfileToQueryExtractionBridgeSemanticFieldObstructionMap' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TwoCyclePath3ConcreteTraceProfileToQueryExtractionBridgeSemanticFieldObstructionMap
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceProfileToQueryExtractionBridgeSemanticFieldObstructionMap_remainingBridgeObligation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceProfileToQueryExtractionBridgeSemanticFieldObstructionMap_remainingBridgeObligation
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceProfileToQueryExtractionBridgeSemanticFieldObstructionMap_suppliedFiniteSemantics' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceProfileToQueryExtractionBridgeSemanticFieldObstructionMap_suppliedFiniteSemantics
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceProfileToQueryExtractionBridgeSemanticFieldObstructionMap_traceProfileToQueryBridge_classification' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceProfileToQueryExtractionBridgeSemanticFieldObstructionMap_traceProfileToQueryBridge_classification
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryExtractionBridgeSemanticFieldObstructionMap' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryExtractionBridgeSemanticFieldObstructionMap
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryExtractionBridgeSemanticFieldObstructionMap_remainingTarget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryExtractionBridgeSemanticFieldObstructionMap_remainingTarget
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryExtractionBridgeSemanticFieldObstructionMap_suppliedFiniteSemantics' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryExtractionBridgeSemanticFieldObstructionMap_suppliedFiniteSemantics
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryExtractionBridgeSemanticFieldObstructionMap_classification' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryExtractionBridgeSemanticFieldObstructionMap_classification
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceProfileToQueryBridgeRequirementClass' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceProfileToQueryBridgeRequirementClass
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceProfileToQueryBridgeRequirement' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceProfileToQueryBridgeRequirement
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_instanceCompatibilityObligation' depends on axioms: [propext,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_instanceCompatibilityObligation
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_extractionProcedureObligation' depends on axioms: [propext,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_extractionProcedureObligation
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_resourcePreservationObligation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_resourcePreservationObligation
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_traceFamilyGeneralizationObligation' depends on axioms: [propext,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_traceFamilyGeneralizationObligation
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_suppliedFiniteSemanticsBridgeRequirement' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_suppliedFiniteSemanticsBridgeRequirement
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_remainingTraceProfileToQueryBridgeRequirement' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_remainingTraceProfileToQueryBridgeRequirement
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_instanceCompatibilityBridgeRequirement' depends on axioms: [propext,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_instanceCompatibilityBridgeRequirement
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_extractionProcedureBridgeRequirement' depends on axioms: [propext,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_extractionProcedureBridgeRequirement
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_resourcePreservationBridgeRequirement' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_resourcePreservationBridgeRequirement
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_familyGeneralizationBridgeRequirement' depends on axioms: [propext,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_familyGeneralizationBridgeRequirement
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TwoCyclePath3ConcreteTraceProfileToQueryBridgeRequirementsDecomposition' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TwoCyclePath3ConcreteTraceProfileToQueryBridgeRequirementsDecomposition
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceProfileToQueryBridgeRequirementsDecomposition_remainingMissingRequirements' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceProfileToQueryBridgeRequirementsDecomposition_remainingMissingRequirements
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceProfileToQueryBridgeRequirementsDecomposition_instanceCompatibility' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceProfileToQueryBridgeRequirementsDecomposition_instanceCompatibility
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceProfileToQueryBridgeRequirementsDecomposition_extractionProcedure' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceProfileToQueryBridgeRequirementsDecomposition_extractionProcedure
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceProfileToQueryBridgeRequirementsDecomposition_resourcePreservation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceProfileToQueryBridgeRequirementsDecomposition_resourcePreservation
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceProfileToQueryBridgeRequirementsDecomposition_familyGeneralization' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceProfileToQueryBridgeRequirementsDecomposition_familyGeneralization
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceProfileToQueryBridgeRequirementsDecomposition_classifications' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceProfileToQueryBridgeRequirementsDecomposition_classifications
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryBridgeRequirementsDecomposition' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryBridgeRequirementsDecomposition
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryBridgeRequirementsDecomposition_remainingBridgeTarget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryBridgeRequirementsDecomposition_remainingBridgeTarget
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryBridgeRequirementsDecomposition_classifications' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryBridgeRequirementsDecomposition_classifications
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryBridgeRequirementsDecomposition_remainingMissingRequirements' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryBridgeRequirementsDecomposition_remainingMissingRequirements
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TraceProfileToQueryBridgeInterfaceContractFields' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TraceProfileToQueryBridgeInterfaceContractFields
+
+/-- info: 'PvNP.BDTraceToSearchPremise.TwoCyclePath3ConcreteTraceProfileToQueryBridgeInterfaceContract' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.TwoCyclePath3ConcreteTraceProfileToQueryBridgeInterfaceContract
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceProfileToQueryBridgeInterfaceContract_requiredFieldStatements' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceProfileToQueryBridgeInterfaceContract_requiredFieldStatements
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceProfileToQueryBridgeInterfaceContract_instanceCompatibilityStatement' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceProfileToQueryBridgeInterfaceContract_instanceCompatibilityStatement
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceProfileToQueryBridgeInterfaceContract_extractionProcedureShapeStatement' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceProfileToQueryBridgeInterfaceContract_extractionProcedureShapeStatement
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceProfileToQueryBridgeInterfaceContract_resourcePreservationStatement' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceProfileToQueryBridgeInterfaceContract_resourcePreservationStatement
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceProfileToQueryBridgeInterfaceContract_familyGeneralizationTargetStatement' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceProfileToQueryBridgeInterfaceContract_familyGeneralizationTargetStatement
+
+/-- info: 'PvNP.BDTraceToSearchPremise.traceProfileToQueryBridgeInterfaceContract_requirementClassifications' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceProfileToQueryBridgeInterfaceContract_requirementClassifications
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryBridgeInterfaceContract' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryBridgeInterfaceContract
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryBridgeInterfaceContract_remainingBridgeTarget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryBridgeInterfaceContract_remainingBridgeTarget
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryBridgeInterfaceContract_requiredFieldStatements' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryBridgeInterfaceContract_requiredFieldStatements
+
+/-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryBridgeInterfaceContract_requirementClassifications' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryBridgeInterfaceContract_requirementClassifications
+
+/-- info: 'PvNP.twoCyclePath3GeneratedBridgeWitness_profiledRoute_threeTwoPHPSearchBoundary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.twoCyclePath3GeneratedBridgeWitness_profiledRoute_threeTwoPHPSearchBoundary
+
+/-- info: 'PvNP.twoCyclePath3GeneratedBridgeWitness_profiledRoute_threeTwoPHPSearchBoundary_of_evalSelector' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.twoCyclePath3GeneratedBridgeWitness_profiledRoute_threeTwoPHPSearchBoundary_of_evalSelector
+
+/-- info: 'PvNP.twoCyclePath3GeneratedBridgeWitness_profiledRoute_threeTwoPHPSearchBoundary_concreteQueryTree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.twoCyclePath3GeneratedBridgeWitness_profiledRoute_threeTwoPHPSearchBoundary_concreteQueryTree
+
+/-- info: 'PvNP.twoCyclePath3GeneratedBridgeWitness_profiledRoute_threeTwoPHPSearchBoundary_concreteQueryTree_resourceBudgetPins' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.twoCyclePath3GeneratedBridgeWitness_profiledRoute_threeTwoPHPSearchBoundary_concreteQueryTree_resourceBudgetPins
+
 /-- info: 'PvNP.RestrictedPHPFloor.phpBoundary_formula_eq' depends on axioms: [propext, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.RestrictedPHPFloor.phpBoundary_formula_eq
@@ -168,6 +2212,26 @@ This module pins the axiom profile of the publication-facing theorem surface.
 #guard_msgs in
 #print axioms PvNP.RestrictedPHPFloor.twoOnePHPFalsifiedClauseSearchDepthFloor
 
+/-- info: 'PvNP.RestrictedPHPFloor.threeTwoPHPFalsifiedClauseSelector' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.RestrictedPHPFloor.threeTwoPHPFalsifiedClauseSelector
+
+/-- info: 'PvNP.RestrictedPHPFloor.threeTwoPHPFalsifiedClauseSelector_valid' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.RestrictedPHPFloor.threeTwoPHPFalsifiedClauseSelector_valid
+
+/-- info: 'PvNP.RestrictedPHPFloor.threeTwoPHPFalsifiedClauseSearchCorrect_of_evalSelector' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.RestrictedPHPFloor.threeTwoPHPFalsifiedClauseSearchCorrect_of_evalSelector
+
+/-- info: 'PvNP.RestrictedPHPFloor.threeTwoPHPFalsifiedClauseQueryTree' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.RestrictedPHPFloor.threeTwoPHPFalsifiedClauseQueryTree
+
+/-- info: 'PvNP.RestrictedPHPFloor.threeTwoPHPFalsifiedClauseQueryTree_evalSelector' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.RestrictedPHPFloor.threeTwoPHPFalsifiedClauseQueryTree_evalSelector
+
 /-- info: 'PvNP.RestrictedPHPFloor.queryTree_depth_ge_two_of_two_unqueried_ambiguity' depends on axioms: [propext] -/
 #guard_msgs in
 #print axioms PvNP.RestrictedPHPFloor.queryTree_depth_ge_two_of_two_unqueried_ambiguity
@@ -175,3 +2239,294 @@ This module pins the axiom profile of the publication-facing theorem surface.
 /-- info: 'PvNP.RestrictedPHPFloor.threeTwoPHPFalsifiedClauseSearchDepthFloor' depends on axioms: [propext] -/
 #guard_msgs in
 #print axioms PvNP.RestrictedPHPFloor.threeTwoPHPFalsifiedClauseSearchDepthFloor
+
+/-! ## S2065/S2066 proved concrete extraction bridge and `3 x 2` search floor of three
+
+Pins for the S2065 trace/profile-to-query extraction bridge (module
+`PvNP.BDTraceToSearchExtraction` and the proved S2052-S2064 obligations in
+`PvNP.BDTraceToSearchPremise`) and the S2066 `3 x 2` falsified-clause
+search depth floor of three (`PvNP.RestrictedPHPFloor`).  These are finite
+concrete-instance results only: not lower bounds, not Frege/PHP results, and
+not P vs NP statements.  The genuine open proof-complexity route obligation
+remains the untouched empty
+`twoCyclePath3GeneratedBridgeWitness_positiveAlignedSchedule_unresolvedProofComplexityRouteObligation`.
+-/
+
+/-- info: 'PvNP.BDTraceToSearchExtraction.phpVarEmbedding' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchExtraction.phpVarEmbedding
+
+/-- info: 'PvNP.BDTraceToSearchExtraction.phpVarEmbedding_injective' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchExtraction.phpVarEmbedding_injective
+
+/-- info: 'PvNP.BDTraceToSearchExtraction.traceQueryOrder' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchExtraction.traceQueryOrder
+
+/-- info: 'PvNP.BDTraceToSearchExtraction.buildTree' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchExtraction.buildTree
+
+/-- info: 'PvNP.BDTraceToSearchExtraction.buildTree_evalSelector' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchExtraction.buildTree_evalSelector
+
+/-- info: 'PvNP.BDTraceToSearchExtraction.extractQueryTree' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchExtraction.extractQueryTree
+
+/--
+info: 'PvNP.BDTraceToSearchExtraction.extractQueryTree_evalSelector' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchExtraction.extractQueryTree_evalSelector
+
+/--
+info: 'PvNP.BDTraceToSearchExtraction.extractQueryTree_matchesFixedTree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchExtraction.extractQueryTree_matchesFixedTree
+
+/--
+info: 'PvNP.BDTraceToSearchExtraction.extractQueryTree_searchCorrect' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchExtraction.extractQueryTree_searchCorrect
+
+/-- info: 'PvNP.BDTraceToSearchExtraction.extractQueryTree_depthFloor' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchExtraction.extractQueryTree_depthFloor
+
+/--
+info: 'PvNP.BDTraceToSearchExtraction.extractQueryTree_depthFloor_three' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchExtraction.extractQueryTree_depthFloor_three
+
+/-- info: 'PvNP.BDTraceToSearchExtraction.twoCyclePath3_cnfBDFormula_eval_false' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchExtraction.twoCyclePath3_cnfBDFormula_eval_false
+
+/-- info: 'PvNP.BDTraceToSearchExtraction.twoCyclePath3ThreeTwoPHP_commonExtension' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchExtraction.twoCyclePath3ThreeTwoPHP_commonExtension
+
+/-- info: 'PvNP.BDTraceToSearchExtraction.fixedTree_queryDepth_eq_six' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchExtraction.fixedTree_queryDepth_eq_six
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.traceProfileToQueryExtractionBridge_toFixedTree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.traceProfileToQueryExtractionBridge_toFixedTree
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryExtractionBridgeTarget_proved' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryExtractionBridgeTarget_proved
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionConstructorFieldTarget_proved' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionConstructorFieldTarget_proved
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionRelationTarget_proved' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceToSearchExtractionRelationTarget_proved
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_extractionWitnessContractTarget_proved' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_extractionWitnessContractTarget_proved
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_provedRouteShell' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_provedRouteShell
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_provedRouteShell_boundaryFacts' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_provedRouteShell_boundaryFacts
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_localFutureBridgeRouteObligation_proved' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_localFutureBridgeRouteObligation_proved
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_explicitLocalFutureBridgeTarget_proved' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_explicitLocalFutureBridgeTarget_proved
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_traceToSearchExtractionObligation_proved' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_traceToSearchExtractionObligation_proved
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_selectorTransferObligation_proved' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_selectorTransferObligation_proved
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_profileCompatibilityObligation_proved' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_profileCompatibilityObligation_proved
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_suppliedProfiledRouteResourceFacts_proved' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_suppliedProfiledRouteResourceFacts_proved
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_suppliedFixedFiniteSearchPremiseFacts_proved' depends on axioms: [propext,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_suppliedFixedFiniteSearchPremiseFacts_proved
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremiseLocalBridgeAntecedents_remainingAntecedents_proved' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremiseLocalBridgeAntecedents_remainingAntecedents_proved
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_instanceCompatibilityObligation_proved' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_instanceCompatibilityObligation_proved
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_extractionProcedureObligation_proved' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_extractionProcedureObligation_proved
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_resourcePreservationObligation_proved' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_resourcePreservationObligation_proved
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_traceFamilyGeneralizationObligation_proved' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_traceFamilyGeneralizationObligation_proved
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryBridgeRequirementsDecomposition_remainingMissingRequirements_proved' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryBridgeRequirementsDecomposition_remainingMissingRequirements_proved
+
+/--
+info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryBridgeInterfaceContract_requiredFieldStatements_proved' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryBridgeInterfaceContract_requiredFieldStatements_proved
+
+/--
+info: 'PvNP.RestrictedPHPFloor.queryTree_depth_ge_three_of_adversary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.RestrictedPHPFloor.queryTree_depth_ge_three_of_adversary
+
+/--
+info: 'PvNP.RestrictedPHPFloor.threeTwoPHPFalsifiedClauseSearchDepthFloor_three' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.RestrictedPHPFloor.threeTwoPHPFalsifiedClauseSearchDepthFloor_three
+
+/--
+info: 'PvNP.RestrictedPHPFloor.threeTwoPHPFalsifiedClauseQueryTree_depth_ge_three' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.RestrictedPHPFloor.threeTwoPHPFalsifiedClauseQueryTree_depth_ge_three
+
+/-- info: 'PvNP.RestrictedPHPFloor.FalsifiedClauseSearchDepthFloorStatement' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.RestrictedPHPFloor.FalsifiedClauseSearchDepthFloorStatement
+
+/-- info: 'PvNP.RestrictedPHPFloor.twoOnePHPFalsifiedClauseSearchDepthFloorStatement_two' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.RestrictedPHPFloor.twoOnePHPFalsifiedClauseSearchDepthFloorStatement_two
+
+/--
+info: 'PvNP.RestrictedPHPFloor.threeTwoPHPFalsifiedClauseSearchDepthFloorStatement_three' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.RestrictedPHPFloor.threeTwoPHPFalsifiedClauseSearchDepthFloorStatement_three

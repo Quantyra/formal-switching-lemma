@@ -8,6 +8,8 @@ package formal_switching_lemma where
 require mathlib from git
   "https://github.com/leanprover-community/mathlib4" @ "v4.13.0"
 
+require quantyra from "../certified-affine-extraction"
+
 @[default_target]
 lean_lib PvNP where
   srcDir := "lean"
