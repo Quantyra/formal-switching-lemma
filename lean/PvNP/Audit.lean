@@ -6,7 +6,7 @@ import PvNP.CertifiedAffine
 import PvNP.GraphIndexedBridge
 import PvNP.ProfiledRoutePHPBoundary
 import PvNP.RestrictedPHPFloor
-import PvNP.PHPRestrictedDepthFloor
+import PvNP.PHPMatchingDistribution
 
 /-!
 # Formal Switching Lemma Audit Surface
@@ -2970,3 +2970,64 @@ info: 'PvNP.PHPRestrictedDepthFloor.freeRows_thresholdS_length' depends on axiom
 -/
 #guard_msgs in
 #print axioms PvNP.PHPRestrictedDepthFloor.freeRows_thresholdS_length
+
+/-! ## S2073: the uniform matching-restriction space with exact star counting
+
+Pins for `PvNP.PHPMatchingDistribution` (Gate A rung 3, first increment): the
+uniform `s`-subset restriction space (`choose h s` elements), the exact
+star/fix counts per variable (`choose (h-1) s` free /
+`choose h s - choose (h-1) s` fixed), the exact star-probability ratio in
+counting form (`h * choose (h-1) s = (h - s) * choose h s`), and the
+probability-one transfer of the S2072 floor (every point of the space keeps
+depth >= (h-s)*h for correct trees), with per-point non-vacuity.  Counting
+form only — NOT a switching lemma (no collapse-probability upper bound is
+stated), NOT Frege/PHP proof-size, NOT NP/circuit, NOT P vs NP.
+-/
+
+/--
+info: 'PvNP.PHPMatchingDistribution.card_subsetSpace' depends on axioms: [propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDistribution.card_subsetSpace
+
+/--
+info: 'PvNP.PHPMatchingDistribution.restrictionOf_phpVar_eq_none_iff' depends on axioms: [propext, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDistribution.restrictionOf_phpVar_eq_none_iff
+
+/--
+info: 'PvNP.PHPMatchingDistribution.freeCount_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDistribution.freeCount_eq
+
+/--
+info: 'PvNP.PHPMatchingDistribution.fixCount_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDistribution.fixCount_eq
+
+/--
+info: 'PvNP.PHPMatchingDistribution.star_ratio' depends on axioms: [propext]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDistribution.star_ratio
+
+/--
+info: 'PvNP.PHPMatchingDistribution.phpVar_freeCount' depends on axioms: [propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDistribution.phpVar_freeCount
+
+/--
+info: 'PvNP.PHPMatchingDistribution.subsetSpace_depthFloor' depends on axioms: [propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDistribution.subsetSpace_depthFloor
+
+/--
+info: 'PvNP.PHPMatchingDistribution.subsetSpace_correctTree_exists' depends on axioms: [propext, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDistribution.subsetSpace_correctTree_exists
