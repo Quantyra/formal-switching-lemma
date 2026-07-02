@@ -320,7 +320,7 @@ theorem dtEval_flipAt_of_not_mem_path {n : Nat} (a : Assignment n)
           simpa [hval, hav] using this
 
 /-- A duplicate-free list longer than another has a member outside it. -/
-private theorem exists_not_mem_of_short {n : Nat}
+theorem exists_not_mem_of_short {n : Nat}
     (L : List (Fin n)) (hnd : L.Nodup) (P : List (Fin n))
     (hlt : P.length < L.length) :
     ∃ w ∈ L, w ∉ P := by

@@ -6,7 +6,7 @@ import PvNP.CertifiedAffine
 import PvNP.GraphIndexedBridge
 import PvNP.ProfiledRoutePHPBoundary
 import PvNP.RestrictedPHPFloor
-import PvNP.PHPBooleanDepthFloor
+import PvNP.PHPRestrictedDepthFloor
 
 /-!
 # Formal Switching Lemma Audit Surface
@@ -2908,3 +2908,65 @@ info: 'PvNP.PHPBooleanDepthFloor.dtOfFun_eval' depends on axioms: [propext, Quot
 -/
 #guard_msgs in
 #print axioms PvNP.PHPBooleanDepthFloor.dtOfFun_eval
+
+/-! ## S2072: depth floors under partial-matching restrictions
+
+Pins for `PvNP.PHPRestrictedDepthFloor`: the Gate A rung after S2071 —
+`PHPDepthFloorStatement` instances with NONTRIVIAL restriction families.  The
+master theorem gives, for EVERY partial-matching restriction (any fixed pigeon
+set `S`, any permutation `f`), a depth floor equal to the number of free
+variables (the restricted function stays evasive on its free grid, by full
+sensitivity at the permutation point of `f`); the canonical two-parameter
+boundary family fixes the first `s` pigeons along the identity with floor
+`(h - s) * h`.  Worst-case per-restriction floors; NOT the probabilistic
+random-restriction statements the switching lemma consumes, NOT a Frege/PHP
+proof-size bound, NOT NP/circuit, NOT P vs NP.
+-/
+
+/--
+info: 'PvNP.PHPRestrictedDepthFloor.eval_permAssignment_true' depends on axioms: [propext, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPRestrictedDepthFloor.eval_permAssignment_true
+
+/--
+info: 'PvNP.PHPRestrictedDepthFloor.eval_flip_permAssignment_false' depends on axioms: [propext, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPRestrictedDepthFloor.eval_flip_permAssignment_false
+
+/--
+info: 'PvNP.PHPRestrictedDepthFloor.permAssignment_agrees' depends on axioms: [propext, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPRestrictedDepthFloor.permAssignment_agrees
+
+/--
+info: 'PvNP.PHPRestrictedDepthFloor.flip_agrees' depends on axioms: [propext, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPRestrictedDepthFloor.flip_agrees
+
+/--
+info: 'PvNP.PHPRestrictedDepthFloor.matchingRestriction_depthFloor' depends on axioms: [propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPRestrictedDepthFloor.matchingRestriction_depthFloor
+
+/--
+info: 'PvNP.PHPRestrictedDepthFloor.matchingBoundary_depthFloor' depends on axioms: [propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPRestrictedDepthFloor.matchingBoundary_depthFloor
+
+/--
+info: 'PvNP.PHPRestrictedDepthFloor.matchingBoundary_correctTree_exists' depends on axioms: [propext, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPRestrictedDepthFloor.matchingBoundary_correctTree_exists
+
+/--
+info: 'PvNP.PHPRestrictedDepthFloor.freeRows_thresholdS_length' depends on axioms: [propext, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPRestrictedDepthFloor.freeRows_thresholdS_length
