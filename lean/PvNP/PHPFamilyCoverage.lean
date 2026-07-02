@@ -16,7 +16,7 @@ traces of the local system: query-order length and trace size at least
 
 * This is a variable-coverage floor for refutation traces of the LOCAL
   cut-free bounded-depth Tait system, QUADRATIC in `h` because the formula
-  itself has `(h+1)*h` variables (it is linear in formula size).  It is NOT
+  itself has `(h+1)*h` variables (they are linear in the number of variables; no formal formula-size measure is stated).  It is NOT
   the classical exponential AC0-Frege/PHP lower bound, NOT a bound for any
   proof system with cut, NOT an NP/circuit lower bound, and NOT a statement
   about P vs NP.
@@ -201,7 +201,7 @@ theorem phpCNF_family_traceQueryOrder_length {h : Nat} (hh : 0 < h)
 /-- **Family trace-size floor.**  Every bounded-depth refutation trace of
 `phpCNF (h+1) h` has size at least `(h+1)*h`: the refutation must genuinely
 touch every variable of the growing family.  (Variable-coverage floor for the
-LOCAL cut-free Tait trace system, linear in formula size; not a Frege/PHP
+LOCAL cut-free Tait trace system, linear in the number of PHP variables; not a Frege/PHP
 proof-size bound — see the module header.) -/
 theorem phpCNF_family_traceSize {h : Nat} (hh : 0 < h)
     (π : BDRefutationTrace [cnfToBD (phpCNF (h + 1) h)]) :

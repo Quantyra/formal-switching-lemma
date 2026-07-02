@@ -23,7 +23,7 @@ This repository does **not** establish or imply:
 - a general CNF switching lemma independent of the explicit dualization bridge;
 - a proof-size or proof-depth lower bound for any proof system WITH CUT: the
   variable-coverage and trace-size floors concern only this repository's local
-  cut-free bounded-depth Tait trace system and are linear in formula size;
+  cut-free bounded-depth Tait trace system and are linear in the number of PHP variables (the stated `(h+1)*h` / `2*h` variable-query floors);
 - tightness of the parameterized `2*h` search floor beyond the fixed `3 x 2`
   instance (family tightness is informal only);
 - any proof-complexity content of the S2065 extraction bridge at its fixed
@@ -104,9 +104,10 @@ proof-complexity route obligation remains an explicitly uninhabited `Prop`.
 
 **Scope of the coverage/trace floors.** All variable-coverage and trace-size
 floors (`BDVariableCoverage`, `PHPCNFCoverage`, `PHPFamilyCoverage`,
-`TraceSearchConnection`, `PHPFamilyTraceSearchRoute`) concern the LOCAL
+`TraceSearchConnection`, `PHPFamilyTraceSearchRoute`; the family statements
+are for every `h > 0`) concern the LOCAL
 cut-free bounded-depth Tait trace system defined in this repository and are
-linear in formula size.  The parameterized `2*h` search floor is a
+linear in the number of PHP variables (the stated `(h+1)*h` / `2*h` variable-query floors).  The parameterized `2*h` search floor is a
 decision-tree bound for the falsified-clause SEARCH problem, vacuous for
 `p <= h` (informal, not formalized; non-vacuity is witnessed at `3 x 2`), and
 its family tightness is informal only.  Completeness (`bdTait_complete`) alone proves no hardness and

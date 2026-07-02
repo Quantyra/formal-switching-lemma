@@ -107,7 +107,7 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   growing-family variable-coverage floors — for every `h > 0`, every
   refutation trace of `phpCNF (h+1) h` queries all `(h+1)·h` variables, so its
   query-order length and trace size are at least `(h+1)·h`.  These are
-  LINEAR-in-formula-size structural bounds on the local cut-free trace system,
+  variable-coverage floors, LINEAR in the number of PHP variables, on the local cut-free trace system,
   not Frege/PHP proof-size lower bounds.
 - `PvNP.BDTaitCompleteness.bdTait_complete` with `phpCNF_family_unsat` and
   `phpCNF_family_refutationTrace_nonempty`: completeness of the local
@@ -124,7 +124,7 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   whose depth equals the trace's query-order length → the `2·h` adversary
   floor → `2·h ≤` query-order length `≤` trace size for every `h > 0` (bounds
   on refutation traces of the LOCAL cut-free trace system, in the
-  linear-in-formula-size regime).  The direct coverage bound `(h+1)·h` is
+  linear-in-the-number-of-variables regime).  The direct coverage bound `(h+1)·h` is
   numerically stronger for `h > 1`; the composition (the first
   refutation→search→adversary route formalized in this development) is the
   contribution, not the number.
@@ -158,7 +158,7 @@ This artifact does **not** prove or imply:
 - a general CNF switching lemma independent of the explicit dualization bridge;
 - a proof-size or proof-depth lower bound for any proof system WITH CUT: the
   variable-coverage and trace-size floors concern only the repository's local
-  cut-free bounded-depth Tait trace system and are linear in formula size;
+  cut-free bounded-depth Tait trace system and are linear in the number of PHP variables (the stated `(h+1)*h` / `2*h` variable-query floors);
 - tightness of the parameterized `2·h` search floor beyond the fixed `3 × 2`
   instance (family tightness is informal only);
 - any claim that the S2065 extraction bridge carries proof-complexity content
@@ -222,8 +222,9 @@ trace-dependent unpadded extraction and the composed family
 refutation→search→adversary route (`TraceSearchConnection`,
 `PHPFamilyTraceSearchRoute`), the `3 × 2` search floor of three with its
 generic adversary lemma (`RestrictedPHPFloor` additions), and the S2065
-extraction-bridge closure with its redefinition disclosure
-(`BDTraceToSearchExtraction`, `BDTraceToSearchPremise`):
+fixed-instance extraction bridge with its redefinition disclosure
+(`BDTraceToSearchExtraction`, `BDTraceToSearchPremise`; the genuine
+proof-complexity route obligation remains open):
 
 - DOI: (version DOI pending Zenodo auto-archive; concept DOI is `10.5281/zenodo.20757627`)
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.4.0`

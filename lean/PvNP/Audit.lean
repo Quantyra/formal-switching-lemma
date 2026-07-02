@@ -2545,7 +2545,7 @@ trace-dependent extraction and the composed refutation-to-search route
 (`PvNP.TraceSearchConnection`), and the growing-family coverage floors for
 `phpCNF (h+1) h` (`PvNP.PHPFamilyCoverage`).
 
-HONEST SCOPE: coverage floors are LINEAR-in-formula-size structural bounds on
+HONEST SCOPE: coverage floors are variable-coverage floors, LINEAR in the number of PHP variables, on
 refutation traces of the LOCAL cut-free bounded-depth Tait system; the search
 floor is a decision-tree bound for the falsified-clause SEARCH family.  None
 of these is a Frege/PHP proof-size lower bound for a system with cut, an

@@ -24,7 +24,7 @@ correct.
   family-level trace bound through the refutation→search→adversary
   composition — not the number.
 * All bounds concern refutation traces of the LOCAL cut-free bounded-depth
-  Tait system and are LINEAR in formula size.  NOT a Frege/PHP proof-size
+  Tait system and are LINEAR in the number of PHP variables (no formal formula-size measure is stated).  NOT a Frege/PHP proof-size
   lower bound for any system with cut, NOT an NP/circuit lower bound, NOT a
   statement about P vs NP.
 * The extracted trees and the selector are `noncomputable` (classical choice
@@ -259,7 +259,7 @@ theorem phpCNF_family_traceQueryOrder_length_ge_two_h_via_search {h : Nat}
 
 /-- The composed family bound transferred to trace size.  (Variable-coverage
 route through the search floor for the LOCAL cut-free Tait trace system;
-linear in formula size; not a Frege/PHP bound — see the module header.) -/
+linear in the number of PHP variables; not a Frege/PHP bound — see the module header.) -/
 theorem phpCNF_family_traceSize_ge_two_h_via_search {h : Nat}
     (hh : 0 < h) (π : BDRefutationTrace [cnfToBD (phpCNF (h + 1) h)]) :
     2 * h ≤ π.size :=
