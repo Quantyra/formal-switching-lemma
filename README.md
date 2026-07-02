@@ -76,6 +76,68 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   `3 × 2` bounded query/search floor (`2 ≤` worst-case query depth) for outputting
   a falsified clause of the fixed restricted PHP formula.  This is only a
   certificate-search result; it is not a Frege/PHP lower bound.
+- `PvNP.RestrictedPHPFloor.queryTree_depth_ge_three_of_adversary` and
+  `threeTwoPHPFalsifiedClauseSearchDepthFloor_three`: a reusable generic
+  adversary lemma forcing search-query depth at least three, and the `3 × 2`
+  falsified-clause search floor strengthened to three by a pigeon-partner
+  adversary; `FalsifiedClauseSearchDepthFloorStatement` is the general
+  statement shape with the proved `2 × 1` and `3 × 2` instances.
+- `PvNP.PHPSearchFloor.phpFalsifiedClauseSearchDepthFloor` and
+  `phpFalsifiedClauseSearchDepthFloorStatement`: the parameterized `p × h`
+  falsified-clause search depth floor (`2·h ≤` worst-case query depth) for
+  every `p` and `h`, via a reusable generic STATEFUL adversary lemma
+  (`queryTree_depth_floor_of_stateful_adversary`) — a FAMILY instance of the
+  statement shape.  Non-vacuity witnessed at `3 × 2`
+  (`phpFalsifiedClause32_correctTree_exists`); for `p ≤ h` the statement is
+  vacuous (no correct tree exists — informal, not formalized);
+  `threeTwoPHPFalsifiedClauseSearchDepthFloor_four` strengthens the bespoke
+  `3 × 2` floor to four.
+- `PvNP.PHPSearchFloorTightness.threeTwoPHPFalsifiedClauseSearch_optimal_depth_eq_four`:
+  formalized tightness at the fixed `3 × 2` instance — an explicit correct
+  search tree of depth exactly four together with the floor of four; the
+  optimal worst-case query count there is exactly four.  Family tightness of
+  the `2·h` floor is not formalized.
+- `PvNP.BDVariableCoverage.refutationTrace_queries_var` (with
+  `bdProofTrace_sound_nonstandard`): the variable-coverage theorem for the
+  repository's LOCAL cut-free bounded-depth Tait trace system — every
+  refutation trace must perform `litEM` on every variable whose avoiding
+  clauses are satisfiable (non-standard-semantics soundness device).
+- `PvNP.PHPCNFCoverage.phpCNF32_traceSize_ge_six` and
+  `PvNP.PHPFamilyCoverage.phpCNF_family_traceSize`: concrete `3 × 2` and
+  growing-family variable-coverage floors — for every `h > 0`, every
+  refutation trace of `phpCNF (h+1) h` queries all `(h+1)·h` variables, so its
+  query-order length and trace size are at least `(h+1)·h`.  These are
+  LINEAR-in-formula-size structural bounds on the local cut-free trace system,
+  not Frege/PHP proof-size lower bounds.
+- `PvNP.BDTaitCompleteness.bdTait_complete` with `phpCNF_family_unsat` and
+  `phpCNF_family_refutationTrace_nonempty`: completeness of the local
+  cut-free bounded-depth Tait system (every unsatisfiable CNF admits a
+  refutation trace; stated with `Nonempty`), pigeonhole unsatisfiability of
+  `phpCNF (h+1) h`, and nonemptiness of the refutation-trace types the
+  coverage floors quantify over.  Completeness alone proves no hardness.
+- `PvNP.TraceSearchConnection.extractQueryTreeUnpadded_evalSelector` and
+  `PvNP.PHPFamilyTraceSearchRoute.phpCNF_family_traceSize_ge_two_h_via_search`:
+  the trace-dependent UNPADDED extraction (query schedule = the trace's
+  `litEM` order; correctness consumes refutation-hood via the coverage
+  theorem; non-freeness witnessed by `buildTree_nil_incorrect`) and the
+  composed family route — refutation trace → extracted correct search tree
+  whose depth equals the trace's query-order length → the `2·h` adversary
+  floor → `2·h ≤` query-order length `≤` trace size for every `h > 0` (bounds
+  on refutation traces of the LOCAL cut-free trace system, in the
+  linear-in-formula-size regime).  The direct coverage bound `(h+1)·h` is
+  numerically stronger for `h > 1`; the composition (the first
+  refutation→search→adversary route formalized in this development) is the
+  contribution, not the number.
+- `PvNP.BDTraceToSearchExtraction` / `PvNP.BDTraceToSearchPremise`: the
+  S2065 trace/profile-to-query extraction bridge for the fixed `twoCyclePath3`
+  CNF against the fixed `3 × 2` search problem, with all S2052–S2064
+  interface-contract obligations proved under their S2065-redefined content.
+  REDEFINITION DISCLOSURE: before S2065 those obligation `Prop`s were
+  deliberately constructorless placeholders (uninhabitable); they were given
+  explicitly displayed content first and that content was then proved —
+  nothing previously open was proved under its old statement.  At that fixed
+  instance the search problem is total, so extraction correctness is
+  order-independent (disclosed in the module headers).
 
 ## Non-Claims Boundary
 
@@ -93,7 +155,23 @@ This artifact does **not** prove or imply:
 - any positive Boolean decision-tree depth floor for an unsatisfiable PHP formula
   merely from the bounded falsified-clause search floors;
 - arbitrary AC0 or arbitrary bounded-depth formula collapse;
-- a general CNF switching lemma independent of the explicit dualization bridge.
+- a general CNF switching lemma independent of the explicit dualization bridge;
+- a proof-size or proof-depth lower bound for any proof system WITH CUT: the
+  variable-coverage and trace-size floors concern only the repository's local
+  cut-free bounded-depth Tait trace system and are linear in formula size;
+- tightness of the parameterized `2·h` search floor beyond the fixed `3 × 2`
+  instance (family tightness is informal only);
+- any claim that the S2065 extraction bridge carries proof-complexity content
+  at its fixed instance (its search problem is total, so correctness there is
+  order-independent; the genuine open proof-complexity route obligation
+  remains an explicitly uninhabited `Prop`);
+- any strength, efficiency, or size/depth-optimality claim for the local
+  cut-free system from its completeness theorem (completeness alone proves no
+  hardness; the naive constructed refutations are exponential-size).
+
+Note on naming: the Lean namespace `BoundedDepthFrege` names this repository's
+bounded-depth formula and trace INFRASTRUCTURE; no lower bound for the
+bounded-depth Frege proof system is proved here.
 
 The CNF-facing public theorem is a dual corollary for simple CNF views: it
 reduces to the proved DNF switching bridge by complementing literals, formulas,
@@ -133,6 +211,22 @@ Version `v0.1.0` is archived on Zenodo:
 
 - DOI: `10.5281/zenodo.20757628`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.1.0`
+
+Version `v0.4.0` adds the variable-coverage floors for the local cut-free
+bounded-depth Tait trace system (`BDVariableCoverage`, `PHPCNFCoverage`,
+`PHPFamilyCoverage`), the parameterized `2·h` falsified-clause search depth
+floor via a reusable generic stateful adversary with formalized `3 × 2`
+tightness (`PHPSearchFloor`, `PHPSearchFloorTightness`), completeness of the
+local system with pigeonhole non-vacuity witnesses (`BDTaitCompleteness`), the
+trace-dependent unpadded extraction and the composed family
+refutation→search→adversary route (`TraceSearchConnection`,
+`PHPFamilyTraceSearchRoute`), the `3 × 2` search floor of three with its
+generic adversary lemma (`RestrictedPHPFloor` additions), and the S2065
+extraction-bridge closure with its redefinition disclosure
+(`BDTraceToSearchExtraction`, `BDTraceToSearchPremise`):
+
+- DOI: (version DOI pending Zenodo auto-archive; concept DOI is `10.5281/zenodo.20757627`)
+- Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.4.0`
 
 Version `v0.3.1` adds audited generated-stage infrastructure and generated
 nonempty k-layer schedule infrastructure

@@ -6,7 +6,7 @@ import PvNP.CertifiedAffine
 import PvNP.GraphIndexedBridge
 import PvNP.ProfiledRoutePHPBoundary
 import PvNP.RestrictedPHPFloor
-import PvNP.PHPSearchFloorTightness
+import PvNP.PHPFamilyTraceSearchRoute
 
 /-!
 # Formal Switching Lemma Audit Surface
@@ -2791,3 +2791,66 @@ info: 'PvNP.PHPSearchFloorTightness.threeTwoPHPFalsifiedClauseSearch_optimal_dep
 -/
 #guard_msgs in
 #print axioms PvNP.PHPSearchFloorTightness.threeTwoPHPFalsifiedClauseSearch_optimal_depth_eq_four
+
+/-! ## S2069: the family trace-to-search route
+
+Pins for `PvNP.PHPFamilyTraceSearchRoute`: the total valid selector for the
+`(h+1) x h` falsified-clause search problem (finite pigeonhole), the family
+unpadded extraction whose depth is exactly the trace's `litEM` query-order
+length, and the composed family bounds `2*h <=` query-order length / trace
+size THROUGH the search connection.  Variable-coverage-grade bounds for the
+LOCAL cut-free Tait trace system; NOT Frege/PHP, NP/circuit, or P vs NP
+statements.
+-/
+
+/--
+info: 'PvNP.PHPFamilyTraceSearchRoute.phpFalsifiedClause_exists' depends on axioms: [propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPFamilyTraceSearchRoute.phpFalsifiedClause_exists
+
+/--
+info: 'PvNP.PHPFamilyTraceSearchRoute.phpSelector_valid' depends on axioms: [propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPFamilyTraceSearchRoute.phpSelector_valid
+
+/--
+info: 'PvNP.PHPFamilyTraceSearchRoute.phpBuildTree_eval' depends on axioms: [propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPFamilyTraceSearchRoute.phpBuildTree_eval
+
+/--
+info: 'PvNP.PHPFamilyTraceSearchRoute.phpExtractTree_eval' depends on axioms: [propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPFamilyTraceSearchRoute.phpExtractTree_eval
+
+/--
+info: 'PvNP.PHPFamilyTraceSearchRoute.phpExtractTree_searchCorrect' depends on axioms: [propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPFamilyTraceSearchRoute.phpExtractTree_searchCorrect
+
+/--
+info: 'PvNP.PHPFamilyTraceSearchRoute.phpExtractTree_depth' depends on axioms: [propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPFamilyTraceSearchRoute.phpExtractTree_depth
+
+/--
+info: 'PvNP.PHPFamilyTraceSearchRoute.phpCNF_family_traceQueryOrder_length_ge_two_h_via_search' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPFamilyTraceSearchRoute.phpCNF_family_traceQueryOrder_length_ge_two_h_via_search
+
+/--
+info: 'PvNP.PHPFamilyTraceSearchRoute.phpCNF_family_traceSize_ge_two_h_via_search' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPFamilyTraceSearchRoute.phpCNF_family_traceSize_ge_two_h_via_search
