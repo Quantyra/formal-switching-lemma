@@ -6,7 +6,7 @@ import PvNP.CertifiedAffine
 import PvNP.GraphIndexedBridge
 import PvNP.ProfiledRoutePHPBoundary
 import PvNP.RestrictedPHPFloor
-import PvNP.PHPFamilyTraceSearchRoute
+import PvNP.PHPBooleanDepthFloor
 
 /-!
 # Formal Switching Lemma Audit Surface
@@ -2854,3 +2854,57 @@ info: 'PvNP.PHPFamilyTraceSearchRoute.phpCNF_family_traceSize_ge_two_h_via_searc
 -/
 #guard_msgs in
 #print axioms PvNP.PHPFamilyTraceSearchRoute.phpCNF_family_traceSize_ge_two_h_via_search
+
+/-! ## S2071: family Boolean depth floor for satisfiable PHP (evasiveness)
+
+Pins for `PvNP.PHPBooleanDepthFloor`: the first FAMILY instance of
+`RestrictedPHPFloor.PHPDepthFloorStatement` beyond the `1 x 1` boundary — for
+every `h`, any decision tree computing the SATISFIABLE `h x h` pigeonhole
+Boolean function under the empty restriction has depth at least `h * h`
+(evasiveness, by full sensitivity at the identity permutation point), with a
+correct tree of depth `h*h + 1` witnessing non-vacuity.  Empty restriction
+family only; elementary/classical mathematics; NOT a Frege/PHP proof-size
+bound, NOT an NP/circuit bound, NOT P vs NP.
+-/
+
+/--
+info: 'PvNP.PHPBooleanDepthFloor.eval_idAssignment_true' depends on axioms: [propext, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPBooleanDepthFloor.eval_idAssignment_true
+
+/--
+info: 'PvNP.PHPBooleanDepthFloor.eval_flip_idAssignment_false' depends on axioms: [propext, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPBooleanDepthFloor.eval_flip_idAssignment_false
+
+/--
+info: 'PvNP.PHPBooleanDepthFloor.dtPathVars_length_le_depth' depends on axioms: [propext, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPBooleanDepthFloor.dtPathVars_length_le_depth
+
+/--
+info: 'PvNP.PHPBooleanDepthFloor.dtEval_flipAt_of_not_mem_path' depends on axioms: [propext]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPBooleanDepthFloor.dtEval_flipAt_of_not_mem_path
+
+/--
+info: 'PvNP.PHPBooleanDepthFloor.fullPHPBoundary_depthFloor' depends on axioms: [propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPBooleanDepthFloor.fullPHPBoundary_depthFloor
+
+/--
+info: 'PvNP.PHPBooleanDepthFloor.fullPHPBoundary_correctTree_exists' depends on axioms: [propext, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPBooleanDepthFloor.fullPHPBoundary_correctTree_exists
+
+/--
+info: 'PvNP.PHPBooleanDepthFloor.dtOfFun_eval' depends on axioms: [propext, Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.PHPBooleanDepthFloor.dtOfFun_eval
