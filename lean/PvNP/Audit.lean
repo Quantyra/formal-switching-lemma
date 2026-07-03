@@ -11,6 +11,10 @@ import PvNP.GeneratedIteratedCollapse
 import PvNP.GeneratedOneStepDepthReduction
 import PvNP.RestrictionComposition
 import PvNP.GeneratedIteratedCollapseFinal
+import PvNP.RefinedSubspace
+import PvNP.SwitchingRelabel
+import PvNP.GeneratedRefinedCollapse
+import PvNP.RefinedTwoStageInstance
 import PvNP.PHPMatchingDistribution
 
 /-!
@@ -3464,3 +3468,114 @@ info: 'PvNP.GeneratedIteratedCollapseFinal.generatedIteratedCollapse_twoStage_no
 -/
 #guard_msgs in
 #print axioms PvNP.GeneratedIteratedCollapseFinal.generatedIteratedCollapse_twoStage_nonvacuous
+
+/-!
+Pins for `PvNP.RefinedSubspace`, `PvNP.SwitchingRelabel`,
+`PvNP.GeneratedRefinedCollapse`, and `PvNP.RefinedTwoStageInstance`: the
+renormalized (free-subcube) counting route closing the B4 satisfiability gap,
+and its concrete nonempty-gate two-stage instance.
+-/
+
+/-- info: 'PvNP.RefinedSubspace.RefinesWith' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.RefinedSubspace.RefinesWith
+
+/-- info: 'PvNP.RefinedSubspace.refinesSubspace' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.RefinedSubspace.refinesSubspace
+
+/-- info: 'PvNP.RefinedSubspace.refinesSubspace_card' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.RefinedSubspace.refinesSubspace_card
+
+/-- info: 'PvNP.RefinedSubspace.refinesSubspace_nonempty' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.RefinedSubspace.refinesSubspace_nonempty
+
+/-- info: 'PvNP.RefinedSubspace.stars_downRestriction' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.RefinedSubspace.stars_downRestriction
+
+/-- info: 'PvNP.SwitchingRelabel.dnfRestrict_refinesWith' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.SwitchingRelabel.dnfRestrict_refinesWith
+
+/-- info: 'PvNP.SwitchingRelabel.termCanonicalDT_mapDNF' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.SwitchingRelabel.termCanonicalDT_mapDNF
+
+/-- info: 'PvNP.SwitchingRelabel.dtDepth_termCanonicalDT_mapDNF' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.SwitchingRelabel.dtDepth_termCanonicalDT_mapDNF
+
+/-- info: 'PvNP.GeneratedRefinedCollapse.badSetTerm_refines_card_le' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GeneratedRefinedCollapse.badSetTerm_refines_card_le
+
+/-- info: 'PvNP.GeneratedRefinedCollapse.jointBadSet_refines_card_le' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GeneratedRefinedCollapse.jointBadSet_refines_card_le
+
+/--
+info: 'PvNP.GeneratedRefinedCollapse.simultaneousCollapse_exists_refined' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.GeneratedRefinedCollapse.simultaneousCollapse_exists_refined
+
+/-- info: 'PvNP.GeneratedRefinedCollapse.GeneratedRefinedStepInput' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GeneratedRefinedCollapse.GeneratedRefinedStepInput
+
+/--
+info: 'PvNP.GeneratedRefinedCollapse.generatedRefinedOneStep_exists' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.GeneratedRefinedCollapse.generatedRefinedOneStep_exists
+
+/-- info: 'PvNP.GeneratedRefinedCollapse.GeneratedRefinedCollapsePlan' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GeneratedRefinedCollapse.GeneratedRefinedCollapsePlan
+
+/--
+info: 'PvNP.GeneratedRefinedCollapse.GeneratedRefinedIteratedCertificate' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.GeneratedRefinedCollapse.GeneratedRefinedIteratedCertificate
+
+/--
+info: 'PvNP.GeneratedRefinedCollapse.generatedRefinedIteratedCertificate_exists' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.GeneratedRefinedCollapse.generatedRefinedIteratedCertificate_exists
+
+/--
+info: 'PvNP.GeneratedRefinedCollapse.generatedRefinedIteratedCollapse' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.GeneratedRefinedCollapse.generatedRefinedIteratedCollapse
+
+/-- info: 'PvNP.RefinedTwoStageInstance.depthOneDNFView' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.RefinedTwoStageInstance.depthOneDNFView
+
+/-- info: 'PvNP.RefinedTwoStageInstance.refinedTwoStagePlan' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.RefinedTwoStageInstance.refinedTwoStagePlan
+
+/--
+info: 'PvNP.RefinedTwoStageInstance.refinedTwoStage_nonemptyGates_nonvacuous' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.RefinedTwoStageInstance.refinedTwoStage_nonemptyGates_nonvacuous
