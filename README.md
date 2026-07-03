@@ -138,6 +138,10 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   nothing previously open was proved under its old statement.  At that fixed
   instance the search problem is total, so extraction correctness is
   order-independent (disclosed in the module headers).
+- `PvNP.TreePathViews.treeDNFView` / `treeCNFView` and
+  `PvNP.AutoReviewedIteration.nextLayer_*`: general decision-tree DNF/CNF
+  re-viewing plus automatic one-step next-layer scaffolding; representation
+  infrastructure only, not frozen-form B4 closure or many-round iteration.
 
 ## Non-Claims Boundary
 
@@ -188,7 +192,7 @@ Toolchain: `leanprover/lean4:v4.13.0`.
 Build the artifact:
 
 ```bash
-lake build PvNP.BoundedDepthIteratedCollapse
+lake build PvNP
 ```
 
 Run the audit surface:

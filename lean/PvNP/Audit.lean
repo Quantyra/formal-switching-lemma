@@ -16,6 +16,8 @@ import PvNP.SwitchingRelabel
 import PvNP.GeneratedRefinedCollapse
 import PvNP.RefinedTwoStageInstance
 import PvNP.PHPMatchingDistribution
+import PvNP.TreePathViews
+import PvNP.AutoReviewedIteration
 
 /-!
 # Formal Switching Lemma Audit Surface
@@ -3579,3 +3581,62 @@ info: 'PvNP.RefinedTwoStageInstance.refinedTwoStage_nonemptyGates_nonvacuous' de
 -/
 #guard_msgs in
 #print axioms PvNP.RefinedTwoStageInstance.refinedTwoStage_nonemptyGates_nonvacuous
+
+/-!
+Pins for `PvNP.TreePathViews` and `PvNP.AutoReviewedIteration`: general
+tree-to-DNF/CNF representation re-viewing and the automatic one-step next-layer
+scaffold.  These pins do not claim frozen-form B4 closure or an implemented
+three-stage/nonempty-gate theorem.
+-/
+
+/-- info: 'PvNP.TreePathViews.dnfEval_treePathDNF₀' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.TreePathViews.dnfEval_treePathDNF₀
+
+/-- info: 'PvNP.TreePathViews.treePathDNF₀_simple' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.TreePathViews.treePathDNF₀_simple
+
+/-- info: 'PvNP.TreePathViews.widthDNF_treePathDNF₀_le' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.TreePathViews.widthDNF_treePathDNF₀_le
+
+/-- info: 'PvNP.TreePathViews.treeDNFView' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.TreePathViews.treeDNFView
+
+/-- info: 'PvNP.TreePathViews.widthDNF_treeDNFView_le' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.TreePathViews.widthDNF_treeDNFView_le
+
+/-- info: 'PvNP.TreePathViews.cnfEval_treePathCNF₀' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.TreePathViews.cnfEval_treePathCNF₀
+
+/-- info: 'PvNP.TreePathViews.treePathCNF₀_simple' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.TreePathViews.treePathCNF₀_simple
+
+/-- info: 'PvNP.TreePathViews.cnfDualDNF_treePathCNF₀' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.TreePathViews.cnfDualDNF_treePathCNF₀
+
+/-- info: 'PvNP.TreePathViews.widthDNF_cnfDualDNF_treePathCNF₀_le' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.TreePathViews.widthDNF_cnfDualDNF_treePathCNF₀_le
+
+/-- info: 'PvNP.TreePathViews.treeCNFView' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.TreePathViews.treeCNFView
+
+/-- info: 'PvNP.AutoReviewedIteration.nextLayer_originalFormula' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.AutoReviewedIteration.nextLayer_originalFormula
+
+/-- info: 'PvNP.AutoReviewedIteration.nextLayer_gateCount' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.AutoReviewedIteration.nextLayer_gateCount
+
+/-- info: 'PvNP.AutoReviewedIteration.nextLayer_width' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.AutoReviewedIteration.nextLayer_width
