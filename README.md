@@ -138,10 +138,171 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   nothing previously open was proved under its old statement.  At that fixed
   instance the search problem is total, so extraction correctness is
   order-independent (disclosed in the module headers).
-- `PvNP.TreePathViews.treeDNFView` / `treeCNFView` and
-  `PvNP.AutoReviewedIteration.nextLayer_*`: general decision-tree DNF/CNF
-  re-viewing plus automatic one-step next-layer scaffolding; representation
-  infrastructure only, not frozen-form B4 closure or many-round iteration.
+- `PvNP.PHPBooleanDepthFloor.fullPHPBoundary_depthFloor`: the first genuine
+  FAMILY instance of `PvNP.RestrictedPHPFloor.PHPDepthFloorStatement` — for
+  every `h`, any decision tree computing the SATISFIABLE `h × h` pigeonhole
+  Boolean function under the empty restriction has depth at least `h · h`
+  (evasiveness, via full sensitivity at the identity permutation point).
+  Non-vacuity by `fullPHPBoundary_correctTree_exists` (a correct tree of depth
+  `h·h + 1`).  Empty-restriction family only, elementary sensitivity
+  mathematics; for `p > h` the PHP formula is identically false and no positive
+  Boolean floor is claimed there (that regime is served by the falsified-clause
+  SEARCH floors and the separate trace-system variable-coverage floors
+  above).  This is a decision-tree depth floor, not a Frege/PHP
+  proof-size lower bound.
+- `PvNP.PHPRestrictedDepthFloor.matchingRestriction_depthFloor` and
+  `matchingBoundary_depthFloor`: the master per-restriction theorem — for every
+  partial-matching restriction (a set `S` of pigeons fixed along a permutation
+  with two-sided inverse, other rows free), every decision tree computing the
+  restricted `h × h` PHP function has depth at least the number of free
+  variables — and the two-parameter boundary family instantiating
+  `PHPDepthFloorStatement` with floor `(h − s) · h` (first `s` pigeons fixed
+  along the identity), built on the permutation-point sensitivity lemmas
+  `eval_permAssignment_true` / `eval_flip_permAssignment_false`.  Non-vacuity
+  by `matchingBoundary_correctTree_exists`.  These are worst-case floors for
+  each FIXED restriction in the class, not probabilistic statements over
+  random-restriction distributions, and not a Frege/PHP proof-size lower
+  bound.
+- `PvNP.PHPMatchingDistribution.star_ratio` with `card_subsetSpace`,
+  `freeCount_eq` / `phpVar_freeCount` / `fixCount_eq`, and
+  `subsetSpace_depthFloor`: the uniform space of `s`-subsets of pigeons (each
+  inducing the identity partial-matching restriction via `restrictionOf`) has
+  exactly `choose h s` elements; every PHP variable is left free (a "star") by
+  exactly `choose (h−1) s` subsets and fixed by the complement; and the exact
+  star-probability identity `h * choose (h−1) s = (h − s) * choose h s` holds —
+  the counting form of "every variable is a star with probability `(h−s)/h`",
+  in the same counting style as the proved SimpleDNF switching lemma.
+  `subsetSpace_depthFloor` transfers the `(h − s) · h` floor to EVERY point of
+  the space (probability one), with per-subset non-vacuity by
+  `subsetSpace_correctTree_exists`.  No probability measure is defined — all
+  statements are exact finite counting identities; the distribution pins the
+  matching to the identity (the uniform-over-injections space is not
+  formalized); and this is NOT a PHP switching lemma — no collapse-probability
+  upper bound for restricted formulas is stated or proved (that summit, Gate A
+  rung 4, remains open).
+- `PvNP.GeneratedGoodRestriction.jointBadSet_card_le`, `goodRestriction_exists`,
+  and `simultaneousCollapse_exists`: Gate B stages B1/B2 — the first theorems in
+  this repository where the switching lemma's counting GENERATES restrictions
+  instead of consuming them: an explicit per-gate bad-set union bound, and,
+  whenever a supplied counting hypothesis beats the `ℓ`-star restriction-space
+  size, a single restriction that simultaneously collapses every listed
+  DNF/CNF-view bottom gate to a decision tree of depth `< s`.  These are exact
+  `Finset.card` counting corollaries of the proved SimpleDNF switching lemma
+  (no probability measure, no new switching lemma).
+- `PvNP.GeneratedIteratedCollapse.generatedSharedLayerCertificate_exists` with
+  `OpenObligation` / `openObligations_nonempty`: a shared generated
+  bottom-layer certificate plus a machine-readable obstruction map of the
+  frozen-form B4 obligations.  The `openObligations` list is INTENTIONALLY
+  nonempty and remains so: frozen-form B4 is open.
+- `PvNP.GeneratedOneStepDepthReduction.generatedOneStepDepthReduction_exists`:
+  the B3 one-step depth reduction for a minimal SUPPLIED layered view (one
+  `and`/`or` parent gate over a listed bottom layer): B1/B2 counting generates
+  the restriction, collapsed bottom gates are replaced by their generated
+  trees, parent-merge semantics are preserved on assignments agreeing with the
+  generated restriction, and one-step depth and child-count accounting is
+  proved (`singletonEmptyDNFOr_nonvacuous` is the
+  witness).  This is not arbitrary AC0/`BDFormula` decomposition into layered
+  views.
+- `PvNP.RestrictionComposition.restrict_compose`,
+  `simultaneousCollapse_exists_consistent`, and `restrictionsWithStars_card`:
+  first-wins restriction composition commuting with iterated restriction, the
+  B1/B2 counting beat strengthened to subspaces of restrictions consistent
+  with an accumulated base, and the closed form
+  `|restrictionsWithStars n ℓ| = C(n, ℓ) · 2^(n − ℓ)` for the FULL star space.
+  No closed-form cardinality is claimed for consistent subspaces over nonfree
+  bases.
+- `PvNP.GeneratedIteratedCollapseFinal.generatedIteratedCollapse`: the B4
+  ROUTE theorem — for every plan-supplied `GeneratedCollapsePlan` of positive
+  depth, counting generates one restriction per stage (never supplied),
+  sequentially consistent and composed first-wins with a proved total
+  extension, with final semantic preservation on assignments agreeing with
+  the composed restriction, per-stage depth AND size
+  accounting, and a last-stage combined decision tree of depth
+  `≤ m_last · (s_last − 1)`.  The per-stage layered views and counting beats
+  are SUPPLIED side conditions — there is no single product-of-stages
+  hypothesis — and frozen-form B4 (single upfront depth-`d` layered view,
+  product hypothesis `B(m, w, s, d)`, `t(d, s)` tree bound) remains OPEN.
+  DISCLOSED SATISFIABILITY-GAP HISTORY: as shipped, each consistent-route beat
+  compared a full-space bad-set count against a consistent-subspace
+  cardinality, and no nonempty-gate multi-stage instance of those beats is
+  exhibited (the witnesses `generatedIteratedCollapse_singleton_nonvacuous`
+  and `generatedIteratedCollapse_twoStage_nonvacuous` use empty or width-0
+  gate lists); the gap is closed for the refinement route by the renormalized
+  bound below.
+- `PvNP.RefinedSubspace.refinesSubspace_card` with
+  `PvNP.SwitchingRelabel.dnfRestrict_refinesWith` and
+  `dtDepth_termCanonicalDT_mapDNF`: the refinement subspace (extend a base's
+  fixings exactly; strictly stronger than consistency) with the closed form
+  `C(stars base, ℓ) · 2^(stars base − ℓ)` via an explicit free-subcube
+  bijection, plus support-injective relabeling of literals/terms/DNFs/trees commuting
+  with restriction and with canonical decision trees, canonical-tree depth
+  invariance, and the factoring lemma that a refinement's restriction
+  factors through its base (`dnfRestrict_refinesWith`) — the transport
+  machinery for renormalized counting.
+- `PvNP.GeneratedRefinedCollapse.badSetTerm_refines_card_le`,
+  `simultaneousCollapse_exists_refined`, and
+  `generatedRefinedIteratedCollapse`: the free-subcube RENORMALIZED bad-set
+  bound `|badSetTerm D s ℓ ∩ refinesSubspace base ℓ| ≤ |R(stars base, ℓ−s)| · (8w)^s`,
+  proved by transporting along the free-subcube relabeling and instantiating
+  the proved SimpleDNF switching lemma at dimension `stars base`, together
+  with the refined plan/certificate machinery whose stage restrictions REFINE
+  the accumulated base.  This closes the disclosed B4-route satisfiability gap
+  FOR THE REFINEMENT ROUTE only; merely-consistent-subspace-relative counting
+  is still not provided, and frozen-form B4 remains open.
+- `PvNP.RefinedTwoStageInstance.refinedTwoStage_nonemptyGates_nonvacuous` with
+  `depthOneDNFView`: one concrete depth-2 renormalized plan over `n = 306`
+  with a nonempty gate LIST, width BUDGET `1`, and the non-degenerate
+  `(8·1)^s` beat factor at BOTH stages (stage-1 beat
+  `256 · C(306,15) < C(306,17)`, proved symbolically; stage-2 beat
+  `2^20 < 17 · 2^16`).  The stage-2 gate re-views the stage-1 GENERATED
+  depth-`≤ 1` tree, which may be constant, so realized stage-2 width `≥ 1` is
+  NOT certified; the instance's re-viewing is the depth-`≤ 1` special case
+  only.  One concrete finite instance; no asymptotic family is claimed.
+- `PvNP.TreePathViews.treeDNFView` / `treeCNFView` (with
+  `widthDNF_treeDNFView_le` and `widthDNF_cnfDualDNF_treePathCNF₀_le`) and
+  `PvNP.AutoReviewedIteration.nextLayer_originalFormula` /
+  `nextLayer_gateCount` / `nextLayer_width`: every decision tree re-views as a
+  simple DNF (its accepted paths, with repeated queries pruned so simplicity
+  is structural) and dually as a simple CNF, with width bounded by the tree
+  depth; `nextLayer` builds the next stage's layered view automatically from
+  one generated one-step certificate, preserving gate count with per-gate
+  width budget `s - 1`.  Representation infrastructure only — no counting and
+  no lower bound; realized widths of auto re-viewed gates are BUDGET claims
+  (generated trees may be constants); not frozen-form B4 closure.
+- `PvNP.ScheduledAutoCollapse.autoIteratedCollapse` (with `ScheduleStage`,
+  `BeatArith`, `ValidFrom`, `stepInput`, and the `castFormula` bookkeeping
+  transport): schedule-driven automatic many-round iterated collapse — from
+  one SUPPLIED width-bounded start layer and a purely numeric schedule of
+  stage budgets and star counts whose beat conditions hold as closed-form
+  `Nat` arithmetic (`ValidFrom`), a `GeneratedRefinedIteratedCertificate` of
+  the schedule's length exists with constant stage gate counts and exactly
+  the schedule's budgets and star counts.  The pinned STATEMENT records only
+  these bookkeeping lists; the `nextLayer` re-viewing of every layer after
+  the first is a property of the CONSTRUCTED WITNESS, and the theorem must
+  not be cited for the re-viewing property of an arbitrary witness.  The
+  beats remain per-stage supplied arithmetic side conditions, not a single
+  product hypothesis — frozen-form B4 remains open; after any `s = 1` stage
+  the schedule's tail degenerates to width-budget-0 stages with near-free
+  beats, so schedule length alone is not a strength measure.
+- `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous`: one
+  concrete scheduled instance — the schedule `[(3, 561), (2, 17), (1, 1)]`
+  over `n = 10000` variables from one width-1 single-literal gate, with all
+  six beat conditions proved by pure `Nat` arithmetic (stage-1/2 beats by
+  symbolic `Nat.choose` ratio chains, stage-3 beats by direct small-number
+  evaluation and positivity; no kernel evaluation of large binomials), yielding a
+  certificate with stage gate counts `[1, 1, 1]`, budgets `[3, 2, 1]`, star
+  counts `[561, 17, 1]`, `RefinesSeq`, a proved common total extension, and
+  restricted-eval agreement.  The pinned STATEMENT records only these
+  bookkeeping lists plus `RefinesSeq`, the extension, and the eval
+  agreement; the counting-generation of the restrictions and the `nextLayer`
+  re-viewing of stages 2/3 are properties of the constructed witness.  This
+  is the artifact's first
+  counting-beat-backed stage budget `s > 2` (the earlier
+  `GeneratedCNFLayerStage` record in `GraphIndexedBridge` carries `s = 49`,
+  but with a directly supplied good restriction for a constant leaf tree, not
+  a counting beat).  One concrete finite demo instance, no asymptotic family;
+  realized widths of the auto re-viewed stage-2/3 gates are BUDGET claims —
+  only the start gate is syntactically pinned at realized width 1.
 
 ## Non-Claims Boundary
 
@@ -150,9 +311,12 @@ This artifact does **not** prove or imply:
 - `P != NP` or `P = NP`;
 - an NP or circuit lower bound;
 - a Frege/PHP lower bound;
-- a proved PHP decision-tree floor beyond explicitly supplied boundary records
-  such as the tiny `1 × 1` restricted view, or the bounded `2 × 1`
-  and `3 × 2` falsified-clause search floors;
+- a proved PHP decision-tree floor beyond the Lean-checked records listed
+  above, such as the tiny `1 × 1` restricted view, the bounded `2 × 1` and
+  `3 × 2` and parameterized `p × h` falsified-clause search floors, and the
+  satisfiable `p = h` evasiveness/partial-matching family floors
+  (`fullPHPBoundary_depthFloor`, `matchingBoundary_depthFloor`,
+  `subsetSpace_depthFloor`);
 - a positive Boolean decision-tree depth floor for the full `2 × 1` PHP formula
   (that formula is identically false, so a constant-false Boolean tree has depth
   `0`);
@@ -172,6 +336,54 @@ This artifact does **not** prove or imply:
 - any strength, efficiency, or size/depth-optimality claim for the local
   cut-free system from its completeness theorem (completeness alone proves no
   hardness; the naive constructed refutations are exponential-size).
+- a PHP switching lemma: no collapse-probability upper bound for restricted
+  formulas over the matching-restriction space is stated or proved (that
+  rung of the general PHP depth-floor ladder remains open);
+- a probability measure or expectation/with-high-probability statement over
+  restriction distributions: the `PHPMatchingDistribution` layer proves exact
+  finite counting identities and an every-point (probability-one) transfer of
+  the worst-case floors only, and its space pins the matching to the identity
+  (the uniform-over-injections space is not formalized);
+- a positive Boolean decision-tree depth floor for any unsatisfiable PHP
+  formula (`p > h`): the proved evasiveness and partial-matching floors
+  concern the satisfiable `p = h` function only;
+- a discharge of the frozen-form B4 goal (single upfront depth-`d` layered
+  view, single product-of-stages counting hypothesis `B(m, w, s, d)`,
+  `t(d, s)` final tree bound): the B4 route theorems are plan-supplied —
+  per-stage layered views and counting beats are supplied side conditions
+  (restrictions are counting-generated, never supplied) — and
+  `GeneratedIteratedCollapse.openObligations` intentionally remains nonempty;
+- satisfiability of the original consistent-route stage beats (full-space
+  bad-set count against consistent-subspace cardinality) with nonempty gates
+  at two or more stages — the disclosed satisfiability gap, closed only by
+  re-basing on the refinement subspace — nor any
+  merely-consistent-subspace-relative renormalized bad-set bound (the proved
+  renormalized bound is refinement-subspace-relative) or closed-form
+  cardinality for consistent subspaces over nonfree bases;
+- an asymptotic family of renormalized multi-stage instances: one concrete
+  finite depth-2 instance over `n = 306` with width BUDGET `1` at both stages
+  ("nonempty-gate" means a nonempty gate LIST; realized stage-2 width `≥ 1` is
+  not certified).
+- automatic many-round collapse beyond what `autoIteratedCollapse` literally
+  states: the pinned STATEMENT records only the stage bookkeeping lists (gate
+  counts, budgets, star counts); the `nextLayer` re-viewing is a property of
+  the constructed witness only, and the theorem must not be cited for the
+  re-viewing property of an arbitrary witness (and the empty schedule yields
+  the trivial `.done` certificate — content lives in nonempty schedules);
+- derivation of the scheduled route's beats from a single product hypothesis:
+  `ValidFrom` is a conjunction of SUPPLIED per-stage arithmetic side
+  conditions, and the start layer is still supplied as a width-bounded view —
+  frozen-form B4 (single upfront depth-`d` view, product hypothesis
+  `B(m, w, s, d)`, `t(d, s)` tree bound) remains open;
+- realized-width claims for auto re-viewed gates: stated widths are BUDGET
+  claims (generated trees may be constants), and after any `s = 1` stage the
+  schedule's tail degenerates to width-budget-0 stages with near-free beats,
+  so schedule length alone is not a strength measure;
+- an asymptotic family for the scheduled route: the budget-3 demo is one
+  concrete finite instance, and its "first counting-beat-backed stage budget
+  `s > 2`" status is relative to the `GraphIndexedBridge` `s = 49`
+  `GeneratedCNFLayerStage` record, which used a directly supplied good
+  restriction for a constant leaf tree rather than a counting beat.
 
 Note on naming: the Lean namespace `BoundedDepthFrege` names this repository's
 bounded-depth formula and trace INFRASTRUCTURE; no lower bound for the
@@ -215,6 +427,18 @@ Version `v0.1.0` is archived on Zenodo:
 
 - DOI: `10.5281/zenodo.20757628`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.1.0`
+
+Version `v0.5.0` adds the opening rungs of the general-PHP-depth-floor ladder
+and the Gate B generated-collapse routes.  This release opens the general-PHP-depth-floor ladder ("Gate A") with two proved rungs of satisfiable-PHP decision-tree floors plus the first increment of the rung-3 counting layer (the uniform-over-injections space is not formalized). Rung 1 (`PvNP.PHPBooleanDepthFloor`): the satisfiable `h × h` pigeonhole Boolean function is evasive — every correct decision tree under the empty restriction has depth at least `h·h` (`fullPHPBoundary_depthFloor`), the first genuine family instance of `PHPDepthFloorStatement` beyond the trivial `1 × 1` boundary, with non-vacuity at depth `h·h + 1`. Rung 2 (`PvNP.PHPRestrictedDepthFloor`): the floor survives every fixed partial-matching restriction — the master theorem `matchingRestriction_depthFloor` gives depth at least the number of free variables, and the two-parameter family `matchingBoundary_depthFloor` instantiates the statement surface with floor `(h − s)·h` under genuinely nontrivial restriction families. Rung 3, first increment (`PvNP.PHPMatchingDistribution`): the uniform space of `s`-subset identity-matching restrictions with exact star counting — `star_ratio` (`h * choose (h−1) s = (h − s) * choose h s`, axioms `propext` only) is the exact counting form of "every variable is a star with probability `(h−s)/h`", the quantity switching-lemma arguments consume — plus probability-one transfer of the rung-2 floor to every point of the space (`subsetSpace_depthFloor`). All three rungs are elementary sensitivity and finite-counting mathematics; no probability measure is defined; the distribution covers the identity-matching subfamily only. The PHP switching lemma itself — collapse-probability upper bounds over the restriction space (Gate A rung 4) — remains OPEN, and none of this is a Frege/PHP proof-size bound, an NP/circuit bound, or a statement about P vs NP.
+
+It also adds the Gate B generated-restriction ladder: B1/B2 counting-generated good restrictions with the explicit joint union bound and simultaneous collapse (`GeneratedGoodRestriction`), the shared-layer obstruction map with its intentionally nonempty machine-readable `openObligations` list (`GeneratedIteratedCollapse`), the B3 one-step generated depth reduction for supplied minimal layered views (`GeneratedOneStepDepthReduction`), first-wins restriction composition with consistent-subspace counting and the full-star-space closed form (`RestrictionComposition`), and the plan-supplied B4 route theorem `generatedIteratedCollapse` (`GeneratedIteratedCollapseFinal`), shipped with its satisfiability gap disclosed — the consistent-route stage beats compared full-space bad-set counts against consistent-subspace cardinalities, with no exhibited nonempty-gate multi-stage instance.  That gap is closed for the REFINEMENT ROUTE by the renormalized free-subcube counting: refinement subspaces with a closed-form cardinality (`RefinedSubspace`), support-injective relabel transport (`SwitchingRelabel`), the renormalized bad-set bound `badSetTerm_refines_card_le` and refined route theorem `generatedRefinedIteratedCollapse` (`GeneratedRefinedCollapse`), and the concrete depth-2, `n = 306`, width-budget-1 two-stage instance `refinedTwoStage_nonemptyGates_nonvacuous` (`RefinedTwoStageInstance`; realized stage-2 width is not certified).  Frozen-form B4 (single upfront depth-`d` layered view, product hypothesis `B(m, w, s, d)`, `t(d, s)` tree bound) remains open, and `GeneratedIteratedCollapse.openObligations` intentionally remains nonempty.
+
+Finally it adds general decision-tree DNF/CNF re-viewing with depth-bounded width and built-in repeated-query pruning (`TreePathViews`), the automatic one-step next-layer scaffold from a generated one-step certificate (`AutoReviewedIteration.nextLayer` with its `originalFormula`/`gateCount`/`width` lemmas), and the schedule-driven automatic many-round collapse (`ScheduledAutoCollapse`, `ScheduledCollapseDemo`): from one supplied width-bounded start layer and a purely numeric budget/star-count schedule whose beat conditions hold as closed-form `Nat` arithmetic (`ValidFrom`), `autoIteratedCollapse` produces a `GeneratedRefinedIteratedCertificate` of the schedule's length — in the constructed witness every layer after the first is `nextLayer`-re-viewed automatically, while the pinned statement records only the bookkeeping lists (gate counts, budgets, star counts). The concrete schedule `[(3, 561), (2, 17), (1, 1)]` over `n = 10000` is proved non-vacuously (`scheduledThreeStage_budget3_nonvacuous`), the artifact's first counting-beat-backed stage budget `s > 2` (the earlier `GraphIndexedBridge` `s = 49` record used a directly supplied good restriction for a constant leaf tree, not a counting beat). The per-stage beats remain supplied arithmetic side conditions rather than a single product hypothesis; realized widths of auto re-viewed gates are budget claims; the budget-3 schedule is one concrete finite demo instance, not an asymptotic family; after any `s = 1` stage the schedule's tail degenerates to width-budget-0 stages with near-free beats, so schedule length alone is not a strength measure; frozen-form B4 and Gate A rung 4 remain open.
+
+The audit surface grows from 497 to 621 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean` — 124 pins added, none removed or weakened; no pinned declaration depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the new pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
+
+- DOI: (version DOI pending Zenodo auto-archive; concept DOI is `10.5281/zenodo.20757627`)
+- Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`
 
 Version `v0.4.0` adds the variable-coverage floors for the local cut-free
 bounded-depth Tait trace system (`BDVariableCoverage`, `PHPCNFCoverage`,
