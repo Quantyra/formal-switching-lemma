@@ -21,6 +21,7 @@ import PvNP.FrozenDepthView
 import PvNP.FormulaTruthTableView
 import PvNP.FormulaStructuralSchedule
 import PvNP.FormulaDepthDecomposition
+import PvNP.FormulaRecursiveDepth
 import PvNP.MixedFormulaFamilyCollapse
 import PvNP.PHPFullMatchingDistribution
 import PvNP.PHPFullMatchingProbability

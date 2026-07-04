@@ -388,6 +388,13 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   a real structural prerequisite for recursive depth-`d` decomposition, but it
   still uses truth-table/path-DNF child views and does not synthesize efficient
   bottom width or product/counting hypotheses.
+- `PvNP.FormulaRecursiveDepth.recursiveDepthFrontier`: repeated top-child
+  expansion now has a checked raw-depth budget.  If a formula survives in the
+  `k`-step frontier, then `depth child + k <= depth F`; in particular, every
+  surviving member of the full-depth frontier has depth zero.  This is
+  recursive structural bookkeeping only: it does not build recursive
+  `FrozenDepthView` layers, efficient bottom views, or product/counting
+  hypotheses.
 - `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous`: one
   concrete scheduled instance — the schedule `[(3, 561), (2, 17), (1, 1)]`
   over `n = 10000` variables from one width-1 single-literal gate, with all
@@ -468,11 +475,13 @@ This artifact does **not** prove or imply:
   exact top-connective views from raw `and`/`or` syntax, and the positive-depth
   wrappers expose that top constructor automatically for every non-leaf raw
   formula.  `FormulaDepthDecomposition` now proves that this top peel is a real
-  one-step depth decrease for every exposed child, but the child DNF views still
-  come from full truth-table decision trees with only the generic width bound
-  `<= n`.  The start view and geometric or ratio-regime entry hypotheses
-  therefore remain supplied, syntactically exposed by the bottom-layer class,
-  or satisfied only through this expensive fallback, and
+  one-step depth decrease for every exposed child, and
+  `FormulaRecursiveDepth` proves the corresponding repeated-frontier raw-depth
+  budget, but the child DNF views still come from full truth-table decision
+  trees with only the generic width bound `<= n`.  The start view and geometric
+  or ratio-regime entry hypotheses therefore remain supplied, syntactically
+  exposed by the bottom-layer class, or satisfied only through this expensive
+  fallback, and
   `GeneratedIteratedCollapse.openObligations` intentionally remains nonempty;
 - satisfiability of the original consistent-route stage beats (full-space
   bad-set count against consistent-subspace cardinality) with nonempty gates
@@ -568,7 +577,13 @@ that the synthesized positive-depth top layer strictly decreases formula depth
 on every exposed gate formula; this is still one-step structural peeling, not
 full recursive B4 decomposition.
 
-The current audit surface has 710 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
+The recursive frontier wrapper (`FormulaRecursiveDepth`) extends that structural
+bookkeeping across repeated top-child expansion: any surviving `k`-step
+frontier member has spent `k` units of raw formula depth.  It still does not
+construct recursive layered views, efficient bottom views, or product/counting
+hypotheses.
+
+The current audit surface has 721 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
 
 - DOI: `10.5281/zenodo.21184992`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`

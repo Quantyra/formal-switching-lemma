@@ -203,6 +203,17 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.FormulaDepthDecomposition.positiveDepthPeel` | `propext`, `Quot.sound` | constructed positive-depth peel from raw syntax |
 | `PvNP.FormulaDepthDecomposition.positiveDepthPeel_gateCount` | `propext`, `Quot.sound` | proven peel gate count equals detected top child count |
 | `PvNP.FormulaDepthDecomposition.positiveDepthPeel_gateFormulaDepth_le_pred` | `propext`, `Quot.sound` | proven packaged peel gate formulas satisfy the predecessor depth budget |
+| `PvNP.FormulaRecursiveDepth.depthFrontier` | none | axiom-free repeated top-child frontier definition |
+| `PvNP.FormulaRecursiveDepth.formulaDepthFrontier` | none | axiom-free single-root frontier definition |
+| `PvNP.FormulaRecursiveDepth.depthFrontier_depth_add_le` | `propext`, `Quot.sound` | proven multi-root recursive frontier raw-depth budget |
+| `PvNP.FormulaRecursiveDepth.formulaDepthFrontier_depth_add_le` | `propext`, `Quot.sound` | proven single-root recursive frontier raw-depth budget |
+| `PvNP.FormulaRecursiveDepth.formulaDepthFrontier_depth_le_sub` | `propext`, `Quot.sound` | proven subtraction form of the recursive frontier depth budget |
+| `PvNP.FormulaRecursiveDepth.formulaDepthFrontier_member_level_le_depth` | `propext`, `Quot.sound` | proven nonempty frontier level cannot exceed root depth |
+| `PvNP.FormulaRecursiveDepth.formulaDepthFrontier_fullDepth_zero` | `propext`, `Quot.sound` | proven full-depth frontier members have raw formula depth zero |
+| `PvNP.FormulaRecursiveDepth.RecursiveDepthFrontier` | `propext`, `Quot.sound` | audited packaged recursive frontier surface |
+| `PvNP.FormulaRecursiveDepth.recursiveDepthFrontier` | `propext`, `Quot.sound` | constructed packaged recursive frontier from raw syntax |
+| `PvNP.FormulaRecursiveDepth.recursiveDepthFrontier_depth_add_le` | `propext`, `Quot.sound` | proven packaged recursive frontier raw-depth budget |
+| `PvNP.FormulaRecursiveDepth.recursiveDepthFrontier_fullDepth_zero` | `propext`, `Quot.sound` | proven packaged full-depth frontier members have raw formula depth zero |
 | `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous` | `propext`, `Classical.choice`, `Quot.sound` | proven concrete budget-3 scheduled instance (single finite demo) |
 
 No declaration above depends on `sorryAx`.
@@ -254,10 +265,12 @@ adds a supplied-view consumer with an actual final-tree global budget
 consumer to arbitrary nonempty ratio-regime schedules plus positive-depth raw
 formulas after top-constructor synthesis.  `FormulaDepthDecomposition` proves
 that this top synthesis strictly decreases formula depth for every exposed
-gate formula.  The schedule and width hypotheses remain supplied and the child
-views still use the truth-table fallback; the artifact still does not
-synthesize `B` from arbitrary formulas, derive full recursive depth-`d`
-layered views from arbitrary formula syntax, or close full frozen-form B4.
+gate formula, and `FormulaRecursiveDepth` proves the repeated-frontier
+raw-depth budget for recursive top-child expansion.  The schedule and width
+hypotheses remain supplied and the child views still use the truth-table
+fallback; the artifact still does not synthesize `B` from arbitrary formulas,
+derive full recursive depth-`d` layered views from arbitrary formula syntax, or
+close full frozen-form B4.
 The PHP switching lemma (Gate A rung 4) remains open.
 
 ## Re-Verification

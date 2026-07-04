@@ -30,6 +30,7 @@ import PvNP.FrozenDepthView
 import PvNP.FormulaTruthTableView
 import PvNP.FormulaStructuralSchedule
 import PvNP.FormulaDepthDecomposition
+import PvNP.FormulaRecursiveDepth
 import PvNP.MixedFormulaFamilyCollapse
 import PvNP.ScheduledCollapseDemo
 
@@ -4321,3 +4322,57 @@ info: 'PvNP.FormulaDepthDecomposition.positiveDepthFrozenDepthView_gate_formula_
 /-- info: 'PvNP.FormulaDepthDecomposition.positiveDepthPeel_gateFormulaDepth_le_pred' depends on axioms: [propext, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaDepthDecomposition.positiveDepthPeel_gateFormulaDepth_le_pred
+
+/-!
+Pins for `PvNP.FormulaRecursiveDepth`: a recursive frontier over repeated
+top-child expansion.  The budget theorem records that every formula surviving
+`k` expansions has spent `k` units of raw formula depth.  This advances the
+recursive structural bookkeeping toward B4, but still does NOT build recursive
+`FrozenDepthView` layers, does NOT synthesize efficient bottom widths or
+product/counting hypotheses, does NOT close frozen-form B4, and is NOT Gate A
+rung 4, Frege/PHP, NP/circuit, or P vs NP.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveDepth.depthFrontier' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveDepth.depthFrontier
+
+/-- info: 'PvNP.FormulaRecursiveDepth.formulaDepthFrontier' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveDepth.formulaDepthFrontier
+
+/-- info: 'PvNP.FormulaRecursiveDepth.depthFrontier_depth_add_le' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveDepth.depthFrontier_depth_add_le
+
+/-- info: 'PvNP.FormulaRecursiveDepth.formulaDepthFrontier_depth_add_le' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveDepth.formulaDepthFrontier_depth_add_le
+
+/-- info: 'PvNP.FormulaRecursiveDepth.formulaDepthFrontier_depth_le_sub' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveDepth.formulaDepthFrontier_depth_le_sub
+
+/-- info: 'PvNP.FormulaRecursiveDepth.formulaDepthFrontier_member_level_le_depth' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveDepth.formulaDepthFrontier_member_level_le_depth
+
+/-- info: 'PvNP.FormulaRecursiveDepth.formulaDepthFrontier_fullDepth_zero' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveDepth.formulaDepthFrontier_fullDepth_zero
+
+/-- info: 'PvNP.FormulaRecursiveDepth.RecursiveDepthFrontier' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveDepth.RecursiveDepthFrontier
+
+/-- info: 'PvNP.FormulaRecursiveDepth.recursiveDepthFrontier' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveDepth.recursiveDepthFrontier
+
+/-- info: 'PvNP.FormulaRecursiveDepth.recursiveDepthFrontier_depth_add_le' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveDepth.recursiveDepthFrontier_depth_add_le
+
+/-- info: 'PvNP.FormulaRecursiveDepth.recursiveDepthFrontier_fullDepth_zero' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveDepth.recursiveDepthFrontier_fullDepth_zero
