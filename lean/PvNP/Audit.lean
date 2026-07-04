@@ -48,6 +48,7 @@ import PvNP.FormulaRecursiveSyntacticGlobalTree
 import PvNP.FormulaSyntacticClassGlobalTree
 import PvNP.FormulaRecursiveClassProfile
 import PvNP.FormulaRecursiveClassDefault
+import PvNP.FormulaRecursiveDecompositionTree
 import PvNP.FormulaRecursiveNonempty
 import PvNP.FormulaRecursiveSizeBound
 import PvNP.FormulaSyntacticDNF
@@ -5313,6 +5314,21 @@ full B4, Gate A rung 4, Frege/PHP, NP/circuit, or P vs NP.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveClassDefault.allFrontierLayers_geometricCollapseWithTruthTableFormulaSize_noEmptyFanins_finalTree
+
+/-!
+Pins for `PvNP.FormulaRecursiveDecompositionTree`: the full-depth recursive
+frontier skeleton and terminal bottom layer are packaged with the formula-size
+truth-table final-tree route for every in-depth recursive frontier level.  The
+width remains fallback `n`, the formula-size ambient bound remains supplied,
+and this is still not efficient width synthesis, product/counting synthesis,
+full B4, Gate A rung 4, Frege/PHP, NP/circuit, or P vs NP.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveDecompositionTree.exists_fullDepthRecursiveDecomposition_geometricCollapseWithTruthTableFormulaSize_noEmptyFanins_finalTree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveDecompositionTree.exists_fullDepthRecursiveDecomposition_geometricCollapseWithTruthTableFormulaSize_noEmptyFanins_finalTree
 
 /-!
 Pins for `PvNP.FormulaRecursiveNonempty`: no-empty-fanin raw syntax
