@@ -45,6 +45,7 @@ import PvNP.FormulaRecursiveSyntacticSimple
 import PvNP.FormulaRecursiveSyntacticGeometric
 import PvNP.FormulaRecursiveSyntacticGlobal
 import PvNP.FormulaRecursiveSyntacticGlobalTree
+import PvNP.FormulaSyntacticClassGlobalTree
 import PvNP.FormulaRecursiveNonempty
 import PvNP.FormulaRecursiveSizeBound
 import PvNP.FormulaSyntacticDNF
@@ -5199,6 +5200,40 @@ NP.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticGlobalTree.allSyntacticFrontierLayers_geometricCollapseWithFormulaSize_finalTree_simpleNoEmptyFanins_of_formulaSizeBound
+
+/-!
+Pins for `PvNP.FormulaSyntacticClassGlobalTree`: a supplied depth-indexed
+class-size envelope `S(d)` now exposes the budget surface
+`t(d,s)=S(d)*(s-1)` and wraps the syntactic final-tree route for all frontier
+levels of formulas satisfying `depth F <= d`.  The size envelope, root
+predicates, and ambient bound remain supplied; this is still not envelope
+synthesis, product/counting synthesis, arbitrary normalization, full B4, Gate
+A rung 4, Frege/PHP, NP/circuit, or P vs NP.
+-/
+
+/-- info: 'PvNP.FormulaSyntacticClassGlobalTree.formulaClassDepthTreeBudget' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticClassGlobalTree.formulaClassDepthTreeBudget
+
+/-- info: 'PvNP.FormulaSyntacticClassGlobalTree.formulaClassDepthTreeBudgetFrom' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticClassGlobalTree.formulaClassDepthTreeBudgetFrom
+
+/-- info: 'PvNP.FormulaSyntacticClassGlobalTree.frontierLevel_le_classDepth' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticClassGlobalTree.frontierLevel_le_classDepth
+
+/-- info: 'PvNP.FormulaSyntacticClassGlobalTree.syntacticFrontierLayer_geometricCollapseWithClassDepth_finalTree_simpleNoEmptyFanins' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticClassGlobalTree.syntacticFrontierLayer_geometricCollapseWithClassDepth_finalTree_simpleNoEmptyFanins
+
+/-- info: 'PvNP.FormulaSyntacticClassGlobalTree.allSyntacticFrontierLayers_geometricCollapseWithClassDepth_finalTree_simpleNoEmptyFanins' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticClassGlobalTree.allSyntacticFrontierLayers_geometricCollapseWithClassDepth_finalTree_simpleNoEmptyFanins
 
 /-!
 Pins for `PvNP.FormulaRecursiveNonempty`: no-empty-fanin raw syntax

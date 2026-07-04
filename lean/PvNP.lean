@@ -36,6 +36,7 @@ import PvNP.FormulaRecursiveSyntacticSimple
 import PvNP.FormulaRecursiveSyntacticGeometric
 import PvNP.FormulaRecursiveSyntacticGlobal
 import PvNP.FormulaRecursiveSyntacticGlobalTree
+import PvNP.FormulaSyntacticClassGlobalTree
 import PvNP.FormulaRecursiveNonempty
 import PvNP.FormulaRecursiveSizeBound
 import PvNP.FormulaSyntacticDNF
