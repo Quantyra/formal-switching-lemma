@@ -40,6 +40,7 @@ import PvNP.FormulaRecursiveMaxProduct
 import PvNP.FormulaRecursiveRatioSchedule
 import PvNP.FormulaRecursiveWidthSchedule
 import PvNP.FormulaRecursiveSyntacticLayer
+import PvNP.FormulaRecursiveSyntacticNonempty
 import PvNP.FormulaRecursiveNonempty
 import PvNP.FormulaRecursiveSizeBound
 import PvNP.FormulaSyntacticDNF
@@ -4970,6 +4971,38 @@ Frege/PHP, NP/circuit, or P vs NP.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticLayer.syntacticFrontierLayer_geometricCollapseWithFormulaSize
+
+/-!
+Pins for `PvNP.FormulaRecursiveSyntacticNonempty`: syntactic recursive frontier
+layers at formula-size width can synthesize the nonempty gate-count hypothesis
+from `NoEmptyFanins`.  Frontier structural simplicity, ratio regimes,
+geometric entry-size inequalities, product/counting synthesis, full B4, Gate A
+rung 4, Frege/PHP, NP/circuit, and P vs NP remain open.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticNonempty.syntacticFrontierLayer_ratioRegimeCollapseWithFormulaSize_noEmptyFanins' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticNonempty.syntacticFrontierLayer_ratioRegimeCollapseWithFormulaSize_noEmptyFanins
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticNonempty.allSyntacticFrontierLayers_ratioRegimeCollapseWithFormulaSize_noEmptyFanins' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticNonempty.allSyntacticFrontierLayers_ratioRegimeCollapseWithFormulaSize_noEmptyFanins
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticNonempty.syntacticFrontierLayer_geometricCollapseWithFormulaSize_noEmptyFanins' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticNonempty.syntacticFrontierLayer_geometricCollapseWithFormulaSize_noEmptyFanins
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticNonempty.allSyntacticFrontierLayers_geometricCollapseWithFormulaSize_noEmptyFanins' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticNonempty.allSyntacticFrontierLayers_geometricCollapseWithFormulaSize_noEmptyFanins
 
 /-!
 Pins for `PvNP.FormulaRecursiveNonempty`: no-empty-fanin raw syntax

@@ -802,13 +802,20 @@ syntactic simplicity predicate, ratio regime, nonempty counts, and entry-size
 bounds are still supplied; this is not arbitrary normalization, full B4, or the
 global depth-`d` `t(d,s)` theorem.
 
+The syntactic frontier nonempty wrapper
+(`FormulaRecursiveSyntacticNonempty`) composes that formula-size frontier route
+with the existing `NoEmptyFanins` syntax predicate, discharging the nonempty
+gate-count hypothesis for single-level and all-level ratio/geometric consumers.
+The frontier simplicity predicate, ratio/geometric hypotheses, product/counting
+synthesis, and global depth-`d` `t(d,s)` theorem remain open.
+
 The variable-width schedule wrapper (`FormulaVarWidthSchedule`) instantiates the
 positive-depth raw-formula ratio-regime route at width `n`, using the proved
 truth-table/path-DNF width bound instead of a caller-supplied child-width
 predicate.  The ratio-regime schedule is still supplied, and `w = n` is not
 efficient syntactic width control; this is not full B4.
 
-The current audit surface has 871 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
+The current audit surface has 875 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
 
 - DOI: `10.5281/zenodo.21184992`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`
