@@ -5169,10 +5169,11 @@ P vs NP.
 Pins for `PvNP.FormulaRecursiveSyntacticGlobalTree`: the supplied
 formula-size global-envelope syntactic route now exposes the actual final
 decision tree returned by the generated certificate and bounds that tree by
-the same global budget `M * (s - 1)`.  This is still not envelope synthesis,
-product/counting synthesis, arbitrary normalization, full B4, a discharged
-formula-class `t(d,s)` theorem, Gate A rung 4, Frege/PHP, NP/circuit, or
-P vs NP.
+the same global budget `M * (s - 1)`.  The formula-local specialization also
+discharges the external `M` parameter by using `formulaSize F`.  This is still
+not product/counting synthesis, arbitrary normalization, full B4, a discharged
+formula-class `t(d,s)` theorem, Gate A rung 4, Frege/PHP, NP/circuit, or P vs
+NP.
 -/
 
 /-- info: 'PvNP.FormulaRecursiveSyntacticGlobalTree.syntacticFrontierLayer_geometricCollapseWithGlobalFormulaSize_finalTree_simpleNoEmptyFanins' depends on axioms: [propext,
@@ -5186,6 +5187,18 @@ P vs NP.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticGlobalTree.allSyntacticFrontierLayers_geometricCollapseWithGlobalFormulaSize_finalTree_simpleNoEmptyFanins
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticGlobalTree.syntacticFrontierLayer_geometricCollapseWithFormulaSize_finalTree_simpleNoEmptyFanins_of_formulaSizeBound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticGlobalTree.syntacticFrontierLayer_geometricCollapseWithFormulaSize_finalTree_simpleNoEmptyFanins_of_formulaSizeBound
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticGlobalTree.allSyntacticFrontierLayers_geometricCollapseWithFormulaSize_finalTree_simpleNoEmptyFanins_of_formulaSizeBound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticGlobalTree.allSyntacticFrontierLayers_geometricCollapseWithFormulaSize_finalTree_simpleNoEmptyFanins_of_formulaSizeBound
 
 /-!
 Pins for `PvNP.FormulaRecursiveNonempty`: no-empty-fanin raw syntax

@@ -847,10 +847,12 @@ last-stage decision tree for the same supplied-envelope route and proves the
 extracted tree has `dtDepth T <= M*(s-1)`.  The wrapper carries both the
 single-level and all-level root-simple/no-empty consumers forward with the
 final tree, semantic agreement with the restricted frontier formula, and the
-same global `TreeBudgetFrom` witness.  The formula-size envelope, root
-predicates, and ambient bound are still supplied; this is not synthesized
-normalization, product/counting/ratio synthesis, full frozen-form B4, a
-discharged formula-class `t(d,s)` theorem, or Gate A rung 4.
+same global `TreeBudgetFrom` witness.  Its formula-local corollaries discharge
+the external envelope parameter by specializing `M = formulaSize F`, returning
+the same final tree under `recursiveFrontierSizeTreeBudget F`.  The root
+predicates and formula-size ambient bound are still supplied; this is not
+synthesized normalization, product/counting/ratio synthesis, full frozen-form
+B4, a discharged formula-class `t(d,s)` theorem, or Gate A rung 4.
 
 The variable-width schedule wrapper (`FormulaVarWidthSchedule`) instantiates the
 positive-depth raw-formula ratio-regime route at width `n`, using the proved
@@ -858,7 +860,7 @@ truth-table/path-DNF width bound instead of a caller-supplied child-width
 predicate.  The ratio-regime schedule is still supplied, and `w = n` is not
 efficient syntactic width control; this is not full B4.
 
-The current audit surface has 901 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
+The current audit surface has 903 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
 
 - DOI: `10.5281/zenodo.21184992`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`

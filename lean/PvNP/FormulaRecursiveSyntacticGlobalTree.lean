@@ -13,11 +13,13 @@ carried by those certificates and bounds its depth by the same global budget
 
 ## Honest scope
 
-* The global formula-size envelope `formulaSize F <= M` is still supplied.
+* The global formula-size envelope `formulaSize F <= M` is still supplied for
+  the global-envelope wrapper; the formula-local corollaries specialize it to
+  `M = formulaSize F`.
 * Root `syntacticFormulaSimpleDNF F`, `NoEmptyFanins F`, and the ambient bound
-  in `M` are still supplied.
+  in `M` or `formulaSize F` are still supplied.
 * This extracts the final generated tree for the current syntactic frontier
-  route; it does not synthesize `M`, product/counting hypotheses, ratio
+  route; it does not synthesize product/counting hypotheses, ratio
   regimes, arbitrary normalization, full frozen-form B4, a PHP switching
   lemma, a Frege/PHP lower bound, an NP/circuit lower bound, or a P-vs-NP
   claim.
@@ -197,6 +199,115 @@ theorem allSyntacticFrontierLayers_geometricCollapseWithGlobalFormulaSize_finalT
   exact
     syntacticFrontierLayer_geometricCollapseWithGlobalFormulaSize_finalTree_simpleNoEmptyFanins
       F M level rounds parent hM hSimple hNoEmpty hk hn
+
+open GeneratedRefinedIteratedCertificate in
+/-- Single-level formula-local syntactic frontier collapse, with the actual
+last-stage decision tree exposed and bounded by `formulaSize F * (s - 1)`.
+
+This discharges the external envelope parameter of the global wrapper by
+specializing it to `M = formulaSize F`; it is still formula-local and still
+requires the formula-size ambient bound. -/
+theorem syntacticFrontierLayer_geometricCollapseWithFormulaSize_finalTree_simpleNoEmptyFanins_of_formulaSizeBound
+    {n : Nat} (F : BDFormula n) (level rounds : Nat) (parent : ParentKind)
+    (hSimple : syntacticFormulaSimpleDNF F)
+    (hNoEmpty : NoEmptyFanins F) (hk : level <= depth F)
+    (hn : 2 * (64 * formulaSize F) ^ rounds *
+      (64 * formulaSize F * formulaSize F) <= n) :
+    exists cert : GeneratedRefinedIteratedCertificate n (freeRestriction n)
+        (syntacticFrontierMinimalLayer F level parent
+          (frontierSyntacticSimple_of_syntacticFormulaSimpleDNF F level
+            hSimple)).originalFormula
+        (geometricSchedule (frontierLayerGateCount F level)
+          (n / (64 * frontierLayerGateCount F level * formulaSize F))
+          (rounds + 1)).length,
+      cert.stageGateCounts =
+        List.replicate (rounds + 1) (frontierLayerGateCount F level) /\
+      cert.stageBudgets = List.replicate (rounds + 1) 2 /\
+      cert.stageStarCounts =
+        (geometricSchedule (frontierLayerGateCount F level)
+          (n / (64 * frontierLayerGateCount F level * formulaSize F))
+          (rounds + 1)).map stageStars /\
+      TreeBudgetFrom (recursiveFrontierSizeTreeBudget F)
+        (frontierLayerGateCount F level) (rounds + 1)
+        (geometricSchedule (frontierLayerGateCount F level)
+          (n / (64 * frontierLayerGateCount F level * formulaSize F))
+          (rounds + 1)) /\
+      exists T : DTree n, exists s : Nat,
+        cert.lastStage = some (T, frontierLayerGateCount F level, s) /\
+        (forall a : Assignment n, dtEval a T = eval a cert.finalFormula) /\
+        dtDepth T <= recursiveFrontierSizeTreeBudget F level s /\
+        (forall a : Assignment n, Agree cert.finalComposed a ->
+          dtEval a T = eval a (restrict cert.finalComposed
+            (syntacticFrontierMinimalLayer F level parent
+              (frontierSyntacticSimple_of_syntacticFormulaSimpleDNF F level
+                hSimple)).originalFormula)) := by
+  match
+    syntacticFrontierLayer_geometricCollapseWithGlobalFormulaSize_finalTree_simpleNoEmptyFanins
+      F (formulaSize F) level rounds parent (Nat.le_refl _)
+      hSimple hNoEmpty hk hn with
+  | Exists.intro cert hcert =>
+      have hgc := hcert.1
+      have hb := hcert.2.1
+      have hsc := hcert.2.2.1
+      have htGlobal := hcert.2.2.2.1
+      rcases hcert.2.2.2.2 with
+        ⟨T, s, hlast, heval, hdepthGlobal, hsem⟩
+      have ht : TreeBudgetFrom (recursiveFrontierSizeTreeBudget F)
+          (frontierLayerGateCount F level) (rounds + 1)
+          (geometricSchedule (frontierLayerGateCount F level)
+            (n / (64 * frontierLayerGateCount F level * formulaSize F))
+            (rounds + 1)) := by
+        simpa [globalFormulaSizeTreeBudget, recursiveFrontierSizeTreeBudget]
+          using htGlobal
+      have hdepth : dtDepth T <= recursiveFrontierSizeTreeBudget F level s := by
+        simpa [globalFormulaSizeTreeBudget, recursiveFrontierSizeTreeBudget]
+          using hdepthGlobal
+      exact
+        ⟨cert, hgc, hb, hsc, ht, T, s, hlast, heval, hdepth, hsem⟩
+
+open GeneratedRefinedIteratedCertificate in
+/-- All root-simple/no-empty recursive syntactic frontier levels expose a
+last-stage decision tree bounded by the formula-local size budget
+`formulaSize F * (s - 1)`. -/
+theorem allSyntacticFrontierLayers_geometricCollapseWithFormulaSize_finalTree_simpleNoEmptyFanins_of_formulaSizeBound
+    {n : Nat} (F : BDFormula n) (rounds : Nat) (parent : ParentKind)
+    (hSimple : syntacticFormulaSimpleDNF F)
+    (hNoEmpty : NoEmptyFanins F)
+    (hn : 2 * (64 * formulaSize F) ^ rounds *
+      (64 * formulaSize F * formulaSize F) <= n) :
+    forall (level : Nat) (hk : level <= depth F),
+      exists cert : GeneratedRefinedIteratedCertificate n (freeRestriction n)
+          (syntacticFrontierMinimalLayer F level parent
+            (frontierSyntacticSimple_of_syntacticFormulaSimpleDNF F level
+              hSimple)).originalFormula
+          (geometricSchedule (frontierLayerGateCount F level)
+            (n / (64 * frontierLayerGateCount F level * formulaSize F))
+            (rounds + 1)).length,
+        cert.stageGateCounts =
+          List.replicate (rounds + 1) (frontierLayerGateCount F level) /\
+        cert.stageBudgets = List.replicate (rounds + 1) 2 /\
+        cert.stageStarCounts =
+          (geometricSchedule (frontierLayerGateCount F level)
+            (n / (64 * frontierLayerGateCount F level * formulaSize F))
+            (rounds + 1)).map stageStars /\
+        TreeBudgetFrom (recursiveFrontierSizeTreeBudget F)
+          (frontierLayerGateCount F level) (rounds + 1)
+          (geometricSchedule (frontierLayerGateCount F level)
+            (n / (64 * frontierLayerGateCount F level * formulaSize F))
+            (rounds + 1)) /\
+        exists T : DTree n, exists s : Nat,
+          cert.lastStage = some (T, frontierLayerGateCount F level, s) /\
+          (forall a : Assignment n, dtEval a T = eval a cert.finalFormula) /\
+          dtDepth T <= recursiveFrontierSizeTreeBudget F level s /\
+          (forall a : Assignment n, Agree cert.finalComposed a ->
+            dtEval a T = eval a (restrict cert.finalComposed
+              (syntacticFrontierMinimalLayer F level parent
+                (frontierSyntacticSimple_of_syntacticFormulaSimpleDNF F level
+                  hSimple)).originalFormula)) := by
+  intro level hk
+  exact
+    syntacticFrontierLayer_geometricCollapseWithFormulaSize_finalTree_simpleNoEmptyFanins_of_formulaSizeBound
+      F level rounds parent hSimple hNoEmpty hk hn
 
 end FormulaRecursiveSyntacticGlobalTree
 end PvNP
