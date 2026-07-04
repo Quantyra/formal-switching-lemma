@@ -44,6 +44,7 @@ import PvNP.FormulaRecursiveSyntacticNonempty
 import PvNP.FormulaRecursiveSyntacticSimple
 import PvNP.FormulaRecursiveSyntacticGeometric
 import PvNP.FormulaRecursiveSyntacticGlobal
+import PvNP.FormulaRecursiveSyntacticGlobalTree
 import PvNP.FormulaRecursiveNonempty
 import PvNP.FormulaRecursiveSizeBound
 import PvNP.FormulaSyntacticDNF
@@ -5163,6 +5164,28 @@ P vs NP.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticGlobal.allSyntacticFrontierLayers_geometricCollapseWithGlobalFormulaSize_simpleNoEmptyFanins
+
+/-!
+Pins for `PvNP.FormulaRecursiveSyntacticGlobalTree`: the supplied
+formula-size global-envelope syntactic route now exposes the actual final
+decision tree returned by the generated certificate and bounds that tree by
+the same global budget `M * (s - 1)`.  This is still not envelope synthesis,
+product/counting synthesis, arbitrary normalization, full B4, a discharged
+formula-class `t(d,s)` theorem, Gate A rung 4, Frege/PHP, NP/circuit, or
+P vs NP.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticGlobalTree.syntacticFrontierLayer_geometricCollapseWithGlobalFormulaSize_finalTree_simpleNoEmptyFanins' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticGlobalTree.syntacticFrontierLayer_geometricCollapseWithGlobalFormulaSize_finalTree_simpleNoEmptyFanins
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticGlobalTree.allSyntacticFrontierLayers_geometricCollapseWithGlobalFormulaSize_finalTree_simpleNoEmptyFanins' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticGlobalTree.allSyntacticFrontierLayers_geometricCollapseWithGlobalFormulaSize_finalTree_simpleNoEmptyFanins
 
 /-!
 Pins for `PvNP.FormulaRecursiveNonempty`: no-empty-fanin raw syntax
