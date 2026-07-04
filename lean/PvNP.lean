@@ -19,6 +19,7 @@ import PvNP.FrozenProductScheduleRatio
 import PvNP.FormulaFamilyCollapse
 import PvNP.FrozenDepthView
 import PvNP.FormulaTruthTableView
+import PvNP.FormulaStructuralSchedule
 import PvNP.MixedFormulaFamilyCollapse
 import PvNP.PHPFullMatchingDistribution
 import PvNP.PHPFullMatchingProbability

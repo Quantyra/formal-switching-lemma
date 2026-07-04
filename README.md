@@ -368,6 +368,18 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   `BDFormula` is pattern-matched to its top `and`/`or` gate and routed through
   the same truth-table fallback.  Leaves/constants still have no exact identity
   parent in `MinimalLayeredFormula`, and full frozen-form B4 remains open.
+- `PvNP.FormulaStructuralSchedule.frozenDepthView_ratioRegimeCollapseWithGlobalTreeBudget`
+  and `positiveDepthFormula_ratioRegimeCollapseWithGlobalTreeBudget`:
+  the same supplied-view global last-tree budget consumer now works for
+  arbitrary nonempty ratio-regime schedules, not just the fixed geometric
+  schedule.  The supplied-view theorem carries
+  `TreeBudgetFrom (frozenGlobalTreeBudget V)` for every schedule and returns
+  the actual last-stage tree bounded by `gateCount * (s - 1)`; the
+  positive-depth raw-formula corollary synthesizes the top-layer view from
+  non-leaf raw syntax and routes it through the same schedule interface.  The
+  child views still use the truth-table/path-DNF fallback and the ratio-regime
+  hypotheses are supplied, so this is not efficient arbitrary AC0
+  decomposition or full frozen-form B4.
 - `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous`: one
   concrete scheduled instance — the schedule `[(3, 561), (2, 17), (1, 1)]`
   over `n = 10000` variables from one width-1 single-literal gate, with all
@@ -439,18 +451,20 @@ This artifact does **not** prove or imply:
   concern the satisfiable `p = h` function only;
 - a discharge of the full frozen-form B4 goal: the artifact now has an
   explicit `FrozenDepthView` consumer theorem with a global final-tree budget
-  `t(d,s) = gateCount * (s - 1)` for supplied views, but it still does not
-  automatically derive the upfront depth-`d` layered view from arbitrary
-  `BDFormula`/AC0 syntax with efficient bottom width and does not internally
-  derive a product-of-stages counting hypothesis `B(m, w, s, d)` for arbitrary
-  formulas.  The `FormulaTruthTableView` fallback does synthesize exact
-  top-connective views from raw `and`/`or` syntax, and the positive-depth
-  wrapper exposes that top constructor automatically for every non-leaf raw
-  formula, but its child DNF views come from full truth-table decision trees
-  with only the generic width bound `<= n`.  The start view and geometric entry
-  hypotheses therefore remain supplied, syntactically exposed by the
-  bottom-layer class, or satisfied only through this expensive fallback, and
-  `GeneratedIteratedCollapse.openObligations` intentionally remains nonempty;
+  `t(d,s) = gateCount * (s - 1)` for supplied views, now for both the fixed
+  geometric schedule and arbitrary nonempty ratio-regime schedules, but it
+  still does not automatically derive the upfront depth-`d` layered view from
+  arbitrary `BDFormula`/AC0 syntax with efficient bottom width and does not
+  internally derive a product-of-stages counting hypothesis `B(m, w, s, d)` for
+  arbitrary formulas.  The `FormulaTruthTableView` fallback does synthesize
+  exact top-connective views from raw `and`/`or` syntax, and the positive-depth
+  wrappers expose that top constructor automatically for every non-leaf raw
+  formula, but their child DNF views come from full truth-table decision trees
+  with only the generic width bound `<= n`.  The start view and geometric or
+  ratio-regime entry hypotheses therefore remain supplied, syntactically
+  exposed by the bottom-layer class, or satisfied only through this expensive
+  fallback, and `GeneratedIteratedCollapse.openObligations` intentionally
+  remains nonempty;
 - satisfiability of the original consistent-route stage beats (full-space
   bad-set count against consistent-subspace cardinality) with nonempty gates
   at two or more stages — the disclosed satisfiability gap, closed only by
@@ -534,7 +548,13 @@ It also adds the Gate B generated-restriction ladder: B1/B2 counting-generated g
 
 Finally it adds general decision-tree DNF/CNF re-viewing with depth-bounded width and built-in repeated-query pruning (`TreePathViews`), the automatic one-step next-layer scaffold from a generated one-step certificate (`AutoReviewedIteration.nextLayer` with its `originalFormula`/`gateCount`/`width` lemmas), and the schedule-driven automatic many-round collapse (`ScheduledAutoCollapse`, `ScheduledCollapseDemo`): from one supplied width-bounded start layer and a purely numeric budget/star-count schedule whose beat conditions hold as closed-form `Nat` arithmetic (`ValidFrom`), `autoIteratedCollapse` produces a `GeneratedRefinedIteratedCertificate` of the schedule's length — in the constructed witness every layer after the first is `nextLayer`-re-viewed automatically, while the pinned statement records only the bookkeeping lists (gate counts, budgets, star counts). The concrete schedule `[(3, 561), (2, 17), (1, 1)]` over `n = 10000` is proved non-vacuously (`scheduledThreeStage_budget3_nonvacuous`), the artifact's first counting-beat-backed stage budget `s > 2` (the earlier `GraphIndexedBridge` `s = 49` record used a directly supplied good restriction for a constant leaf tree, not a counting beat). The per-stage beats remain supplied arithmetic side conditions rather than a single product hypothesis; realized widths of auto re-viewed gates are budget claims; the budget-3 schedule is one concrete finite demo instance, not an asymptotic family; after any `s = 1` stage the schedule's tail degenerates to width-budget-0 stages with near-free beats, so schedule length alone is not a strength measure; frozen-form B4 and Gate A rung 4 remain open.
 
-The current audit surface has 695 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
+The formula-structural ratio-regime wrapper (`FormulaStructuralSchedule`) also
+carries the supplied `FrozenDepthView` global tree budget through arbitrary
+nonempty ratio-regime schedules and through positive-depth raw syntax after
+top-constructor synthesis; the hypotheses remain supplied and this is not a
+full B4 theorem.
+
+The current audit surface has 700 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
 
 - DOI: `10.5281/zenodo.21184992`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`

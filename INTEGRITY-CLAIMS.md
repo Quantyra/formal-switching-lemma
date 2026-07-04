@@ -51,12 +51,15 @@ This repository does **not** establish or imply:
 - a positive Boolean decision-tree depth floor for any unsatisfiable PHP
   formula (`p > h`);
 - a discharge of the full frozen-form B4 goal: supplied `FrozenDepthView`
-  views now have a checked global final-tree budget theorem, but no arbitrary
-  `BDFormula`/AC0 depth-`d` decomposition or internally synthesized
-  `B(m, w, s, d)` product hypothesis is proved.  The start view and geometric
-  entry hypotheses remain supplied or syntactically exposed by the bottom-layer
-  class, and `GeneratedIteratedCollapse.openObligations` intentionally remains
-  nonempty;
+  views now have checked global final-tree budget theorems for the fixed
+  geometric schedule and for arbitrary nonempty ratio-regime schedules, and
+  positive-depth raw formulas can be routed through the same ratio-regime
+  interface after top-constructor synthesis.  No arbitrary `BDFormula`/AC0
+  depth-`d` decomposition or internally synthesized `B(m, w, s, d)` product
+  hypothesis is proved.  The start view and geometric or ratio-regime entry
+  hypotheses remain supplied, syntactically exposed by the bottom-layer class,
+  or satisfied by the truth-table fallback, and
+  `GeneratedIteratedCollapse.openObligations` intentionally remains nonempty;
 - satisfiability of the original consistent-route stage beats (full-space
   bad-set count against consistent-subspace cardinality) with nonempty gates
   at two or more stages — the disclosed satisfiability gap, closed only by
@@ -184,6 +187,11 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.FrozenDepthView.lastStage_gateCount_of_stageGateCounts_replicate` | `propext`, `Classical.choice`, `Quot.sound` | proven final-stage gate-count helper for constant generated-stage bookkeeping |
 | `PvNP.FrozenDepthView.frozenDepthView_geometricCollapseWithGlobalTreeBudget` | `propext`, `Classical.choice`, `Quot.sound` | proven supplied-`FrozenDepthView` consumer with actual final-tree global budget |
 | `PvNP.FrozenDepthView.mixedBottomFrozenDepthView_geometricCollapseWithGlobalTreeBudget` | `propext`, `Classical.choice`, `Quot.sound` | proven mixed raw DNF/CNF bottom-layer class routed through the depth-view interface |
+| `PvNP.FormulaStructuralSchedule.constantGateTreeBudget` | `propext` | proven schedule-independent constant gate-count budget fact |
+| `PvNP.FormulaStructuralSchedule.schedule_frozenGlobalTreeBudget` | `propext`, `Quot.sound` | proven supplied-view budget fact for arbitrary schedules |
+| `PvNP.FormulaStructuralSchedule.frozenDepthView_ratioRegimeCollapseWithGlobalTreeBudget` | `propext`, `Classical.choice`, `Quot.sound` | proven supplied-`FrozenDepthView` ratio-regime consumer with actual final-tree global budget |
+| `PvNP.FormulaStructuralSchedule.positiveDepthFrozenDepthView_width_of_children` | `propext`, `Quot.sound` | proven child-width transfer for positive-depth raw-formula synthesized views |
+| `PvNP.FormulaStructuralSchedule.positiveDepthFormula_ratioRegimeCollapseWithGlobalTreeBudget` | `propext`, `Classical.choice`, `Quot.sound` | proven positive-depth raw-formula ratio-regime consumer with global last-tree budget |
 | `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous` | `propext`, `Classical.choice`, `Quot.sound` | proven concrete budget-3 scheduled instance (single finite demo) |
 
 No declaration above depends on `sorryAx`.
@@ -231,9 +239,13 @@ supplied `t(d,s)` tree-budget facts, with a tiny one-stage width-0 witness; it
 also includes one explicit `n = 17` width-1/two-stage product-bound
 instantiation whose second stage is the width-budget-0 tail. `FrozenDepthView`
 adds a supplied-view consumer with an actual final-tree global budget
-`t(d,s) = gateCount * (s - 1)`, but still does not synthesize `B` from
-arbitrary formulas, derive depth-`d` layered views from arbitrary formula
-syntax, or close full frozen-form B4.
+`t(d,s) = gateCount * (s - 1)`, and `FormulaStructuralSchedule` extends that
+consumer to arbitrary nonempty ratio-regime schedules plus positive-depth raw
+formulas after top-constructor synthesis.  The schedule and width hypotheses
+remain supplied and the child views still use the truth-table fallback; the
+artifact still does not synthesize `B` from arbitrary formulas, derive
+depth-`d` layered views from arbitrary formula syntax, or close full
+frozen-form B4.
 The PHP switching lemma (Gate A rung 4) remains open.
 
 ## Re-Verification

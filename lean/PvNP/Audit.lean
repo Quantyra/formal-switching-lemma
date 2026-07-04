@@ -28,6 +28,7 @@ import PvNP.FrozenProductScheduleRatio
 import PvNP.FormulaFamilyCollapse
 import PvNP.FrozenDepthView
 import PvNP.FormulaTruthTableView
+import PvNP.FormulaStructuralSchedule
 import PvNP.MixedFormulaFamilyCollapse
 import PvNP.ScheduledCollapseDemo
 
@@ -4224,3 +4225,42 @@ info: 'PvNP.FormulaTruthTableView.positiveDepthFormula_geometricCollapseWithGlob
 -/
 #guard_msgs in
 #print axioms PvNP.FormulaTruthTableView.positiveDepthFormula_geometricCollapseWithGlobalTreeBudget
+
+/-!
+Pins for `PvNP.FormulaStructuralSchedule`: the structural raw-formula schedule
+surface now consumes arbitrary ratio-regime schedules, not only the fixed
+geometric schedule, while preserving the global last-tree budget
+`t(d,s)=gateCount*(s-1)`.  The positive-depth theorem synthesizes the start
+view from raw non-leaf formula syntax, but it still uses truth-table/path-DNF
+child views and supplied ratio-regime hypotheses.  NOT full frozen-form B4, NOT
+efficient arbitrary AC0 decomposition, NOT Gate A rung 4, NOT Frege/PHP, NOT
+NP/circuit, and NOT P vs NP.
+-/
+
+/-- info: 'PvNP.FormulaStructuralSchedule.constantGateTreeBudget' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaStructuralSchedule.constantGateTreeBudget
+
+/-- info: 'PvNP.FormulaStructuralSchedule.schedule_frozenGlobalTreeBudget' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaStructuralSchedule.schedule_frozenGlobalTreeBudget
+
+/--
+info: 'PvNP.FormulaStructuralSchedule.frozenDepthView_ratioRegimeCollapseWithGlobalTreeBudget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.FormulaStructuralSchedule.frozenDepthView_ratioRegimeCollapseWithGlobalTreeBudget
+
+/-- info: 'PvNP.FormulaStructuralSchedule.positiveDepthFrozenDepthView_width_of_children' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaStructuralSchedule.positiveDepthFrozenDepthView_width_of_children
+
+/--
+info: 'PvNP.FormulaStructuralSchedule.positiveDepthFormula_ratioRegimeCollapseWithGlobalTreeBudget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.FormulaStructuralSchedule.positiveDepthFormula_ratioRegimeCollapseWithGlobalTreeBudget
