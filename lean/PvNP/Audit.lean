@@ -50,6 +50,7 @@ import PvNP.FormulaRecursiveClassProfile
 import PvNP.FormulaRecursiveClassDefault
 import PvNP.FormulaRecursiveDecompositionTree
 import PvNP.FormulaRecursiveTerminalTree
+import PvNP.FormulaRecursiveTerminalProfile
 import PvNP.FormulaRecursiveNonempty
 import PvNP.FormulaRecursiveSizeBound
 import PvNP.FormulaSyntacticDNF
@@ -5352,6 +5353,37 @@ P vs NP result is proved.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveTerminalTree.exists_fullDepthRecursiveDecomposition_geometricCollapseWithTruthTableFormulaSize_noEmptyFanins_sharpTerminalFinalTree
+
+/-!
+Pins for `PvNP.FormulaRecursiveTerminalProfile`: the all-level recursive
+frontier consumer now selects the terminal width-one bottom layer at
+`level = depth F` and the existing truth-table fallback layer at intermediate
+levels.  This is a terminal-aware uniform profile, not efficient intermediate
+width synthesis, product/counting synthesis, full B4, Gate A rung 4,
+Frege/PHP, NP/circuit, or P vs NP.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveTerminalProfile.terminalAwareFrontierLayer_width_le_budget' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveTerminalProfile.terminalAwareFrontierLayer_width_le_budget
+
+/-- info: 'PvNP.FormulaRecursiveTerminalProfile.terminalAware_geometricBound_of_formulaSize_bound' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveTerminalProfile.terminalAware_geometricBound_of_formulaSize_bound
+
+/-- info: 'PvNP.FormulaRecursiveTerminalProfile.allFrontierLayers_geometricCollapseWithTerminalAwareFormulaSize_noEmptyFanins_finalTree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveTerminalProfile.allFrontierLayers_geometricCollapseWithTerminalAwareFormulaSize_noEmptyFanins_finalTree
+
+/-- info: 'PvNP.FormulaRecursiveTerminalProfile.exists_fullDepthRecursiveDecomposition_geometricCollapseWithTerminalAwareFormulaSize_noEmptyFanins_finalTree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveTerminalProfile.exists_fullDepthRecursiveDecomposition_geometricCollapseWithTerminalAwareFormulaSize_noEmptyFanins_finalTree
 
 /-!
 Pins for `PvNP.FormulaRecursiveNonempty`: no-empty-fanin raw syntax

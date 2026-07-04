@@ -41,6 +41,7 @@ import PvNP.FormulaRecursiveClassProfile
 import PvNP.FormulaRecursiveClassDefault
 import PvNP.FormulaRecursiveDecompositionTree
 import PvNP.FormulaRecursiveTerminalTree
+import PvNP.FormulaRecursiveTerminalProfile
 import PvNP.FormulaRecursiveNonempty
 import PvNP.FormulaRecursiveSizeBound
 import PvNP.FormulaSyntacticDNF
