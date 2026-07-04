@@ -42,6 +42,7 @@ import PvNP.FormulaRecursiveWidthSchedule
 import PvNP.FormulaRecursiveSyntacticLayer
 import PvNP.FormulaRecursiveSyntacticNonempty
 import PvNP.FormulaRecursiveSyntacticSimple
+import PvNP.FormulaRecursiveSyntacticGeometric
 import PvNP.FormulaRecursiveNonempty
 import PvNP.FormulaRecursiveSizeBound
 import PvNP.FormulaSyntacticDNF
@@ -5089,6 +5090,38 @@ full B4, Gate A rung 4, Frege/PHP, NP/circuit, and P vs NP remain open.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticSimple.allSyntacticFrontierLayers_geometricCollapseWithFormulaSize_simpleNoEmptyFanins
+
+/-!
+Pins for `PvNP.FormulaRecursiveSyntacticGeometric`: a single formula-size
+ambient lower bound implies the geometric entry-size inequality for every
+syntactic recursive frontier, using `frontierLayerGateCount F level <=
+formulaSize F`.  The all-level consumer still requires root structural
+simplicity and `NoEmptyFanins F`, and it remains formula-size dependent; this
+is NOT arbitrary normalization, product/counting synthesis, full B4, an
+efficient asymptotic `t(d,s)`, Gate A rung 4, Frege/PHP, NP/circuit, or
+P vs NP.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticGeometric.geometricEntryBound_of_le_formulaSize' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticGeometric.geometricEntryBound_of_le_formulaSize
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticGeometric.frontierLayer_geometricEntryBound_of_formulaSize' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticGeometric.frontierLayer_geometricEntryBound_of_formulaSize
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticGeometric.syntacticFrontierLayer_geometricCollapseWithFormulaSize_simpleNoEmptyFanins_of_formulaSizeBound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticGeometric.syntacticFrontierLayer_geometricCollapseWithFormulaSize_simpleNoEmptyFanins_of_formulaSizeBound
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticGeometric.allSyntacticFrontierLayers_geometricCollapseWithFormulaSize_simpleNoEmptyFanins_of_formulaSizeBound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticGeometric.allSyntacticFrontierLayers_geometricCollapseWithFormulaSize_simpleNoEmptyFanins_of_formulaSizeBound
 
 /-!
 Pins for `PvNP.FormulaRecursiveNonempty`: no-empty-fanin raw syntax
