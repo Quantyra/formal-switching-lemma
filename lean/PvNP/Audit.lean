@@ -42,6 +42,7 @@ import PvNP.FormulaRecursiveWidthSchedule
 import PvNP.FormulaRecursiveNonempty
 import PvNP.FormulaRecursiveSizeBound
 import PvNP.FormulaSyntacticDNF
+import PvNP.FormulaSyntacticSimpleBridge
 import PvNP.FormulaVarWidthSchedule
 import PvNP.MixedFormulaFamilyCollapse
 import PvNP.ScheduledCollapseDemo
@@ -5043,6 +5044,55 @@ result is proved.
 /-- info: 'PvNP.FormulaSyntacticDNF.widthDNF_syntacticDNFView_le_formulaSize' depends on axioms: [propext, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaSyntacticDNF.widthDNF_syntacticDNFView_le_formulaSize
+
+/-!
+Pins for `PvNP.FormulaSyntacticSimpleBridge`: structurally simple raw formulas
+now synthesize the `SimpleDNF` evidence needed by `FormulaSyntacticDNF`, package
+the resulting syntactic DNF view, and inherit the proved simple-DNF switching
+bridge with formula-size width control.  The structural predicate is sufficient
+but not complete; there is no arbitrary DNF normalization, no efficient
+depth-`d` B4 decomposition, no global `t(d,s)` theorem, no PHP switching lemma,
+no Frege/PHP, NP/circuit, or P vs NP result.
+-/
+
+/-- info: 'PvNP.FormulaSyntacticSimpleBridge.CompatibleDNF' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticSimpleBridge.CompatibleDNF
+
+/-- info: 'PvNP.FormulaSyntacticSimpleBridge.simpleDNF_orDNF' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticSimpleBridge.simpleDNF_orDNF
+
+/-- info: 'PvNP.FormulaSyntacticSimpleBridge.simpleDNF_andDNF_of_compatible' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticSimpleBridge.simpleDNF_andDNF_of_compatible
+
+/-- info: 'PvNP.FormulaSyntacticSimpleBridge.syntacticFormulaSimpleDNF' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticSimpleBridge.syntacticFormulaSimpleDNF
+
+/-- info: 'PvNP.FormulaSyntacticSimpleBridge.simpleDNF_syntacticDNF_of_simple' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticSimpleBridge.simpleDNF_syntacticDNF_of_simple
+
+/-- info: 'PvNP.FormulaSyntacticSimpleBridge.syntacticDNFViewOfFormulaSimple' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticSimpleBridge.syntacticDNFViewOfFormulaSimple
+
+/-- info: 'PvNP.FormulaSyntacticSimpleBridge.widthDNF_syntacticDNFViewOfFormulaSimple_le_formulaSize' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticSimpleBridge.widthDNF_syntacticDNFViewOfFormulaSimple_le_formulaSize
+
+/-- info: 'PvNP.FormulaSyntacticSimpleBridge.eval_restrict_syntacticDNF_eq' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticSimpleBridge.eval_restrict_syntacticDNF_eq
+
+/-- info: 'PvNP.FormulaSyntacticSimpleBridge.syntacticFormula_switching_bridge' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticSimpleBridge.syntacticFormula_switching_bridge
 
 /-!
 Pins for `PvNP.FormulaVarWidthSchedule`: the truth-table fallback width theorem

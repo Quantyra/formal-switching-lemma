@@ -498,6 +498,15 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   contradictory terms.  The DNF can be exponentially large, and this is
   structural width control only: no product/counting synthesis, efficient
   global `t(d,s)`, full B4 theorem, or PHP switching lemma is proved.
+- `PvNP.FormulaSyntacticSimpleBridge.simpleDNF_syntacticDNF_of_simple` and
+  `PvNP.FormulaSyntacticSimpleBridge.syntacticFormula_switching_bridge`:
+  a sufficient structural predicate now synthesizes the `SimpleDNF` evidence
+  needed to package a raw formula's syntactic DNF view, and routes those
+  structurally certified formulas through the proved simple-DNF switching
+  bridge with formula-size width control.  The predicate is sufficient but not
+  complete; it does not normalize arbitrary formulas, and the resulting bad-set
+  statement remains over `badSetTerm (syntacticDNF F)`, not a full depth-`d`
+  B4 decomposition or a PHP switching lemma.
 - `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous`: one
   concrete scheduled instance — the schedule `[(3, 561), (2, 17), (1, 1)]`
   over `n = 10000` variables from one width-1 single-literal gate, with all
@@ -541,9 +550,10 @@ This artifact does **not** prove or imply:
   generated-collapse inputs: the formula-family synthesis covers only parent
   merges of embedded simple DNF/CNF children whose bottom-layer raw syntax is
   supplied, and `FormulaSyntacticDNF` gives a semantic DNF expansion for every
-  raw formula only under a supplied simplicity proof for packaged `DNFView`
-  use; neither is a decomposition of general depth-`d` formulas into efficient
-  generated-collapse layers;
+  raw formula, while `FormulaSyntacticSimpleBridge` supplies the packaged
+  `DNFView` simplicity proof only for a structurally certified sufficient
+  subclass; neither is a decomposition of general depth-`d` formulas into
+  efficient generated-collapse layers;
 - a general CNF switching lemma independent of the explicit dualization bridge;
 - a proof-size or proof-depth lower bound for any proof system WITH CUT: the
   variable-coverage and trace-size floors concern only the repository's local
@@ -775,13 +785,21 @@ semantic syntactic DNF expansion and proves its width is at most
 synthesis, efficient global `t(d,s)`, full B4 theorem, or PHP switching lemma
 is proved.
 
+The structural syntactic-DNF bridge (`FormulaSyntacticSimpleBridge`) defines a
+sufficient raw-syntax predicate for syntactic DNF simplicity, packages certified
+formulas as `DNFView`s, and inherits the proved simple-DNF switching bridge with
+formula-size width control.  This removes the supplied simplicity premise only
+for that certified subclass; arbitrary normalization, efficient depth-`d`
+recursive decomposition, product/counting synthesis, and Gate A rung 4 remain
+open.
+
 The variable-width schedule wrapper (`FormulaVarWidthSchedule`) instantiates the
 positive-depth raw-formula ratio-regime route at width `n`, using the proved
 truth-table/path-DNF width bound instead of a caller-supplied child-width
 predicate.  The ratio-regime schedule is still supplied, and `w = n` is not
 efficient syntactic width control; this is not full B4.
 
-The current audit surface has 851 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
+The current audit surface has 860 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
 
 - DOI: `10.5281/zenodo.21184992`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`
