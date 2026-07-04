@@ -21,6 +21,7 @@ import PvNP.AutoReviewedIteration
 import PvNP.ScheduledAutoCollapse
 import PvNP.FrozenProductSchedule
 import PvNP.FrozenProductScheduleDemo
+import PvNP.FrozenProductScheduleRatio
 import PvNP.ScheduledCollapseDemo
 
 /-!
@@ -3757,3 +3758,73 @@ info: 'PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous' depend
 -/
 #guard_msgs in
 #print axioms PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous
+
+/-!
+Pins for `PvNP.FrozenProductScheduleRatio`: the ratio-form (space-aware)
+replacement for the frozen-product bridge's supplied `B(m,w,s,d)` family.
+Per-stage `BeatArith` obligations are PROVED from the regime condition
+`32*m*w*l <= p` by fully symbolic binomial-ratio arithmetic; the named
+geometric star schedule (all budgets `2`, star counts dividing by `64*m`)
+satisfies the regime at every stage; `geometricFamilyCollapse` is the
+artifact's first asymptotic-FAMILY scheduled statement (every round count
+`k + 1`, every `n >= 2 * 64^(k+1)`, every stage entering with width budget
+`>= 1` — no width-0 tail).  Start layers remain supplied simple families;
+frozen-form B4 and Gate A rung 4 remain OPEN; realized widths of re-viewed
+gates remain budget claims.
+-/
+
+/-- info: 'PvNP.FrozenProductScheduleRatio.choose_step_lt' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.choose_step_lt
+
+/-- info: 'PvNP.FrozenProductScheduleRatio.choose_ratio_pow' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.choose_ratio_pow
+
+/-- info: 'PvNP.FrozenProductScheduleRatio.ratio_beat' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.ratio_beat
+
+/-- info: 'PvNP.FrozenProductScheduleRatio.ratioRegime_beat' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.ratioRegime_beat
+
+/-- info: 'PvNP.FrozenProductScheduleRatio.regimeFrom_validFrom' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.regimeFrom_validFrom
+
+/--
+info: 'PvNP.FrozenProductScheduleRatio.autoIteratedCollapse_of_ratioRegime' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.autoIteratedCollapse_of_ratioRegime
+
+/-- info: 'PvNP.FrozenProductScheduleRatio.geometricSchedule_regime' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.geometricSchedule_regime
+
+/-- info: 'PvNP.FrozenProductScheduleRatio.geometricSchedule_treeBudget' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.geometricSchedule_treeBudget
+
+/-- info: 'PvNP.FrozenProductScheduleRatio.familyLayer_width' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.familyLayer_width
+
+/-- info: 'PvNP.FrozenProductScheduleRatio.familyGate_width_realized' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.familyGate_width_realized
+
+/-- info: 'PvNP.FrozenProductScheduleRatio.geometricFamilyCollapse' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.geometricFamilyCollapse
+
+/--
+info: 'PvNP.FrozenProductScheduleRatio.geometricFamily_eightK_twoStage' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.geometricFamily_eightK_twoStage
