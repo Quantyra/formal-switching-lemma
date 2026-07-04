@@ -321,6 +321,11 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.FormulaRecursiveRatioSchedule.allFrontierLayers_ratioRegimeCollapseWithGlobalTreeBudget` | `propext`, `Classical.choice`, `Quot.sound` | proven all in-depth nonempty recursive frontier layers consume supplied ratio-regime schedules |
 | `PvNP.FormulaRecursiveRatioSchedule.frontierLayer_geometricCollapseWithGlobalTreeBudget` | `propext`, `Classical.choice`, `Quot.sound` | proven recursive frontier layers consume the geometric ratio schedule under an explicit entry-size inequality |
 | `PvNP.FormulaRecursiveRatioSchedule.terminalLayer_geometricCollapseWithGlobalTreeBudget` | `propext`, `Classical.choice`, `Quot.sound` | proven terminal recursive layers consume the geometric ratio schedule under an explicit entry-size inequality |
+| `PvNP.FormulaRecursiveWidthSchedule.truthTableRecursiveWidthProfile` | `propext`, `Quot.sound` | defined fallback recursive width profile using the existing truth-table layer width budget |
+| `PvNP.FormulaRecursiveWidthSchedule.frontierLayer_ratioRegimeCollapseWithWidthProfile` | `propext`, `Classical.choice`, `Quot.sound` | proven recursive frontier layers consume supplied ratio-regime schedules at a supplied profile width |
+| `PvNP.FormulaRecursiveWidthSchedule.allFrontierLayers_ratioRegimeCollapseWithWidthProfile` | `propext`, `Classical.choice`, `Quot.sound` | proven all in-depth nonempty recursive frontier layers consume supplied ratio-regime schedules at supplied profile widths |
+| `PvNP.FormulaRecursiveWidthSchedule.frontierLayer_geometricCollapseWithWidthProfile` | `propext`, `Classical.choice`, `Quot.sound` | proven recursive frontier layers consume the geometric ratio schedule at a supplied profile width under an explicit entry-size inequality |
+| `PvNP.FormulaRecursiveWidthSchedule.allFrontierLayers_geometricCollapseWithWidthProfile` | `propext`, `Classical.choice`, `Quot.sound` | proven all in-depth recursive frontier layers consume geometric ratio schedules at supplied profile widths under per-level entry-size bounds |
 | `PvNP.FormulaVarWidthSchedule.topConnectiveFormula_child_width_le_vars` | `propext`, `Quot.sound` | proven top-connective truth-table child views have generic width at most `n` |
 | `PvNP.FormulaVarWidthSchedule.positiveDepthFormula_child_width_le_vars` | `propext`, `Quot.sound` | proven positive-depth raw-formula truth-table child views have generic width at most `n` |
 | `PvNP.FormulaVarWidthSchedule.topConnectiveFormula_ratioRegimeCollapseWithVarWidth` | `propext`, `Classical.choice`, `Quot.sound` | proven top-connective raw formulas route through supplied ratio schedules at width `n` |
@@ -397,15 +402,20 @@ max-count schedule covers every smaller in-depth recursive frontier layer.
 `FormulaRecursiveRatioSchedule` routes recursive frontier and terminal layers
 through supplied ratio-regime schedules under the same formula-local global
 budget, and generates the named geometric ratio schedule only under explicit
-entry-size inequalities. `FormulaVarWidthSchedule` instantiates the
-supplied positive-depth raw-formula ratio-regime route at width `n`, removing
-the caller-supplied child-width predicate while preserving the honest
-truth-table fallback boundary.  Product-beat hypotheses remain supplied on the
-frozen-product route; ratio-regime schedules remain supplied except for
-explicit-bound geometric corollaries.  Intermediate child views still use the
-truth-table fallback, and the artifact still does not synthesize `B` from
-arbitrary formulas, derive efficient recursive depth-`d` layered views from
-arbitrary formula syntax, or close full frozen-form B4.
+entry-size inequalities. `FormulaRecursiveWidthSchedule` adds a supplied
+per-level width-profile hook for recursive frontier ratio/geometric consumers,
+so later structural width theorems can replace the truth-table fallback in
+those consumers without changing the global tree-budget interface.
+`FormulaVarWidthSchedule` instantiates the supplied positive-depth raw-formula
+ratio-regime route at width `n`, removing the caller-supplied child-width
+predicate while preserving the honest truth-table fallback boundary.
+Product-beat hypotheses remain supplied on the frozen-product route;
+ratio-regime schedules remain supplied except for explicit-bound geometric
+corollaries, and the recursive width profile remains supplied.  Intermediate
+child views still use the truth-table fallback unless an external profile is
+provided, and the artifact still does not synthesize `B` from arbitrary
+formulas, derive efficient recursive depth-`d` layered views from arbitrary
+formula syntax, or close full frozen-form B4.
 The PHP switching lemma (Gate A rung 4) remains open.
 
 ## Re-Verification

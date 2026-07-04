@@ -38,6 +38,7 @@ import PvNP.FormulaRecursiveLayerProfile
 import PvNP.FormulaRecursiveGlobalSchedule
 import PvNP.FormulaRecursiveMaxProduct
 import PvNP.FormulaRecursiveRatioSchedule
+import PvNP.FormulaRecursiveWidthSchedule
 import PvNP.FormulaVarWidthSchedule
 import PvNP.MixedFormulaFamilyCollapse
 import PvNP.ScheduledCollapseDemo
@@ -4862,6 +4863,43 @@ fallback width `n`.  This is NOT full B4, not an efficient asymptotic
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveRatioSchedule.terminalLayer_geometricCollapseWithGlobalTreeBudget
+
+/-!
+Pins for `PvNP.FormulaRecursiveWidthSchedule`: recursive frontier layers can
+consume supplied per-level width profiles instead of the truth-table fallback
+width `n`, under the same formula-local global tree budget and supplied
+ratio/geometric schedule hypotheses.  The profile is supplied; this is NOT
+efficient width synthesis, full B4, an efficient asymptotic `t(d,s)`, Gate A
+rung 4, Frege/PHP, NP/circuit, or P vs NP.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveWidthSchedule.truthTableRecursiveWidthProfile' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveWidthSchedule.truthTableRecursiveWidthProfile
+
+/-- info: 'PvNP.FormulaRecursiveWidthSchedule.frontierLayer_ratioRegimeCollapseWithWidthProfile' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveWidthSchedule.frontierLayer_ratioRegimeCollapseWithWidthProfile
+
+/-- info: 'PvNP.FormulaRecursiveWidthSchedule.allFrontierLayers_ratioRegimeCollapseWithWidthProfile' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveWidthSchedule.allFrontierLayers_ratioRegimeCollapseWithWidthProfile
+
+/-- info: 'PvNP.FormulaRecursiveWidthSchedule.frontierLayer_geometricCollapseWithWidthProfile' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveWidthSchedule.frontierLayer_geometricCollapseWithWidthProfile
+
+/-- info: 'PvNP.FormulaRecursiveWidthSchedule.allFrontierLayers_geometricCollapseWithWidthProfile' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveWidthSchedule.allFrontierLayers_geometricCollapseWithWidthProfile
 
 /-!
 Pins for `PvNP.FormulaVarWidthSchedule`: the truth-table fallback width theorem
