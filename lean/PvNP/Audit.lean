@@ -35,6 +35,7 @@ import PvNP.FormulaDepthZeroBottom
 import PvNP.FormulaRecursiveDecomposition
 import PvNP.FormulaRecursiveGateLayers
 import PvNP.FormulaRecursiveLayerProfile
+import PvNP.FormulaRecursiveGlobalSchedule
 import PvNP.FormulaVarWidthSchedule
 import PvNP.MixedFormulaFamilyCollapse
 import PvNP.ScheduledCollapseDemo
@@ -4684,6 +4685,84 @@ NP/circuit, or P vs NP result is proved.
 /-- info: 'PvNP.FormulaRecursiveLayerProfile.frontierLayer_treeBudgetFrom' depends on axioms: [propext, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveLayerProfile.frontierLayer_treeBudgetFrom
+
+/-!
+Pins for `PvNP.FormulaRecursiveGlobalSchedule`: recursive frontier and
+terminal layers are repackaged as schedule inputs under one formula-wide
+max-frontier tree budget.  Product/counting beats are still supplied, the
+intermediate width budget is still `n`, and this is still NOT full B4, Gate A
+rung 4, Frege/PHP, NP/circuit, or P vs NP.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveGlobalSchedule.frontierLayerMinimalLayer' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGlobalSchedule.frontierLayerMinimalLayer
+
+/-- info: 'PvNP.FormulaRecursiveGlobalSchedule.frontierLayerMinimalLayer_originalFormula' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGlobalSchedule.frontierLayerMinimalLayer_originalFormula
+
+/-- info: 'PvNP.FormulaRecursiveGlobalSchedule.frontierLayerMinimalLayer_gateCount' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGlobalSchedule.frontierLayerMinimalLayer_gateCount
+
+/-- info: 'PvNP.FormulaRecursiveGlobalSchedule.frontierLayerMinimalLayer_width_le_budget' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGlobalSchedule.frontierLayerMinimalLayer_width_le_budget
+
+/-- info: 'PvNP.FormulaRecursiveGlobalSchedule.frontierLayerMinimalLayer_formula_depth_add_le' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGlobalSchedule.frontierLayerMinimalLayer_formula_depth_add_le
+
+/-- info: 'PvNP.FormulaRecursiveGlobalSchedule.terminalLayerMinimalLayer' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGlobalSchedule.terminalLayerMinimalLayer
+
+/-- info: 'PvNP.FormulaRecursiveGlobalSchedule.terminalLayerMinimalLayer_originalFormula' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGlobalSchedule.terminalLayerMinimalLayer_originalFormula
+
+/-- info: 'PvNP.FormulaRecursiveGlobalSchedule.terminalLayerMinimalLayer_gateCount' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGlobalSchedule.terminalLayerMinimalLayer_gateCount
+
+/-- info: 'PvNP.FormulaRecursiveGlobalSchedule.terminalLayerMinimalLayer_width_le_budget' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGlobalSchedule.terminalLayerMinimalLayer_width_le_budget
+
+/-- info: 'PvNP.FormulaRecursiveGlobalSchedule.recursiveFrontierMaxGateCount' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGlobalSchedule.recursiveFrontierMaxGateCount
+
+/-- info: 'PvNP.FormulaRecursiveGlobalSchedule.frontierLayerGateCount_le_recursiveFrontierMaxGateCount' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGlobalSchedule.frontierLayerGateCount_le_recursiveFrontierMaxGateCount
+
+/-- info: 'PvNP.FormulaRecursiveGlobalSchedule.recursiveFrontierGlobalTreeBudget' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGlobalSchedule.recursiveFrontierGlobalTreeBudget
+
+/-- info: 'PvNP.FormulaRecursiveGlobalSchedule.recursiveFrontierGlobalTreeBudgetFrom' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGlobalSchedule.recursiveFrontierGlobalTreeBudgetFrom
+
+/-- info: 'PvNP.FormulaRecursiveGlobalSchedule.terminalLayer_globalTreeBudgetFrom' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGlobalSchedule.terminalLayer_globalTreeBudgetFrom
+
+/-- info: 'PvNP.FormulaRecursiveGlobalSchedule.frontierLayer_autoIteratedCollapse_of_globalProductBeats' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGlobalSchedule.frontierLayer_autoIteratedCollapse_of_globalProductBeats
+
+/-- info: 'PvNP.FormulaRecursiveGlobalSchedule.terminalLayer_autoIteratedCollapse_of_globalProductBeats' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGlobalSchedule.terminalLayer_autoIteratedCollapse_of_globalProductBeats
 
 /-!
 Pins for `PvNP.FormulaVarWidthSchedule`: the truth-table fallback width theorem

@@ -26,6 +26,7 @@ import PvNP.FormulaDepthZeroBottom
 import PvNP.FormulaRecursiveDecomposition
 import PvNP.FormulaRecursiveGateLayers
 import PvNP.FormulaRecursiveLayerProfile
+import PvNP.FormulaRecursiveGlobalSchedule
 import PvNP.FormulaVarWidthSchedule
 import PvNP.MixedFormulaFamilyCollapse
 import PvNP.PHPFullMatchingDistribution

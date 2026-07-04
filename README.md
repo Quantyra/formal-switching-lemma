@@ -428,6 +428,17 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   constant tree budgets `m_k * (s - 1)`.  This is bookkeeping over the existing
   layers only; it still does not synthesize efficient widths, product/counting
   hypotheses, a schedule, or full B4.
+- `PvNP.FormulaRecursiveGlobalSchedule.frontierLayer_autoIteratedCollapse_of_globalProductBeats`
+  and
+  `PvNP.FormulaRecursiveGlobalSchedule.terminalLayer_autoIteratedCollapse_of_globalProductBeats`:
+  synthesized recursive frontier layers and the terminal full-depth bottom
+  layer can now feed the existing frozen-product schedule theorem under one
+  formula-wide max-frontier budget
+  `recursiveFrontierGlobalTreeBudget F d s =
+  recursiveFrontierMaxGateCount F * (s - 1)`.  Product/counting beats remain
+  supplied as `ProductValidFrom`, and the intermediate width budget remains the
+  truth-table fallback `n`; this advances the structural B4 interface but is
+  not an efficient asymptotic `t(d,s)` theorem or full B4.
 - `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous`: one
   concrete scheduled instance — the schedule `[(3, 561), (2, 17), (1, 1)]`
   over `n = 10000` variables from one width-1 single-literal gate, with all
@@ -648,13 +659,20 @@ and terminal width budgets, and per-layer constant tree-budget facts.  This is
 still profile bookkeeping over truth-table fallback layers, not product/counting
 synthesis or a generated collapse theorem.
 
+The recursive global-schedule wrapper (`FormulaRecursiveGlobalSchedule`) adds a
+single formula-wide max-frontier tree budget over the recursive layer profile,
+proves every in-depth frontier gate count is below that maximum, and routes the
+synthesized frontier and terminal layers through the frozen-product schedule
+consumer from supplied `ProductValidFrom` beats.  The resulting `t_F` is a
+formula-local structural budget, not an efficient asymptotic B4 `t(d,s)` bound.
+
 The variable-width schedule wrapper (`FormulaVarWidthSchedule`) instantiates the
 positive-depth raw-formula ratio-regime route at width `n`, using the proved
 truth-table/path-DNF width bound instead of a caller-supplied child-width
 predicate.  The ratio-regime schedule is still supplied, and `w = n` is not
 efficient syntactic width control; this is not full B4.
 
-The current audit surface has 789 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
+The current audit surface has 805 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
 
 - DOI: `10.5281/zenodo.21184992`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`

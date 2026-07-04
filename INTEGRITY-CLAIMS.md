@@ -59,12 +59,15 @@ This repository does **not** establish or imply:
   a checked raw-depth budget, and full-depth frontier members now have exact
   width-one-or-less bottom DNF gates.  Recursive frontier gate layers also
   carry explicit per-level count, width-budget, successor-count, and
-  tree-budget profile facts.  But no arbitrary `BDFormula`/AC0
-  depth-`d` decomposition or internally synthesized `B(m, w, s, d)` product
-  hypothesis is proved.  The start view and geometric or ratio-regime entry
-  hypotheses remain supplied, syntactically exposed by the bottom-layer class,
-  satisfied by the truth-table fallback, or available only at the terminal
-  full-depth frontier, and
+  tree-budget profile facts, and the recursive global-schedule wrapper packages
+  those synthesized frontier and terminal layers under one formula-local
+  max-frontier `t_F` budget for the existing frozen-product schedule consumer.
+  But no arbitrary `BDFormula`/AC0 depth-`d` decomposition or internally
+  synthesized `B(m, w, s, d)` product hypothesis is proved.  The start view and
+  geometric, ratio-regime, or product-beat entry hypotheses remain supplied,
+  syntactically exposed by the bottom-layer class, satisfied by the truth-table
+  fallback, available only at the terminal full-depth frontier, or local to the
+  formula's max-frontier profile, and
   `GeneratedIteratedCollapse.openObligations` intentionally remains nonempty;
 - satisfiability of the original consistent-route stage beats (full-space
   bad-set count against consistent-subspace cardinality) with nonempty gates
@@ -283,6 +286,22 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.FormulaRecursiveLayerProfile.terminalLayer_width_le_budget` | `propext`, `Quot.sound` | proven terminal bottom layer obeys the width-one budget |
 | `PvNP.FormulaRecursiveLayerProfile.frontierLayerTreeBudget` | `propext`, `Quot.sound` | defined per-layer constant tree-budget profile |
 | `PvNP.FormulaRecursiveLayerProfile.frontierLayer_treeBudgetFrom` | `propext`, `Quot.sound` | proven per-layer constant tree-budget profile satisfies every numeric schedule |
+| `PvNP.FormulaRecursiveGlobalSchedule.frontierLayerMinimalLayer` | `propext`, `Quot.sound` | constructed schedule-input layer from any recursive frontier |
+| `PvNP.FormulaRecursiveGlobalSchedule.frontierLayerMinimalLayer_originalFormula` | `propext`, `Quot.sound` | proven frontier schedule-input formula is the chosen parent over the recursive frontier |
+| `PvNP.FormulaRecursiveGlobalSchedule.frontierLayerMinimalLayer_gateCount` | `propext`, `Quot.sound` | proven frontier schedule-input gate count matches the recursive profile |
+| `PvNP.FormulaRecursiveGlobalSchedule.frontierLayerMinimalLayer_width_le_budget` | `propext`, `Quot.sound` | proven frontier schedule-input gates obey the honest intermediate width budget |
+| `PvNP.FormulaRecursiveGlobalSchedule.frontierLayerMinimalLayer_formula_depth_add_le` | `propext`, `Quot.sound` | proven frontier schedule-input gate formulas retain the recursive raw-depth budget |
+| `PvNP.FormulaRecursiveGlobalSchedule.terminalLayerMinimalLayer` | `propext`, `Quot.sound` | constructed schedule-input layer from the terminal full-depth bottom layer |
+| `PvNP.FormulaRecursiveGlobalSchedule.terminalLayerMinimalLayer_originalFormula` | `propext`, `Quot.sound` | proven terminal schedule-input formula is the chosen parent over the full-depth frontier |
+| `PvNP.FormulaRecursiveGlobalSchedule.terminalLayerMinimalLayer_gateCount` | `propext`, `Quot.sound` | proven terminal schedule-input gate count matches the full-depth frontier profile |
+| `PvNP.FormulaRecursiveGlobalSchedule.terminalLayerMinimalLayer_width_le_budget` | `propext`, `Quot.sound` | proven terminal schedule-input gates obey the width-one budget |
+| `PvNP.FormulaRecursiveGlobalSchedule.recursiveFrontierMaxGateCount` | `propext`, `Quot.sound` | defined formula-wide maximum over recursive frontier gate counts |
+| `PvNP.FormulaRecursiveGlobalSchedule.frontierLayerGateCount_le_recursiveFrontierMaxGateCount` | `propext`, `Quot.sound` | proven in-depth frontier gate counts are bounded by the formula-wide maximum |
+| `PvNP.FormulaRecursiveGlobalSchedule.recursiveFrontierGlobalTreeBudget` | `propext`, `Quot.sound` | defined formula-local max-frontier tree-budget profile |
+| `PvNP.FormulaRecursiveGlobalSchedule.recursiveFrontierGlobalTreeBudgetFrom` | `propext`, `Quot.sound` | proven formula-local max-frontier budget satisfies every numeric schedule for in-depth frontier layers |
+| `PvNP.FormulaRecursiveGlobalSchedule.terminalLayer_globalTreeBudgetFrom` | `propext`, `Quot.sound` | proven terminal-layer specialization of the formula-local max-frontier budget |
+| `PvNP.FormulaRecursiveGlobalSchedule.frontierLayer_autoIteratedCollapse_of_globalProductBeats` | `propext`, `Classical.choice`, `Quot.sound` | proven synthesized frontier layer consumes supplied product beats through the frozen-product schedule interface under the formula-local global budget |
+| `PvNP.FormulaRecursiveGlobalSchedule.terminalLayer_autoIteratedCollapse_of_globalProductBeats` | `propext`, `Classical.choice`, `Quot.sound` | proven terminal layer consumes supplied product beats through the frozen-product schedule interface under the formula-local global budget |
 | `PvNP.FormulaVarWidthSchedule.topConnectiveFormula_child_width_le_vars` | `propext`, `Quot.sound` | proven top-connective truth-table child views have generic width at most `n` |
 | `PvNP.FormulaVarWidthSchedule.positiveDepthFormula_child_width_le_vars` | `propext`, `Quot.sound` | proven positive-depth raw-formula truth-table child views have generic width at most `n` |
 | `PvNP.FormulaVarWidthSchedule.topConnectiveFormula_ratioRegimeCollapseWithVarWidth` | `propext`, `Classical.choice`, `Quot.sound` | proven top-connective raw formulas route through supplied ratio schedules at width `n` |
@@ -350,13 +369,17 @@ width bound is only the truth-table fallback `n`; only the terminal full-depth
 bottom layer carries the width-one-or-less bound. `FormulaRecursiveLayerProfile`
 adds the per-level profile facts over those layers: gate counts, successor
 counts by top-child expansion, honest width budgets, and constant tree-budget
-facts. `FormulaVarWidthSchedule` then instantiates the supplied positive-depth
-raw-formula ratio-regime route at width `n`, removing the caller-supplied
-child-width predicate while preserving the honest truth-table fallback
-boundary.  The schedule hypotheses remain supplied and intermediate child views
-still use the truth-table fallback; the artifact still does not synthesize `B`
-from arbitrary formulas, derive efficient recursive depth-`d` layered views
-from arbitrary formula syntax, or close full frozen-form B4.
+facts. `FormulaRecursiveGlobalSchedule` then packages synthesized frontier and
+terminal layers as schedule inputs under one formula-local max-frontier tree
+budget and routes them through the frozen-product schedule consumer from
+supplied `ProductValidFrom` beats. `FormulaVarWidthSchedule` instantiates the
+supplied positive-depth raw-formula ratio-regime route at width `n`, removing
+the caller-supplied child-width predicate while preserving the honest
+truth-table fallback boundary.  The schedule and product-beat hypotheses remain
+supplied and intermediate child views still use the truth-table fallback; the
+artifact still does not synthesize `B` from arbitrary formulas, derive efficient
+recursive depth-`d` layered views from arbitrary formula syntax, or close full
+frozen-form B4.
 The PHP switching lemma (Gate A rung 4) remains open.
 
 ## Re-Verification
