@@ -34,6 +34,7 @@ import PvNP.FormulaRecursiveDepth
 import PvNP.FormulaDepthZeroBottom
 import PvNP.FormulaRecursiveDecomposition
 import PvNP.FormulaRecursiveGateLayers
+import PvNP.FormulaVarWidthSchedule
 import PvNP.MixedFormulaFamilyCollapse
 import PvNP.ScheduledCollapseDemo
 
@@ -4612,3 +4613,32 @@ schedule, Gate A rung 4, Frege/PHP, NP/circuit, or P vs NP result is proved.
 /-- info: 'PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers_terminal_width' depends on axioms: [propext, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers_terminal_width
+
+/-!
+Pins for `PvNP.FormulaVarWidthSchedule`: the truth-table fallback width theorem
+is used to instantiate the raw-formula ratio-regime schedule route at
+`w = n`, removing a caller-supplied width predicate.  This is still NOT full
+B4: the ratio regime remains supplied and `w = n` is not efficient syntactic
+width control; no product/counting synthesis, Gate A rung 4, Frege/PHP,
+NP/circuit, or P vs NP result is proved.
+-/
+
+/-- info: 'PvNP.FormulaVarWidthSchedule.topConnectiveFormula_child_width_le_vars' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaVarWidthSchedule.topConnectiveFormula_child_width_le_vars
+
+/-- info: 'PvNP.FormulaVarWidthSchedule.positiveDepthFormula_child_width_le_vars' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaVarWidthSchedule.positiveDepthFormula_child_width_le_vars
+
+/-- info: 'PvNP.FormulaVarWidthSchedule.topConnectiveFormula_ratioRegimeCollapseWithVarWidth' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaVarWidthSchedule.topConnectiveFormula_ratioRegimeCollapseWithVarWidth
+
+/-- info: 'PvNP.FormulaVarWidthSchedule.positiveDepthFormula_ratioRegimeCollapseWithVarWidth' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaVarWidthSchedule.positiveDepthFormula_ratioRegimeCollapseWithVarWidth

@@ -267,6 +267,10 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers_level_width_le_vars` | `propext`, `Quot.sound` | proven packaged intermediate frontier layer widths are bounded by the variable count |
 | `PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers_terminal_formulas` | `propext`, `Quot.sound` | proven packaged terminal bottom-layer formulas match the terminal frontier gate layer |
 | `PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers_terminal_width` | `propext`, `Quot.sound` | proven packaged terminal bottom-layer widths are at most one |
+| `PvNP.FormulaVarWidthSchedule.topConnectiveFormula_child_width_le_vars` | `propext`, `Quot.sound` | proven top-connective truth-table child views have generic width at most `n` |
+| `PvNP.FormulaVarWidthSchedule.positiveDepthFormula_child_width_le_vars` | `propext`, `Quot.sound` | proven positive-depth raw-formula truth-table child views have generic width at most `n` |
+| `PvNP.FormulaVarWidthSchedule.topConnectiveFormula_ratioRegimeCollapseWithVarWidth` | `propext`, `Classical.choice`, `Quot.sound` | proven top-connective raw formulas route through supplied ratio schedules at width `n` |
+| `PvNP.FormulaVarWidthSchedule.positiveDepthFormula_ratioRegimeCollapseWithVarWidth` | `propext`, `Classical.choice`, `Quot.sound` | proven positive-depth raw formulas route through supplied ratio schedules at width `n` |
 | `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous` | `propext`, `Classical.choice`, `Quot.sound` | proven concrete budget-3 scheduled instance (single finite demo) |
 
 No declaration above depends on `sorryAx`.
@@ -327,11 +331,14 @@ and the terminal bottom layer as one structural skeleton.
 `FormulaRecursiveGateLayers` reifies every recursive frontier level as a
 `GateSpec.dnf` list with formula and count alignment, but the intermediate
 width bound is only the truth-table fallback `n`; only the terminal full-depth
-bottom layer carries the width-one-or-less bound.  The schedule and width
-hypotheses remain supplied and intermediate child views still use the
-truth-table fallback; the artifact still does not synthesize `B` from arbitrary
-formulas, derive efficient recursive depth-`d` layered views from arbitrary
-formula syntax, or close full frozen-form B4.
+bottom layer carries the width-one-or-less bound. `FormulaVarWidthSchedule`
+then instantiates the supplied positive-depth raw-formula ratio-regime route at
+width `n`, removing the caller-supplied child-width predicate while preserving
+the honest truth-table fallback boundary.  The schedule hypotheses remain
+supplied and intermediate child views still use the truth-table fallback; the
+artifact still does not synthesize `B` from arbitrary formulas, derive
+efficient recursive depth-`d` layered views from arbitrary formula syntax, or
+close full frozen-form B4.
 The PHP switching lemma (Gate A rung 4) remains open.
 
 ## Re-Verification
