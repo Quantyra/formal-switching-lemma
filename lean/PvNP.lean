@@ -17,6 +17,7 @@ import PvNP.RefinedThreeStageInstance
 import PvNP.FrozenProductScheduleDemo
 import PvNP.FrozenProductScheduleRatio
 import PvNP.FormulaFamilyCollapse
+import PvNP.MixedFormulaFamilyCollapse
 import PvNP.RestrictedPHPFloor
 import PvNP.ScheduledAutoCollapse
 import PvNP.ScheduledCollapseDemo

@@ -307,6 +307,21 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   earlier width-0 one-stage witness, but after the first `s = 1` stage the
   tail is width-budget-0 with a near-free beat; it is a small finite demo, not
   an asymptotic product-bound family or full frozen-form B4 closure.
+- `PvNP.FormulaFamilyCollapse.formulaFamilyCollapse`: formula-level family
+  collapse for parent-merged embedded simple-DNF children, synthesizing the
+  semantic `GateSpec.dnf` start layer from raw DNF syntax and then applying the
+  geometric family collapse.  This removes a supplied semantic-view premise for
+  that syntactic class only; it is not arbitrary bounded-depth decomposition.
+- `PvNP.MixedFormulaFamilyCollapse.mixedFormulaFamilyCollapse` and
+  `cnfFormulaFamilyCollapse`: bottom-layer synthesis for both `GateSpec`
+  constructors from raw syntax.  Raw DNF children use the constructed
+  `dnfToBD_dnfView`; raw CNF children are embedded as real `and`-of-`or`s
+  formulas with a constructed `CNFView`, then switched through the existing
+  dual-DNF bridge.  The mixed theorem covers parent merges of arbitrary mixtures
+  of those embedded simple DNF/CNF children, with a finite witness
+  `mixedFamily_dnfCnf_twoStage` exercising both constructors.  This is still
+  bottom-layer synthesis only: no depth-`d` decomposition, no global `t(d,s)`
+  theorem, and no PHP switching lemma.
 - `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous`: one
   concrete scheduled instance — the schedule `[(3, 561), (2, 17), (1, 1)]`
   over `n = 10000` variables from one width-1 single-literal gate, with all
@@ -346,6 +361,10 @@ This artifact does **not** prove or imply:
 - any positive Boolean decision-tree depth floor for an unsatisfiable PHP formula
   merely from the bounded falsified-clause search floors;
 - arbitrary AC0 or arbitrary bounded-depth formula collapse;
+- arbitrary raw-formula synthesis from all `BDFormula` syntax: the
+  formula-family synthesis covers only parent merges of embedded simple DNF/CNF
+  children whose bottom-layer raw syntax is supplied, not a decomposition of
+  general depth-`d` formulas into such layers;
 - a general CNF switching lemma independent of the explicit dualization bridge;
 - a proof-size or proof-depth lower bound for any proof system WITH CUT: the
   variable-coverage and trace-size floors concern only the repository's local

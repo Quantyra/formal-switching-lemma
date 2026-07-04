@@ -21,6 +21,10 @@ This repository does **not** establish or imply:
 - any positive Boolean decision-tree depth floor for an unsatisfiable PHP formula
   merely from the bounded falsified-clause search floors;
 - arbitrary AC0 collapse or arbitrary bounded-depth formula collapse;
+- arbitrary raw-formula synthesis from all `BDFormula` syntax: the
+  formula-family synthesis covers only parent merges of embedded simple DNF/CNF
+  children whose bottom-layer raw syntax is supplied, not a decomposition of
+  general depth-`d` formulas into such layers;
 - a general CNF switching lemma independent of the explicit dualization bridge;
 - a proof-size or proof-depth lower bound for any proof system WITH CUT: the
   variable-coverage and trace-size floors concern only this repository's local
@@ -164,6 +168,10 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.FrozenProductSchedule.autoIteratedCollapse_of_frozenProduct` | `propext`, `Classical.choice`, `Quot.sound` | proven frozen-product schedule synthesis theorem (supplied `B`/`t`; start layer and schedule still supplied) |
 | `PvNP.FrozenProductSchedule.frozenProductSchedule_oneStage_nonvacuous` | `propext`, `Classical.choice`, `Quot.sound` | tiny one-stage width-0 non-vacuity witness for the product-schedule interface |
 | `PvNP.FrozenProductScheduleDemo.frozenProductSchedule_seventeenTwoStage_nonvacuous` | `propext`, `Classical.choice`, `Quot.sound` | finite `n = 17` width-1/two-stage product-bound instantiation; second stage is width-budget-0 tail |
+| `PvNP.FormulaFamilyCollapse.formulaFamilyCollapse` | `propext`, `Classical.choice`, `Quot.sound` | proven parent-merged embedded-DNF family theorem (bottom-layer synthesis only) |
+| `PvNP.MixedFormulaFamilyCollapse.mixedFormulaFamilyCollapse` | `propext`, `Classical.choice`, `Quot.sound` | proven parent-merged mixed embedded-DNF/CNF family theorem (full `GateSpec` constructor synthesis from raw bottom syntax only) |
+| `PvNP.MixedFormulaFamilyCollapse.cnfFormulaFamilyCollapse` | `propext`, `Classical.choice`, `Quot.sound` | proven all-CNF child corollary via constructed `GateSpec.cnf` views |
+| `PvNP.MixedFormulaFamilyCollapse.mixedFamily_dnfCnf_twoStage` | `propext`, `Classical.choice`, `Quot.sound` | finite mixed DNF/CNF witness exercising both `GateSpec` constructors |
 | `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous` | `propext`, `Classical.choice`, `Quot.sound` | proven concrete budget-3 scheduled instance (single finite demo) |
 
 No declaration above depends on `sorryAx`.

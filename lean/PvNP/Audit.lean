@@ -24,6 +24,7 @@ import PvNP.FrozenProductSchedule
 import PvNP.FrozenProductScheduleDemo
 import PvNP.FrozenProductScheduleRatio
 import PvNP.FormulaFamilyCollapse
+import PvNP.MixedFormulaFamilyCollapse
 import PvNP.ScheduledCollapseDemo
 
 /-!
@@ -3950,3 +3951,46 @@ frozen-form B4 in full and Gate A rung 4 remain OPEN.
 /-- info: 'PvNP.FormulaFamilyCollapse.formulaFamily_widthTwo_twoStage' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaFamilyCollapse.formulaFamily_widthTwo_twoStage
+
+/-!
+Pins for `PvNP.MixedFormulaFamilyCollapse`: the bottom-layer synthesis
+surface completed for BOTH `GateSpec` constructors.  `cnfChildToBD` embeds
+a raw CNF as a real `and`-of-`or`s formula with constructed semantics
+(`cnfChildToBD_cnfView`, the CNF-side counterpart of `dnfToBD_dnfView`);
+`widthDNF_cnfDualDNF` shows the dual-DNF switching width equals the raw
+list's `widthDNF`, so both child kinds take the same uniform decidable
+syntactic hypotheses.  `mixedFormulaFamilyCollapse` extends the
+formula-level family to parent-merges of arbitrary mixtures of embedded
+simple DNF and CNF children; `cnfFormulaFamilyCollapse` is the all-CNF
+corollary; the witness at `n = 32768` exercises both constructors with a
+genuinely two-clause CNF child.  Depth-`d` decomposition and the global
+`t(d,s)` theorem (frozen-form B4 in full) and Gate A rung 4 remain OPEN.
+-/
+
+/-- info: 'PvNP.MixedFormulaFamilyCollapse.eval_cnfChildToBD' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.MixedFormulaFamilyCollapse.eval_cnfChildToBD
+
+/-- info: 'PvNP.MixedFormulaFamilyCollapse.widthDNF_cnfDualDNF' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.MixedFormulaFamilyCollapse.widthDNF_cnfDualDNF
+
+/-- info: 'PvNP.MixedFormulaFamilyCollapse.RawGate.toGate_width' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.MixedFormulaFamilyCollapse.RawGate.toGate_width
+
+/-- info: 'PvNP.MixedFormulaFamilyCollapse.mixedSynthLayer_originalFormula' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.MixedFormulaFamilyCollapse.mixedSynthLayer_originalFormula
+
+/-- info: 'PvNP.MixedFormulaFamilyCollapse.mixedFormulaFamilyCollapse' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.MixedFormulaFamilyCollapse.mixedFormulaFamilyCollapse
+
+/-- info: 'PvNP.MixedFormulaFamilyCollapse.cnfFormulaFamilyCollapse' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.MixedFormulaFamilyCollapse.cnfFormulaFamilyCollapse
+
+/-- info: 'PvNP.MixedFormulaFamilyCollapse.mixedFamily_dnfCnf_twoStage' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.MixedFormulaFamilyCollapse.mixedFamily_dnfCnf_twoStage
