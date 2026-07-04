@@ -23,6 +23,7 @@ import PvNP.ScheduledAutoCollapse
 import PvNP.FrozenProductSchedule
 import PvNP.FrozenProductScheduleDemo
 import PvNP.FrozenProductScheduleRatio
+import PvNP.FormulaFamilyCollapse
 import PvNP.ScheduledCollapseDemo
 
 /-!
@@ -3910,3 +3911,42 @@ info: 'PvNP.RefinedThreeStageInstance.refinedThreeStage_autoReviewed_nonemptyGat
 -/
 #guard_msgs in
 #print axioms PvNP.RefinedThreeStageInstance.refinedThreeStage_autoReviewed_nonemptyGates_nonvacuous
+
+/-!
+Pins for `PvNP.FormulaFamilyCollapse`: synthesized start views for the
+parent-merged embedded-DNF class (`p.merge (Ds.map dnfToBD)`; for `and`
+parents the merged syntax tree has three alternation levels; bare DNFs
+and CNF-shaped children are outside the class).  From a raw list of
+simple DNFs, each gate's SEMANTIC view (`eval` equality) is CONSTRUCTED
+(`dnfGate`/`synthGates`/`synthLayer` via the canonical `dnfToBD_dnfView`);
+simplicity remains a decidable, purely syntactic hypothesis (distinct
+variables per term).  The family statement quantifies over formulas of
+the class with no supplied semantic view.  Witness instance at
+`n = 16384` with a start DNF of one realized width-2 term.  Arbitrary
+layered decomposition of general bounded-depth formulas is NOT performed;
+frozen-form B4 in full and Gate A rung 4 remain OPEN.
+-/
+
+/-- info: 'PvNP.FormulaFamilyCollapse.synthGates_length' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaFamilyCollapse.synthGates_length
+
+/-- info: 'PvNP.FormulaFamilyCollapse.synthGates_width' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaFamilyCollapse.synthGates_width
+
+/-- info: 'PvNP.FormulaFamilyCollapse.synthLayer_originalFormula' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaFamilyCollapse.synthLayer_originalFormula
+
+/-- info: 'PvNP.FormulaFamilyCollapse.formulaFamilyCollapse' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaFamilyCollapse.formulaFamilyCollapse
+
+/-- info: 'PvNP.FormulaFamilyCollapse.witnessDNF_width_realized' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaFamilyCollapse.witnessDNF_width_realized
+
+/-- info: 'PvNP.FormulaFamilyCollapse.formulaFamily_widthTwo_twoStage' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaFamilyCollapse.formulaFamily_widthTwo_twoStage
