@@ -31,6 +31,7 @@ import PvNP.FormulaTruthTableView
 import PvNP.FormulaStructuralSchedule
 import PvNP.FormulaDepthDecomposition
 import PvNP.FormulaRecursiveDepth
+import PvNP.FormulaDepthZeroBottom
 import PvNP.MixedFormulaFamilyCollapse
 import PvNP.ScheduledCollapseDemo
 
@@ -4376,3 +4377,100 @@ rung 4, Frege/PHP, NP/circuit, or P vs NP.
 /-- info: 'PvNP.FormulaRecursiveDepth.recursiveDepthFrontier_fullDepth_zero' depends on axioms: [propext, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveDepth.recursiveDepthFrontier_fullDepth_zero
+
+/-!
+Pins for `PvNP.FormulaDepthZeroBottom`: exact bottom DNF witnesses for raw
+formulas already known to have depth zero.  This connects the full-depth
+recursive frontier to width-one `GateSpec.dnf` bottom gates, but still does NOT
+assemble a recursive depth-`d` layered view, does NOT synthesize product/counting
+hypotheses, does NOT close frozen-form B4, and is NOT Gate A rung 4, Frege/PHP,
+NP/circuit, or P vs NP.
+-/
+
+/-- info: 'PvNP.FormulaDepthZeroBottom.trueDNF' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthZeroBottom.trueDNF
+
+/-- info: 'PvNP.FormulaDepthZeroBottom.falseDNF' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthZeroBottom.falseDNF
+
+/-- info: 'PvNP.FormulaDepthZeroBottom.literalDNF' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthZeroBottom.literalDNF
+
+/-- info: 'PvNP.FormulaDepthZeroBottom.trueDNF_simple' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthZeroBottom.trueDNF_simple
+
+/-- info: 'PvNP.FormulaDepthZeroBottom.falseDNF_simple' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthZeroBottom.falseDNF_simple
+
+/-- info: 'PvNP.FormulaDepthZeroBottom.literalDNF_simple' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthZeroBottom.literalDNF_simple
+
+/-- info: 'PvNP.FormulaDepthZeroBottom.widthDNF_trueDNF' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthZeroBottom.widthDNF_trueDNF
+
+/-- info: 'PvNP.FormulaDepthZeroBottom.widthDNF_falseDNF' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthZeroBottom.widthDNF_falseDNF
+
+/-- info: 'PvNP.FormulaDepthZeroBottom.widthDNF_literalDNF' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthZeroBottom.widthDNF_literalDNF
+
+/-- info: 'PvNP.FormulaDepthZeroBottom.trueFormulaDNFView' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthZeroBottom.trueFormulaDNFView
+
+/-- info: 'PvNP.FormulaDepthZeroBottom.falseFormulaDNFView' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthZeroBottom.falseFormulaDNFView
+
+/-- info: 'PvNP.FormulaDepthZeroBottom.literalFormulaDNFView' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthZeroBottom.literalFormulaDNFView
+
+/-- info: 'PvNP.FormulaDepthZeroBottom.depthZeroFormula_cases' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthZeroBottom.depthZeroFormula_cases
+
+/-- info: 'PvNP.FormulaDepthZeroBottom.depthZeroFormulaDNFView' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthZeroBottom.depthZeroFormulaDNFView
+
+/-- info: 'PvNP.FormulaDepthZeroBottom.depthZeroFormulaGate' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthZeroBottom.depthZeroFormulaGate
+
+/-- info: 'PvNP.FormulaDepthZeroBottom.depthZeroFormulaGate_formula' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthZeroBottom.depthZeroFormulaGate_formula
+
+/-- info: 'PvNP.FormulaDepthZeroBottom.depthZeroFormulaGate_width_le_one' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthZeroBottom.depthZeroFormulaGate_width_le_one
+
+/-- info: 'PvNP.FormulaDepthZeroBottom.fullDepthFrontierFormulaGate' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthZeroBottom.fullDepthFrontierFormulaGate
+
+/-- info: 'PvNP.FormulaDepthZeroBottom.fullDepthFrontierFormulaGate_formula' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthZeroBottom.fullDepthFrontierFormulaGate_formula
+
+/-- info: 'PvNP.FormulaDepthZeroBottom.fullDepthFrontierFormulaGate_width_le_one' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthZeroBottom.fullDepthFrontierFormulaGate_width_le_one
+
+/-- info: 'PvNP.FormulaDepthZeroBottom.FullDepthFrontierBottomGate' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthZeroBottom.FullDepthFrontierBottomGate
+
+/-- info: 'PvNP.FormulaDepthZeroBottom.fullDepthFrontierBottomGate' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthZeroBottom.fullDepthFrontierBottomGate

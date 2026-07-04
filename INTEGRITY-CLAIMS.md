@@ -55,11 +55,14 @@ This repository does **not** establish or imply:
   geometric schedule and for arbitrary nonempty ratio-regime schedules, and
   positive-depth raw formulas can be routed through the same ratio-regime
   interface after top-constructor synthesis.  The top synthesis is now audited
-  as a one-step depth decrease for every exposed child, but no arbitrary
-  `BDFormula`/AC0 depth-`d` decomposition or internally synthesized
-  `B(m, w, s, d)` product hypothesis is proved.  The start view and geometric
-  or ratio-regime entry hypotheses remain supplied, syntactically exposed by
-  the bottom-layer class, or satisfied by the truth-table fallback, and
+  as a one-step depth decrease for every exposed child, recursive frontiers have
+  a checked raw-depth budget, and full-depth frontier members now have exact
+  width-one-or-less bottom DNF gates.  But no arbitrary `BDFormula`/AC0
+  depth-`d` decomposition or internally synthesized `B(m, w, s, d)` product
+  hypothesis is proved.  The start view and geometric or ratio-regime entry
+  hypotheses remain supplied, syntactically exposed by the bottom-layer class,
+  satisfied by the truth-table fallback, or available only at the terminal
+  full-depth frontier, and
   `GeneratedIteratedCollapse.openObligations` intentionally remains nonempty;
 - satisfiability of the original consistent-route stage beats (full-space
   bad-set count against consistent-subspace cardinality) with nonempty gates
@@ -214,6 +217,28 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.FormulaRecursiveDepth.recursiveDepthFrontier` | `propext`, `Quot.sound` | constructed packaged recursive frontier from raw syntax |
 | `PvNP.FormulaRecursiveDepth.recursiveDepthFrontier_depth_add_le` | `propext`, `Quot.sound` | proven packaged recursive frontier raw-depth budget |
 | `PvNP.FormulaRecursiveDepth.recursiveDepthFrontier_fullDepth_zero` | `propext`, `Quot.sound` | proven packaged full-depth frontier members have raw formula depth zero |
+| `PvNP.FormulaDepthZeroBottom.trueDNF` | none | axiom-free constant-true DNF definition |
+| `PvNP.FormulaDepthZeroBottom.falseDNF` | none | axiom-free constant-false DNF definition |
+| `PvNP.FormulaDepthZeroBottom.literalDNF` | none | axiom-free singleton-literal DNF definition |
+| `PvNP.FormulaDepthZeroBottom.trueDNF_simple` | `propext` | proven simplicity of the constant-true DNF |
+| `PvNP.FormulaDepthZeroBottom.falseDNF_simple` | `propext` | proven simplicity of the constant-false DNF |
+| `PvNP.FormulaDepthZeroBottom.literalDNF_simple` | `propext` | proven simplicity of singleton-literal DNFs |
+| `PvNP.FormulaDepthZeroBottom.widthDNF_trueDNF` | `propext` | proven width of the constant-true DNF |
+| `PvNP.FormulaDepthZeroBottom.widthDNF_falseDNF` | `propext` | proven width of the constant-false DNF |
+| `PvNP.FormulaDepthZeroBottom.widthDNF_literalDNF` | `propext` | proven width of singleton-literal DNFs |
+| `PvNP.FormulaDepthZeroBottom.trueFormulaDNFView` | `propext`, `Quot.sound` | exact DNF view for the true formula |
+| `PvNP.FormulaDepthZeroBottom.falseFormulaDNFView` | `propext`, `Quot.sound` | exact DNF view for the false formula |
+| `PvNP.FormulaDepthZeroBottom.literalFormulaDNFView` | `propext`, `Quot.sound` | exact DNF view for literal formulas |
+| `PvNP.FormulaDepthZeroBottom.depthZeroFormula_cases` | `propext`, `Quot.sound` | proven depth-zero formula classification into constants/literals |
+| `PvNP.FormulaDepthZeroBottom.depthZeroFormulaDNFView` | `propext`, `Quot.sound` | constructed exact DNF view from a depth-zero proof |
+| `PvNP.FormulaDepthZeroBottom.depthZeroFormulaGate` | `propext`, `Quot.sound` | constructed `GateSpec.dnf` for depth-zero formulas |
+| `PvNP.FormulaDepthZeroBottom.depthZeroFormulaGate_formula` | `propext`, `Quot.sound` | proven depth-zero gate formula identity |
+| `PvNP.FormulaDepthZeroBottom.depthZeroFormulaGate_width_le_one` | `propext`, `Quot.sound` | proven depth-zero gate switching DNF width at most one |
+| `PvNP.FormulaDepthZeroBottom.fullDepthFrontierFormulaGate` | `propext`, `Quot.sound` | constructed width-one-or-less bottom gate for full-depth frontier members |
+| `PvNP.FormulaDepthZeroBottom.fullDepthFrontierFormulaGate_formula` | `propext`, `Quot.sound` | proven full-depth frontier bottom gate formula identity |
+| `PvNP.FormulaDepthZeroBottom.fullDepthFrontierFormulaGate_width_le_one` | `propext`, `Quot.sound` | proven full-depth frontier bottom gate width at most one |
+| `PvNP.FormulaDepthZeroBottom.FullDepthFrontierBottomGate` | `propext`, `Quot.sound` | audited packaged full-depth frontier bottom-gate witness |
+| `PvNP.FormulaDepthZeroBottom.fullDepthFrontierBottomGate` | `propext`, `Quot.sound` | constructed packaged full-depth frontier bottom-gate witness |
 | `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous` | `propext`, `Classical.choice`, `Quot.sound` | proven concrete budget-3 scheduled instance (single finite demo) |
 
 No declaration above depends on `sorryAx`.
@@ -266,11 +291,13 @@ consumer to arbitrary nonempty ratio-regime schedules plus positive-depth raw
 formulas after top-constructor synthesis.  `FormulaDepthDecomposition` proves
 that this top synthesis strictly decreases formula depth for every exposed
 gate formula, and `FormulaRecursiveDepth` proves the repeated-frontier
-raw-depth budget for recursive top-child expansion.  The schedule and width
-hypotheses remain supplied and the child views still use the truth-table
-fallback; the artifact still does not synthesize `B` from arbitrary formulas,
-derive full recursive depth-`d` layered views from arbitrary formula syntax, or
-close full frozen-form B4.
+raw-depth budget for recursive top-child expansion.  `FormulaDepthZeroBottom`
+adds exact width-one-or-less DNF gates for members that survive to the
+full-depth frontier.  The schedule and width hypotheses remain supplied and
+intermediate child views still use the truth-table fallback; the artifact still
+does not synthesize `B` from arbitrary formulas, derive full recursive
+depth-`d` layered views from arbitrary formula syntax, or close full
+frozen-form B4.
 The PHP switching lemma (Gate A rung 4) remains open.
 
 ## Re-Verification
