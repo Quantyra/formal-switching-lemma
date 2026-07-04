@@ -24,6 +24,7 @@ import PvNP.FrozenProductSchedule
 import PvNP.FrozenProductScheduleDemo
 import PvNP.FrozenProductScheduleRatio
 import PvNP.FormulaFamilyCollapse
+import PvNP.FrozenDepthView
 import PvNP.MixedFormulaFamilyCollapse
 import PvNP.ScheduledCollapseDemo
 
@@ -3994,3 +3995,44 @@ genuinely two-clause CNF child.  Depth-`d` decomposition and the global
 /-- info: 'PvNP.MixedFormulaFamilyCollapse.mixedFamily_dnfCnf_twoStage' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.MixedFormulaFamilyCollapse.mixedFamily_dnfCnf_twoStage
+
+/-!
+Pins for `PvNP.FrozenDepthView`: the explicit structural B4 interface.
+`FrozenDepthView` packages a supplied layer for a real formula together
+with a depth bound.  The consumer theorem proves that any such explicit view
+whose gates satisfy the geometric-entry hypotheses yields the scheduled
+generated refined certificate plus an actual final decision tree bounded by
+the global budget `t(d,s) = gateCount * (s - 1)`.  The mixed-bottom
+corollary shows the already-proved raw DNF/CNF bottom-layer class inhabits
+the interface at its computed depth.  This is NOT automatic decomposition of
+arbitrary bounded-depth formulas, NOT full frozen-form B4, NOT Gate A rung 4,
+NOT Frege/PHP, NOT NP/circuit, and NOT P vs NP.
+-/
+
+/-- info: 'PvNP.FrozenDepthView.geometricSchedule_frozenGlobalTreeBudget' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FrozenDepthView.geometricSchedule_frozenGlobalTreeBudget
+
+/--
+info: 'PvNP.FrozenDepthView.lastStage_gateCount_of_stageGateCounts_replicate' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.FrozenDepthView.lastStage_gateCount_of_stageGateCounts_replicate
+
+/--
+info: 'PvNP.FrozenDepthView.frozenDepthView_geometricCollapseWithGlobalTreeBudget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.FrozenDepthView.frozenDepthView_geometricCollapseWithGlobalTreeBudget
+
+/--
+info: 'PvNP.FrozenDepthView.mixedBottomFrozenDepthView_geometricCollapseWithGlobalTreeBudget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.FrozenDepthView.mixedBottomFrozenDepthView_geometricCollapseWithGlobalTreeBudget

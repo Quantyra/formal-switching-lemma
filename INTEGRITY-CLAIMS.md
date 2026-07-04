@@ -47,14 +47,13 @@ This repository does **not** establish or imply:
   identity-matching subfamily);
 - a positive Boolean decision-tree depth floor for any unsatisfiable PHP
   formula (`p > h`);
-- a discharge of the full frozen-form B4 goal (single upfront depth-`d`
-  layered view, an internally derived product-of-stages counting hypothesis
-  `B(m, w, s, d)`, and a final global `t(d, s)` tree bound): the
-  `FrozenProductSchedule` bridge derives `ValidFrom` only from an explicitly
-  supplied product-bound family and supplied tree-budget facts; the start
-  layer and numeric schedule remain supplied, no arbitrary AC0/layered
-  decomposition is proved, and `GeneratedIteratedCollapse.openObligations`
-  intentionally remains nonempty;
+- a discharge of the full frozen-form B4 goal: supplied `FrozenDepthView`
+  views now have a checked global final-tree budget theorem, but no arbitrary
+  `BDFormula`/AC0 depth-`d` decomposition or internally synthesized
+  `B(m, w, s, d)` product hypothesis is proved.  The start view and geometric
+  entry hypotheses remain supplied or syntactically exposed by the bottom-layer
+  class, and `GeneratedIteratedCollapse.openObligations` intentionally remains
+  nonempty;
 - satisfiability of the original consistent-route stage beats (full-space
   bad-set count against consistent-subspace cardinality) with nonempty gates
   at two or more stages — the disclosed satisfiability gap, closed only by
@@ -172,6 +171,10 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.MixedFormulaFamilyCollapse.mixedFormulaFamilyCollapse` | `propext`, `Classical.choice`, `Quot.sound` | proven parent-merged mixed embedded-DNF/CNF family theorem (full `GateSpec` constructor synthesis from raw bottom syntax only) |
 | `PvNP.MixedFormulaFamilyCollapse.cnfFormulaFamilyCollapse` | `propext`, `Classical.choice`, `Quot.sound` | proven all-CNF child corollary via constructed `GateSpec.cnf` views |
 | `PvNP.MixedFormulaFamilyCollapse.mixedFamily_dnfCnf_twoStage` | `propext`, `Classical.choice`, `Quot.sound` | finite mixed DNF/CNF witness exercising both `GateSpec` constructors |
+| `PvNP.FrozenDepthView.geometricSchedule_frozenGlobalTreeBudget` | `propext`, `Quot.sound` | proven geometric-schedule budget fact for `t(d,s)=gateCount*(s-1)` |
+| `PvNP.FrozenDepthView.lastStage_gateCount_of_stageGateCounts_replicate` | `propext`, `Classical.choice`, `Quot.sound` | proven final-stage gate-count helper for constant generated-stage bookkeeping |
+| `PvNP.FrozenDepthView.frozenDepthView_geometricCollapseWithGlobalTreeBudget` | `propext`, `Classical.choice`, `Quot.sound` | proven supplied-`FrozenDepthView` consumer with actual final-tree global budget |
+| `PvNP.FrozenDepthView.mixedBottomFrozenDepthView_geometricCollapseWithGlobalTreeBudget` | `propext`, `Classical.choice`, `Quot.sound` | proven mixed raw DNF/CNF bottom-layer class routed through the depth-view interface |
 | `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous` | `propext`, `Classical.choice`, `Quot.sound` | proven concrete budget-3 scheduled instance (single finite demo) |
 
 No declaration above depends on `sorryAx`.
@@ -215,9 +218,11 @@ instances. The post-v0.5.0 `FrozenProductSchedule` bridge narrows the scheduled
 route by deriving `ValidFrom` from a supplied product-bound family `B` plus
 supplied `t(d,s)` tree-budget facts, with a tiny one-stage width-0 witness; it
 also includes one explicit `n = 17` width-1/two-stage product-bound
-instantiation whose second stage is the width-budget-0 tail.  It does not
-synthesize `B` from arbitrary formulas, prove an asymptotic product-bound
-family, or close full frozen-form B4.
+instantiation whose second stage is the width-budget-0 tail. `FrozenDepthView`
+adds a supplied-view consumer with an actual final-tree global budget
+`t(d,s) = gateCount * (s - 1)`, but still does not synthesize `B` from
+arbitrary formulas, derive depth-`d` layered views from arbitrary formula
+syntax, or close full frozen-form B4.
 The PHP switching lemma (Gate A rung 4) remains open.
 
 ## Re-Verification

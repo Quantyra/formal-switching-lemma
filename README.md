@@ -322,6 +322,17 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   `mixedFamily_dnfCnf_twoStage` exercising both constructors.  This is still
   bottom-layer synthesis only: no depth-`d` decomposition, no global `t(d,s)`
   theorem, and no PHP switching lemma.
+- `PvNP.FrozenDepthView.frozenDepthView_geometricCollapseWithGlobalTreeBudget`:
+  an explicit structural B4 interface consumer.  A supplied
+  `FrozenDepthView n F d` packages a real formula, a start layer that is exactly
+  that formula, and a depth bound `depth F <= d`; from that view plus the
+  geometric entry hypotheses, the theorem returns the generated refined
+  certificate and an actual last-stage decision tree bounded by the global
+  budget `t(d,s) = gateCount * (s - 1)`.  The mixed-bottom corollary
+  `mixedBottomFrozenDepthView_geometricCollapseWithGlobalTreeBudget` routes the
+  raw DNF/CNF bottom-layer class through this interface at its computed depth.
+  This is not automatic decomposition of arbitrary bounded-depth formulas, and
+  full frozen-form B4 remains open.
 - `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous`: one
   concrete scheduled instance — the schedule `[(3, 561), (2, 17), (1, 1)]`
   over `n = 10000` variables from one width-1 single-literal gate, with all
@@ -389,13 +400,14 @@ This artifact does **not** prove or imply:
 - a positive Boolean decision-tree depth floor for any unsatisfiable PHP
   formula (`p > h`): the proved evasiveness and partial-matching floors
   concern the satisfiable `p = h` function only;
-- a discharge of the full frozen-form B4 goal (single upfront depth-`d`
-  layered view, an internally derived product-of-stages counting hypothesis
-  `B(m, w, s, d)`, and a final global `t(d, s)` tree bound): the new
-  `FrozenProductSchedule` bridge derives `ValidFrom` only from an explicitly
-  supplied product-bound family and supplied tree-budget facts; the start
-  layer and numeric schedule remain supplied, no arbitrary AC0/layered
-  decomposition is proved, and `GeneratedIteratedCollapse.openObligations`
+- a discharge of the full frozen-form B4 goal: the artifact now has an
+  explicit `FrozenDepthView` consumer theorem with a global final-tree budget
+  `t(d,s) = gateCount * (s - 1)` for supplied views, but it still does not
+  automatically derive the upfront depth-`d` layered view from arbitrary
+  `BDFormula`/AC0 syntax and does not internally derive a product-of-stages
+  counting hypothesis `B(m, w, s, d)` for arbitrary formulas.  The start view
+  and geometric entry hypotheses remain supplied or syntactically exposed by
+  the bottom-layer class, and `GeneratedIteratedCollapse.openObligations`
   intentionally remains nonempty;
 - satisfiability of the original consistent-route stage beats (full-space
   bad-set count against consistent-subspace cardinality) with nonempty gates
