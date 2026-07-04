@@ -439,6 +439,15 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   supplied as `ProductValidFrom`, and the intermediate width budget remains the
   truth-table fallback `n`; this advances the structural B4 interface but is
   not an efficient asymptotic `t(d,s)` theorem or full B4.
+- `PvNP.FormulaRecursiveMaxProduct.frontierLayer_autoIteratedCollapse_of_maxProductBeats`
+  and
+  `PvNP.FormulaRecursiveMaxProduct.allFrontierLayers_autoIteratedCollapse_of_maxProductBeats`:
+  one product schedule supplied at the formula's max recursive frontier count
+  can be frozen and reused for any in-depth recursive frontier layer.  This
+  removes a layer-local product-beat obligation for the truth-table fallback
+  frontier layers, while leaving the product/counting beat theorem itself
+  supplied and leaving the formula-local max-frontier budget short of an
+  efficient asymptotic `t(d,s)` theorem.
 - `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous`: one
   concrete scheduled instance — the schedule `[(3, 561), (2, 17), (1, 1)]`
   over `n = 10000` variables from one width-1 single-literal gate, with all
@@ -666,13 +675,21 @@ synthesized frontier and terminal layers through the frozen-product schedule
 consumer from supplied `ProductValidFrom` beats.  The resulting `t_F` is a
 formula-local structural budget, not an efficient asymptotic B4 `t(d,s)` bound.
 
+The recursive max-product wrapper (`FormulaRecursiveMaxProduct`) freezes a
+supplied product-bound family at `recursiveFrontierMaxGateCount F` and proves
+that the frozen product schedule applies to every smaller recursive frontier
+layer count.  This reduces the product-beat interface from per-frontier counts
+to one max-count schedule for truth-table fallback frontier layers, but it
+still does not synthesize the product/counting beats or an efficient global
+`t(d,s)`.
+
 The variable-width schedule wrapper (`FormulaVarWidthSchedule`) instantiates the
 positive-depth raw-formula ratio-regime route at width `n`, using the proved
 truth-table/path-DNF width bound instead of a caller-supplied child-width
 predicate.  The ratio-regime schedule is still supplied, and `w = n` is not
 efficient syntactic width control; this is not full B4.
 
-The current audit surface has 805 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
+The current audit surface has 815 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
 
 - DOI: `10.5281/zenodo.21184992`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`

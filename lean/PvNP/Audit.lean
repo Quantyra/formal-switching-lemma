@@ -36,6 +36,7 @@ import PvNP.FormulaRecursiveDecomposition
 import PvNP.FormulaRecursiveGateLayers
 import PvNP.FormulaRecursiveLayerProfile
 import PvNP.FormulaRecursiveGlobalSchedule
+import PvNP.FormulaRecursiveMaxProduct
 import PvNP.FormulaVarWidthSchedule
 import PvNP.MixedFormulaFamilyCollapse
 import PvNP.ScheduledCollapseDemo
@@ -4763,6 +4764,64 @@ rung 4, Frege/PHP, NP/circuit, or P vs NP.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveGlobalSchedule.terminalLayer_autoIteratedCollapse_of_globalProductBeats
+
+/-!
+Pins for `PvNP.FormulaRecursiveMaxProduct`: product schedules supplied at the
+recursive max frontier count can be frozen and reused for smaller frontier
+counts.  This removes a layer-local product-beat obligation but still does
+NOT synthesize the product/counting beats, efficient widths, full B4, Gate A
+rung 4, Frege/PHP, NP/circuit, or P vs NP.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveMaxProduct.freezeGateCountBound' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveMaxProduct.freezeGateCountBound
+
+/-- info: 'PvNP.FormulaRecursiveMaxProduct.rawBadCount_le_of_gateCount_le' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveMaxProduct.rawBadCount_le_of_gateCount_le
+
+/-- info: 'PvNP.FormulaRecursiveMaxProduct.productBeat_freezeGateCount_of_le' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveMaxProduct.productBeat_freezeGateCount_of_le
+
+/-- info: 'PvNP.FormulaRecursiveMaxProduct.productValidFrom_freezeGateCount_of_le' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveMaxProduct.productValidFrom_freezeGateCount_of_le
+
+/-- info: 'PvNP.FormulaRecursiveMaxProduct.recursiveFrontierMaxProductBound' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveMaxProduct.recursiveFrontierMaxProductBound
+
+/-- info: 'PvNP.FormulaRecursiveMaxProduct.frontierLayer_productValidFrom_of_maxProductBeats' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveMaxProduct.frontierLayer_productValidFrom_of_maxProductBeats
+
+/-- info: 'PvNP.FormulaRecursiveMaxProduct.terminalLayer_productValidFrom_of_maxProductBeats' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveMaxProduct.terminalLayer_productValidFrom_of_maxProductBeats
+
+/-- info: 'PvNP.FormulaRecursiveMaxProduct.frontierLayer_autoIteratedCollapse_of_maxProductBeats' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveMaxProduct.frontierLayer_autoIteratedCollapse_of_maxProductBeats
+
+/-- info: 'PvNP.FormulaRecursiveMaxProduct.terminalLayer_autoIteratedCollapse_of_maxProductBeats' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveMaxProduct.terminalLayer_autoIteratedCollapse_of_maxProductBeats
+
+/-- info: 'PvNP.FormulaRecursiveMaxProduct.allFrontierLayers_autoIteratedCollapse_of_maxProductBeats' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveMaxProduct.allFrontierLayers_autoIteratedCollapse_of_maxProductBeats
 
 /-!
 Pins for `PvNP.FormulaVarWidthSchedule`: the truth-table fallback width theorem
