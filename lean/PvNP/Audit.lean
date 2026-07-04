@@ -4081,3 +4081,31 @@ info: 'PvNP.FormulaTruthTableView.topConnectiveFormula_geometricCollapseWithGlob
 -/
 #guard_msgs in
 #print axioms PvNP.FormulaTruthTableView.topConnectiveFormula_geometricCollapseWithGlobalTreeBudget
+
+/-!
+Additional pins for `PvNP.FormulaTruthTableView`: the raw positive-depth
+wrapper.  Every positive-depth `BDFormula` has a top `and`/`or` constructor, so
+the module can synthesize a `FrozenDepthView` directly from raw formula syntax
+by exposing that constructor and using the same truth-table child DNF views.
+This removes a manual top-constructor decomposition step, but it remains the
+truth-table fallback: child width is not efficiently bounded beyond `<= n`, and
+leaves/constants still have no exact identity parent in `MinimalLayeredFormula`.
+NOT full frozen-form B4, NOT Gate A rung 4, NOT Frege/PHP, NOT NP/circuit, and
+NOT P vs NP.
+-/
+
+/-- info: 'PvNP.FormulaTruthTableView.positiveDepthFrozenDepthView_gateCount' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaTruthTableView.positiveDepthFrozenDepthView_gateCount
+
+/-- info: 'PvNP.FormulaTruthTableView.positiveDepthFrozenDepthView_width_le_vars' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaTruthTableView.positiveDepthFrozenDepthView_width_le_vars
+
+/--
+info: 'PvNP.FormulaTruthTableView.positiveDepthFormula_geometricCollapseWithGlobalTreeBudget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.FormulaTruthTableView.positiveDepthFormula_geometricCollapseWithGlobalTreeBudget

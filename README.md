@@ -342,7 +342,12 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   global last-tree budget under an explicit supplied width bound; the module
   proves only the generic truth-table width bound `<= n`.  This covers more
   raw syntax but is intentionally not an efficient arbitrary AC0 depth-`d`
-  decomposition, and full frozen-form B4 remains open.
+  decomposition.  The raw positive-depth wrapper
+  `positiveDepthFormula_geometricCollapseWithGlobalTreeBudget` removes the
+  need for callers to manually expose the top constructor: any positive-depth
+  `BDFormula` is pattern-matched to its top `and`/`or` gate and routed through
+  the same truth-table fallback.  Leaves/constants still have no exact identity
+  parent in `MinimalLayeredFormula`, and full frozen-form B4 remains open.
 - `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous`: one
   concrete scheduled instance — the schedule `[(3, 561), (2, 17), (1, 1)]`
   over `n = 10000` variables from one width-1 single-literal gate, with all
@@ -417,12 +422,13 @@ This artifact does **not** prove or imply:
   `BDFormula`/AC0 syntax with efficient bottom width and does not internally
   derive a product-of-stages counting hypothesis `B(m, w, s, d)` for arbitrary
   formulas.  The `FormulaTruthTableView` fallback does synthesize exact
-  top-connective views from raw `and`/`or` syntax, but its child DNF views come
-  from full truth-table decision trees with only the generic width bound
-  `<= n`.  The start view and geometric entry hypotheses therefore remain
-  supplied, syntactically exposed by the bottom-layer class, or satisfied only
-  through this expensive fallback, and `GeneratedIteratedCollapse.openObligations`
-  intentionally remains nonempty;
+  top-connective views from raw `and`/`or` syntax, and the positive-depth
+  wrapper exposes that top constructor automatically for every non-leaf raw
+  formula, but its child DNF views come from full truth-table decision trees
+  with only the generic width bound `<= n`.  The start view and geometric entry
+  hypotheses therefore remain supplied, syntactically exposed by the
+  bottom-layer class, or satisfied only through this expensive fallback, and
+  `GeneratedIteratedCollapse.openObligations` intentionally remains nonempty;
 - satisfiability of the original consistent-route stage beats (full-space
   bad-set count against consistent-subspace cardinality) with nonempty gates
   at two or more stages — the disclosed satisfiability gap, closed only by

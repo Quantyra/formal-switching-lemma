@@ -26,6 +26,10 @@ a `GateSpec.dnf`, so the exact raw top formula `p.merge children` receives a
 * The module covers exact top-level `and`/`or` formulas.  It does not introduce
   an identity parent for leaves and does not recursively synthesize efficient
   depth-`d` AC0 layers.
+* The positive-depth raw-formula theorem below simply pattern-matches a real
+  `BDFormula` to expose its top `and`/`or` constructor, then uses the same
+  truth-table child views.  Leaves and constants still have no exact identity
+  parent in `MinimalLayeredFormula`.
 * Formula-collapse infrastructure only: NOT a Frege/PHP proof-size lower
   bound, NOT a PHP switching lemma, NOT an NP/circuit lower bound, NOT a
   statement about P vs NP.
@@ -286,6 +290,118 @@ theorem topConnectiveFormula_geometricCollapseWithGlobalTreeBudget
   · rw [frozenGlobalTreeBudget] at hdepth
     rw [hlen] at hdepth
     exact hdepth
+
+/-! ## Raw positive-depth formulas -/
+
+/-- The immediate children of a raw formula when its top constructor is
+`and`/`or`; leaves and constants expose no top-connective children. -/
+def topChildren {n : Nat} : BDFormula n -> List (BDFormula n)
+  | BDFormula.and children => children
+  | BDFormula.or children => children
+  | _ => []
+
+/-- The number of immediate top-connective children of a raw formula. -/
+def topChildCount {n : Nat} (F : BDFormula n) : Nat :=
+  (topChildren F).length
+
+/-- Every positive-depth raw formula has an automatically synthesized
+`FrozenDepthView` through its top `and`/`or` constructor and truth-table child
+views.  This is exact for non-leaf syntax, but it is still the broad
+truth-table fallback, not an efficient AC0 decomposition. -/
+def positiveDepthFrozenDepthView {n : Nat} (F : BDFormula n)
+    (hpos : 0 < depth F) : FrozenDepthView n F (depth F) := by
+  cases F with
+  | tru =>
+      simp [depth] at hpos
+  | fls =>
+      simp [depth] at hpos
+  | lit l =>
+      simp [depth] at hpos
+  | and children =>
+      exact topConnectiveFrozenDepthView ParentKind.and children
+  | or children =>
+      exact topConnectiveFrozenDepthView ParentKind.or children
+
+theorem positiveDepthFrozenDepthView_gateCount {n : Nat} (F : BDFormula n)
+    (hpos : 0 < depth F) :
+    (positiveDepthFrozenDepthView F hpos).gateCount = topChildCount F := by
+  cases F with
+  | tru =>
+      simp [positiveDepthFrozenDepthView, depth] at hpos
+  | fls =>
+      simp [positiveDepthFrozenDepthView, depth] at hpos
+  | lit l =>
+      simp [positiveDepthFrozenDepthView, depth] at hpos
+  | and children =>
+      simp [positiveDepthFrozenDepthView, topChildCount, topChildren,
+        topConnectiveFrozenDepthView_gateCount]
+  | or children =>
+      simp [positiveDepthFrozenDepthView, topChildCount, topChildren,
+        topConnectiveFrozenDepthView_gateCount]
+
+theorem positiveDepthFrozenDepthView_width_le_vars {n : Nat} (F : BDFormula n)
+    (hpos : 0 < depth F) :
+    forall g, g ∈ (positiveDepthFrozenDepthView F hpos).layer.gates ->
+      widthDNF g.theDNF <= n := by
+  cases F with
+  | tru =>
+      simp [positiveDepthFrozenDepthView, depth] at hpos
+  | fls =>
+      simp [positiveDepthFrozenDepthView, depth] at hpos
+  | lit l =>
+      simp [positiveDepthFrozenDepthView, depth] at hpos
+  | and children =>
+      simpa [positiveDepthFrozenDepthView] using
+        topConnectiveFrozenDepthView_width_le_vars ParentKind.and children
+  | or children =>
+      simpa [positiveDepthFrozenDepthView] using
+        topConnectiveFrozenDepthView_width_le_vars ParentKind.or children
+
+open GeneratedRefinedIteratedCertificate in
+/-- **Positive-depth raw formula collapse through truth-table child views.**
+For any real raw formula with positive `depth`, this theorem exposes the top
+`and`/`or` constructor automatically and applies the top-connective
+truth-table `FrozenDepthView` route.
+
+The width hypothesis remains explicit over the exposed immediate children.
+The generic fallback bound available in this module is only `<= n`, so this is
+not an efficient arbitrary depth-`d` AC0 decomposition or full B4 closure. -/
+theorem positiveDepthFormula_geometricCollapseWithGlobalTreeBudget
+    (k w : Nat) {n : Nat} (F : BDFormula n)
+    (hpos : 0 < depth F)
+    (hm : 1 <= topChildCount F) (hw1 : 1 <= w)
+    (hw : forall child, child ∈ topChildren F ->
+      widthDNF (formulaDNFView child).D <= w)
+    (hn : 2 * (64 * topChildCount F) ^ k *
+        (64 * topChildCount F * w) <= n) :
+    exists cert : GeneratedRefinedIteratedCertificate n (freeRestriction n)
+        F (k + 1),
+      cert.stageGateCounts = List.replicate (k + 1) (topChildCount F) /\
+      cert.stageBudgets = List.replicate (k + 1) 2 /\
+      cert.stageStarCounts =
+        (geometricSchedule (topChildCount F)
+          (n / (64 * topChildCount F * w)) (k + 1)).map stageStars /\
+      exists T : DTree n, exists s : Nat,
+        cert.lastStage = some (T, topChildCount F, s) /\
+        (forall a : Assignment n, dtEval a T = eval a cert.finalFormula) /\
+        dtDepth T <= topChildCount F * (s - 1) /\
+        (forall a : Assignment n, Agree cert.finalComposed a ->
+          dtEval a T = eval a (restrict cert.finalComposed F)) := by
+  cases F with
+  | tru =>
+      simp [depth] at hpos
+  | fls =>
+      simp [depth] at hpos
+  | lit l =>
+      simp [depth] at hpos
+  | and children =>
+      simpa [topChildren, topChildCount, ParentKind.merge] using
+        topConnectiveFormula_geometricCollapseWithGlobalTreeBudget
+          k w ParentKind.and children hm hw1 hw hn
+  | or children =>
+      simpa [topChildren, topChildCount, ParentKind.merge] using
+        topConnectiveFormula_geometricCollapseWithGlobalTreeBudget
+          k w ParentKind.or children hm hw1 hw hn
 
 end FormulaTruthTableView
 end PvNP
