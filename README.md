@@ -479,6 +479,16 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   entry-size inequalities, and the formula-local max-frontier tree budget
   remain supplied or local; this is not efficient B4, not a global asymptotic
   `t(d,s)` theorem, and not a PHP switching lemma.
+- `PvNP.FormulaRecursiveSizeBound.frontierLayerGateCount_le_formulaSize` and
+  `PvNP.FormulaRecursiveSizeBound.recursiveFrontierMaxGateCount_le_formulaSize`:
+  every recursive frontier layer count, and the max-frontier count used by the
+  recursive global schedule interface, is bounded by the raw formula size
+  `formulaSize F`.  The companion `recursiveFrontierSizeTreeBudgetFrom` theorem
+  exposes the structural size-based budget `formulaSize F * (s - 1)` through
+  the existing `TreeBudgetFrom` interface.  This advances the B4
+  structural-budget route but still does not synthesize efficient widths,
+  product/counting hypotheses, ratio regimes, a formula-class asymptotic
+  `t(d,s)`, or a PHP switching lemma.
 - `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous`: one
   concrete scheduled instance — the schedule `[(3, 561), (2, 17), (1, 1)]`
   over `n = 10000` variables from one width-1 single-literal gate, with all
@@ -735,13 +745,21 @@ corollaries remove the caller-supplied nonempty-count hypothesis from the
 supplied-width route under that raw-syntax condition, but width profiles,
 entry-size bounds, and efficient global B4 structure remain open.
 
+The recursive size-bound wrapper (`FormulaRecursiveSizeBound`) proves that
+every recursive frontier layer count and the formula-wide max-frontier count
+are bounded by `formulaSize F`, then exposes the structural size budget
+`formulaSize F * (s - 1)` through `TreeBudgetFrom`.  This replaces the
+max-frontier budget by a formula-size bound for the recursive count surface,
+but it is still not the final formula-class asymptotic `t(d,s)` theorem and
+does not synthesize efficient widths or product/counting hypotheses.
+
 The variable-width schedule wrapper (`FormulaVarWidthSchedule`) instantiates the
 positive-depth raw-formula ratio-regime route at width `n`, using the proved
 truth-table/path-DNF width bound instead of a caller-supplied child-width
 predicate.  The ratio-regime schedule is still supplied, and `w = n` is not
 efficient syntactic width control; this is not full B4.
 
-The current audit surface has 833 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
+The current audit surface has 843 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
 
 - DOI: `10.5281/zenodo.21184992`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`

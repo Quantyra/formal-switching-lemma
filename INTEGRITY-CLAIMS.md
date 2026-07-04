@@ -334,6 +334,16 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.FormulaRecursiveNonempty.frontierLayerGateCount_nonempty_of_noEmptyFanins` | `propext`, `Quot.sound` | proven recursive frontier gate counts are nonempty for every level within depth under no-empty-fanin syntax |
 | `PvNP.FormulaRecursiveNonempty.allFrontierLayers_ratioRegimeCollapseWithWidthProfile_noEmptyFanins` | `propext`, `Classical.choice`, `Quot.sound` | proven supplied-width ratio-regime frontier consumers discharge nonempty counts from no-empty-fanin syntax |
 | `PvNP.FormulaRecursiveNonempty.allFrontierLayers_geometricCollapseWithWidthProfile_noEmptyFanins` | `propext`, `Classical.choice`, `Quot.sound` | proven supplied-width geometric frontier consumers discharge nonempty counts from no-empty-fanin syntax |
+| `PvNP.FormulaRecursiveSizeBound.formulaSizeSum` | `propext`, `Quot.sound` | defined list-level raw formula-size sum used by recursive frontier size accounting |
+| `PvNP.FormulaRecursiveSizeBound.formulaSizeSum_topChildren_le` | `propext`, `Quot.sound` | proven one top-child expansion does not increase raw formula-size sum |
+| `PvNP.FormulaRecursiveSizeBound.formulaSizeSum_depthFrontier_le` | `propext`, `Quot.sound` | proven repeated recursive frontier expansion does not increase raw formula-size sum |
+| `PvNP.FormulaRecursiveSizeBound.formulaDepthFrontier_length_le_formulaSize` | `propext`, `Quot.sound` | proven each recursive formula frontier length is bounded by raw formula size |
+| `PvNP.FormulaRecursiveSizeBound.frontierLayerGateCount_le_formulaSize` | `propext`, `Quot.sound` | proven each recursive frontier gate count is bounded by raw formula size |
+| `PvNP.FormulaRecursiveSizeBound.recursiveFrontierMaxGateCount_le_formulaSize` | `propext`, `Quot.sound` | proven the formula-wide max-frontier gate count is bounded by raw formula size |
+| `PvNP.FormulaRecursiveSizeBound.recursiveFrontierSizeTreeBudget` | `propext`, `Quot.sound` | defined size-based structural tree-budget profile `formulaSize F * (s - 1)` |
+| `PvNP.FormulaRecursiveSizeBound.recursiveFrontierGlobalTreeBudget_le_sizeTreeBudget` | `propext`, `Quot.sound` | proven the previous max-frontier tree budget is bounded by the formula-size tree budget |
+| `PvNP.FormulaRecursiveSizeBound.recursiveFrontierSizeTreeBudgetFrom` | `propext`, `Quot.sound` | proven the size-based tree budget satisfies every numeric schedule for any recursive frontier layer |
+| `PvNP.FormulaRecursiveSizeBound.recursiveFrontierMaxSizeTreeBudgetFrom` | `propext`, `Quot.sound` | proven the size-based tree budget also satisfies every numeric schedule for the max-frontier count |
 | `PvNP.FormulaVarWidthSchedule.topConnectiveFormula_child_width_le_vars` | `propext`, `Quot.sound` | proven top-connective truth-table child views have generic width at most `n` |
 | `PvNP.FormulaVarWidthSchedule.positiveDepthFormula_child_width_le_vars` | `propext`, `Quot.sound` | proven positive-depth raw-formula truth-table child views have generic width at most `n` |
 | `PvNP.FormulaVarWidthSchedule.topConnectiveFormula_ratioRegimeCollapseWithVarWidth` | `propext`, `Classical.choice`, `Quot.sound` | proven top-connective raw formulas route through supplied ratio schedules at width `n` |
@@ -418,6 +428,10 @@ those consumers without changing the global tree-budget interface.
 uses it to synthesize the nonempty recursive frontier gate-count hypotheses
 for all levels within `depth F`; its supplied-width ratio/geometric corollaries
 therefore remove that one caller obligation under no-empty-fanin raw syntax.
+`FormulaRecursiveSizeBound` proves that repeated recursive frontier expansion
+does not increase raw formula-size sum, so every frontier gate count and the
+max-frontier count are bounded by `formulaSize F`; it exposes the corresponding
+size-based `TreeBudgetFrom` profile `formulaSize F * (s - 1)`.
 `FormulaVarWidthSchedule` instantiates the supplied positive-depth raw-formula
 ratio-regime route at width `n`, removing the caller-supplied child-width
 predicate while preserving the honest truth-table fallback boundary.

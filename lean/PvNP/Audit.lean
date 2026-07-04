@@ -40,6 +40,7 @@ import PvNP.FormulaRecursiveMaxProduct
 import PvNP.FormulaRecursiveRatioSchedule
 import PvNP.FormulaRecursiveWidthSchedule
 import PvNP.FormulaRecursiveNonempty
+import PvNP.FormulaRecursiveSizeBound
 import PvNP.FormulaVarWidthSchedule
 import PvNP.MixedFormulaFamilyCollapse
 import PvNP.ScheduledCollapseDemo
@@ -4948,6 +4949,57 @@ NP/circuit, or P vs NP.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveNonempty.allFrontierLayers_geometricCollapseWithWidthProfile_noEmptyFanins
+
+/-!
+Pins for `PvNP.FormulaRecursiveSizeBound`: every recursive frontier layer
+count, and the max-frontier count, is bounded by raw `formulaSize F`.  The
+module exposes a size-based tree-budget profile
+`formulaSize F * (s - 1)` for the existing recursive frontier schedule
+surface.  This is structural count/budget control only: widths, product/counting
+hypotheses, ratio regimes, full B4, Gate A rung 4, Frege/PHP, NP/circuit, and
+P vs NP remain open.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSizeBound.formulaSizeSum' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSizeBound.formulaSizeSum
+
+/-- info: 'PvNP.FormulaRecursiveSizeBound.formulaSizeSum_topChildren_le' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSizeBound.formulaSizeSum_topChildren_le
+
+/-- info: 'PvNP.FormulaRecursiveSizeBound.formulaSizeSum_depthFrontier_le' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSizeBound.formulaSizeSum_depthFrontier_le
+
+/-- info: 'PvNP.FormulaRecursiveSizeBound.formulaDepthFrontier_length_le_formulaSize' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSizeBound.formulaDepthFrontier_length_le_formulaSize
+
+/-- info: 'PvNP.FormulaRecursiveSizeBound.frontierLayerGateCount_le_formulaSize' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSizeBound.frontierLayerGateCount_le_formulaSize
+
+/-- info: 'PvNP.FormulaRecursiveSizeBound.recursiveFrontierMaxGateCount_le_formulaSize' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSizeBound.recursiveFrontierMaxGateCount_le_formulaSize
+
+/-- info: 'PvNP.FormulaRecursiveSizeBound.recursiveFrontierSizeTreeBudget' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSizeBound.recursiveFrontierSizeTreeBudget
+
+/-- info: 'PvNP.FormulaRecursiveSizeBound.recursiveFrontierGlobalTreeBudget_le_sizeTreeBudget' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSizeBound.recursiveFrontierGlobalTreeBudget_le_sizeTreeBudget
+
+/-- info: 'PvNP.FormulaRecursiveSizeBound.recursiveFrontierSizeTreeBudgetFrom' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSizeBound.recursiveFrontierSizeTreeBudgetFrom
+
+/-- info: 'PvNP.FormulaRecursiveSizeBound.recursiveFrontierMaxSizeTreeBudgetFrom' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSizeBound.recursiveFrontierMaxSizeTreeBudgetFrom
 
 /-!
 Pins for `PvNP.FormulaVarWidthSchedule`: the truth-table fallback width theorem
