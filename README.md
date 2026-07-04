@@ -413,6 +413,13 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   structural skeleton for B4, not full B4: intermediate efficient `GateSpec`
   layers, product/counting hypotheses, and a collapse schedule theorem remain
   open.
+- `PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers`: every
+  recursive frontier level is now reified as a `GateSpec.dnf` gate list with
+  exact formula alignment, count alignment, and the honest truth-table
+  fallback width bound `<= n`.  The terminal full-depth layer is still tied to
+  the exact S2086 bottom layer whose gates have width at most one.  This
+  exposes the next B4 gap precisely: efficient intermediate-width bounds,
+  product/counting hypotheses, and a global collapse theorem are still open.
 - `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous`: one
   concrete scheduled instance — the schedule `[(3, 561), (2, 17), (1, 1)]`
   over `n = 10000` variables from one width-1 single-literal gate, with all
@@ -621,7 +628,13 @@ budget, and the terminal bottom layer in one audited surface.  It is still a
 structural skeleton only: efficient intermediate `GateSpec` layers,
 product/counting hypotheses, and the global collapse theorem remain open.
 
-The current audit surface has 758 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
+The recursive frontier gate-layer wrapper (`FormulaRecursiveGateLayers`) reifies
+every frontier level as a `GateSpec.dnf` list with formula and count alignment.
+Intermediate widths are bounded only by the truth-table fallback `n`; the
+terminal full-depth bottom layer remains the width-one-or-less layer.  This is
+not efficient recursive B4 decomposition.
+
+The current audit surface has 771 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
 
 - DOI: `10.5281/zenodo.21184992`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`

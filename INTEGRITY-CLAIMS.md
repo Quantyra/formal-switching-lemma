@@ -254,6 +254,19 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.FormulaRecursiveDecomposition.fullDepthRecursiveDecomposition_terminal_formulas` | `propext`, `Quot.sound` | proven packaged terminal bottom-layer formulas match the full-depth frontier |
 | `PvNP.FormulaRecursiveDecomposition.fullDepthRecursiveDecomposition_terminal_width` | `propext`, `Quot.sound` | proven packaged terminal bottom-layer widths are at most one |
 | `PvNP.FormulaRecursiveDecomposition.fullDepthRecursiveDecomposition_terminal_count` | `propext`, `Quot.sound` | proven packaged terminal bottom-layer count matches the full-depth frontier |
+| `PvNP.FormulaRecursiveGateLayers.frontierGateList` | `propext`, `Quot.sound` | constructed truth-table `GateSpec.dnf` list for any recursive frontier level |
+| `PvNP.FormulaRecursiveGateLayers.frontierGateList_length` | `propext`, `Quot.sound` | proven frontier gate-list length matches the frontier |
+| `PvNP.FormulaRecursiveGateLayers.frontierGateList_formulas` | `propext`, `Quot.sound` | proven frontier gate-list formulas match the frontier |
+| `PvNP.FormulaRecursiveGateLayers.frontierGateList_width_le_vars` | `propext`, `Quot.sound` | proven frontier gate-list widths are bounded by the variable count |
+| `PvNP.FormulaRecursiveGateLayers.RecursiveFrontierGateLayer` | `propext`, `Quot.sound` | audited packaged frontier gate layer with truth-table width bound |
+| `PvNP.FormulaRecursiveGateLayers.recursiveFrontierGateLayer` | `propext`, `Quot.sound` | constructed packaged frontier gate layer |
+| `PvNP.FormulaRecursiveGateLayers.FullDepthRecursiveGateLayers` | `propext`, `Quot.sound` | audited packaged all-level recursive frontier gate-layer surface |
+| `PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers` | `propext`, `Quot.sound` | constructed all-level recursive frontier gate-layer package |
+| `PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers_transition` | `propext`, `Quot.sound` | proven packaged gate-layer formula transition |
+| `PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers_depthBudget` | `propext`, `Quot.sound` | proven packaged gate-layer raw-depth budget |
+| `PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers_level_width_le_vars` | `propext`, `Quot.sound` | proven packaged intermediate frontier layer widths are bounded by the variable count |
+| `PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers_terminal_formulas` | `propext`, `Quot.sound` | proven packaged terminal bottom-layer formulas match the terminal frontier gate layer |
+| `PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers_terminal_width` | `propext`, `Quot.sound` | proven packaged terminal bottom-layer widths are at most one |
 | `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous` | `propext`, `Classical.choice`, `Quot.sound` | proven concrete budget-3 scheduled instance (single finite demo) |
 
 No declaration above depends on `sorryAx`.
@@ -310,8 +323,12 @@ raw-depth budget for recursive top-child expansion.  `FormulaDepthZeroBottom`
 adds exact width-one-or-less DNF gates and a packaged bottom-layer list for
 members that survive to the full-depth frontier.  `FormulaRecursiveDecomposition`
 packages every frontier level, the top-child transition, the raw-depth budget,
-and the terminal bottom layer as one structural skeleton.  The schedule and
-width hypotheses remain supplied and intermediate child views still use the
+and the terminal bottom layer as one structural skeleton.
+`FormulaRecursiveGateLayers` reifies every recursive frontier level as a
+`GateSpec.dnf` list with formula and count alignment, but the intermediate
+width bound is only the truth-table fallback `n`; only the terminal full-depth
+bottom layer carries the width-one-or-less bound.  The schedule and width
+hypotheses remain supplied and intermediate child views still use the
 truth-table fallback; the artifact still does not synthesize `B` from arbitrary
 formulas, derive efficient recursive depth-`d` layered views from arbitrary
 formula syntax, or close full frozen-form B4.

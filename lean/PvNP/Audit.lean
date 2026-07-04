@@ -33,6 +33,7 @@ import PvNP.FormulaDepthDecomposition
 import PvNP.FormulaRecursiveDepth
 import PvNP.FormulaDepthZeroBottom
 import PvNP.FormulaRecursiveDecomposition
+import PvNP.FormulaRecursiveGateLayers
 import PvNP.MixedFormulaFamilyCollapse
 import PvNP.ScheduledCollapseDemo
 
@@ -4548,3 +4549,66 @@ NP/circuit, or P vs NP.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveDecomposition.fullDepthRecursiveDecomposition_terminal_count
+
+/-!
+Pins for `PvNP.FormulaRecursiveGateLayers`: every recursive frontier level is
+reified as a `GateSpec.dnf` list through the truth-table fallback, while the
+terminal full-depth frontier remains connected to the exact width-one bottom
+layer.  This is still NOT full B4: intermediate widths are bounded by `n`, not
+by an efficient syntactic theorem, and no product/counting hypotheses, collapse
+schedule, Gate A rung 4, Frege/PHP, NP/circuit, or P vs NP result is proved.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveGateLayers.frontierGateList' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGateLayers.frontierGateList
+
+/-- info: 'PvNP.FormulaRecursiveGateLayers.frontierGateList_length' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGateLayers.frontierGateList_length
+
+/-- info: 'PvNP.FormulaRecursiveGateLayers.frontierGateList_formulas' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGateLayers.frontierGateList_formulas
+
+/-- info: 'PvNP.FormulaRecursiveGateLayers.frontierGateList_width_le_vars' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGateLayers.frontierGateList_width_le_vars
+
+/-- info: 'PvNP.FormulaRecursiveGateLayers.RecursiveFrontierGateLayer' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGateLayers.RecursiveFrontierGateLayer
+
+/-- info: 'PvNP.FormulaRecursiveGateLayers.recursiveFrontierGateLayer' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGateLayers.recursiveFrontierGateLayer
+
+/-- info: 'PvNP.FormulaRecursiveGateLayers.FullDepthRecursiveGateLayers' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGateLayers.FullDepthRecursiveGateLayers
+
+/-- info: 'PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers
+
+/-- info: 'PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers_transition' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers_transition
+
+/-- info: 'PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers_depthBudget' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers_depthBudget
+
+/-- info: 'PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers_level_width_le_vars' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers_level_width_le_vars
+
+/-- info: 'PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers_terminal_formulas' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers_terminal_formulas
+
+/-- info: 'PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers_terminal_width' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers_terminal_width
