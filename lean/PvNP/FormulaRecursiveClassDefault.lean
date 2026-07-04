@@ -19,6 +19,7 @@ raw-syntax compatibility wrapper, not full frozen-form B4.
 
 * The class-size envelope `S(d)` is supplied.
 * The class-width envelope `W(d)` is supplied and must satisfy `n <= W(d)`.
+  The fixed-width corollaries below specialize that envelope to `W(d)=n`.
 * Width is the truth-table fallback `n`; this module does not synthesize an
   efficient width profile.
 * `NoEmptyFanins F` is required to remove empty frontier-count cases.
@@ -163,6 +164,105 @@ theorem allFrontierLayers_geometricCollapseWithTruthTableClassWidth_noEmptyFanin
   exact
     frontierLayer_geometricCollapseWithTruthTableClassWidth_noEmptyFanins_finalTree
       F S W d level rounds parent hDepth hSize hF hk hvars hWidth hn
+
+/-! ## Fixed fallback-width consumers -/
+
+open GeneratedRefinedIteratedCertificate in
+/-- Single raw recursive frontier layer with the truth-table fallback width
+specialized as the class-width envelope `W(d)=n`.
+
+This removes the caller-supplied class-width envelope from the default
+truth-table route, but the ambient bound is correspondingly stated with the
+fallback width `n`.  This is still not efficient width synthesis. -/
+theorem frontierLayer_geometricCollapseWithTruthTableFixedWidth_noEmptyFanins_finalTree
+    {n : Nat} (F : BDFormula n) (S : Nat -> Nat)
+    (d level rounds : Nat) (parent : ParentKind)
+    (hDepth : depth F <= d)
+    (hSize : formulaSize F <= S d)
+    (hF : NoEmptyFanins F)
+    (hk : level <= depth F)
+    (hvars : 1 <= n)
+    (hn : 2 * (64 * S d) ^ rounds * (64 * S d * n) <= n) :
+    level <= d /\
+    exists cert : GeneratedRefinedIteratedCertificate n (freeRestriction n)
+        (frontierLayerMinimalLayer F level parent).originalFormula
+        (geometricSchedule (frontierLayerGateCount F level)
+          (n / (64 * frontierLayerGateCount F level *
+            (truthTableRecursiveWidthProfile F).widthBudget level))
+          (rounds + 1)).length,
+      cert.stageGateCounts =
+        List.replicate (rounds + 1) (frontierLayerGateCount F level) /\
+      cert.stageBudgets = List.replicate (rounds + 1) 2 /\
+      cert.stageStarCounts =
+        (geometricSchedule (frontierLayerGateCount F level)
+          (n / (64 * frontierLayerGateCount F level *
+            (truthTableRecursiveWidthProfile F).widthBudget level))
+          (rounds + 1)).map stageStars /\
+      TreeBudgetFrom (formulaClassDepthTreeBudget S d)
+        (frontierLayerGateCount F level) (rounds + 1)
+        (geometricSchedule (frontierLayerGateCount F level)
+          (n / (64 * frontierLayerGateCount F level *
+            (truthTableRecursiveWidthProfile F).widthBudget level))
+          (rounds + 1)) /\
+      exists T : DTree n, exists s : Nat,
+        cert.lastStage = some (T, frontierLayerGateCount F level, s) /\
+        (forall a : Assignment n, dtEval a T = eval a cert.finalFormula) /\
+        dtDepth T <= formulaClassDepthTreeBudget S d level s /\
+        (forall a : Assignment n, Agree cert.finalComposed a ->
+          dtEval a T = eval a (restrict cert.finalComposed
+            (frontierLayerMinimalLayer F level parent).originalFormula)) := by
+  exact
+    frontierLayer_geometricCollapseWithTruthTableClassWidth_noEmptyFanins_finalTree
+      F S (fun _ => n) d level rounds parent hDepth hSize hF hk hvars
+      (Nat.le_refl n) hn
+
+open GeneratedRefinedIteratedCertificate in
+/-- Uniform all-level fixed-width form of the truth-table fallback consumer.
+
+The theorem fixes the class-width envelope to the fallback variable count `n`;
+the remaining class-size envelope `S(d)` and ambient lower bound are still
+supplied. -/
+theorem allFrontierLayers_geometricCollapseWithTruthTableFixedWidth_noEmptyFanins_finalTree
+    {n : Nat} (F : BDFormula n) (S : Nat -> Nat)
+    (d rounds : Nat) (parent : ParentKind)
+    (hDepth : depth F <= d)
+    (hSize : formulaSize F <= S d)
+    (hF : NoEmptyFanins F)
+    (hvars : 1 <= n)
+    (hn : 2 * (64 * S d) ^ rounds * (64 * S d * n) <= n) :
+    forall level, level <= depth F ->
+      level <= d /\
+      exists cert : GeneratedRefinedIteratedCertificate n (freeRestriction n)
+          (frontierLayerMinimalLayer F level parent).originalFormula
+          (geometricSchedule (frontierLayerGateCount F level)
+            (n / (64 * frontierLayerGateCount F level *
+              (truthTableRecursiveWidthProfile F).widthBudget level))
+            (rounds + 1)).length,
+        cert.stageGateCounts =
+          List.replicate (rounds + 1) (frontierLayerGateCount F level) /\
+        cert.stageBudgets = List.replicate (rounds + 1) 2 /\
+        cert.stageStarCounts =
+          (geometricSchedule (frontierLayerGateCount F level)
+            (n / (64 * frontierLayerGateCount F level *
+              (truthTableRecursiveWidthProfile F).widthBudget level))
+            (rounds + 1)).map stageStars /\
+        TreeBudgetFrom (formulaClassDepthTreeBudget S d)
+          (frontierLayerGateCount F level) (rounds + 1)
+          (geometricSchedule (frontierLayerGateCount F level)
+            (n / (64 * frontierLayerGateCount F level *
+              (truthTableRecursiveWidthProfile F).widthBudget level))
+            (rounds + 1)) /\
+        exists T : DTree n, exists s : Nat,
+          cert.lastStage = some (T, frontierLayerGateCount F level, s) /\
+          (forall a : Assignment n, dtEval a T = eval a cert.finalFormula) /\
+          dtDepth T <= formulaClassDepthTreeBudget S d level s /\
+          (forall a : Assignment n, Agree cert.finalComposed a ->
+            dtEval a T = eval a (restrict cert.finalComposed
+              (frontierLayerMinimalLayer F level parent).originalFormula)) := by
+  intro level hk
+  exact
+    frontierLayer_geometricCollapseWithTruthTableFixedWidth_noEmptyFanins_finalTree
+      F S d level rounds parent hDepth hSize hF hk hvars hn
 
 end FormulaRecursiveClassDefault
 end PvNP
