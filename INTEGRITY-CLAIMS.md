@@ -57,7 +57,9 @@ This repository does **not** establish or imply:
   interface after top-constructor synthesis.  The top synthesis is now audited
   as a one-step depth decrease for every exposed child, recursive frontiers have
   a checked raw-depth budget, and full-depth frontier members now have exact
-  width-one-or-less bottom DNF gates.  But no arbitrary `BDFormula`/AC0
+  width-one-or-less bottom DNF gates.  Recursive frontier gate layers also
+  carry explicit per-level count, width-budget, successor-count, and
+  tree-budget profile facts.  But no arbitrary `BDFormula`/AC0
   depth-`d` decomposition or internally synthesized `B(m, w, s, d)` product
   hypothesis is proved.  The start view and geometric or ratio-regime entry
   hypotheses remain supplied, syntactically exposed by the bottom-layer class,
@@ -267,6 +269,20 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers_level_width_le_vars` | `propext`, `Quot.sound` | proven packaged intermediate frontier layer widths are bounded by the variable count |
 | `PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers_terminal_formulas` | `propext`, `Quot.sound` | proven packaged terminal bottom-layer formulas match the terminal frontier gate layer |
 | `PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers_terminal_width` | `propext`, `Quot.sound` | proven packaged terminal bottom-layer widths are at most one |
+| `PvNP.FormulaRecursiveLayerProfile.frontierLayerGateCount` | `propext`, `Quot.sound` | defined per-frontier gate count for recursive gate layers |
+| `PvNP.FormulaRecursiveLayerProfile.frontierLayerGateCount_eq_formulaDepthFrontier_length` | `propext`, `Quot.sound` | proven layer gate count agrees with raw frontier length |
+| `PvNP.FormulaRecursiveLayerProfile.frontierLayerGateCount_zero` | `propext`, `Quot.sound` | proven level-zero gate count is one |
+| `PvNP.FormulaRecursiveLayerProfile.frontierLayerGateCount_succ_eq_layer_bind_topChildren_length` | `propext`, `Quot.sound` | proven successor layer count is the prior layer's top-child bind length |
+| `PvNP.FormulaRecursiveLayerProfile.frontierLayerGateCount_succ_eq_frontier_bind_topChildren_length` | `propext`, `Quot.sound` | proven successor count in raw-frontier bind form |
+| `PvNP.FormulaRecursiveLayerProfile.length_bind_topChildren_eq_sum_topChildCount` | `propext` | proven top-child bind length equals the sum of top-child counts |
+| `PvNP.FormulaRecursiveLayerProfile.frontierLayerGateCount_succ_eq_layer_topChildCount_sum` | `propext`, `Quot.sound` | proven successor layer count equals summed top-child counts over the prior gate layer |
+| `PvNP.FormulaRecursiveLayerProfile.frontierLayerGateCount_succ_eq_frontier_topChildCount_sum` | `propext`, `Quot.sound` | proven successor layer count equals summed top-child counts over the raw frontier |
+| `PvNP.FormulaRecursiveLayerProfile.frontierLayerWidthBudget` | none | axiom-free honest intermediate width-budget definition |
+| `PvNP.FormulaRecursiveLayerProfile.terminalLayerWidthBudget` | none | axiom-free terminal width-budget definition |
+| `PvNP.FormulaRecursiveLayerProfile.frontierLayer_width_le_budget` | `propext`, `Quot.sound` | proven intermediate frontier layers obey the honest variable-count width budget |
+| `PvNP.FormulaRecursiveLayerProfile.terminalLayer_width_le_budget` | `propext`, `Quot.sound` | proven terminal bottom layer obeys the width-one budget |
+| `PvNP.FormulaRecursiveLayerProfile.frontierLayerTreeBudget` | `propext`, `Quot.sound` | defined per-layer constant tree-budget profile |
+| `PvNP.FormulaRecursiveLayerProfile.frontierLayer_treeBudgetFrom` | `propext`, `Quot.sound` | proven per-layer constant tree-budget profile satisfies every numeric schedule |
 | `PvNP.FormulaVarWidthSchedule.topConnectiveFormula_child_width_le_vars` | `propext`, `Quot.sound` | proven top-connective truth-table child views have generic width at most `n` |
 | `PvNP.FormulaVarWidthSchedule.positiveDepthFormula_child_width_le_vars` | `propext`, `Quot.sound` | proven positive-depth raw-formula truth-table child views have generic width at most `n` |
 | `PvNP.FormulaVarWidthSchedule.topConnectiveFormula_ratioRegimeCollapseWithVarWidth` | `propext`, `Classical.choice`, `Quot.sound` | proven top-connective raw formulas route through supplied ratio schedules at width `n` |
@@ -331,14 +347,16 @@ and the terminal bottom layer as one structural skeleton.
 `FormulaRecursiveGateLayers` reifies every recursive frontier level as a
 `GateSpec.dnf` list with formula and count alignment, but the intermediate
 width bound is only the truth-table fallback `n`; only the terminal full-depth
-bottom layer carries the width-one-or-less bound. `FormulaVarWidthSchedule`
-then instantiates the supplied positive-depth raw-formula ratio-regime route at
-width `n`, removing the caller-supplied child-width predicate while preserving
-the honest truth-table fallback boundary.  The schedule hypotheses remain
-supplied and intermediate child views still use the truth-table fallback; the
-artifact still does not synthesize `B` from arbitrary formulas, derive
-efficient recursive depth-`d` layered views from arbitrary formula syntax, or
-close full frozen-form B4.
+bottom layer carries the width-one-or-less bound. `FormulaRecursiveLayerProfile`
+adds the per-level profile facts over those layers: gate counts, successor
+counts by top-child expansion, honest width budgets, and constant tree-budget
+facts. `FormulaVarWidthSchedule` then instantiates the supplied positive-depth
+raw-formula ratio-regime route at width `n`, removing the caller-supplied
+child-width predicate while preserving the honest truth-table fallback
+boundary.  The schedule hypotheses remain supplied and intermediate child views
+still use the truth-table fallback; the artifact still does not synthesize `B`
+from arbitrary formulas, derive efficient recursive depth-`d` layered views
+from arbitrary formula syntax, or close full frozen-form B4.
 The PHP switching lemma (Gate A rung 4) remains open.
 
 ## Re-Verification

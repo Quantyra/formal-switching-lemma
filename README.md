@@ -420,6 +420,14 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   the exact S2086 bottom layer whose gates have width at most one.  This
   exposes the next B4 gap precisely: efficient intermediate-width bounds,
   product/counting hypotheses, and a global collapse theorem are still open.
+- `PvNP.FormulaRecursiveLayerProfile.frontierLayerGateCount`: the recursive
+  gate-layer surface now has explicit per-level profile facts: gate-count
+  alignment with the raw frontier, successor counts by top-child expansion and
+  summed `topChildCount`, honest width budgets (`n` for intermediate
+  truth-table layers, `1` for the terminal bottom layer), and per-layer
+  constant tree budgets `m_k * (s - 1)`.  This is bookkeeping over the existing
+  layers only; it still does not synthesize efficient widths, product/counting
+  hypotheses, a schedule, or full B4.
 - `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous`: one
   concrete scheduled instance — the schedule `[(3, 561), (2, 17), (1, 1)]`
   over `n = 10000` variables from one width-1 single-literal gate, with all
@@ -634,13 +642,19 @@ Intermediate widths are bounded only by the truth-table fallback `n`; the
 terminal full-depth bottom layer remains the width-one-or-less layer.  This is
 not efficient recursive B4 decomposition.
 
+The recursive layer-profile wrapper (`FormulaRecursiveLayerProfile`) records
+per-frontier gate counts, successor count transitions, the honest intermediate
+and terminal width budgets, and per-layer constant tree-budget facts.  This is
+still profile bookkeeping over truth-table fallback layers, not product/counting
+synthesis or a generated collapse theorem.
+
 The variable-width schedule wrapper (`FormulaVarWidthSchedule`) instantiates the
 positive-depth raw-formula ratio-regime route at width `n`, using the proved
 truth-table/path-DNF width bound instead of a caller-supplied child-width
 predicate.  The ratio-regime schedule is still supplied, and `w = n` is not
 efficient syntactic width control; this is not full B4.
 
-The current audit surface has 775 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
+The current audit surface has 789 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
 
 - DOI: `10.5281/zenodo.21184992`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`

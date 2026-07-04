@@ -34,6 +34,7 @@ import PvNP.FormulaRecursiveDepth
 import PvNP.FormulaDepthZeroBottom
 import PvNP.FormulaRecursiveDecomposition
 import PvNP.FormulaRecursiveGateLayers
+import PvNP.FormulaRecursiveLayerProfile
 import PvNP.FormulaVarWidthSchedule
 import PvNP.MixedFormulaFamilyCollapse
 import PvNP.ScheduledCollapseDemo
@@ -4613,6 +4614,76 @@ schedule, Gate A rung 4, Frege/PHP, NP/circuit, or P vs NP result is proved.
 /-- info: 'PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers_terminal_width' depends on axioms: [propext, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveGateLayers.fullDepthRecursiveGateLayers_terminal_width
+
+/-!
+Pins for `PvNP.FormulaRecursiveLayerProfile`: recursive frontier layers now
+carry explicit gate-count transitions, honest width budgets, and per-layer
+constant tree-budget facts.  This is still NOT full B4: the intermediate
+width budget is `n`, the profile does not synthesize product/counting
+hypotheses or a collapse schedule, and no Gate A rung 4, Frege/PHP,
+NP/circuit, or P vs NP result is proved.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveLayerProfile.frontierLayerGateCount' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveLayerProfile.frontierLayerGateCount
+
+/-- info: 'PvNP.FormulaRecursiveLayerProfile.frontierLayerGateCount_eq_formulaDepthFrontier_length' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveLayerProfile.frontierLayerGateCount_eq_formulaDepthFrontier_length
+
+/-- info: 'PvNP.FormulaRecursiveLayerProfile.frontierLayerGateCount_zero' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveLayerProfile.frontierLayerGateCount_zero
+
+/-- info: 'PvNP.FormulaRecursiveLayerProfile.frontierLayerGateCount_succ_eq_layer_bind_topChildren_length' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveLayerProfile.frontierLayerGateCount_succ_eq_layer_bind_topChildren_length
+
+/-- info: 'PvNP.FormulaRecursiveLayerProfile.frontierLayerGateCount_succ_eq_frontier_bind_topChildren_length' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveLayerProfile.frontierLayerGateCount_succ_eq_frontier_bind_topChildren_length
+
+/-- info: 'PvNP.FormulaRecursiveLayerProfile.length_bind_topChildren_eq_sum_topChildCount' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveLayerProfile.length_bind_topChildren_eq_sum_topChildCount
+
+/-- info: 'PvNP.FormulaRecursiveLayerProfile.frontierLayerGateCount_succ_eq_layer_topChildCount_sum' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveLayerProfile.frontierLayerGateCount_succ_eq_layer_topChildCount_sum
+
+/-- info: 'PvNP.FormulaRecursiveLayerProfile.frontierLayerGateCount_succ_eq_frontier_topChildCount_sum' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveLayerProfile.frontierLayerGateCount_succ_eq_frontier_topChildCount_sum
+
+/-- info: 'PvNP.FormulaRecursiveLayerProfile.frontierLayerWidthBudget' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveLayerProfile.frontierLayerWidthBudget
+
+/-- info: 'PvNP.FormulaRecursiveLayerProfile.terminalLayerWidthBudget' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveLayerProfile.terminalLayerWidthBudget
+
+/-- info: 'PvNP.FormulaRecursiveLayerProfile.frontierLayer_width_le_budget' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveLayerProfile.frontierLayer_width_le_budget
+
+/-- info: 'PvNP.FormulaRecursiveLayerProfile.terminalLayer_width_le_budget' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveLayerProfile.terminalLayer_width_le_budget
+
+/-- info: 'PvNP.FormulaRecursiveLayerProfile.frontierLayerTreeBudget' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveLayerProfile.frontierLayerTreeBudget
+
+/-- info: 'PvNP.FormulaRecursiveLayerProfile.frontierLayer_treeBudgetFrom' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveLayerProfile.frontierLayer_treeBudgetFrom
 
 /-!
 Pins for `PvNP.FormulaVarWidthSchedule`: the truth-table fallback width theorem
