@@ -46,6 +46,7 @@ import PvNP.FormulaRecursiveSyntacticGeometric
 import PvNP.FormulaRecursiveSyntacticGlobal
 import PvNP.FormulaRecursiveSyntacticGlobalTree
 import PvNP.FormulaSyntacticClassGlobalTree
+import PvNP.FormulaRecursiveClassProfile
 import PvNP.FormulaRecursiveNonempty
 import PvNP.FormulaRecursiveSizeBound
 import PvNP.FormulaSyntacticDNF
@@ -5234,6 +5235,36 @@ A rung 4, Frege/PHP, NP/circuit, or P vs NP.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaSyntacticClassGlobalTree.allSyntacticFrontierLayers_geometricCollapseWithClassDepth_finalTree_simpleNoEmptyFanins
+
+/-!
+Pins for `PvNP.FormulaRecursiveClassProfile`: supplied class size and width
+envelopes now route the arbitrary raw recursive frontier layer interface
+through geometric generated collapse while exposing final trees under the same
+depth-indexed class budget `t(d,s)=S(d)*(s-1)`.  The width profile, width
+envelope, nonempty counts, and ambient bound remain supplied; this is still
+not efficient width-profile synthesis, product/counting synthesis, arbitrary
+normalization, full B4, Gate A rung 4, Frege/PHP, NP/circuit, or P vs NP.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveClassProfile.frontierLayerGateCount_le_classSize' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveClassProfile.frontierLayerGateCount_le_classSize
+
+/-- info: 'PvNP.FormulaRecursiveClassProfile.geometricEntryBound_of_class_envelopes' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveClassProfile.geometricEntryBound_of_class_envelopes
+
+/-- info: 'PvNP.FormulaRecursiveClassProfile.frontierLayer_geometricCollapseWithClassDepthWidthProfile_finalTree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveClassProfile.frontierLayer_geometricCollapseWithClassDepthWidthProfile_finalTree
+
+/-- info: 'PvNP.FormulaRecursiveClassProfile.allFrontierLayers_geometricCollapseWithClassDepthWidthProfile_finalTree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveClassProfile.allFrontierLayers_geometricCollapseWithClassDepthWidthProfile_finalTree
 
 /-!
 Pins for `PvNP.FormulaRecursiveNonempty`: no-empty-fanin raw syntax
