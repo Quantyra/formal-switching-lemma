@@ -526,5 +526,181 @@ theorem geometricFamily_eightK_twoStage :
     rfl
   · exact ht
 
+/-! ## Universal-layer form: every bounded start layer admits the family -/
+
+private theorem regime_space_bound {m w n : Nat} :
+    32 * m * w * (n / (64 * m * w)) ≤ n := by
+  have h0 : 32 * m ≤ 64 * m := Nat.mul_le_mul_right m (by decide)
+  have h1 : 32 * m * w ≤ 64 * m * w := Nat.mul_le_mul_right w h0
+  have h2 : 32 * m * w * (n / (64 * m * w)) ≤
+      64 * m * w * (n / (64 * m * w)) :=
+    Nat.mul_le_mul_right _ h1
+  have h3 : 64 * m * w * (n / (64 * m * w)) =
+      n / (64 * m * w) * (64 * m * w) := Nat.mul_comm _ _
+  have h4 : n / (64 * m * w) * (64 * m * w) ≤ n :=
+    Nat.div_mul_le_self n (64 * m * w)
+  rw [h3] at h2
+  exact Nat.le_trans h2 h4
+
+/-- One clean entry bound `2 * (64*m)^k * (64*m*w) <= n` puts the geometric
+schedule with entry stars `n / (64*m*w)` inside the ratio regime over the
+full `n`-variable space. -/
+theorem geometric_regime_of_bound {m w n : Nat} (hm : 1 ≤ m) (hw : 1 ≤ w)
+    (k : Nat) (hn : 2 * (64 * m) ^ k * (64 * m * w) ≤ n) :
+    RegimeFrom m w n
+      (geometricSchedule m (n / (64 * m * w)) (k + 1)) := by
+  have hq : 0 < 64 * m * w :=
+    Nat.mul_pos (Nat.mul_pos (by decide) hm) hw
+  refine geometricSchedule_regime hm k (n / (64 * m * w)) n w hw ?_ ?_
+  · rw [Nat.le_div_iff_mul_le hq]
+    exact hn
+  · exact regime_space_bound
+
+open GeneratedRefinedIteratedCertificate in
+/-- **Universal-layer asymptotic geometric family.**  EVERY supplied start
+layer with `m >= 1` gates of width `<= w` (`w >= 1`) over `n` variables
+admits the `(k+1)`-stage geometric-schedule certificate as soon as
+`n >= 2 * (64*m)^k * (64*m*w)`: entry stars `n / (64*m*w)`, ALL stage
+budgets `2`, every stage entering with width budget `>= 1` (no width-0
+tail), and the constant tree-budget family `t(d,s) = m` preserved.  The
+layer is universally quantified — only its gate count and width bound
+enter the regime arithmetic.
+
+Still NOT frozen-form B4 closure: the start layer is supplied (no
+arbitrary layered decomposition of an AC0 formula is performed), realized
+widths of re-viewed gates are budget claims, and the statement-vs-witness
+caveat of `autoIteratedCollapse` applies unchanged.  NOT a Frege/PHP
+proof-size bound, NOT a PHP switching lemma, NOT an NP/circuit lower
+bound, NOT a statement about P vs NP. -/
+theorem geometricFamilyCollapse_universal (k w : Nat) {n : Nat}
+    (L : MinimalLayeredFormula n)
+    (hm : 1 ≤ L.gates.length) (hw1 : 1 ≤ w)
+    (hw : ∀ g ∈ L.gates, widthDNF g.theDNF ≤ w)
+    (hn : 2 * (64 * L.gates.length) ^ k * (64 * L.gates.length * w) ≤ n) :
+    ∃ cert : GeneratedRefinedIteratedCertificate n (freeRestriction n)
+        L.originalFormula (k + 1),
+      cert.stageGateCounts = List.replicate (k + 1) L.gates.length ∧
+      cert.stageBudgets = List.replicate (k + 1) 2 ∧
+      cert.stageStarCounts =
+        (geometricSchedule L.gates.length
+          (n / (64 * L.gates.length * w)) (k + 1)).map stageStars ∧
+      TreeBudgetFrom (fun _ _ => L.gates.length) L.gates.length (k + 1)
+        (geometricSchedule L.gates.length
+          (n / (64 * L.gates.length * w)) (k + 1)) := by
+  have hreg' : RegimeFrom L.gates.length w (stars (freeRestriction n))
+      (geometricSchedule L.gates.length
+        (n / (64 * L.gates.length * w)) (k + 1)) := by
+    rw [stars_freeRestriction]
+    exact geometric_regime_of_bound hm hw1 k hn
+  have hlen : (geometricSchedule L.gates.length
+      (n / (64 * L.gates.length * w)) (k + 1)).length = k + 1 :=
+    geometricSchedule_length L.gates.length (k + 1)
+      (n / (64 * L.gates.length * w))
+  have ht : TreeBudgetFrom (fun _ _ => L.gates.length) L.gates.length
+      (geometricSchedule L.gates.length
+        (n / (64 * L.gates.length * w)) (k + 1)).length
+      (geometricSchedule L.gates.length
+        (n / (64 * L.gates.length * w)) (k + 1)) :=
+    geometricSchedule_treeBudget L.gates.length L.gates.length (k + 1)
+      (n / (64 * L.gates.length * w))
+      (geometricSchedule L.gates.length
+        (n / (64 * L.gates.length * w)) (k + 1)).length
+  have hex := autoIteratedCollapse_of_ratioRegime
+    (fun _ _ => L.gates.length)
+    (geometricSchedule L.gates.length
+      (n / (64 * L.gates.length * w)) (k + 1))
+    (freeRestriction n) L w hm hw hreg' ht
+  rw [hlen, geometricSchedule_budgets] at hex
+  exact hex
+
+/-! ## A named two-gate witness family for the universal form -/
+
+def pairLit0 (n : Nat) : Literal (n + 2) := ⟨⟨0, by omega⟩, true⟩
+def pairLit1 (n : Nat) : Literal (n + 2) := ⟨⟨1, by omega⟩, true⟩
+
+/-- First witness gate: single positive literal on variable `0`. -/
+def pairGate0 (n : Nat) : GateSpec (n + 2) :=
+  GateSpec.dnf (BDFormula.lit (pairLit0 n))
+    { D := [[pairLit0 n]]
+      sem_eq := by
+        intro a
+        simp [dnfEval, termEval, eval_lit]
+      simple := by
+        intro t ht
+        simp only [List.mem_singleton] at ht
+        subst ht
+        simp [SimpleTerm] }
+
+/-- Second witness gate: single positive literal on variable `1`. -/
+def pairGate1 (n : Nat) : GateSpec (n + 2) :=
+  GateSpec.dnf (BDFormula.lit (pairLit1 n))
+    { D := [[pairLit1 n]]
+      sem_eq := by
+        intro a
+        simp [dnfEval, termEval, eval_lit]
+      simple := by
+        intro t ht
+        simp only [List.mem_singleton] at ht
+        subst ht
+        simp [SimpleTerm] }
+
+/-- The named two-gate start layer: two DISTINCT single-literal width-1
+gates (variables `0` and `1`) under an `or` parent. -/
+def pairLayer (n : Nat) : MinimalLayeredFormula (n + 2) :=
+  { parent := ParentKind.or, gates := [pairGate0 n, pairGate1 n] }
+
+theorem pairLayer_length (n : Nat) : (pairLayer n).gates.length = 2 := rfl
+
+theorem pairLayer_width (n : Nat) :
+    ∀ g ∈ (pairLayer n).gates, widthDNF g.theDNF ≤ 1 := by
+  intro g hg
+  have hg' : g = pairGate0 n ∨ g = pairGate1 n := by
+    simpa [pairLayer] using hg
+  rcases hg' with h | h
+  · subst h
+    show widthDNF [[pairLit0 n]] ≤ 1
+    simp [widthDNF, termWidth]
+  · subst h
+    show widthDNF [[pairLit1 n]] ≤ 1
+    simp [widthDNF, termWidth]
+
+/-- Both witness gates have realized DNF width exactly `1`. -/
+theorem pairGate0_width_realized (n : Nat) :
+    widthDNF (pairGate0 n).theDNF = 1 := by
+  show widthDNF [[pairLit0 n]] = 1
+  simp [widthDNF, termWidth]
+
+/-- Both witness gates have realized DNF width exactly `1`. -/
+theorem pairGate1_width_realized (n : Nat) :
+    widthDNF (pairGate1 n).theDNF = 1 := by
+  show widthDNF [[pairLit1 n]] = 1
+  simp [widthDNF, termWidth]
+
+open GeneratedRefinedIteratedCertificate in
+/-- The universal form instantiated on the two-gate layer at the exact
+boundary `n = 32768 = 2 * 128 * 128`: two rounds, gate counts `[2, 2]`,
+budgets `[2, 2]`, star counts `[256, 2]` — the multi-gate (`m = 2`) case
+of the universal family is inhabited, with all stages entering at width
+budget `>= 1` and both start gates of realized width `1`.  Single finite
+instance of `geometricFamilyCollapse_universal`. -/
+theorem geometricFamily_pair_twoStage :
+    ∃ cert : GeneratedRefinedIteratedCertificate 32768
+        (freeRestriction 32768) (pairLayer 32766).originalFormula 2,
+      cert.stageGateCounts = [2, 2] ∧
+      cert.stageBudgets = [2, 2] ∧
+      cert.stageStarCounts = [256, 2] ∧
+      TreeBudgetFrom (fun _ _ => 2) 2 2 (geometricSchedule 2 256 2) := by
+  obtain ⟨cert, hgc, hb, hsc, ht⟩ :=
+    geometricFamilyCollapse_universal 1 1 (pairLayer 32766)
+      (by decide) (Nat.le_refl 1) (pairLayer_width 32766) (by decide)
+  refine ⟨cert, ?_, ?_, ?_, ?_⟩
+  · rw [hgc]
+    rfl
+  · rw [hb]
+    rfl
+  · rw [hsc]
+    rfl
+  · exact ht
+
 end FrozenProductScheduleRatio
 end PvNP

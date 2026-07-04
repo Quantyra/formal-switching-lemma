@@ -3828,3 +3828,47 @@ info: 'PvNP.FrozenProductScheduleRatio.geometricFamily_eightK_twoStage' depends 
 -/
 #guard_msgs in
 #print axioms PvNP.FrozenProductScheduleRatio.geometricFamily_eightK_twoStage
+
+/-!
+Pins for the universal-layer extension of `PvNP.FrozenProductScheduleRatio`:
+EVERY supplied start layer with `m >= 1` gates of width `<= w` (`w >= 1`)
+admits the `(k+1)`-stage geometric-schedule certificate once
+`n >= 2 * (64*m)^k * (64*m*w)` (entry stars `n / (64*m*w)`); only the gate
+count and width bound enter the regime arithmetic.  The named two-gate
+witness family (`pairLayer`, variables `0` and `1`, realized width `1`
+each) inhabits the multi-gate case at the exact boundary `n = 32768`.
+Start layers remain supplied; frozen-form B4 and Gate A rung 4 remain
+OPEN.
+-/
+
+/-- info: 'PvNP.FrozenProductScheduleRatio.geometric_regime_of_bound' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.geometric_regime_of_bound
+
+/--
+info: 'PvNP.FrozenProductScheduleRatio.geometricFamilyCollapse_universal' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.geometricFamilyCollapse_universal
+
+/-- info: 'PvNP.FrozenProductScheduleRatio.pairLayer_width' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.pairLayer_width
+
+/-- info: 'PvNP.FrozenProductScheduleRatio.pairGate0_width_realized' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.pairGate0_width_realized
+
+/-- info: 'PvNP.FrozenProductScheduleRatio.pairGate1_width_realized' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.pairGate1_width_realized
+
+/--
+info: 'PvNP.FrozenProductScheduleRatio.geometricFamily_pair_twoStage' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.geometricFamily_pair_twoStage
