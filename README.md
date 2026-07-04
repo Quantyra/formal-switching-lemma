@@ -395,13 +395,15 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   recursive structural bookkeeping only: it does not build recursive
   `FrozenDepthView` layers, efficient bottom views, or product/counting
   hypotheses.
-- `PvNP.FormulaDepthZeroBottom.fullDepthFrontierBottomGate`: every surviving
+- `PvNP.FormulaDepthZeroBottom.fullDepthFrontierBottomLayer`: every surviving
   full-depth recursive frontier member is now packaged as an exact
-  `GateSpec.dnf` with switching DNF width at most `1`.  The module proves the
-  depth-zero classification (constants or literals) and constructs exact DNF
-  views for true, false, and literal formulas.  This supplies the bottom gate
-  witness for already-depth-zero frontier leaves, but it still does not assemble
-  the recursive layers into a global B4 certificate or synthesize product/counting
+  `GateSpec.dnf` with switching DNF width at most `1`, and the whole full-depth
+  recursive frontier is collected as an audited bottom-layer list whose formulas
+  match the frontier.  The module proves the depth-zero classification
+  (constants or literals) and constructs exact DNF views for true, false, and
+  literal formulas.  This supplies the terminal bottom layer for
+  already-depth-zero frontier leaves, but it still does not assemble the
+  recursive layers into a global B4 certificate or synthesize product/counting
   hypotheses.
 - `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous`: one
   concrete scheduled instance — the schedule `[(3, 561), (2, 17), (1, 1)]`
@@ -486,8 +488,9 @@ This artifact does **not** prove or imply:
   one-step depth decrease for every exposed child, and
   `FormulaRecursiveDepth` proves the corresponding repeated-frontier raw-depth
   budget.  `FormulaDepthZeroBottom` adds exact width-one bottom `GateSpec.dnf`
-  witnesses for members that survive to the full-depth frontier, but the
-  recursive layers are not yet assembled into one global depth-`d`
+  witnesses and an audited bottom-layer list for members that survive to the
+  full-depth frontier, but the recursive layers are not yet assembled into one
+  global depth-`d`
   decomposition theorem and intermediate child DNF views outside that terminal
   frontier still come from full truth-table decision trees with only the generic
   width bound `<= n`.  The start view and geometric or ratio-regime entry
@@ -597,10 +600,12 @@ hypotheses.
 The depth-zero bottom wrapper (`FormulaDepthZeroBottom`) gives exact simple DNF
 views of width at most one for constants and literals, and packages each
 full-depth recursive frontier member as a width-one-or-less `GateSpec.dnf`.
-This is terminal-frontier bottom synthesis only, not a global recursive B4
-decomposition theorem.
+It also collects the full-depth frontier as an audited bottom-layer list whose
+gate formulas match the frontier and whose gate widths are all at most one.
+This is terminal-frontier bottom-layer synthesis only, not a global recursive
+B4 decomposition theorem.
 
-The current audit surface has 743 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
+The current audit surface has 749 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
 
 - DOI: `10.5281/zenodo.21184992`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`

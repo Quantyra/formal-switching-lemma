@@ -4474,3 +4474,27 @@ NP/circuit, or P vs NP.
 /-- info: 'PvNP.FormulaDepthZeroBottom.fullDepthFrontierBottomGate' depends on axioms: [propext, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaDepthZeroBottom.fullDepthFrontierBottomGate
+
+/-- info: 'PvNP.FormulaDepthZeroBottom.fullDepthFrontierGateList' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthZeroBottom.fullDepthFrontierGateList
+
+/-- info: 'PvNP.FormulaDepthZeroBottom.fullDepthFrontierGateList_length' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthZeroBottom.fullDepthFrontierGateList_length
+
+/-- info: 'PvNP.FormulaDepthZeroBottom.fullDepthFrontierGateList_formulas' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthZeroBottom.fullDepthFrontierGateList_formulas
+
+/-- info: 'PvNP.FormulaDepthZeroBottom.fullDepthFrontierGateList_width_le_one' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthZeroBottom.fullDepthFrontierGateList_width_le_one
+
+/-- info: 'PvNP.FormulaDepthZeroBottom.FullDepthFrontierBottomLayer' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthZeroBottom.FullDepthFrontierBottomLayer
+
+/-- info: 'PvNP.FormulaDepthZeroBottom.fullDepthFrontierBottomLayer' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthZeroBottom.fullDepthFrontierBottomLayer

@@ -195,5 +195,51 @@ def fullDepthFrontierBottomGate {n : Nat} (F child : BDFormula n)
   formula_eq := fullDepthFrontierFormulaGate_formula F child hchild
   width_le_one := fullDepthFrontierFormulaGate_width_le_one F child hchild
 
+/-! ## Full-depth frontier bottom layers -/
+
+/-- The full-depth recursive frontier, reified as bottom `GateSpec.dnf` gates. -/
+def fullDepthFrontierGateList {n : Nat} (F : BDFormula n) :
+    List (GateSpec n) :=
+  (formulaDepthFrontier (depth F) F).attach.map
+    (fun child => fullDepthFrontierFormulaGate F child.1 child.2)
+
+theorem fullDepthFrontierGateList_length {n : Nat} (F : BDFormula n) :
+    (fullDepthFrontierGateList F).length =
+      (formulaDepthFrontier (depth F) F).length := by
+  simp [fullDepthFrontierGateList]
+
+theorem fullDepthFrontierGateList_formulas {n : Nat} (F : BDFormula n) :
+    (fullDepthFrontierGateList F).map GateSpec.formula =
+      formulaDepthFrontier (depth F) F := by
+  unfold fullDepthFrontierGateList
+  rw [List.map_map]
+  change (formulaDepthFrontier (depth F) F).attach.map
+      (fun child => child.1) = formulaDepthFrontier (depth F) F
+  rw [List.attach_map_val (formulaDepthFrontier (depth F) F) (fun child => child)]
+  simp
+
+theorem fullDepthFrontierGateList_width_le_one {n : Nat} (F : BDFormula n) :
+    forall g, g ∈ fullDepthFrontierGateList F -> widthDNF g.theDNF <= 1 := by
+  intro g hg
+  unfold fullDepthFrontierGateList at hg
+  rcases List.mem_map.mp hg with ⟨child, _hchild, rfl⟩
+  exact fullDepthFrontierFormulaGate_width_le_one F child.1 child.2
+
+/-- Packaged bottom layer for the full-depth frontier. -/
+structure FullDepthFrontierBottomLayer {n : Nat} (F : BDFormula n) where
+  gates : List (GateSpec n)
+  formulas_eq : gates.map GateSpec.formula =
+    formulaDepthFrontier (depth F) F
+  gate_width : forall g, g ∈ gates -> widthDNF g.theDNF <= 1
+  gate_count : gates.length = (formulaDepthFrontier (depth F) F).length
+
+/-- Construct the packaged bottom layer for the full-depth frontier. -/
+def fullDepthFrontierBottomLayer {n : Nat} (F : BDFormula n) :
+    FullDepthFrontierBottomLayer F where
+  gates := fullDepthFrontierGateList F
+  formulas_eq := fullDepthFrontierGateList_formulas F
+  gate_width := fullDepthFrontierGateList_width_le_one F
+  gate_count := fullDepthFrontierGateList_length F
+
 end FormulaDepthZeroBottom
 end PvNP

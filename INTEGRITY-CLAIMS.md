@@ -239,6 +239,12 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.FormulaDepthZeroBottom.fullDepthFrontierFormulaGate_width_le_one` | `propext`, `Quot.sound` | proven full-depth frontier bottom gate width at most one |
 | `PvNP.FormulaDepthZeroBottom.FullDepthFrontierBottomGate` | `propext`, `Quot.sound` | audited packaged full-depth frontier bottom-gate witness |
 | `PvNP.FormulaDepthZeroBottom.fullDepthFrontierBottomGate` | `propext`, `Quot.sound` | constructed packaged full-depth frontier bottom-gate witness |
+| `PvNP.FormulaDepthZeroBottom.fullDepthFrontierGateList` | `propext`, `Quot.sound` | constructed bottom-gate list for the full-depth frontier |
+| `PvNP.FormulaDepthZeroBottom.fullDepthFrontierGateList_length` | `propext`, `Quot.sound` | proven full-depth frontier bottom-gate list length |
+| `PvNP.FormulaDepthZeroBottom.fullDepthFrontierGateList_formulas` | `propext`, `Quot.sound` | proven full-depth frontier bottom-gate formulas match the frontier |
+| `PvNP.FormulaDepthZeroBottom.fullDepthFrontierGateList_width_le_one` | `propext`, `Quot.sound` | proven every full-depth frontier bottom-layer gate has width at most one |
+| `PvNP.FormulaDepthZeroBottom.FullDepthFrontierBottomLayer` | `propext`, `Quot.sound` | audited packaged full-depth frontier bottom-layer witness |
+| `PvNP.FormulaDepthZeroBottom.fullDepthFrontierBottomLayer` | `propext`, `Quot.sound` | constructed packaged full-depth frontier bottom-layer witness |
 | `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous` | `propext`, `Classical.choice`, `Quot.sound` | proven concrete budget-3 scheduled instance (single finite demo) |
 
 No declaration above depends on `sorryAx`.
@@ -292,12 +298,12 @@ formulas after top-constructor synthesis.  `FormulaDepthDecomposition` proves
 that this top synthesis strictly decreases formula depth for every exposed
 gate formula, and `FormulaRecursiveDepth` proves the repeated-frontier
 raw-depth budget for recursive top-child expansion.  `FormulaDepthZeroBottom`
-adds exact width-one-or-less DNF gates for members that survive to the
-full-depth frontier.  The schedule and width hypotheses remain supplied and
-intermediate child views still use the truth-table fallback; the artifact still
-does not synthesize `B` from arbitrary formulas, derive full recursive
-depth-`d` layered views from arbitrary formula syntax, or close full
-frozen-form B4.
+adds exact width-one-or-less DNF gates and a packaged bottom-layer list for
+members that survive to the full-depth frontier.  The schedule and width
+hypotheses remain supplied and intermediate child views still use the
+truth-table fallback; the artifact still does not synthesize `B` from arbitrary
+formulas, derive full recursive depth-`d` layered views from arbitrary formula
+syntax, or close full frozen-form B4.
 The PHP switching lemma (Gate A rung 4) remains open.
 
 ## Re-Verification
