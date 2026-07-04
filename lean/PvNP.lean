@@ -12,6 +12,8 @@ import PvNP.CNFModel
 import PvNP.CertifiedAffine
 import PvNP.GraphIndexedBridge
 import PvNP.RestrictedPHPFloor
+import PvNP.ScheduledAutoCollapse
+import PvNP.ScheduledCollapseDemo
 import PvNP.SwitchingAssemble
 import PvNP.SwitchingCardLemma
 import PvNP.SwitchingClose

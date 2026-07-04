@@ -18,6 +18,8 @@ import PvNP.RefinedTwoStageInstance
 import PvNP.PHPMatchingDistribution
 import PvNP.TreePathViews
 import PvNP.AutoReviewedIteration
+import PvNP.ScheduledAutoCollapse
+import PvNP.ScheduledCollapseDemo
 
 /-!
 # Formal Switching Lemma Audit Surface
@@ -3640,3 +3642,44 @@ three-stage/nonempty-gate theorem.
 /-- info: 'PvNP.AutoReviewedIteration.nextLayer_width' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.AutoReviewedIteration.nextLayer_width
+
+/-!
+Pins for `PvNP.ScheduledAutoCollapse` (schedule-driven automatic many-round
+iterated collapse: numeric `ScheduleStage`/`BeatArith`/`ValidFrom`,
+`stepInput` packaging, `castFormula` bookkeeping transport, and the headline
+`autoIteratedCollapse`) and `PvNP.ScheduledCollapseDemo` (the concrete
+`[(3, 561), (2, 17), (1, 1)]` schedule over `n = 10000` with a
+counting-beat-backed budget-3 first stage).
+-/
+
+/-- info: 'PvNP.ScheduledAutoCollapse.stepInput' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.ScheduledAutoCollapse.stepInput
+
+/-- info: 'PvNP.ScheduledAutoCollapse.castFormula' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.ScheduledAutoCollapse.castFormula
+
+/-- info: 'PvNP.ScheduledAutoCollapse.castFormula_stageGateCounts' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.ScheduledAutoCollapse.castFormula_stageGateCounts
+
+/-- info: 'PvNP.ScheduledAutoCollapse.castFormula_stageBudgets' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.ScheduledAutoCollapse.castFormula_stageBudgets
+
+/-- info: 'PvNP.ScheduledAutoCollapse.castFormula_stageStarCounts' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.ScheduledAutoCollapse.castFormula_stageStarCounts
+
+/-- info: 'PvNP.ScheduledAutoCollapse.autoIteratedCollapse' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.ScheduledAutoCollapse.autoIteratedCollapse
+
+/--
+info: 'PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous
