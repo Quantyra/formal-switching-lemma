@@ -218,10 +218,11 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   extension, with final semantic preservation on assignments agreeing with
   the composed restriction, per-stage depth AND size
   accounting, and a last-stage combined decision tree of depth
-  `≤ m_last · (s_last − 1)`.  The per-stage layered views and counting beats
-  are SUPPLIED side conditions — there is no single product-of-stages
-  hypothesis — and frozen-form B4 (single upfront depth-`d` layered view,
-  product hypothesis `B(m, w, s, d)`, `t(d, s)` tree bound) remains OPEN.
+  `≤ m_last · (s_last − 1)`.  In this route theorem, the per-stage layered
+  views and counting beats are SUPPLIED side conditions, not a single
+  product-of-stages hypothesis.  Full frozen-form B4 (single upfront depth-`d`
+  layered view, internally derived product hypothesis `B(m, w, s, d)`, final
+  global `t(d, s)` tree bound) remains OPEN.
   DISCLOSED SATISFIABILITY-GAP HISTORY: as shipped, each consistent-route beat
   compared a full-space bad-set count against a consistent-subspace
   cardinality, and no nonempty-gate multi-stage instance of those beats is
@@ -284,6 +285,19 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   product hypothesis — frozen-form B4 remains open; after any `s = 1` stage
   the schedule's tail degenerates to width-budget-0 stages with near-free
   beats, so schedule length alone is not a strength measure.
+- `PvNP.FrozenProductSchedule.productValidFrom_validFrom` and
+  `autoIteratedCollapse_of_frozenProduct`: a narrow product-to-schedule bridge.
+  A single supplied bad-count bound family `B m w s d`, used for both the
+  current refinement-space size `p` and the ambient space `n`, upper-bounds each
+  raw closed-form bad count and beats the corresponding star-space size; this
+  derives the exact `ValidFrom` obligations consumed by `autoIteratedCollapse`.
+  A companion supplied tree-budget family `t d s` records the per-stage bound
+  `m * (s - 1) <= t d s` and is preserved by the certificate theorem.  The
+  start layer and numeric schedule remain supplied, and this is not arbitrary
+  layered decomposition, not a final global
+  `t(d,s)` depth theorem for arbitrary AC0 formulas, and not full frozen-form
+  B4 closure.  `frozenProductSchedule_oneStage_nonvacuous` is a tiny
+  one-stage width-0 sanity witness for the interface only.
 - `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous`: one
   concrete scheduled instance — the schedule `[(3, 561), (2, 17), (1, 1)]`
   over `n = 10000` variables from one width-1 single-literal gate, with all
@@ -347,12 +361,14 @@ This artifact does **not** prove or imply:
 - a positive Boolean decision-tree depth floor for any unsatisfiable PHP
   formula (`p > h`): the proved evasiveness and partial-matching floors
   concern the satisfiable `p = h` function only;
-- a discharge of the frozen-form B4 goal (single upfront depth-`d` layered
-  view, single product-of-stages counting hypothesis `B(m, w, s, d)`,
-  `t(d, s)` final tree bound): the B4 route theorems are plan-supplied —
-  per-stage layered views and counting beats are supplied side conditions
-  (restrictions are counting-generated, never supplied) — and
-  `GeneratedIteratedCollapse.openObligations` intentionally remains nonempty;
+- a discharge of the full frozen-form B4 goal (single upfront depth-`d`
+  layered view, an internally derived product-of-stages counting hypothesis
+  `B(m, w, s, d)`, and a final global `t(d, s)` tree bound): the new
+  `FrozenProductSchedule` bridge derives `ValidFrom` only from an explicitly
+  supplied product-bound family and supplied tree-budget facts; the start
+  layer and numeric schedule remain supplied, no arbitrary AC0/layered
+  decomposition is proved, and `GeneratedIteratedCollapse.openObligations`
+  intentionally remains nonempty;
 - satisfiability of the original consistent-route stage beats (full-space
   bad-set count against consistent-subspace cardinality) with nonempty gates
   at two or more stages — the disclosed satisfiability gap, closed only by
@@ -370,11 +386,12 @@ This artifact does **not** prove or imply:
   the constructed witness only, and the theorem must not be cited for the
   re-viewing property of an arbitrary witness (and the empty schedule yields
   the trivial `.done` certificate — content lives in nonempty schedules);
-- derivation of the scheduled route's beats from a single product hypothesis:
-  `ValidFrom` is a conjunction of SUPPLIED per-stage arithmetic side
-  conditions, and the start layer is still supplied as a width-bounded view —
-  frozen-form B4 (single upfront depth-`d` view, product hypothesis
-  `B(m, w, s, d)`, `t(d, s)` tree bound) remains open;
+- unsupplied or automatically synthesized product hypotheses for the scheduled
+  route: `FrozenProductSchedule` proves only that an explicit
+  `FrozenProductHypothesis` over a supplied `B` and `t` yields `ValidFrom` and
+  preserves per-stage tree-budget facts; it does not synthesize `B` from an
+  arbitrary formula family, derive a final global `t(d,s)` theorem, or close
+  full frozen-form B4;
 - realized-width claims for auto re-viewed gates: stated widths are BUDGET
   claims (generated trees may be constants), and after any `s = 1` stage the
   schedule's tail degenerates to width-budget-0 stages with near-free beats,

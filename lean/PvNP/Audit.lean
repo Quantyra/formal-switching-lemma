@@ -19,6 +19,7 @@ import PvNP.PHPMatchingDistribution
 import PvNP.TreePathViews
 import PvNP.AutoReviewedIteration
 import PvNP.ScheduledAutoCollapse
+import PvNP.FrozenProductSchedule
 import PvNP.ScheduledCollapseDemo
 
 /-!
@@ -3675,6 +3676,50 @@ counting-beat-backed budget-3 first stage).
 /-- info: 'PvNP.ScheduledAutoCollapse.autoIteratedCollapse' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.ScheduledAutoCollapse.autoIteratedCollapse
+
+/-!
+Pins for `PvNP.FrozenProductSchedule`: the narrow frozen-product schedule
+synthesis bridge from one product-bound family `B` and tree-budget family `t`
+to the existing `ValidFrom` obligations, plus a tiny one-stage non-vacuity
+witness.  These pins do not claim arbitrary layered decomposition, a global
+frozen-form B4 theorem, a Frege/PHP lower bound, or any P-vs-NP consequence.
+-/
+
+/-- info: 'PvNP.FrozenProductSchedule.productBeat_to_beatArith' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductSchedule.productBeat_to_beatArith
+
+/-- info: 'PvNP.FrozenProductSchedule.productValidFrom_validFrom' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductSchedule.productValidFrom_validFrom
+
+/-- info: 'PvNP.FrozenProductSchedule.frozenProductHypothesis_validFrom' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductSchedule.frozenProductHypothesis_validFrom
+
+/--
+info: 'PvNP.FrozenProductSchedule.autoIteratedCollapse_of_frozenProduct' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.FrozenProductSchedule.autoIteratedCollapse_of_frozenProduct
+
+/-- info: 'PvNP.FrozenProductSchedule.oneStageProductHypothesis_nonvacuous' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductSchedule.oneStageProductHypothesis_nonvacuous
+
+/-- info: 'PvNP.FrozenProductSchedule.oneStageLayer_width' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductSchedule.oneStageLayer_width
+
+/--
+info: 'PvNP.FrozenProductSchedule.frozenProductSchedule_oneStage_nonvacuous' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.FrozenProductSchedule.frozenProductSchedule_oneStage_nonvacuous
 
 /--
 info: 'PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous' depends on axioms: [propext,

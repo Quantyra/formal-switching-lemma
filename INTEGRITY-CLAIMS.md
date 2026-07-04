@@ -43,12 +43,14 @@ This repository does **not** establish or imply:
   identity-matching subfamily);
 - a positive Boolean decision-tree depth floor for any unsatisfiable PHP
   formula (`p > h`);
-- a discharge of the frozen-form B4 goal (single upfront depth-`d` layered
-  view, single product-of-stages counting hypothesis `B(m, w, s, d)`,
-  `t(d, s)` final tree bound): the B4 route theorems are plan-supplied —
-  per-stage layered views and counting beats are supplied side conditions
-  (restrictions are counting-generated, never supplied) — and
-  `GeneratedIteratedCollapse.openObligations` intentionally remains nonempty;
+- a discharge of the full frozen-form B4 goal (single upfront depth-`d`
+  layered view, an internally derived product-of-stages counting hypothesis
+  `B(m, w, s, d)`, and a final global `t(d, s)` tree bound): the
+  `FrozenProductSchedule` bridge derives `ValidFrom` only from an explicitly
+  supplied product-bound family and supplied tree-budget facts; the start
+  layer and numeric schedule remain supplied, no arbitrary AC0/layered
+  decomposition is proved, and `GeneratedIteratedCollapse.openObligations`
+  intentionally remains nonempty;
 - satisfiability of the original consistent-route stage beats (full-space
   bad-set count against consistent-subspace cardinality) with nonempty gates
   at two or more stages — the disclosed satisfiability gap, closed only by
@@ -65,11 +67,12 @@ This repository does **not** establish or imply:
   counts, budgets, star counts); the `nextLayer` re-viewing is a property of
   the constructed witness only, and the theorem must not be cited for the
   re-viewing property of an arbitrary witness;
-- derivation of the scheduled route's beats from a single product hypothesis:
-  `ValidFrom` is a conjunction of SUPPLIED per-stage arithmetic side
-  conditions, and the start layer is still supplied as a width-bounded view —
-  frozen-form B4 (single upfront depth-`d` view, product hypothesis
-  `B(m, w, s, d)`, `t(d, s)` tree bound) remains open;
+- unsupplied or automatically synthesized product hypotheses for the scheduled
+  route: `FrozenProductSchedule` proves only that an explicit
+  `FrozenProductHypothesis` over a supplied `B` and `t` yields `ValidFrom` and
+  preserves per-stage tree-budget facts; it does not synthesize `B` from an
+  arbitrary formula family, derive a final global `t(d,s)` theorem, or close
+  full frozen-form B4;
 - realized-width claims for auto re-viewed gates: stated widths are BUDGET
   claims (generated trees may be constants), and after any `s = 1` stage the
   schedule's tail degenerates to width-budget-0 stages with near-free beats,
@@ -157,6 +160,9 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.TreePathViews.treeCNFView` | `propext`, `Quot.sound` | proven decision-tree CNF re-viewing (representation only) |
 | `PvNP.AutoReviewedIteration.nextLayer_width` | `propext`, `Classical.choice`, `Quot.sound` | proven auto next-layer width-budget lemma |
 | `PvNP.ScheduledAutoCollapse.autoIteratedCollapse` | `propext`, `Classical.choice`, `Quot.sound` | proven schedule-driven many-round certificate theorem (statement records bookkeeping lists; supplied arithmetic beats) |
+| `PvNP.FrozenProductSchedule.productValidFrom_validFrom` | `propext` | proven product-bound-to-`ValidFrom` bridge |
+| `PvNP.FrozenProductSchedule.autoIteratedCollapse_of_frozenProduct` | `propext`, `Classical.choice`, `Quot.sound` | proven frozen-product schedule synthesis theorem (supplied `B`/`t`; start layer and schedule still supplied) |
+| `PvNP.FrozenProductSchedule.frozenProductSchedule_oneStage_nonvacuous` | `propext`, `Classical.choice`, `Quot.sound` | tiny one-stage width-0 non-vacuity witness for the product-schedule interface |
 | `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous` | `propext`, `Classical.choice`, `Quot.sound` | proven concrete budget-3 scheduled instance (single finite demo) |
 
 No declaration above depends on `sorryAx`.
@@ -196,8 +202,11 @@ refinement route; `autoIteratedCollapse`'s pinned statement records only
 stage gate counts, budgets, and star counts (the `nextLayer` re-viewing is a
 property of the constructed witness); realized widths of automatically
 re-viewed gates are budget claims; the exhibited instances are single finite
-instances. Frozen-form B4 and the PHP switching lemma (Gate A rung 4) remain
-open.
+instances. The post-v0.5.0 `FrozenProductSchedule` bridge narrows the scheduled
+route by deriving `ValidFrom` from a supplied product-bound family `B` plus
+supplied `t(d,s)` tree-budget facts, with a tiny one-stage width-0 witness; it
+does not synthesize `B` from arbitrary formulas or close full frozen-form B4.
+The PHP switching lemma (Gate A rung 4) remains open.
 
 ## Re-Verification
 
