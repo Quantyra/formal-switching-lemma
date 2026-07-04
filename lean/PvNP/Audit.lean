@@ -49,6 +49,7 @@ import PvNP.FormulaSyntacticClassGlobalTree
 import PvNP.FormulaRecursiveClassProfile
 import PvNP.FormulaRecursiveClassDefault
 import PvNP.FormulaRecursiveDecompositionTree
+import PvNP.FormulaRecursiveTerminalTree
 import PvNP.FormulaRecursiveNonempty
 import PvNP.FormulaRecursiveSizeBound
 import PvNP.FormulaSyntacticDNF
@@ -5329,6 +5330,28 @@ full B4, Gate A rung 4, Frege/PHP, NP/circuit, or P vs NP.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveDecompositionTree.exists_fullDepthRecursiveDecomposition_geometricCollapseWithTruthTableFormulaSize_noEmptyFanins_finalTree
+
+/-!
+Pins for `PvNP.FormulaRecursiveTerminalTree`: the terminal full-depth frontier
+now has a sharp width-one final-tree route layered on top of the all-level
+formula-size truth-table package.  The sharpening applies only to the terminal
+bottom layer; intermediate layers still use fallback width `n`, and the
+formula-size ambient bound remains supplied.  No efficient width synthesis,
+product/counting synthesis, full B4, Gate A rung 4, Frege/PHP, NP/circuit, or
+P vs NP result is proved.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveTerminalTree.terminalLayer_geometricCollapseWithFormulaSize_noEmptyFanins_finalTree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveTerminalTree.terminalLayer_geometricCollapseWithFormulaSize_noEmptyFanins_finalTree
+
+/-- info: 'PvNP.FormulaRecursiveTerminalTree.exists_fullDepthRecursiveDecomposition_geometricCollapseWithTruthTableFormulaSize_noEmptyFanins_sharpTerminalFinalTree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveTerminalTree.exists_fullDepthRecursiveDecomposition_geometricCollapseWithTruthTableFormulaSize_noEmptyFanins_sharpTerminalFinalTree
 
 /-!
 Pins for `PvNP.FormulaRecursiveNonempty`: no-empty-fanin raw syntax
