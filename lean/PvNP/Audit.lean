@@ -39,6 +39,7 @@ import PvNP.FormulaRecursiveGlobalSchedule
 import PvNP.FormulaRecursiveMaxProduct
 import PvNP.FormulaRecursiveRatioSchedule
 import PvNP.FormulaRecursiveWidthSchedule
+import PvNP.FormulaRecursiveSyntacticLayer
 import PvNP.FormulaRecursiveNonempty
 import PvNP.FormulaRecursiveSizeBound
 import PvNP.FormulaSyntacticDNF
@@ -4904,6 +4905,71 @@ rung 4, Frege/PHP, NP/circuit, or P vs NP.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveWidthSchedule.allFrontierLayers_geometricCollapseWithWidthProfile
+
+/-!
+Pins for `PvNP.FormulaRecursiveSyntacticLayer`: structurally certified simple
+recursive frontiers can be reified as `GateSpec.dnf` children using their
+syntactic DNF views, with every child width bounded by raw `formulaSize F`.
+The module then routes supplied ratio regimes and the named geometric schedule
+through the size-based recursive tree budget at that formula-size width.  The
+frontier simplicity predicate is supplied; this is NOT arbitrary normalization,
+full frozen-form B4, a global depth-`d` `t(d,s)` theorem, Gate A rung 4,
+Frege/PHP, NP/circuit, or P vs NP.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticLayer.syntacticSimpleFormulaGate' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticLayer.syntacticSimpleFormulaGate
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticLayer.syntacticSimpleFormulaGate_width_le_formulaSize' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticLayer.syntacticSimpleFormulaGate_width_le_formulaSize
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticLayer.FrontierSyntacticSimple' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticLayer.FrontierSyntacticSimple
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticLayer.syntacticFrontierGateList_formulas' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticLayer.syntacticFrontierGateList_formulas
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticLayer.syntacticFrontierGateList_width_le_formulaSize' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticLayer.syntacticFrontierGateList_width_le_formulaSize
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticLayer.SyntacticFrontierGateLayer' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticLayer.SyntacticFrontierGateLayer
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticLayer.syntacticFrontierMinimalLayer_originalFormula' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticLayer.syntacticFrontierMinimalLayer_originalFormula
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticLayer.syntacticFrontierMinimalLayer_width_le_formulaSize' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticLayer.syntacticFrontierMinimalLayer_width_le_formulaSize
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticLayer.syntacticFrontierLayer_ratioRegimeCollapseWithFormulaSize' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticLayer.syntacticFrontierLayer_ratioRegimeCollapseWithFormulaSize
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticLayer.allSyntacticFrontierLayers_ratioRegimeCollapseWithFormulaSize' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticLayer.allSyntacticFrontierLayers_ratioRegimeCollapseWithFormulaSize
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticLayer.syntacticFrontierLayer_geometricCollapseWithFormulaSize' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticLayer.syntacticFrontierLayer_geometricCollapseWithFormulaSize
 
 /-!
 Pins for `PvNP.FormulaRecursiveNonempty`: no-empty-fanin raw syntax
