@@ -25,6 +25,7 @@ import PvNP.FrozenProductScheduleDemo
 import PvNP.FrozenProductScheduleRatio
 import PvNP.FormulaFamilyCollapse
 import PvNP.FrozenDepthView
+import PvNP.FormulaTruthTableView
 import PvNP.MixedFormulaFamilyCollapse
 import PvNP.ScheduledCollapseDemo
 
@@ -4036,3 +4037,47 @@ info: 'PvNP.FrozenDepthView.mixedBottomFrozenDepthView_geometricCollapseWithGlob
 -/
 #guard_msgs in
 #print axioms PvNP.FrozenDepthView.mixedBottomFrozenDepthView_geometricCollapseWithGlobalTreeBudget
+
+/-!
+Pins for `PvNP.FormulaTruthTableView`: a broad semantic fallback that
+synthesizes a simple DNF view for any formula by querying every variable in a
+full decision tree and converting tree paths to a DNF.  Exact top-level
+`and`/`or` raw formulas `p.merge children` then receive an automatically
+constructed `FrozenDepthView` from those immediate child views, and inherit
+the supplied-view global-budget consumer under an explicit caller-supplied
+width bound.  The fallback width bound is only `<= n`, so this is NOT an
+efficient arbitrary AC0 depth-`d` decomposition, NOT full frozen-form B4, NOT
+Gate A rung 4, NOT Frege/PHP, NOT NP/circuit, and NOT P vs NP.
+-/
+
+/-- info: 'PvNP.FormulaTruthTableView.dtOfFun_eval' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaTruthTableView.dtOfFun_eval
+
+/-- info: 'PvNP.FormulaTruthTableView.formulaDecisionTree_eval' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaTruthTableView.formulaDecisionTree_eval
+
+/-- info: 'PvNP.FormulaTruthTableView.widthDNF_formulaDNFView_le' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaTruthTableView.widthDNF_formulaDNFView_le
+
+/-- info: 'PvNP.FormulaTruthTableView.map_formulaGate_formula' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaTruthTableView.map_formulaGate_formula
+
+/-- info: 'PvNP.FormulaTruthTableView.topConnectiveLayer_originalFormula' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaTruthTableView.topConnectiveLayer_originalFormula
+
+/-- info: 'PvNP.FormulaTruthTableView.topConnectiveFrozenDepthView_gateCount' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaTruthTableView.topConnectiveFrozenDepthView_gateCount
+
+/--
+info: 'PvNP.FormulaTruthTableView.topConnectiveFormula_geometricCollapseWithGlobalTreeBudget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.FormulaTruthTableView.topConnectiveFormula_geometricCollapseWithGlobalTreeBudget

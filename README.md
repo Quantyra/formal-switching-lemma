@@ -333,6 +333,16 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   raw DNF/CNF bottom-layer class through this interface at its computed depth.
   This is not automatic decomposition of arbitrary bounded-depth formulas, and
   full frozen-form B4 remains open.
+- `PvNP.FormulaTruthTableView.topConnectiveFormula_geometricCollapseWithGlobalTreeBudget`:
+  a broad semantic fallback for exact top-level `and`/`or` formulas.  Every
+  immediate child formula is viewed as a DNF by querying all variables in a
+  full decision tree and converting tree paths to a simple DNF, so
+  `topConnectiveFrozenDepthView` automatically constructs a `FrozenDepthView`
+  for the raw syntax `p.merge children`.  The consumer theorem inherits the
+  global last-tree budget under an explicit supplied width bound; the module
+  proves only the generic truth-table width bound `<= n`.  This covers more
+  raw syntax but is intentionally not an efficient arbitrary AC0 depth-`d`
+  decomposition, and full frozen-form B4 remains open.
 - `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous`: one
   concrete scheduled instance — the schedule `[(3, 561), (2, 17), (1, 1)]`
   over `n = 10000` variables from one width-1 single-literal gate, with all
@@ -404,10 +414,14 @@ This artifact does **not** prove or imply:
   explicit `FrozenDepthView` consumer theorem with a global final-tree budget
   `t(d,s) = gateCount * (s - 1)` for supplied views, but it still does not
   automatically derive the upfront depth-`d` layered view from arbitrary
-  `BDFormula`/AC0 syntax and does not internally derive a product-of-stages
-  counting hypothesis `B(m, w, s, d)` for arbitrary formulas.  The start view
-  and geometric entry hypotheses remain supplied or syntactically exposed by
-  the bottom-layer class, and `GeneratedIteratedCollapse.openObligations`
+  `BDFormula`/AC0 syntax with efficient bottom width and does not internally
+  derive a product-of-stages counting hypothesis `B(m, w, s, d)` for arbitrary
+  formulas.  The `FormulaTruthTableView` fallback does synthesize exact
+  top-connective views from raw `and`/`or` syntax, but its child DNF views come
+  from full truth-table decision trees with only the generic width bound
+  `<= n`.  The start view and geometric entry hypotheses therefore remain
+  supplied, syntactically exposed by the bottom-layer class, or satisfied only
+  through this expensive fallback, and `GeneratedIteratedCollapse.openObligations`
   intentionally remains nonempty;
 - satisfiability of the original consistent-route stage beats (full-space
   bad-set count against consistent-subspace cardinality) with nonempty gates
