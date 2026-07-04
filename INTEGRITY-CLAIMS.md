@@ -163,6 +163,7 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.FrozenProductSchedule.productValidFrom_validFrom` | `propext` | proven product-bound-to-`ValidFrom` bridge |
 | `PvNP.FrozenProductSchedule.autoIteratedCollapse_of_frozenProduct` | `propext`, `Classical.choice`, `Quot.sound` | proven frozen-product schedule synthesis theorem (supplied `B`/`t`; start layer and schedule still supplied) |
 | `PvNP.FrozenProductSchedule.frozenProductSchedule_oneStage_nonvacuous` | `propext`, `Classical.choice`, `Quot.sound` | tiny one-stage width-0 non-vacuity witness for the product-schedule interface |
+| `PvNP.FrozenProductScheduleDemo.frozenProductSchedule_seventeenTwoStage_nonvacuous` | `propext`, `Classical.choice`, `Quot.sound` | finite `n = 17` width-1/two-stage product-bound instantiation; second stage is width-budget-0 tail |
 | `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous` | `propext`, `Classical.choice`, `Quot.sound` | proven concrete budget-3 scheduled instance (single finite demo) |
 
 No declaration above depends on `sorryAx`.
@@ -205,7 +206,10 @@ re-viewed gates are budget claims; the exhibited instances are single finite
 instances. The post-v0.5.0 `FrozenProductSchedule` bridge narrows the scheduled
 route by deriving `ValidFrom` from a supplied product-bound family `B` plus
 supplied `t(d,s)` tree-budget facts, with a tiny one-stage width-0 witness; it
-does not synthesize `B` from arbitrary formulas or close full frozen-form B4.
+also includes one explicit `n = 17` width-1/two-stage product-bound
+instantiation whose second stage is the width-budget-0 tail.  It does not
+synthesize `B` from arbitrary formulas, prove an asymptotic product-bound
+family, or close full frozen-form B4.
 The PHP switching lemma (Gate A rung 4) remains open.
 
 ## Re-Verification

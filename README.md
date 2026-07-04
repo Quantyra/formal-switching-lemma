@@ -298,6 +298,15 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   `t(d,s)` depth theorem for arbitrary AC0 formulas, and not full frozen-form
   B4 closure.  `frozenProductSchedule_oneStage_nonvacuous` is a tiny
   one-stage width-0 sanity witness for the interface only.
+- `PvNP.FrozenProductScheduleDemo.frozenProductSchedule_seventeenTwoStage_nonvacuous`:
+  a named finite instantiation of that bridge over `n = 17`, one width-1
+  single-literal start gate, schedule `[(1, 1), (1, 1)]`, explicit
+  `B(1,1,1,2) = 2^20`, `B(1,0,1,1) = 0`, and `t(d,s) = 0`, yielding a
+  certificate with stage gate counts `[1, 1]`, budgets `[1, 1]`, star counts
+  `[1, 1]`, and the supplied `TreeBudgetFrom` witness.  It is beyond the
+  earlier width-0 one-stage witness, but after the first `s = 1` stage the
+  tail is width-budget-0 with a near-free beat; it is a small finite demo, not
+  an asymptotic product-bound family or full frozen-form B4 closure.
 - `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous`: one
   concrete scheduled instance — the schedule `[(3, 561), (2, 17), (1, 1)]`
   over `n = 10000` variables from one width-1 single-literal gate, with all

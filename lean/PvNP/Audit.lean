@@ -20,6 +20,7 @@ import PvNP.TreePathViews
 import PvNP.AutoReviewedIteration
 import PvNP.ScheduledAutoCollapse
 import PvNP.FrozenProductSchedule
+import PvNP.FrozenProductScheduleDemo
 import PvNP.ScheduledCollapseDemo
 
 /-!
@@ -3720,6 +3721,34 @@ info: 'PvNP.FrozenProductSchedule.frozenProductSchedule_oneStage_nonvacuous' dep
 -/
 #guard_msgs in
 #print axioms PvNP.FrozenProductSchedule.frozenProductSchedule_oneStage_nonvacuous
+
+/-!
+Pins for `PvNP.FrozenProductScheduleDemo`: a small named `n = 17` width-1
+two-stage instantiation of the frozen-product bridge with explicit
+`B(1,1,1,2) = 2^20`, `B(1,0,1,1) = 0`, and `t = 0`.  The second stage is
+the width-budget-0 tail after an `s = 1` first stage, so this remains a finite
+demo instance only; it is not full B4 closure or an asymptotic theorem.
+-/
+
+/-- info: 'PvNP.FrozenProductScheduleDemo.seventeenLayer_width' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleDemo.seventeenLayer_width
+
+/-- info: 'PvNP.FrozenProductScheduleDemo.seventeenProductHypothesis' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleDemo.seventeenProductHypothesis
+
+/-- info: 'PvNP.FrozenProductScheduleDemo.seventeenProduct_validFrom' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleDemo.seventeenProduct_validFrom
+
+/--
+info: 'PvNP.FrozenProductScheduleDemo.frozenProductSchedule_seventeenTwoStage_nonvacuous' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleDemo.frozenProductSchedule_seventeenTwoStage_nonvacuous
 
 /--
 info: 'PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous' depends on axioms: [propext,
