@@ -918,13 +918,21 @@ raw syntax under the same formula-size ambient bound; it still does not
 synthesize efficient intermediate widths, product/counting hypotheses, or a
 formula-class global `t(d,s)` theorem.
 
+The terminal-aware recursive schedule interface
+(`FormulaRecursiveTerminalSchedule`) reuses the same terminal-aware layer
+selector for supplied ratio/geometric schedules under the formula-local
+recursive max-frontier budget `t_F`.  This closes another wiring gap between
+terminal-aware bottom layers and the earlier supplied-schedule machinery, but
+still leaves efficient width synthesis, product/counting synthesis, and a
+discharged global `t(d,s)` theorem open.
+
 The variable-width schedule wrapper (`FormulaVarWidthSchedule`) instantiates the
 positive-depth raw-formula ratio-regime route at width `n`, using the proved
 truth-table/path-DNF width bound instead of a caller-supplied child-width
 predicate.  The ratio-regime schedule is still supplied, and `w = n` is not
 efficient syntactic width control; this is not full B4.
 
-The current audit surface has 925 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
+The current audit surface has 929 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
 
 - DOI: `10.5281/zenodo.21184992`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`

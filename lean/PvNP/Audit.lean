@@ -51,6 +51,7 @@ import PvNP.FormulaRecursiveClassDefault
 import PvNP.FormulaRecursiveDecompositionTree
 import PvNP.FormulaRecursiveTerminalTree
 import PvNP.FormulaRecursiveTerminalProfile
+import PvNP.FormulaRecursiveTerminalSchedule
 import PvNP.FormulaRecursiveNonempty
 import PvNP.FormulaRecursiveSizeBound
 import PvNP.FormulaSyntacticDNF
@@ -5384,6 +5385,37 @@ Frege/PHP, NP/circuit, or P vs NP.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveTerminalProfile.exists_fullDepthRecursiveDecomposition_geometricCollapseWithTerminalAwareFormulaSize_noEmptyFanins_finalTree
+
+/-!
+Pins for `PvNP.FormulaRecursiveTerminalSchedule`: the terminal-aware layer
+selector now also consumes supplied ratio/geometric schedules under the
+formula-local recursive max-frontier budget `t_F`.  This is still not
+efficient width synthesis, product/counting synthesis, a discharged global
+`t(d,s)` theorem, full B4, Gate A rung 4, Frege/PHP, NP/circuit, or P vs NP.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveTerminalSchedule.terminalAwareFrontier_globalTreeBudgetFrom' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveTerminalSchedule.terminalAwareFrontier_globalTreeBudgetFrom
+
+/-- info: 'PvNP.FormulaRecursiveTerminalSchedule.allFrontierLayers_ratioRegimeCollapseWithTerminalAwareGlobalTreeBudget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveTerminalSchedule.allFrontierLayers_ratioRegimeCollapseWithTerminalAwareGlobalTreeBudget
+
+/-- info: 'PvNP.FormulaRecursiveTerminalSchedule.allFrontierLayers_geometricCollapseWithTerminalAwareGlobalTreeBudget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveTerminalSchedule.allFrontierLayers_geometricCollapseWithTerminalAwareGlobalTreeBudget
+
+/-- info: 'PvNP.FormulaRecursiveTerminalSchedule.allFrontierLayers_geometricCollapseWithTerminalAwareGlobalTreeBudget_noEmptyFanins' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveTerminalSchedule.allFrontierLayers_geometricCollapseWithTerminalAwareGlobalTreeBudget_noEmptyFanins
 
 /-!
 Pins for `PvNP.FormulaRecursiveNonempty`: no-empty-fanin raw syntax
