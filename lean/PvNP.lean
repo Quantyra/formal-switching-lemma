@@ -21,6 +21,7 @@ import PvNP.FrozenDepthView
 import PvNP.FormulaTruthTableView
 import PvNP.MixedFormulaFamilyCollapse
 import PvNP.PHPFullMatchingDistribution
+import PvNP.PHPFullMatchingProbability
 import PvNP.RestrictedPHPFloor
 import PvNP.ScheduledAutoCollapse
 import PvNP.ScheduledCollapseDemo
