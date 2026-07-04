@@ -5272,9 +5272,10 @@ Pins for `PvNP.FormulaRecursiveClassDefault`: the existing truth-table
 recursive width profile instantiates the class-profile final-tree route, and
 `NoEmptyFanins` discharges the nonempty frontier-count hypothesis.  The
 fixed-width corollaries specialize the class-width envelope to `W(d)=n`.  The
-width is still the fallback `n`; this is not efficient width synthesis,
-product/counting synthesis, arbitrary normalization, full B4, Gate A rung 4,
-Frege/PHP, NP/circuit, or P vs NP.
+formula-size corollaries also specialize the class-size envelope to
+`S(d)=formulaSize F`.  The width is still the fallback `n`; this is not
+efficient width synthesis, product/counting synthesis, arbitrary normalization,
+full B4, Gate A rung 4, Frege/PHP, NP/circuit, or P vs NP.
 -/
 
 /-- info: 'PvNP.FormulaRecursiveClassDefault.frontierLayer_geometricCollapseWithTruthTableClassWidth_noEmptyFanins_finalTree' depends on axioms: [propext,
@@ -5300,6 +5301,18 @@ Frege/PHP, NP/circuit, or P vs NP.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveClassDefault.allFrontierLayers_geometricCollapseWithTruthTableFixedWidth_noEmptyFanins_finalTree
+
+/-- info: 'PvNP.FormulaRecursiveClassDefault.frontierLayer_geometricCollapseWithTruthTableFormulaSize_noEmptyFanins_finalTree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveClassDefault.frontierLayer_geometricCollapseWithTruthTableFormulaSize_noEmptyFanins_finalTree
+
+/-- info: 'PvNP.FormulaRecursiveClassDefault.allFrontierLayers_geometricCollapseWithTruthTableFormulaSize_noEmptyFanins_finalTree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveClassDefault.allFrontierLayers_geometricCollapseWithTruthTableFormulaSize_noEmptyFanins_finalTree
 
 /-!
 Pins for `PvNP.FormulaRecursiveNonempty`: no-empty-fanin raw syntax

@@ -18,6 +18,8 @@ raw-syntax compatibility wrapper, not full frozen-form B4.
 ## Honest scope
 
 * The class-size envelope `S(d)` is supplied.
+  The formula-size corollaries below specialize that envelope to
+  `S(d)=formulaSize F`.
 * The class-width envelope `W(d)` is supplied and must satisfy `n <= W(d)`.
   The fixed-width corollaries below specialize that envelope to `W(d)=n`.
 * Width is the truth-table fallback `n`; this module does not synthesize an
@@ -263,6 +265,109 @@ theorem allFrontierLayers_geometricCollapseWithTruthTableFixedWidth_noEmptyFanin
   exact
     frontierLayer_geometricCollapseWithTruthTableFixedWidth_noEmptyFanins_finalTree
       F S d level rounds parent hDepth hSize hF hk hvars hn
+
+/-! ## Formula-local fallback-width consumers -/
+
+open GeneratedRefinedIteratedCertificate in
+/-- Single raw recursive frontier layer with both class envelopes specialized
+to the formula-local truth-table fallback bounds.
+
+This removes the caller-supplied class-size and class-width envelopes from the
+default truth-table route by using `formulaSize F` and fallback width `n`.
+The result is still formula-local and not efficient width synthesis. -/
+theorem frontierLayer_geometricCollapseWithTruthTableFormulaSize_noEmptyFanins_finalTree
+    {n : Nat} (F : BDFormula n)
+    (d level rounds : Nat) (parent : ParentKind)
+    (hDepth : depth F <= d)
+    (hF : NoEmptyFanins F)
+    (hk : level <= depth F)
+    (hvars : 1 <= n)
+    (hn : 2 * (64 * formulaSize F) ^ rounds *
+        (64 * formulaSize F * n) <= n) :
+    level <= d /\
+    exists cert : GeneratedRefinedIteratedCertificate n (freeRestriction n)
+        (frontierLayerMinimalLayer F level parent).originalFormula
+        (geometricSchedule (frontierLayerGateCount F level)
+          (n / (64 * frontierLayerGateCount F level *
+            (truthTableRecursiveWidthProfile F).widthBudget level))
+          (rounds + 1)).length,
+      cert.stageGateCounts =
+        List.replicate (rounds + 1) (frontierLayerGateCount F level) /\
+      cert.stageBudgets = List.replicate (rounds + 1) 2 /\
+      cert.stageStarCounts =
+        (geometricSchedule (frontierLayerGateCount F level)
+          (n / (64 * frontierLayerGateCount F level *
+            (truthTableRecursiveWidthProfile F).widthBudget level))
+          (rounds + 1)).map stageStars /\
+      TreeBudgetFrom (recursiveFrontierSizeTreeBudget F)
+        (frontierLayerGateCount F level) (rounds + 1)
+        (geometricSchedule (frontierLayerGateCount F level)
+          (n / (64 * frontierLayerGateCount F level *
+            (truthTableRecursiveWidthProfile F).widthBudget level))
+          (rounds + 1)) /\
+      exists T : DTree n, exists s : Nat,
+        cert.lastStage = some (T, frontierLayerGateCount F level, s) /\
+        (forall a : Assignment n, dtEval a T = eval a cert.finalFormula) /\
+        dtDepth T <= recursiveFrontierSizeTreeBudget F level s /\
+        (forall a : Assignment n, Agree cert.finalComposed a ->
+          dtEval a T = eval a (restrict cert.finalComposed
+            (frontierLayerMinimalLayer F level parent).originalFormula)) := by
+  rcases
+      frontierLayer_geometricCollapseWithTruthTableFixedWidth_noEmptyFanins_finalTree
+        F (fun _ => formulaSize F) d level rounds parent hDepth
+        (Nat.le_refl _) hF hk hvars hn with
+    ⟨hlevel, cert, hgc, hb, hsc, ht, T, s, hlast, heval, hdepth, hsem⟩
+  refine ⟨hlevel, cert, hgc, hb, hsc, ?_, T, s, hlast, heval, ?_, hsem⟩
+  · simpa [formulaClassDepthTreeBudget, recursiveFrontierSizeTreeBudget] using ht
+  · simpa [formulaClassDepthTreeBudget, recursiveFrontierSizeTreeBudget] using hdepth
+
+open GeneratedRefinedIteratedCertificate in
+/-- Uniform all-level formula-local form of the truth-table fallback consumer.
+
+The theorem fixes the class-size envelope to `formulaSize F` and the
+class-width envelope to the fallback variable count `n`; the ambient lower
+bound is still supplied. -/
+theorem allFrontierLayers_geometricCollapseWithTruthTableFormulaSize_noEmptyFanins_finalTree
+    {n : Nat} (F : BDFormula n)
+    (d rounds : Nat) (parent : ParentKind)
+    (hDepth : depth F <= d)
+    (hF : NoEmptyFanins F)
+    (hvars : 1 <= n)
+    (hn : 2 * (64 * formulaSize F) ^ rounds *
+        (64 * formulaSize F * n) <= n) :
+    forall level, level <= depth F ->
+      level <= d /\
+      exists cert : GeneratedRefinedIteratedCertificate n (freeRestriction n)
+          (frontierLayerMinimalLayer F level parent).originalFormula
+          (geometricSchedule (frontierLayerGateCount F level)
+            (n / (64 * frontierLayerGateCount F level *
+              (truthTableRecursiveWidthProfile F).widthBudget level))
+            (rounds + 1)).length,
+        cert.stageGateCounts =
+          List.replicate (rounds + 1) (frontierLayerGateCount F level) /\
+        cert.stageBudgets = List.replicate (rounds + 1) 2 /\
+        cert.stageStarCounts =
+          (geometricSchedule (frontierLayerGateCount F level)
+            (n / (64 * frontierLayerGateCount F level *
+              (truthTableRecursiveWidthProfile F).widthBudget level))
+            (rounds + 1)).map stageStars /\
+        TreeBudgetFrom (recursiveFrontierSizeTreeBudget F)
+          (frontierLayerGateCount F level) (rounds + 1)
+          (geometricSchedule (frontierLayerGateCount F level)
+            (n / (64 * frontierLayerGateCount F level *
+              (truthTableRecursiveWidthProfile F).widthBudget level))
+            (rounds + 1)) /\
+        exists T : DTree n, exists s : Nat,
+          cert.lastStage = some (T, frontierLayerGateCount F level, s) /\
+          (forall a : Assignment n, dtEval a T = eval a cert.finalFormula) /\
+          dtDepth T <= recursiveFrontierSizeTreeBudget F level s /\
+          (forall a : Assignment n, Agree cert.finalComposed a ->
+            dtEval a T = eval a (restrict cert.finalComposed
+              (frontierLayerMinimalLayer F level parent).originalFormula)) := by
+  intro level hk
+  exact
+    frontierLayer_geometricCollapseWithTruthTableFormulaSize_noEmptyFanins_finalTree
+      F d level rounds parent hDepth hF hk hvars hn
 
 end FormulaRecursiveClassDefault
 end PvNP
