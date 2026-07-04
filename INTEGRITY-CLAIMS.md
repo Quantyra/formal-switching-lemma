@@ -62,12 +62,16 @@ This repository does **not** establish or imply:
   tree-budget profile facts, and the recursive global-schedule wrapper packages
   those synthesized frontier and terminal layers under one formula-local
   max-frontier `t_F` budget for the existing frozen-product schedule consumer.
+  The recursive ratio-schedule wrapper also lets those layers consume supplied
+  ratio-regime schedules, and named geometric schedules only under explicit
+  entry-size inequalities.
   But no arbitrary `BDFormula`/AC0 depth-`d` decomposition or internally
   synthesized `B(m, w, s, d)` product hypothesis is proved.  The start view and
-  geometric, ratio-regime, or product-beat entry hypotheses remain supplied,
-  syntactically exposed by the bottom-layer class, satisfied by the truth-table
-  fallback, available only at the terminal full-depth frontier, or local to the
-  formula's max-frontier profile, and
+  geometric, ratio-regime, or product-beat entry hypotheses remain supplied or
+  reduced to explicit numeric entry bounds, syntactically exposed by the
+  bottom-layer class, satisfied by the truth-table fallback, available only at
+  the terminal full-depth frontier, or local to the formula's max-frontier
+  profile, and
   `GeneratedIteratedCollapse.openObligations` intentionally remains nonempty;
 - satisfiability of the original consistent-route stage beats (full-space
   bad-set count against consistent-subspace cardinality) with nonempty gates
@@ -312,6 +316,11 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.FormulaRecursiveMaxProduct.frontierLayer_autoIteratedCollapse_of_maxProductBeats` | `propext`, `Classical.choice`, `Quot.sound` | proven in-depth frontier layers consume a max-count product schedule through the frozen-product interface |
 | `PvNP.FormulaRecursiveMaxProduct.terminalLayer_autoIteratedCollapse_of_maxProductBeats` | `propext`, `Classical.choice`, `Quot.sound` | proven terminal layer consumes a max-count product schedule supplied at terminal width |
 | `PvNP.FormulaRecursiveMaxProduct.allFrontierLayers_autoIteratedCollapse_of_maxProductBeats` | `propext`, `Classical.choice`, `Quot.sound` | proven one max-count product schedule covers every in-depth recursive frontier layer |
+| `PvNP.FormulaRecursiveRatioSchedule.frontierLayer_ratioRegimeCollapseWithGlobalTreeBudget` | `propext`, `Classical.choice`, `Quot.sound` | proven recursive frontier layers consume supplied ratio-regime schedules under the formula-local global budget |
+| `PvNP.FormulaRecursiveRatioSchedule.terminalLayer_ratioRegimeCollapseWithGlobalTreeBudget` | `propext`, `Classical.choice`, `Quot.sound` | proven terminal recursive layers consume supplied ratio-regime schedules under the formula-local global budget |
+| `PvNP.FormulaRecursiveRatioSchedule.allFrontierLayers_ratioRegimeCollapseWithGlobalTreeBudget` | `propext`, `Classical.choice`, `Quot.sound` | proven all in-depth nonempty recursive frontier layers consume supplied ratio-regime schedules |
+| `PvNP.FormulaRecursiveRatioSchedule.frontierLayer_geometricCollapseWithGlobalTreeBudget` | `propext`, `Classical.choice`, `Quot.sound` | proven recursive frontier layers consume the geometric ratio schedule under an explicit entry-size inequality |
+| `PvNP.FormulaRecursiveRatioSchedule.terminalLayer_geometricCollapseWithGlobalTreeBudget` | `propext`, `Classical.choice`, `Quot.sound` | proven terminal recursive layers consume the geometric ratio schedule under an explicit entry-size inequality |
 | `PvNP.FormulaVarWidthSchedule.topConnectiveFormula_child_width_le_vars` | `propext`, `Quot.sound` | proven top-connective truth-table child views have generic width at most `n` |
 | `PvNP.FormulaVarWidthSchedule.positiveDepthFormula_child_width_le_vars` | `propext`, `Quot.sound` | proven positive-depth raw-formula truth-table child views have generic width at most `n` |
 | `PvNP.FormulaVarWidthSchedule.topConnectiveFormula_ratioRegimeCollapseWithVarWidth` | `propext`, `Classical.choice`, `Quot.sound` | proven top-connective raw formulas route through supplied ratio schedules at width `n` |
@@ -385,14 +394,18 @@ budget and routes them through the frozen-product schedule consumer from
 supplied `ProductValidFrom` beats. `FormulaRecursiveMaxProduct` freezes a
 supplied product-bound family at the recursive max frontier count so the same
 max-count schedule covers every smaller in-depth recursive frontier layer.
-`FormulaVarWidthSchedule` instantiates the
+`FormulaRecursiveRatioSchedule` routes recursive frontier and terminal layers
+through supplied ratio-regime schedules under the same formula-local global
+budget, and generates the named geometric ratio schedule only under explicit
+entry-size inequalities. `FormulaVarWidthSchedule` instantiates the
 supplied positive-depth raw-formula ratio-regime route at width `n`, removing
 the caller-supplied child-width predicate while preserving the honest
-truth-table fallback boundary.  The schedule and product-beat hypotheses remain
-supplied and intermediate child views still use the truth-table fallback; the
-artifact still does not synthesize `B` from arbitrary formulas, derive efficient
-recursive depth-`d` layered views from arbitrary formula syntax, or close full
-frozen-form B4.
+truth-table fallback boundary.  Product-beat hypotheses remain supplied on the
+frozen-product route; ratio-regime schedules remain supplied except for
+explicit-bound geometric corollaries.  Intermediate child views still use the
+truth-table fallback, and the artifact still does not synthesize `B` from
+arbitrary formulas, derive efficient recursive depth-`d` layered views from
+arbitrary formula syntax, or close full frozen-form B4.
 The PHP switching lemma (Gate A rung 4) remains open.
 
 ## Re-Verification

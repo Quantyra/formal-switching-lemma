@@ -37,6 +37,7 @@ import PvNP.FormulaRecursiveGateLayers
 import PvNP.FormulaRecursiveLayerProfile
 import PvNP.FormulaRecursiveGlobalSchedule
 import PvNP.FormulaRecursiveMaxProduct
+import PvNP.FormulaRecursiveRatioSchedule
 import PvNP.FormulaVarWidthSchedule
 import PvNP.MixedFormulaFamilyCollapse
 import PvNP.ScheduledCollapseDemo
@@ -4822,6 +4823,45 @@ rung 4, Frege/PHP, NP/circuit, or P vs NP.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveMaxProduct.allFrontierLayers_autoIteratedCollapse_of_maxProductBeats
+
+/-!
+Pins for `PvNP.FormulaRecursiveRatioSchedule`: recursive frontier and terminal
+layers can consume ratio-regime schedules under the formula-local global tree
+budget.  The ratio regime is still supplied, or generated only under an
+explicit entry-size inequality; intermediate layers still use truth-table
+fallback width `n`.  This is NOT full B4, not an efficient asymptotic
+`t(d,s)`, not Gate A rung 4, Frege/PHP, NP/circuit, or P vs NP.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveRatioSchedule.frontierLayer_ratioRegimeCollapseWithGlobalTreeBudget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveRatioSchedule.frontierLayer_ratioRegimeCollapseWithGlobalTreeBudget
+
+/-- info: 'PvNP.FormulaRecursiveRatioSchedule.terminalLayer_ratioRegimeCollapseWithGlobalTreeBudget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveRatioSchedule.terminalLayer_ratioRegimeCollapseWithGlobalTreeBudget
+
+/-- info: 'PvNP.FormulaRecursiveRatioSchedule.allFrontierLayers_ratioRegimeCollapseWithGlobalTreeBudget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveRatioSchedule.allFrontierLayers_ratioRegimeCollapseWithGlobalTreeBudget
+
+/-- info: 'PvNP.FormulaRecursiveRatioSchedule.frontierLayer_geometricCollapseWithGlobalTreeBudget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveRatioSchedule.frontierLayer_geometricCollapseWithGlobalTreeBudget
+
+/-- info: 'PvNP.FormulaRecursiveRatioSchedule.terminalLayer_geometricCollapseWithGlobalTreeBudget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveRatioSchedule.terminalLayer_geometricCollapseWithGlobalTreeBudget
 
 /-!
 Pins for `PvNP.FormulaVarWidthSchedule`: the truth-table fallback width theorem
