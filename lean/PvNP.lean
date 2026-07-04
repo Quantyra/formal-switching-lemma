@@ -32,6 +32,7 @@ import PvNP.FormulaRecursiveRatioSchedule
 import PvNP.FormulaRecursiveWidthSchedule
 import PvNP.FormulaRecursiveSyntacticLayer
 import PvNP.FormulaRecursiveSyntacticNonempty
+import PvNP.FormulaRecursiveSyntacticSimple
 import PvNP.FormulaRecursiveNonempty
 import PvNP.FormulaRecursiveSizeBound
 import PvNP.FormulaSyntacticDNF

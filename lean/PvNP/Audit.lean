@@ -41,6 +41,7 @@ import PvNP.FormulaRecursiveRatioSchedule
 import PvNP.FormulaRecursiveWidthSchedule
 import PvNP.FormulaRecursiveSyntacticLayer
 import PvNP.FormulaRecursiveSyntacticNonempty
+import PvNP.FormulaRecursiveSyntacticSimple
 import PvNP.FormulaRecursiveNonempty
 import PvNP.FormulaRecursiveSizeBound
 import PvNP.FormulaSyntacticDNF
@@ -5003,6 +5004,91 @@ rung 4, Frege/PHP, NP/circuit, and P vs NP remain open.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticNonempty.allSyntacticFrontierLayers_geometricCollapseWithFormulaSize_noEmptyFanins
+
+/-
+Pins for `PvNP.FormulaRecursiveSyntacticSimple`: root
+`syntacticFormulaSimpleDNF` is hereditary along `topChildren`, so it
+synthesizes `FrontierSyntacticSimple` for every recursive frontier level.  The
+module also exposes formula-size syntactic frontier consumers that no longer
+need per-level frontier-simplicity hypotheses, and no-empty variants that
+remove both frontier-simplicity and nonempty-count hypotheses.  The root
+structural predicate, ratio/geometric hypotheses, product/counting synthesis,
+full B4, Gate A rung 4, Frege/PHP, NP/circuit, and P vs NP remain open.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticSimple.syntacticAndListSimpleDNF_mem' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticSimple.syntacticAndListSimpleDNF_mem
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticSimple.syntacticOrListSimpleDNF_mem' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticSimple.syntacticOrListSimpleDNF_mem
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticSimple.topChild_syntacticFormulaSimpleDNF' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticSimple.topChild_syntacticFormulaSimpleDNF
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticSimple.depthFrontier_syntacticFormulaSimpleDNF' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticSimple.depthFrontier_syntacticFormulaSimpleDNF
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticSimple.frontierSyntacticSimple_of_syntacticFormulaSimpleDNF' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticSimple.frontierSyntacticSimple_of_syntacticFormulaSimpleDNF
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticSimple.allFrontierSyntacticSimple_of_syntacticFormulaSimpleDNF' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticSimple.allFrontierSyntacticSimple_of_syntacticFormulaSimpleDNF
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticSimple.syntacticFrontierLayer_ratioRegimeCollapseWithFormulaSize_of_syntacticFormulaSimpleDNF' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticSimple.syntacticFrontierLayer_ratioRegimeCollapseWithFormulaSize_of_syntacticFormulaSimpleDNF
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticSimple.allSyntacticFrontierLayers_ratioRegimeCollapseWithFormulaSize_of_syntacticFormulaSimpleDNF' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticSimple.allSyntacticFrontierLayers_ratioRegimeCollapseWithFormulaSize_of_syntacticFormulaSimpleDNF
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticSimple.syntacticFrontierLayer_geometricCollapseWithFormulaSize_of_syntacticFormulaSimpleDNF' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticSimple.syntacticFrontierLayer_geometricCollapseWithFormulaSize_of_syntacticFormulaSimpleDNF
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticSimple.allSyntacticFrontierLayers_geometricCollapseWithFormulaSize_of_syntacticFormulaSimpleDNF' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticSimple.allSyntacticFrontierLayers_geometricCollapseWithFormulaSize_of_syntacticFormulaSimpleDNF
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticSimple.syntacticFrontierLayer_ratioRegimeCollapseWithFormulaSize_simpleNoEmptyFanins' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticSimple.syntacticFrontierLayer_ratioRegimeCollapseWithFormulaSize_simpleNoEmptyFanins
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticSimple.allSyntacticFrontierLayers_ratioRegimeCollapseWithFormulaSize_simpleNoEmptyFanins' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticSimple.allSyntacticFrontierLayers_ratioRegimeCollapseWithFormulaSize_simpleNoEmptyFanins
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticSimple.syntacticFrontierLayer_geometricCollapseWithFormulaSize_simpleNoEmptyFanins' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticSimple.syntacticFrontierLayer_geometricCollapseWithFormulaSize_simpleNoEmptyFanins
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticSimple.allSyntacticFrontierLayers_geometricCollapseWithFormulaSize_simpleNoEmptyFanins' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticSimple.allSyntacticFrontierLayers_geometricCollapseWithFormulaSize_simpleNoEmptyFanins
 
 /-!
 Pins for `PvNP.FormulaRecursiveNonempty`: no-empty-fanin raw syntax
