@@ -15,6 +15,7 @@ import PvNP.RefinedSubspace
 import PvNP.SwitchingRelabel
 import PvNP.GeneratedRefinedCollapse
 import PvNP.RefinedTwoStageInstance
+import PvNP.RefinedThreeStageInstance
 import PvNP.PHPMatchingDistribution
 import PvNP.TreePathViews
 import PvNP.AutoReviewedIteration
@@ -3872,3 +3873,40 @@ info: 'PvNP.FrozenProductScheduleRatio.geometricFamily_pair_twoStage' depends on
 -/
 #guard_msgs in
 #print axioms PvNP.FrozenProductScheduleRatio.geometricFamily_pair_twoStage
+
+/-!
+Pins for `PvNP.RefinedThreeStageInstance` (+ its arithmetic companion
+`RefinedThreeStageArith`, same namespace): the resumed S2075 material — a
+concrete finite three-stage auto-reviewed generated-collapse instance at
+`n = 5193`, budgets `[2, 2, 1]`, star counts `[306, 17, 1]`, one gate per
+stage, with the second and third layers automatically re-viewed by
+`nextLayer`.  The counting beats were re-proved on resume through the
+fully symbolic `beat_from_ratio` assembly (revision disclosed in the
+module docstring); the stated inequalities are unchanged.  Single finite
+instance with an `s = 1` final stage; NOT an asymptotic family, NOT
+frozen-form B4, NOT Frege/PHP, NOT NP/circuit, NOT P vs NP.
+-/
+
+/-- info: 'PvNP.RefinedThreeStageInstance.choose_ratio_two_step' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.RefinedThreeStageInstance.choose_ratio_two_step
+
+/-- info: 'PvNP.RefinedThreeStageInstance.stage1_beat' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.RefinedThreeStageInstance.stage1_beat
+
+/-- info: 'PvNP.RefinedThreeStageInstance.stage2_refined_beat_base306' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.RefinedThreeStageInstance.stage2_refined_beat_base306
+
+/-- info: 'PvNP.RefinedThreeStageInstance.requestedParameters_recorded' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.RefinedThreeStageInstance.requestedParameters_recorded
+
+/--
+info: 'PvNP.RefinedThreeStageInstance.refinedThreeStage_autoReviewed_nonemptyGates_nonvacuous' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.RefinedThreeStageInstance.refinedThreeStage_autoReviewed_nonemptyGates_nonvacuous

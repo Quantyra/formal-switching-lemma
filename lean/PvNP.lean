@@ -12,6 +12,8 @@ import PvNP.CNFModel
 import PvNP.CertifiedAffine
 import PvNP.GraphIndexedBridge
 import PvNP.FrozenProductSchedule
+import PvNP.RefinedThreeStageArith
+import PvNP.RefinedThreeStageInstance
 import PvNP.FrozenProductScheduleDemo
 import PvNP.FrozenProductScheduleRatio
 import PvNP.RestrictedPHPFloor
