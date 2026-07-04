@@ -41,6 +41,7 @@ import PvNP.FormulaRecursiveRatioSchedule
 import PvNP.FormulaRecursiveWidthSchedule
 import PvNP.FormulaRecursiveNonempty
 import PvNP.FormulaRecursiveSizeBound
+import PvNP.FormulaSyntacticDNF
 import PvNP.FormulaVarWidthSchedule
 import PvNP.MixedFormulaFamilyCollapse
 import PvNP.ScheduledCollapseDemo
@@ -5000,6 +5001,48 @@ P vs NP remain open.
 /-- info: 'PvNP.FormulaRecursiveSizeBound.recursiveFrontierMaxSizeTreeBudgetFrom' depends on axioms: [propext, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSizeBound.recursiveFrontierMaxSizeTreeBudgetFrom
+
+/-!
+Pins for `PvNP.FormulaSyntacticDNF`: arbitrary raw `BDFormula` syntax has a
+semantic syntactic DNF expansion whose term width is bounded by raw
+`formulaSize F`, and this can be packaged as a `DNFView` when the syntactic DNF
+is supplied simple.  The expansion can be exponentially large and no
+normalization/simple-DNF synthesis, product/counting hypothesis, efficient
+global `t(d,s)`, full B4, Gate A rung 4, Frege/PHP, NP/circuit, or P vs NP
+result is proved.
+-/
+
+/-- info: 'PvNP.FormulaSyntacticDNF.syntacticDNF' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticDNF.syntacticDNF
+
+/-- info: 'PvNP.FormulaSyntacticDNF.dnfEval_andDNF' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticDNF.dnfEval_andDNF
+
+/-- info: 'PvNP.FormulaSyntacticDNF.eval_syntacticDNF' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticDNF.eval_syntacticDNF
+
+/-- info: 'PvNP.FormulaSyntacticDNF.widthDNF_orDNF_le' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticDNF.widthDNF_orDNF_le
+
+/-- info: 'PvNP.FormulaSyntacticDNF.widthDNF_andDNF_le_add' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticDNF.widthDNF_andDNF_le_add
+
+/-- info: 'PvNP.FormulaSyntacticDNF.widthDNF_syntacticDNF_le_formulaSize' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticDNF.widthDNF_syntacticDNF_le_formulaSize
+
+/-- info: 'PvNP.FormulaSyntacticDNF.syntacticDNFView' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticDNF.syntacticDNFView
+
+/-- info: 'PvNP.FormulaSyntacticDNF.widthDNF_syntacticDNFView_le_formulaSize' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticDNF.widthDNF_syntacticDNFView_le_formulaSize
 
 /-!
 Pins for `PvNP.FormulaVarWidthSchedule`: the truth-table fallback width theorem

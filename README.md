@@ -489,6 +489,15 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   structural-budget route but still does not synthesize efficient widths,
   product/counting hypotheses, ratio regimes, a formula-class asymptotic
   `t(d,s)`, or a PHP switching lemma.
+- `PvNP.FormulaSyntacticDNF.eval_syntacticDNF` and
+  `PvNP.FormulaSyntacticDNF.widthDNF_syntacticDNF_le_formulaSize`: every raw
+  `BDFormula` now has a syntactic DNF expansion with exact Boolean semantics and
+  term width bounded by `formulaSize F`.  The packaged
+  `syntacticDNFView` still requires a supplied `SimpleDNF (syntacticDNF F)`
+  proof because this module does not normalize repeated variables or
+  contradictory terms.  The DNF can be exponentially large, and this is
+  structural width control only: no product/counting synthesis, efficient
+  global `t(d,s)`, full B4 theorem, or PHP switching lemma is proved.
 - `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous`: one
   concrete scheduled instance — the schedule `[(3, 561), (2, 17), (1, 1)]`
   over `n = 10000` variables from one width-1 single-literal gate, with all
@@ -528,10 +537,13 @@ This artifact does **not** prove or imply:
 - any positive Boolean decision-tree depth floor for an unsatisfiable PHP formula
   merely from the bounded falsified-clause search floors;
 - arbitrary AC0 or arbitrary bounded-depth formula collapse;
-- arbitrary raw-formula synthesis from all `BDFormula` syntax: the
-  formula-family synthesis covers only parent merges of embedded simple DNF/CNF
-  children whose bottom-layer raw syntax is supplied, not a decomposition of
-  general depth-`d` formulas into such layers;
+- arbitrary raw-formula synthesis from all `BDFormula` syntax into full
+  generated-collapse inputs: the formula-family synthesis covers only parent
+  merges of embedded simple DNF/CNF children whose bottom-layer raw syntax is
+  supplied, and `FormulaSyntacticDNF` gives a semantic DNF expansion for every
+  raw formula only under a supplied simplicity proof for packaged `DNFView`
+  use; neither is a decomposition of general depth-`d` formulas into efficient
+  generated-collapse layers;
 - a general CNF switching lemma independent of the explicit dualization bridge;
 - a proof-size or proof-depth lower bound for any proof system WITH CUT: the
   variable-coverage and trace-size floors concern only the repository's local
@@ -579,9 +591,12 @@ This artifact does **not** prove or imply:
   yet assembled into one global depth-`d`
   decomposition theorem and intermediate child DNF views outside that terminal
   frontier still come from full truth-table decision trees with only the generic
-  width bound `<= n`.  The start view and geometric or ratio-regime entry
+  width bound `<= n`, unless one separately supplies the simplicity condition
+  needed to use the new syntactic DNF expansion whose width is bounded by
+  `formulaSize F`.  The start view and geometric or ratio-regime entry
   hypotheses therefore remain supplied, syntactically exposed by the
-  bottom-layer class, or satisfied only through this expensive fallback, and
+  bottom-layer class, conditionally available through syntactic DNF simplicity,
+  or satisfied only through this expensive fallback, and
   `GeneratedIteratedCollapse.openObligations` intentionally remains nonempty;
 - satisfiability of the original consistent-route stage beats (full-space
   bad-set count against consistent-subspace cardinality) with nonempty gates
@@ -753,13 +768,20 @@ max-frontier budget by a formula-size bound for the recursive count surface,
 but it is still not the final formula-class asymptotic `t(d,s)` theorem and
 does not synthesize efficient widths or product/counting hypotheses.
 
+The syntactic DNF wrapper (`FormulaSyntacticDNF`) gives every raw formula a
+semantic syntactic DNF expansion and proves its width is at most
+`formulaSize F`.  The packaged `DNFView` still requires a supplied
+`SimpleDNF (syntacticDNF F)` proof; no normalization, product/counting
+synthesis, efficient global `t(d,s)`, full B4 theorem, or PHP switching lemma
+is proved.
+
 The variable-width schedule wrapper (`FormulaVarWidthSchedule`) instantiates the
 positive-depth raw-formula ratio-regime route at width `n`, using the proved
 truth-table/path-DNF width bound instead of a caller-supplied child-width
 predicate.  The ratio-regime schedule is still supplied, and `w = n` is not
 efficient syntactic width control; this is not full B4.
 
-The current audit surface has 843 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
+The current audit surface has 851 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
 
 - DOI: `10.5281/zenodo.21184992`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`

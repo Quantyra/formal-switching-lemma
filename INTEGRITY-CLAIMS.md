@@ -21,10 +21,13 @@ This repository does **not** establish or imply:
 - any positive Boolean decision-tree depth floor for an unsatisfiable PHP formula
   merely from the bounded falsified-clause search floors;
 - arbitrary AC0 collapse or arbitrary bounded-depth formula collapse;
-- arbitrary raw-formula synthesis from all `BDFormula` syntax: the
-  formula-family synthesis covers only parent merges of embedded simple DNF/CNF
-  children whose bottom-layer raw syntax is supplied, not a decomposition of
-  general depth-`d` formulas into such layers;
+- arbitrary raw-formula synthesis from all `BDFormula` syntax into full
+  generated-collapse inputs: the formula-family synthesis covers only parent
+  merges of embedded simple DNF/CNF children whose bottom-layer raw syntax is
+  supplied, and `FormulaSyntacticDNF` gives a semantic DNF expansion for every
+  raw formula only under a supplied simplicity proof for packaged `DNFView`
+  use; neither is a decomposition of general depth-`d` formulas into efficient
+  generated-collapse layers;
 - a general CNF switching lemma independent of the explicit dualization bridge;
 - a proof-size or proof-depth lower bound for any proof system WITH CUT: the
   variable-coverage and trace-size floors concern only this repository's local
@@ -69,9 +72,9 @@ This repository does **not** establish or imply:
   synthesized `B(m, w, s, d)` product hypothesis is proved.  The start view and
   geometric, ratio-regime, or product-beat entry hypotheses remain supplied or
   reduced to explicit numeric entry bounds, syntactically exposed by the
-  bottom-layer class, satisfied by the truth-table fallback, available only at
-  the terminal full-depth frontier, or local to the formula's max-frontier
-  profile, and
+  bottom-layer class, conditionally available through syntactic DNF simplicity,
+  satisfied by the truth-table fallback, available only at the terminal
+  full-depth frontier, or local to the formula's max-frontier profile, and
   `GeneratedIteratedCollapse.openObligations` intentionally remains nonempty;
 - satisfiability of the original consistent-route stage beats (full-space
   bad-set count against consistent-subspace cardinality) with nonempty gates
@@ -344,6 +347,14 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.FormulaRecursiveSizeBound.recursiveFrontierGlobalTreeBudget_le_sizeTreeBudget` | `propext`, `Quot.sound` | proven the previous max-frontier tree budget is bounded by the formula-size tree budget |
 | `PvNP.FormulaRecursiveSizeBound.recursiveFrontierSizeTreeBudgetFrom` | `propext`, `Quot.sound` | proven the size-based tree budget satisfies every numeric schedule for any recursive frontier layer |
 | `PvNP.FormulaRecursiveSizeBound.recursiveFrontierMaxSizeTreeBudgetFrom` | `propext`, `Quot.sound` | proven the size-based tree budget also satisfies every numeric schedule for the max-frontier count |
+| `PvNP.FormulaSyntacticDNF.syntacticDNF` | none | axiom-free syntactic DNF expansion for raw formulas |
+| `PvNP.FormulaSyntacticDNF.dnfEval_andDNF` | `propext` | proven semantic conjunction law for distributed DNF products |
+| `PvNP.FormulaSyntacticDNF.eval_syntacticDNF` | `propext`, `Quot.sound` | proven exact Boolean semantics of syntactic DNF expansion |
+| `PvNP.FormulaSyntacticDNF.widthDNF_orDNF_le` | `propext` | proven DNF disjunction preserves a shared width bound |
+| `PvNP.FormulaSyntacticDNF.widthDNF_andDNF_le_add` | `propext`, `Quot.sound` | proven DNF conjunction width is bounded by sum of operand widths |
+| `PvNP.FormulaSyntacticDNF.widthDNF_syntacticDNF_le_formulaSize` | `propext`, `Quot.sound` | proven syntactic DNF width is bounded by raw formula size |
+| `PvNP.FormulaSyntacticDNF.syntacticDNFView` | `propext`, `Quot.sound` | constructed semantic `DNFView` from syntactic DNF under supplied simplicity |
+| `PvNP.FormulaSyntacticDNF.widthDNF_syntacticDNFView_le_formulaSize` | `propext`, `Quot.sound` | proven packaged syntactic DNF view width is bounded by raw formula size |
 | `PvNP.FormulaVarWidthSchedule.topConnectiveFormula_child_width_le_vars` | `propext`, `Quot.sound` | proven top-connective truth-table child views have generic width at most `n` |
 | `PvNP.FormulaVarWidthSchedule.positiveDepthFormula_child_width_le_vars` | `propext`, `Quot.sound` | proven positive-depth raw-formula truth-table child views have generic width at most `n` |
 | `PvNP.FormulaVarWidthSchedule.topConnectiveFormula_ratioRegimeCollapseWithVarWidth` | `propext`, `Classical.choice`, `Quot.sound` | proven top-connective raw formulas route through supplied ratio schedules at width `n` |
@@ -432,6 +443,10 @@ therefore remove that one caller obligation under no-empty-fanin raw syntax.
 does not increase raw formula-size sum, so every frontier gate count and the
 max-frontier count are bounded by `formulaSize F`; it exposes the corresponding
 size-based `TreeBudgetFrom` profile `formulaSize F * (s - 1)`.
+`FormulaSyntacticDNF` gives every raw formula a semantic syntactic DNF expansion
+and proves its width is at most `formulaSize F`; packaging it as a `DNFView`
+still requires a supplied `SimpleDNF (syntacticDNF F)` proof, with no
+normalization or efficient product/counting synthesis.
 `FormulaVarWidthSchedule` instantiates the supplied positive-depth raw-formula
 ratio-regime route at width `n`, removing the caller-supplied child-width
 predicate while preserving the honest truth-table fallback boundary.
@@ -441,8 +456,9 @@ corollaries, and the recursive width profile remains supplied.  Intermediate
 child views still use the truth-table fallback unless an external profile is
 provided, and the artifact still does not synthesize `B` from arbitrary
 formulas, derive efficient recursive depth-`d` layered views from arbitrary
-formula syntax, synthesize efficient width profiles, prove a global efficient
-`t(d,s)` theorem, or close full frozen-form B4.
+formula syntax, synthesize normalized/simple syntactic DNF views or efficient
+width profiles, prove a global efficient `t(d,s)` theorem, or close full
+frozen-form B4.
 The PHP switching lemma (Gate A rung 4) remains open.
 
 ## Re-Verification
