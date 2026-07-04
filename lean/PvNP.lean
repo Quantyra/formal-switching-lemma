@@ -38,6 +38,7 @@ import PvNP.FormulaRecursiveSyntacticGlobal
 import PvNP.FormulaRecursiveSyntacticGlobalTree
 import PvNP.FormulaSyntacticClassGlobalTree
 import PvNP.FormulaRecursiveClassProfile
+import PvNP.FormulaRecursiveClassDefault
 import PvNP.FormulaRecursiveNonempty
 import PvNP.FormulaRecursiveSizeBound
 import PvNP.FormulaSyntacticDNF
