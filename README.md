@@ -230,7 +230,7 @@ fixed-instance extraction bridge with its redefinition disclosure
 (`BDTraceToSearchExtraction`, `BDTraceToSearchPremise`; the genuine
 proof-complexity route obligation remains open):
 
-- DOI: (version DOI pending Zenodo auto-archive; concept DOI is `10.5281/zenodo.20757627`)
+- DOI: `10.5281/zenodo.21184612`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.4.0`
 
 Version `v0.3.1` adds audited generated-stage infrastructure and generated
