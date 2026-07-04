@@ -54,11 +54,12 @@ This repository does **not** establish or imply:
   views now have checked global final-tree budget theorems for the fixed
   geometric schedule and for arbitrary nonempty ratio-regime schedules, and
   positive-depth raw formulas can be routed through the same ratio-regime
-  interface after top-constructor synthesis.  No arbitrary `BDFormula`/AC0
-  depth-`d` decomposition or internally synthesized `B(m, w, s, d)` product
-  hypothesis is proved.  The start view and geometric or ratio-regime entry
-  hypotheses remain supplied, syntactically exposed by the bottom-layer class,
-  or satisfied by the truth-table fallback, and
+  interface after top-constructor synthesis.  The top synthesis is now audited
+  as a one-step depth decrease for every exposed child, but no arbitrary
+  `BDFormula`/AC0 depth-`d` decomposition or internally synthesized
+  `B(m, w, s, d)` product hypothesis is proved.  The start view and geometric
+  or ratio-regime entry hypotheses remain supplied, syntactically exposed by
+  the bottom-layer class, or satisfied by the truth-table fallback, and
   `GeneratedIteratedCollapse.openObligations` intentionally remains nonempty;
 - satisfiability of the original consistent-route stage beats (full-space
   bad-set count against consistent-subspace cardinality) with nonempty gates
@@ -192,6 +193,16 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.FormulaStructuralSchedule.frozenDepthView_ratioRegimeCollapseWithGlobalTreeBudget` | `propext`, `Classical.choice`, `Quot.sound` | proven supplied-`FrozenDepthView` ratio-regime consumer with actual final-tree global budget |
 | `PvNP.FormulaStructuralSchedule.positiveDepthFrozenDepthView_width_of_children` | `propext`, `Quot.sound` | proven child-width transfer for positive-depth raw-formula synthesized views |
 | `PvNP.FormulaStructuralSchedule.positiveDepthFormula_ratioRegimeCollapseWithGlobalTreeBudget` | `propext`, `Classical.choice`, `Quot.sound` | proven positive-depth raw-formula ratio-regime consumer with global last-tree budget |
+| `PvNP.FormulaDepthDecomposition.mem_le_foldr_max` | `propext` | proven public list-max membership helper for depth peeling |
+| `PvNP.FormulaDepthDecomposition.child_depth_le_foldr_depths` | `propext`, `Quot.sound` | proven child-depth bound against the top formula depth aggregate |
+| `PvNP.FormulaDepthDecomposition.topChildren_depth_lt` | `propext`, `Quot.sound` | proven exposed top children are strictly shallower than the raw formula |
+| `PvNP.FormulaDepthDecomposition.topChildren_depth_le_pred` | `propext`, `Quot.sound` | proven predecessor-budget form of the top-child depth decrease |
+| `PvNP.FormulaDepthDecomposition.positiveDepthFrozenDepthView_gate_formula_depth_lt` | `propext`, `Quot.sound` | proven synthesized positive-depth frozen-view gate formulas are strictly shallower |
+| `PvNP.FormulaDepthDecomposition.positiveDepthFrozenDepthView_gate_formula_depth_le_pred` | `propext`, `Quot.sound` | proven predecessor-budget form for synthesized-view gate formulas |
+| `PvNP.FormulaDepthDecomposition.PositiveDepthPeel` | `propext`, `Quot.sound` | audited one-step positive-depth peel package |
+| `PvNP.FormulaDepthDecomposition.positiveDepthPeel` | `propext`, `Quot.sound` | constructed positive-depth peel from raw syntax |
+| `PvNP.FormulaDepthDecomposition.positiveDepthPeel_gateCount` | `propext`, `Quot.sound` | proven peel gate count equals detected top child count |
+| `PvNP.FormulaDepthDecomposition.positiveDepthPeel_gateFormulaDepth_le_pred` | `propext`, `Quot.sound` | proven packaged peel gate formulas satisfy the predecessor depth budget |
 | `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous` | `propext`, `Classical.choice`, `Quot.sound` | proven concrete budget-3 scheduled instance (single finite demo) |
 
 No declaration above depends on `sorryAx`.
@@ -241,11 +252,12 @@ instantiation whose second stage is the width-budget-0 tail. `FrozenDepthView`
 adds a supplied-view consumer with an actual final-tree global budget
 `t(d,s) = gateCount * (s - 1)`, and `FormulaStructuralSchedule` extends that
 consumer to arbitrary nonempty ratio-regime schedules plus positive-depth raw
-formulas after top-constructor synthesis.  The schedule and width hypotheses
-remain supplied and the child views still use the truth-table fallback; the
-artifact still does not synthesize `B` from arbitrary formulas, derive
-depth-`d` layered views from arbitrary formula syntax, or close full
-frozen-form B4.
+formulas after top-constructor synthesis.  `FormulaDepthDecomposition` proves
+that this top synthesis strictly decreases formula depth for every exposed
+gate formula.  The schedule and width hypotheses remain supplied and the child
+views still use the truth-table fallback; the artifact still does not
+synthesize `B` from arbitrary formulas, derive full recursive depth-`d`
+layered views from arbitrary formula syntax, or close full frozen-form B4.
 The PHP switching lemma (Gate A rung 4) remains open.
 
 ## Re-Verification

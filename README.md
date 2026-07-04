@@ -380,6 +380,14 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   child views still use the truth-table/path-DNF fallback and the ratio-regime
   hypotheses are supplied, so this is not efficient arbitrary AC0
   decomposition or full frozen-form B4.
+- `PvNP.FormulaDepthDecomposition.positiveDepthPeel`: the synthesized
+  positive-depth raw-formula `FrozenDepthView` now carries an audited one-step
+  depth-decomposition fact.  Every exposed top child, and every gate formula in
+  `positiveDepthFrozenDepthView`, has strictly smaller `depth` than the
+  original raw formula, with the predecessor-budget form also pinned.  This is
+  a real structural prerequisite for recursive depth-`d` decomposition, but it
+  still uses truth-table/path-DNF child views and does not synthesize efficient
+  bottom width or product/counting hypotheses.
 - `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous`: one
   concrete scheduled instance — the schedule `[(3, 561), (2, 17), (1, 1)]`
   over `n = 10000` variables from one width-1 single-literal gate, with all
@@ -459,12 +467,13 @@ This artifact does **not** prove or imply:
   arbitrary formulas.  The `FormulaTruthTableView` fallback does synthesize
   exact top-connective views from raw `and`/`or` syntax, and the positive-depth
   wrappers expose that top constructor automatically for every non-leaf raw
-  formula, but their child DNF views come from full truth-table decision trees
-  with only the generic width bound `<= n`.  The start view and geometric or
-  ratio-regime entry hypotheses therefore remain supplied, syntactically
-  exposed by the bottom-layer class, or satisfied only through this expensive
-  fallback, and `GeneratedIteratedCollapse.openObligations` intentionally
-  remains nonempty;
+  formula.  `FormulaDepthDecomposition` now proves that this top peel is a real
+  one-step depth decrease for every exposed child, but the child DNF views still
+  come from full truth-table decision trees with only the generic width bound
+  `<= n`.  The start view and geometric or ratio-regime entry hypotheses
+  therefore remain supplied, syntactically exposed by the bottom-layer class,
+  or satisfied only through this expensive fallback, and
+  `GeneratedIteratedCollapse.openObligations` intentionally remains nonempty;
 - satisfiability of the original consistent-route stage beats (full-space
   bad-set count against consistent-subspace cardinality) with nonempty gates
   at two or more stages — the disclosed satisfiability gap, closed only by
@@ -554,7 +563,12 @@ nonempty ratio-regime schedules and through positive-depth raw syntax after
 top-constructor synthesis; the hypotheses remain supplied and this is not a
 full B4 theorem.
 
-The current audit surface has 700 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
+The raw-formula depth-peel wrapper (`FormulaDepthDecomposition`) also proves
+that the synthesized positive-depth top layer strictly decreases formula depth
+on every exposed gate formula; this is still one-step structural peeling, not
+full recursive B4 decomposition.
+
+The current audit surface has 710 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
 
 - DOI: `10.5281/zenodo.21184992`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`

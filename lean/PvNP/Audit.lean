@@ -29,6 +29,7 @@ import PvNP.FormulaFamilyCollapse
 import PvNP.FrozenDepthView
 import PvNP.FormulaTruthTableView
 import PvNP.FormulaStructuralSchedule
+import PvNP.FormulaDepthDecomposition
 import PvNP.MixedFormulaFamilyCollapse
 import PvNP.ScheduledCollapseDemo
 
@@ -4264,3 +4265,59 @@ info: 'PvNP.FormulaStructuralSchedule.positiveDepthFormula_ratioRegimeCollapseWi
 -/
 #guard_msgs in
 #print axioms PvNP.FormulaStructuralSchedule.positiveDepthFormula_ratioRegimeCollapseWithGlobalTreeBudget
+
+/-!
+Pins for `PvNP.FormulaDepthDecomposition`: a one-step structural depth peel for
+positive-depth raw formulas.  The synthesized top `FrozenDepthView` is now
+audited to contain only gate formulas of strictly smaller `depth` than the
+original raw formula.  This is a prerequisite for recursive depth-`d`
+decomposition, but still NOT efficient arbitrary AC0 decomposition, NOT full
+frozen-form B4, NOT Gate A rung 4, NOT Frege/PHP, NOT NP/circuit, and NOT
+P vs NP.
+-/
+
+/-- info: 'PvNP.FormulaDepthDecomposition.mem_le_foldr_max' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthDecomposition.mem_le_foldr_max
+
+/-- info: 'PvNP.FormulaDepthDecomposition.child_depth_le_foldr_depths' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthDecomposition.child_depth_le_foldr_depths
+
+/-- info: 'PvNP.FormulaDepthDecomposition.topChildren_depth_lt' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthDecomposition.topChildren_depth_lt
+
+/-- info: 'PvNP.FormulaDepthDecomposition.topChildren_depth_le_pred' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthDecomposition.topChildren_depth_le_pred
+
+/--
+info: 'PvNP.FormulaDepthDecomposition.positiveDepthFrozenDepthView_gate_formula_depth_lt' depends on axioms: [propext,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthDecomposition.positiveDepthFrozenDepthView_gate_formula_depth_lt
+
+/--
+info: 'PvNP.FormulaDepthDecomposition.positiveDepthFrozenDepthView_gate_formula_depth_le_pred' depends on axioms: [propext,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthDecomposition.positiveDepthFrozenDepthView_gate_formula_depth_le_pred
+
+/-- info: 'PvNP.FormulaDepthDecomposition.PositiveDepthPeel' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthDecomposition.PositiveDepthPeel
+
+/-- info: 'PvNP.FormulaDepthDecomposition.positiveDepthPeel' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthDecomposition.positiveDepthPeel
+
+/-- info: 'PvNP.FormulaDepthDecomposition.positiveDepthPeel_gateCount' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthDecomposition.positiveDepthPeel_gateCount
+
+/-- info: 'PvNP.FormulaDepthDecomposition.positiveDepthPeel_gateFormulaDepth_le_pred' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaDepthDecomposition.positiveDepthPeel_gateFormulaDepth_le_pred
