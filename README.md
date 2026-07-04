@@ -437,7 +437,7 @@ Finally it adds general decision-tree DNF/CNF re-viewing with depth-bounded widt
 
 The audit surface grows from 497 to 621 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean` — 124 pins added, none removed or weakened; no pinned declaration depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the new pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
 
-- DOI: (version DOI pending Zenodo auto-archive; concept DOI is `10.5281/zenodo.20757627`)
+- DOI: `10.5281/zenodo.21184992`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`
 
 Version `v0.4.0` adds the variable-coverage floors for the local cut-free
