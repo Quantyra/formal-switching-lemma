@@ -32,6 +32,7 @@ import PvNP.FormulaStructuralSchedule
 import PvNP.FormulaDepthDecomposition
 import PvNP.FormulaRecursiveDepth
 import PvNP.FormulaDepthZeroBottom
+import PvNP.FormulaRecursiveDecomposition
 import PvNP.MixedFormulaFamilyCollapse
 import PvNP.ScheduledCollapseDemo
 
@@ -4498,3 +4499,52 @@ NP/circuit, or P vs NP.
 /-- info: 'PvNP.FormulaDepthZeroBottom.fullDepthFrontierBottomLayer' depends on axioms: [propext, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaDepthZeroBottom.fullDepthFrontierBottomLayer
+
+/-!
+Pins for `PvNP.FormulaRecursiveDecomposition`: recursive decomposition
+bookkeeping that packages every frontier level, the frontier transition, the
+raw-depth budget, and the terminal full-depth bottom layer.  This is still NOT
+full B4: it does not synthesize efficient intermediate `GateSpec` layers,
+product/counting hypotheses, a collapse schedule, Gate A rung 4, Frege/PHP,
+NP/circuit, or P vs NP.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveDecomposition.depthFrontier_succ_eq_bind_topChildren' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveDecomposition.depthFrontier_succ_eq_bind_topChildren
+
+/-- info: 'PvNP.FormulaRecursiveDecomposition.formulaDepthFrontier_succ_eq_bind_topChildren' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveDecomposition.formulaDepthFrontier_succ_eq_bind_topChildren
+
+/-- info: 'PvNP.FormulaRecursiveDecomposition.FullDepthRecursiveDecomposition' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveDecomposition.FullDepthRecursiveDecomposition
+
+/-- info: 'PvNP.FormulaRecursiveDecomposition.fullDepthRecursiveDecomposition' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveDecomposition.fullDepthRecursiveDecomposition
+
+/-- info: 'PvNP.FormulaRecursiveDecomposition.fullDepthRecursiveDecomposition_transition' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveDecomposition.fullDepthRecursiveDecomposition_transition
+
+/-- info: 'PvNP.FormulaRecursiveDecomposition.fullDepthRecursiveDecomposition_depthBudget' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveDecomposition.fullDepthRecursiveDecomposition_depthBudget
+
+/-- info: 'PvNP.FormulaRecursiveDecomposition.fullDepthRecursiveDecomposition_terminal_formulas' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveDecomposition.fullDepthRecursiveDecomposition_terminal_formulas
+
+/-- info: 'PvNP.FormulaRecursiveDecomposition.fullDepthRecursiveDecomposition_terminal_width' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveDecomposition.fullDepthRecursiveDecomposition_terminal_width
+
+/-- info: 'PvNP.FormulaRecursiveDecomposition.fullDepthRecursiveDecomposition_terminal_count' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveDecomposition.fullDepthRecursiveDecomposition_terminal_count

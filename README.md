@@ -405,6 +405,14 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   already-depth-zero frontier leaves, but it still does not assemble the
   recursive layers into a global B4 certificate or synthesize product/counting
   hypotheses.
+- `PvNP.FormulaRecursiveDecomposition.fullDepthRecursiveDecomposition`: the
+  recursive frontier is now packaged as an explicit decomposition skeleton.
+  The package records every frontier level, the transition from level `k` to
+  level `k+1` by expanding top children, the raw-depth budget at every level,
+  and the terminal bottom layer from `FormulaDepthZeroBottom`.  This is the
+  structural skeleton for B4, not full B4: intermediate efficient `GateSpec`
+  layers, product/counting hypotheses, and a collapse schedule theorem remain
+  open.
 - `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous`: one
   concrete scheduled instance — the schedule `[(3, 561), (2, 17), (1, 1)]`
   over `n = 10000` variables from one width-1 single-literal gate, with all
@@ -489,8 +497,10 @@ This artifact does **not** prove or imply:
   `FormulaRecursiveDepth` proves the corresponding repeated-frontier raw-depth
   budget.  `FormulaDepthZeroBottom` adds exact width-one bottom `GateSpec.dnf`
   witnesses and an audited bottom-layer list for members that survive to the
-  full-depth frontier, but the recursive layers are not yet assembled into one
-  global depth-`d`
+  full-depth frontier.  `FormulaRecursiveDecomposition` packages every
+  frontier level, the top-child transition, the depth budget, and the terminal
+  bottom layer as one decomposition skeleton, but the recursive layers are not
+  yet assembled into one global depth-`d`
   decomposition theorem and intermediate child DNF views outside that terminal
   frontier still come from full truth-table decision trees with only the generic
   width bound `<= n`.  The start view and geometric or ratio-regime entry
@@ -605,7 +615,13 @@ gate formulas match the frontier and whose gate widths are all at most one.
 This is terminal-frontier bottom-layer synthesis only, not a global recursive
 B4 decomposition theorem.
 
-The current audit surface has 749 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
+The recursive decomposition skeleton (`FormulaRecursiveDecomposition`) packages
+all frontier levels, the level-to-level top-child transition, the raw-depth
+budget, and the terminal bottom layer in one audited surface.  It is still a
+structural skeleton only: efficient intermediate `GateSpec` layers,
+product/counting hypotheses, and the global collapse theorem remain open.
+
+The current audit surface has 758 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
 
 - DOI: `10.5281/zenodo.21184992`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`

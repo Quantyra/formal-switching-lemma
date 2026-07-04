@@ -245,6 +245,15 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.FormulaDepthZeroBottom.fullDepthFrontierGateList_width_le_one` | `propext`, `Quot.sound` | proven every full-depth frontier bottom-layer gate has width at most one |
 | `PvNP.FormulaDepthZeroBottom.FullDepthFrontierBottomLayer` | `propext`, `Quot.sound` | audited packaged full-depth frontier bottom-layer witness |
 | `PvNP.FormulaDepthZeroBottom.fullDepthFrontierBottomLayer` | `propext`, `Quot.sound` | constructed packaged full-depth frontier bottom-layer witness |
+| `PvNP.FormulaRecursiveDecomposition.depthFrontier_succ_eq_bind_topChildren` | none | axiom-free recursive frontier transition for root lists |
+| `PvNP.FormulaRecursiveDecomposition.formulaDepthFrontier_succ_eq_bind_topChildren` | none | axiom-free recursive frontier transition for a single root |
+| `PvNP.FormulaRecursiveDecomposition.FullDepthRecursiveDecomposition` | `propext`, `Quot.sound` | audited packaged full-depth recursive decomposition skeleton |
+| `PvNP.FormulaRecursiveDecomposition.fullDepthRecursiveDecomposition` | `propext`, `Quot.sound` | constructed full-depth recursive decomposition skeleton from raw syntax |
+| `PvNP.FormulaRecursiveDecomposition.fullDepthRecursiveDecomposition_transition` | `propext`, `Quot.sound` | proven packaged frontier level transition |
+| `PvNP.FormulaRecursiveDecomposition.fullDepthRecursiveDecomposition_depthBudget` | `propext`, `Quot.sound` | proven packaged raw-depth budget at every frontier level |
+| `PvNP.FormulaRecursiveDecomposition.fullDepthRecursiveDecomposition_terminal_formulas` | `propext`, `Quot.sound` | proven packaged terminal bottom-layer formulas match the full-depth frontier |
+| `PvNP.FormulaRecursiveDecomposition.fullDepthRecursiveDecomposition_terminal_width` | `propext`, `Quot.sound` | proven packaged terminal bottom-layer widths are at most one |
+| `PvNP.FormulaRecursiveDecomposition.fullDepthRecursiveDecomposition_terminal_count` | `propext`, `Quot.sound` | proven packaged terminal bottom-layer count matches the full-depth frontier |
 | `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous` | `propext`, `Classical.choice`, `Quot.sound` | proven concrete budget-3 scheduled instance (single finite demo) |
 
 No declaration above depends on `sorryAx`.
@@ -299,11 +308,13 @@ that this top synthesis strictly decreases formula depth for every exposed
 gate formula, and `FormulaRecursiveDepth` proves the repeated-frontier
 raw-depth budget for recursive top-child expansion.  `FormulaDepthZeroBottom`
 adds exact width-one-or-less DNF gates and a packaged bottom-layer list for
-members that survive to the full-depth frontier.  The schedule and width
-hypotheses remain supplied and intermediate child views still use the
+members that survive to the full-depth frontier.  `FormulaRecursiveDecomposition`
+packages every frontier level, the top-child transition, the raw-depth budget,
+and the terminal bottom layer as one structural skeleton.  The schedule and
+width hypotheses remain supplied and intermediate child views still use the
 truth-table fallback; the artifact still does not synthesize `B` from arbitrary
-formulas, derive full recursive depth-`d` layered views from arbitrary formula
-syntax, or close full frozen-form B4.
+formulas, derive efficient recursive depth-`d` layered views from arbitrary
+formula syntax, or close full frozen-form B4.
 The PHP switching lemma (Gate A rung 4) remains open.
 
 ## Re-Verification

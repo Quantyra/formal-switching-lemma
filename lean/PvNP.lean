@@ -23,6 +23,7 @@ import PvNP.FormulaStructuralSchedule
 import PvNP.FormulaDepthDecomposition
 import PvNP.FormulaRecursiveDepth
 import PvNP.FormulaDepthZeroBottom
+import PvNP.FormulaRecursiveDecomposition
 import PvNP.MixedFormulaFamilyCollapse
 import PvNP.PHPFullMatchingDistribution
 import PvNP.PHPFullMatchingProbability
