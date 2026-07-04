@@ -39,6 +39,7 @@ import PvNP.FormulaRecursiveGlobalSchedule
 import PvNP.FormulaRecursiveMaxProduct
 import PvNP.FormulaRecursiveRatioSchedule
 import PvNP.FormulaRecursiveWidthSchedule
+import PvNP.FormulaRecursiveNonempty
 import PvNP.FormulaVarWidthSchedule
 import PvNP.MixedFormulaFamilyCollapse
 import PvNP.ScheduledCollapseDemo
@@ -4900,6 +4901,53 @@ rung 4, Frege/PHP, NP/circuit, or P vs NP.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveWidthSchedule.allFrontierLayers_geometricCollapseWithWidthProfile
+
+/-!
+Pins for `PvNP.FormulaRecursiveNonempty`: no-empty-fanin raw syntax
+synthesizes nonempty recursive frontier counts for all levels `k <= depth F`,
+and routes the supplied-width ratio/geometric consumers without a caller
+supplied `hm` gate-count hypothesis.  Width profiles, ratio/geometric entry
+bounds, and the formula-local tree budget are still supplied or local; this is
+NOT full B4, an efficient asymptotic `t(d,s)`, Gate A rung 4, Frege/PHP,
+NP/circuit, or P vs NP.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveNonempty.NoEmptyFanins' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveNonempty.NoEmptyFanins
+
+/-- info: 'PvNP.FormulaRecursiveNonempty.exists_child_depth_ge_of_le_depthMax' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveNonempty.exists_child_depth_ge_of_le_depthMax
+
+/-- info: 'PvNP.FormulaRecursiveNonempty.exists_topChild_depth_ge_of_noEmptyFanins' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveNonempty.exists_topChild_depth_ge_of_noEmptyFanins
+
+/-- info: 'PvNP.FormulaRecursiveNonempty.depthFrontier_nonempty_of_noEmptyFanins' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveNonempty.depthFrontier_nonempty_of_noEmptyFanins
+
+/-- info: 'PvNP.FormulaRecursiveNonempty.formulaDepthFrontier_nonempty_of_noEmptyFanins' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveNonempty.formulaDepthFrontier_nonempty_of_noEmptyFanins
+
+/-- info: 'PvNP.FormulaRecursiveNonempty.frontierLayerGateCount_nonempty_of_noEmptyFanins' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveNonempty.frontierLayerGateCount_nonempty_of_noEmptyFanins
+
+/-- info: 'PvNP.FormulaRecursiveNonempty.allFrontierLayers_ratioRegimeCollapseWithWidthProfile_noEmptyFanins' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveNonempty.allFrontierLayers_ratioRegimeCollapseWithWidthProfile_noEmptyFanins
+
+/-- info: 'PvNP.FormulaRecursiveNonempty.allFrontierLayers_geometricCollapseWithWidthProfile_noEmptyFanins' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveNonempty.allFrontierLayers_geometricCollapseWithWidthProfile_noEmptyFanins
 
 /-!
 Pins for `PvNP.FormulaVarWidthSchedule`: the truth-table fallback width theorem

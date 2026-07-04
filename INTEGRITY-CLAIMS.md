@@ -326,6 +326,14 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.FormulaRecursiveWidthSchedule.allFrontierLayers_ratioRegimeCollapseWithWidthProfile` | `propext`, `Classical.choice`, `Quot.sound` | proven all in-depth nonempty recursive frontier layers consume supplied ratio-regime schedules at supplied profile widths |
 | `PvNP.FormulaRecursiveWidthSchedule.frontierLayer_geometricCollapseWithWidthProfile` | `propext`, `Classical.choice`, `Quot.sound` | proven recursive frontier layers consume the geometric ratio schedule at a supplied profile width under an explicit entry-size inequality |
 | `PvNP.FormulaRecursiveWidthSchedule.allFrontierLayers_geometricCollapseWithWidthProfile` | `propext`, `Classical.choice`, `Quot.sound` | proven all in-depth recursive frontier layers consume geometric ratio schedules at supplied profile widths under per-level entry-size bounds |
+| `PvNP.FormulaRecursiveNonempty.NoEmptyFanins` | none | structural raw-syntax predicate excluding empty unbounded fan-in gates |
+| `PvNP.FormulaRecursiveNonempty.exists_child_depth_ge_of_le_depthMax` | `propext`, `Quot.sound` | proven max-depth list witness used by the nonempty recursive frontier proof |
+| `PvNP.FormulaRecursiveNonempty.exists_topChild_depth_ge_of_noEmptyFanins` | `propext`, `Quot.sound` | proven no-empty-fanin formulas with positive remaining depth expose a no-empty-fanin top child with enough depth |
+| `PvNP.FormulaRecursiveNonempty.depthFrontier_nonempty_of_noEmptyFanins` | `propext`, `Quot.sound` | proven root-list recursive frontiers are nonempty when a no-empty-fanin root has enough depth |
+| `PvNP.FormulaRecursiveNonempty.formulaDepthFrontier_nonempty_of_noEmptyFanins` | `propext`, `Quot.sound` | proven single-formula recursive frontiers are nonempty for every level within depth under no-empty-fanin syntax |
+| `PvNP.FormulaRecursiveNonempty.frontierLayerGateCount_nonempty_of_noEmptyFanins` | `propext`, `Quot.sound` | proven recursive frontier gate counts are nonempty for every level within depth under no-empty-fanin syntax |
+| `PvNP.FormulaRecursiveNonempty.allFrontierLayers_ratioRegimeCollapseWithWidthProfile_noEmptyFanins` | `propext`, `Classical.choice`, `Quot.sound` | proven supplied-width ratio-regime frontier consumers discharge nonempty counts from no-empty-fanin syntax |
+| `PvNP.FormulaRecursiveNonempty.allFrontierLayers_geometricCollapseWithWidthProfile_noEmptyFanins` | `propext`, `Classical.choice`, `Quot.sound` | proven supplied-width geometric frontier consumers discharge nonempty counts from no-empty-fanin syntax |
 | `PvNP.FormulaVarWidthSchedule.topConnectiveFormula_child_width_le_vars` | `propext`, `Quot.sound` | proven top-connective truth-table child views have generic width at most `n` |
 | `PvNP.FormulaVarWidthSchedule.positiveDepthFormula_child_width_le_vars` | `propext`, `Quot.sound` | proven positive-depth raw-formula truth-table child views have generic width at most `n` |
 | `PvNP.FormulaVarWidthSchedule.topConnectiveFormula_ratioRegimeCollapseWithVarWidth` | `propext`, `Classical.choice`, `Quot.sound` | proven top-connective raw formulas route through supplied ratio schedules at width `n` |
@@ -406,6 +414,10 @@ entry-size inequalities. `FormulaRecursiveWidthSchedule` adds a supplied
 per-level width-profile hook for recursive frontier ratio/geometric consumers,
 so later structural width theorems can replace the truth-table fallback in
 those consumers without changing the global tree-budget interface.
+`FormulaRecursiveNonempty` adds the `NoEmptyFanins` structural predicate and
+uses it to synthesize the nonempty recursive frontier gate-count hypotheses
+for all levels within `depth F`; its supplied-width ratio/geometric corollaries
+therefore remove that one caller obligation under no-empty-fanin raw syntax.
 `FormulaVarWidthSchedule` instantiates the supplied positive-depth raw-formula
 ratio-regime route at width `n`, removing the caller-supplied child-width
 predicate while preserving the honest truth-table fallback boundary.
@@ -415,7 +427,8 @@ corollaries, and the recursive width profile remains supplied.  Intermediate
 child views still use the truth-table fallback unless an external profile is
 provided, and the artifact still does not synthesize `B` from arbitrary
 formulas, derive efficient recursive depth-`d` layered views from arbitrary
-formula syntax, or close full frozen-form B4.
+formula syntax, synthesize efficient width profiles, prove a global efficient
+`t(d,s)` theorem, or close full frozen-form B4.
 The PHP switching lemma (Gate A rung 4) remains open.
 
 ## Re-Verification

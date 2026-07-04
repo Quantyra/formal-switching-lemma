@@ -469,6 +469,16 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   unchanged.  This is a B4 interface hook for later efficient width synthesis,
   not efficient B4, not a global asymptotic `t(d,s)` theorem, and not a PHP
   switching lemma.
+- `PvNP.FormulaRecursiveNonempty.frontierLayerGateCount_nonempty_of_noEmptyFanins`
+  and
+  `PvNP.FormulaRecursiveNonempty.allFrontierLayers_geometricCollapseWithWidthProfile_noEmptyFanins`:
+  raw formulas whose `and`/`or` gates all have nonempty fan-in now synthesize
+  nonempty recursive frontier gate counts for every level `k <= depth F`, and
+  the supplied-width ratio/geometric consumers use that fact instead of a
+  caller-supplied `hm` count hypothesis.  Width profiles, schedule regimes,
+  entry-size inequalities, and the formula-local max-frontier tree budget
+  remain supplied or local; this is not efficient B4, not a global asymptotic
+  `t(d,s)` theorem, and not a PHP switching lemma.
 - `PvNP.ScheduledCollapseDemo.scheduledThreeStage_budget3_nonvacuous`: one
   concrete scheduled instance — the schedule `[(3, 561), (2, 17), (1, 1)]`
   over `n = 10000` variables from one width-1 single-literal gate, with all
@@ -718,13 +728,20 @@ needed for later efficient structural width synthesis, while still leaving the
 profile, nonempty counts, schedule regime, and formula-local tree budget
 explicit.
 
+The recursive nonempty wrapper (`FormulaRecursiveNonempty`) adds the structural
+predicate `NoEmptyFanins` and proves that it supplies nonempty recursive
+frontier gate counts for all levels `k <= depth F`.  Its ratio/geometric
+corollaries remove the caller-supplied nonempty-count hypothesis from the
+supplied-width route under that raw-syntax condition, but width profiles,
+entry-size bounds, and efficient global B4 structure remain open.
+
 The variable-width schedule wrapper (`FormulaVarWidthSchedule`) instantiates the
 positive-depth raw-formula ratio-regime route at width `n`, using the proved
 truth-table/path-DNF width bound instead of a caller-supplied child-width
 predicate.  The ratio-regime schedule is still supplied, and `w = n` is not
 efficient syntactic width control; this is not full B4.
 
-The current audit surface has 825 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
+The current audit surface has 833 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
 
 - DOI: `10.5281/zenodo.21184992`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`
