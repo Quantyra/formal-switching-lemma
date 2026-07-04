@@ -20,6 +20,7 @@ import PvNP.FormulaFamilyCollapse
 import PvNP.FrozenDepthView
 import PvNP.FormulaTruthTableView
 import PvNP.MixedFormulaFamilyCollapse
+import PvNP.PHPFullMatchingDistribution
 import PvNP.RestrictedPHPFloor
 import PvNP.ScheduledAutoCollapse
 import PvNP.ScheduledCollapseDemo

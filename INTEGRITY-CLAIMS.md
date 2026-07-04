@@ -42,9 +42,10 @@ This repository does **not** establish or imply:
 - a PHP switching lemma: no collapse-probability upper bound for restricted
   formulas over the matching-restriction space is stated or proved;
 - a probability measure or expectation statement over restriction
-  distributions (the matching-distribution layer proves exact finite
+  distributions (the matching-distribution layers prove exact finite
   counting identities and every-point floor transfer only, over the
-  identity-matching subfamily);
+  identity-subset and square-permutation matching spaces; rectangular
+  `p > h` injection spaces are not formalized);
 - a positive Boolean decision-tree depth floor for any unsatisfiable PHP
   formula (`p > h`);
 - a discharge of the full frozen-form B4 goal: supplied `FrozenDepthView`
@@ -149,6 +150,9 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.PHPRestrictedDepthFloor.matchingBoundary_depthFloor` | `propext`, `Classical.choice`, `Quot.sound` | proven two-parameter boundary family floor `(h - s) * h` |
 | `PvNP.PHPMatchingDistribution.star_ratio` | `propext` | proven exact star-ratio counting identity |
 | `PvNP.PHPMatchingDistribution.subsetSpace_depthFloor` | `propext`, `Classical.choice`, `Quot.sound` | proven probability-one floor transfer (identity-matching subset space) |
+| `PvNP.PHPFullMatchingDistribution.card_fullMatchingSpace` | `propext`, `Classical.choice`, `Quot.sound` | proven exact cardinality for `subsetSpace h s x Equiv.Perm (Fin h)` |
+| `PvNP.PHPFullMatchingDistribution.phpVar_star_ratio_full` | `propext`, `Classical.choice`, `Quot.sound` | proven full square-matching star-ratio counting identity |
+| `PvNP.PHPFullMatchingDistribution.fullMatchingSpace_depthFloor` | `propext`, `Classical.choice`, `Quot.sound` | proven probability-one floor transfer (full square-permutation matching space) |
 | `PvNP.GeneratedGoodRestriction.simultaneousCollapse_exists` | `propext`, `Classical.choice`, `Quot.sound` | proven B1/B2 generated simultaneous collapse (supplied counting beat) |
 | `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` | none | openness certificate (intentionally nonempty frozen-form obstruction map) |
 | `PvNP.GeneratedOneStepDepthReduction.generatedOneStepDepthReduction_exists` | `propext`, `Classical.choice`, `Quot.sound` | proven B3 one-step generated depth reduction (supplied minimal layered view) |
@@ -205,8 +209,8 @@ theorems.
 **Scope of the v0.5.0 Gate A / Gate B additions.** The satisfiable-PHP depth
 floors are elementary evasiveness/sensitivity results for the `p = h` Boolean
 function and its partial-matching restrictions; the matching-distribution
-layer is exact finite counting (no probability measure; identity-matching
-subfamily only). The Gate B route theorems are certificate theorems whose
+layers are exact finite counting (no probability measure; identity-subset and
+square-permutation spaces only, not rectangular `p > h` injections). The Gate B route theorems are certificate theorems whose
 per-stage layered views and counting/arithmetic beats are SUPPLIED side
 conditions (restrictions are counting-generated, never supplied); the
 consistent-route satisfiability gap is disclosed and closed only for the

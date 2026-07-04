@@ -175,11 +175,23 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   `subsetSpace_depthFloor` transfers the `(h − s) · h` floor to EVERY point of
   the space (probability one), with per-subset non-vacuity by
   `subsetSpace_correctTree_exists`.  No probability measure is defined — all
-  statements are exact finite counting identities; the distribution pins the
-  matching to the identity (the uniform-over-injections space is not
-  formalized); and this is NOT a PHP switching lemma — no collapse-probability
-  upper bound for restricted formulas is stated or proved (that summit, Gate A
-  rung 4, remains open).
+  statements are exact finite counting identities; this first distribution
+  pins the matching to the identity; and this is NOT a PHP switching lemma —
+  no collapse-probability upper bound for restricted formulas is stated or
+  proved (that summit, Gate A rung 4, remains open).
+- `PvNP.PHPFullMatchingDistribution.card_fullMatchingSpace` with
+  `phpVar_freeCount_full`, `phpVar_star_ratio_full`, and
+  `fullMatchingSpace_depthFloor`: the Gate A rung-3 counting layer now also
+  covers the full square matching-restriction space
+  `subsetSpace h s × Equiv.Perm (Fin h)`.  The space has cardinality
+  `choose h s * Fintype.card (Equiv.Perm (Fin h))`; every PHP variable is
+  left free by exactly `choose (h−1) s * Fintype.card (Equiv.Perm (Fin h))`
+  points; the same star-ratio identity holds after carrying the permutation
+  factor; and the `(h − s) · h` floor transfers to EVERY point of the full
+  space, with per-point non-vacuity by `fullMatchingSpace_correctTree_exists`.
+  This formalizes square `h × h` permutation matchings, not rectangular
+  `p > h` injection spaces, and still states no probability measure or
+  collapse-probability upper bound.
 - `PvNP.GeneratedGoodRestriction.jointBadSet_card_le`, `goodRestriction_exists`,
   and `simultaneousCollapse_exists`: Gate B stages B1/B2 — the first theorems in
   this repository where the switching lemma's counting GENERATES restrictions
@@ -408,10 +420,11 @@ This artifact does **not** prove or imply:
   formulas over the matching-restriction space is stated or proved (that
   rung of the general PHP depth-floor ladder remains open);
 - a probability measure or expectation/with-high-probability statement over
-  restriction distributions: the `PHPMatchingDistribution` layer proves exact
-  finite counting identities and an every-point (probability-one) transfer of
-  the worst-case floors only, and its space pins the matching to the identity
-  (the uniform-over-injections space is not formalized);
+  restriction distributions: the `PHPMatchingDistribution` and
+  `PHPFullMatchingDistribution` layers prove exact finite counting identities
+  and every-point floor transfer over identity-subset and square-permutation
+  matching spaces only; rectangular `p > h` injection spaces are not
+  formalized;
 - a positive Boolean decision-tree depth floor for any unsatisfiable PHP
   formula (`p > h`): the proved evasiveness and partial-matching floors
   concern the satisfiable `p = h` function only;
@@ -506,7 +519,7 @@ Version `v0.1.0` is archived on Zenodo:
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.1.0`
 
 Version `v0.5.0` adds the opening rungs of the general-PHP-depth-floor ladder
-and the Gate B generated-collapse routes.  This release opens the general-PHP-depth-floor ladder ("Gate A") with two proved rungs of satisfiable-PHP decision-tree floors plus the first increment of the rung-3 counting layer (the uniform-over-injections space is not formalized). Rung 1 (`PvNP.PHPBooleanDepthFloor`): the satisfiable `h × h` pigeonhole Boolean function is evasive — every correct decision tree under the empty restriction has depth at least `h·h` (`fullPHPBoundary_depthFloor`), the first genuine family instance of `PHPDepthFloorStatement` beyond the trivial `1 × 1` boundary, with non-vacuity at depth `h·h + 1`. Rung 2 (`PvNP.PHPRestrictedDepthFloor`): the floor survives every fixed partial-matching restriction — the master theorem `matchingRestriction_depthFloor` gives depth at least the number of free variables, and the two-parameter family `matchingBoundary_depthFloor` instantiates the statement surface with floor `(h − s)·h` under genuinely nontrivial restriction families. Rung 3, first increment (`PvNP.PHPMatchingDistribution`): the uniform space of `s`-subset identity-matching restrictions with exact star counting — `star_ratio` (`h * choose (h−1) s = (h − s) * choose h s`, axioms `propext` only) is the exact counting form of "every variable is a star with probability `(h−s)/h`", the quantity switching-lemma arguments consume — plus probability-one transfer of the rung-2 floor to every point of the space (`subsetSpace_depthFloor`). All three rungs are elementary sensitivity and finite-counting mathematics; no probability measure is defined; the distribution covers the identity-matching subfamily only. The PHP switching lemma itself — collapse-probability upper bounds over the restriction space (Gate A rung 4) — remains OPEN, and none of this is a Frege/PHP proof-size bound, an NP/circuit bound, or a statement about P vs NP.
+and the Gate B generated-collapse routes.  This release opens the general-PHP-depth-floor ladder ("Gate A") with two proved rungs of satisfiable-PHP decision-tree floors plus the first increment of the rung-3 counting layer (at that release, only the identity-subset matching distribution was formalized). Rung 1 (`PvNP.PHPBooleanDepthFloor`): the satisfiable `h × h` pigeonhole Boolean function is evasive — every correct decision tree under the empty restriction has depth at least `h·h` (`fullPHPBoundary_depthFloor`), the first genuine family instance of `PHPDepthFloorStatement` beyond the trivial `1 × 1` boundary, with non-vacuity at depth `h·h + 1`. Rung 2 (`PvNP.PHPRestrictedDepthFloor`): the floor survives every fixed partial-matching restriction — the master theorem `matchingRestriction_depthFloor` gives depth at least the number of free variables, and the two-parameter family `matchingBoundary_depthFloor` instantiates the statement surface with floor `(h − s)·h` under genuinely nontrivial restriction families. Rung 3, first increment (`PvNP.PHPMatchingDistribution`): the uniform space of `s`-subset identity-matching restrictions with exact star counting — `star_ratio` (`h * choose (h−1) s = (h − s) * choose h s`, axioms `propext` only) is the exact counting form of "every variable is a star with probability `(h−s)/h`", the quantity switching-lemma arguments consume — plus probability-one transfer of the rung-2 floor to every point of the space (`subsetSpace_depthFloor`). The current post-v0.5.0 surface adds `PvNP.PHPFullMatchingDistribution`, the full square `h × h` permutation-matching space `subsetSpace h s × Equiv.Perm (Fin h)` with exact star counting and every-point floor transfer; rectangular `p > h` injection spaces remain unformalized. These Gate A rungs are elementary sensitivity and finite-counting mathematics; no probability measure is defined. The PHP switching lemma itself — collapse-probability upper bounds over the restriction space (Gate A rung 4) — remains OPEN, and none of this is a Frege/PHP proof-size bound, an NP/circuit bound, or a statement about P vs NP.
 
 It also adds the Gate B generated-restriction ladder: B1/B2 counting-generated good restrictions with the explicit joint union bound and simultaneous collapse (`GeneratedGoodRestriction`), the shared-layer obstruction map with its intentionally nonempty machine-readable `openObligations` list (`GeneratedIteratedCollapse`), the B3 one-step generated depth reduction for supplied minimal layered views (`GeneratedOneStepDepthReduction`), first-wins restriction composition with consistent-subspace counting and the full-star-space closed form (`RestrictionComposition`), and the plan-supplied B4 route theorem `generatedIteratedCollapse` (`GeneratedIteratedCollapseFinal`), shipped with its satisfiability gap disclosed — the consistent-route stage beats compared full-space bad-set counts against consistent-subspace cardinalities, with no exhibited nonempty-gate multi-stage instance.  That gap is closed for the REFINEMENT ROUTE by the renormalized free-subcube counting: refinement subspaces with a closed-form cardinality (`RefinedSubspace`), support-injective relabel transport (`SwitchingRelabel`), the renormalized bad-set bound `badSetTerm_refines_card_le` and refined route theorem `generatedRefinedIteratedCollapse` (`GeneratedRefinedCollapse`), and the concrete depth-2, `n = 306`, width-budget-1 two-stage instance `refinedTwoStage_nonemptyGates_nonvacuous` (`RefinedTwoStageInstance`; realized stage-2 width is not certified).  Frozen-form B4 (single upfront depth-`d` layered view, product hypothesis `B(m, w, s, d)`, `t(d, s)` tree bound) remains open, and `GeneratedIteratedCollapse.openObligations` intentionally remains nonempty.
 
