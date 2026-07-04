@@ -43,6 +43,7 @@ import PvNP.FormulaRecursiveSyntacticLayer
 import PvNP.FormulaRecursiveSyntacticNonempty
 import PvNP.FormulaRecursiveSyntacticSimple
 import PvNP.FormulaRecursiveSyntacticGeometric
+import PvNP.FormulaRecursiveSyntacticGlobal
 import PvNP.FormulaRecursiveNonempty
 import PvNP.FormulaRecursiveSizeBound
 import PvNP.FormulaSyntacticDNF
@@ -5122,6 +5123,46 @@ P vs NP.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticGeometric.allSyntacticFrontierLayers_geometricCollapseWithFormulaSize_simpleNoEmptyFanins_of_formulaSizeBound
+
+/-!
+Pins for `PvNP.FormulaRecursiveSyntacticGlobal`: a supplied formula-class size
+envelope `formulaSize F <= M` turns the root-simple/no-empty syntactic
+geometric route into a global-envelope route with tree budget
+`M * (s - 1)` and one ambient lower bound in `M`.  The envelope itself,
+root predicates, and geometric ambient bound remain supplied; this is NOT
+product/counting synthesis, arbitrary normalization, full B4, a discharged
+formula-class `t(d,s)` theorem, Gate A rung 4, Frege/PHP, NP/circuit, or
+P vs NP.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticGlobal.globalFormulaSizeTreeBudget' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticGlobal.globalFormulaSizeTreeBudget
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticGlobal.globalFormulaSizeTreeBudgetFrom' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticGlobal.globalFormulaSizeTreeBudgetFrom
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticGlobal.formulaSizeGeometricAmbient_of_le_global' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticGlobal.formulaSizeGeometricAmbient_of_le_global
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticGlobal.frontierLayer_geometricEntryBound_of_globalFormulaSize' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticGlobal.frontierLayer_geometricEntryBound_of_globalFormulaSize
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticGlobal.syntacticFrontierLayer_geometricCollapseWithGlobalFormulaSize_simpleNoEmptyFanins' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticGlobal.syntacticFrontierLayer_geometricCollapseWithGlobalFormulaSize_simpleNoEmptyFanins
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticGlobal.allSyntacticFrontierLayers_geometricCollapseWithGlobalFormulaSize_simpleNoEmptyFanins' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticGlobal.allSyntacticFrontierLayers_geometricCollapseWithGlobalFormulaSize_simpleNoEmptyFanins
 
 /-!
 Pins for `PvNP.FormulaRecursiveNonempty`: no-empty-fanin raw syntax

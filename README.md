@@ -831,13 +831,23 @@ a single all-level consumer under `syntacticFormulaSimpleDNF F` plus
 product/counting hypotheses, arbitrary normalization, full B4, or a global
 depth-`d` `t(d,s)` theorem.
 
+The syntactic global-envelope wrapper (`FormulaRecursiveSyntacticGlobal`) turns
+that formula-local route into a supplied class-envelope route: if a caller
+provides `formulaSize F <= M` and the ambient bound
+`2 * (64 * M)^rounds * (64 * M * M) <= n`, then all root-simple/no-empty
+syntactic recursive frontier levels consume the same geometric route while
+returning a `TreeBudgetFrom` proof for the global budget
+`t_M(d,s)=M*(s-1)`.  This supplies a B4-facing global-budget hook, but it does
+not synthesize the envelope `M`, product/counting hypotheses, arbitrary
+normalization, full B4, or a discharged formula-class `t(d,s)` theorem.
+
 The variable-width schedule wrapper (`FormulaVarWidthSchedule`) instantiates the
 positive-depth raw-formula ratio-regime route at width `n`, using the proved
 truth-table/path-DNF width bound instead of a caller-supplied child-width
 predicate.  The ratio-regime schedule is still supplied, and `w = n` is not
 efficient syntactic width control; this is not full B4.
 
-The current audit surface has 893 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
+The current audit surface has 899 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
 
 - DOI: `10.5281/zenodo.21184992`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`
