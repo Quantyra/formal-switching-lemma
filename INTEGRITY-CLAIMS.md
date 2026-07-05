@@ -46,13 +46,14 @@ This repository does **not** establish or imply:
   single-conjunctive-term collapse bounds of `PHPFullMatchingCollapseBound`
   (made exact for the single-literal event in
   `PHPFullMatchingCollapseExact`) and the depth-1 multi-term DNF total-size
-  union bound of `PHPFullMatchingDNFBound`,
+  union bound of `PHPFullMatchingDNFBound`, plus the deterministic restricted
+  DNF canonical-tree skeleton of `PHPFullMatchingCanonicalDT`,
   no collapse-probability upper bound for restricted formulas over the
   matching-restriction space is stated or proved — in particular no
   multi-term DNF bad-set bound beyond the depth-1 total-size union bound of
-  `PHPFullMatchingDNFBound`, no depth-`t` canonical decision-tree
-  argument, and no geometric `(8w)^s`-style bound (term-count-independent)
-  over matchings;
+  `PHPFullMatchingDNFBound`, no matching-space bad-set encoding/counting
+  theorem, and no geometric `(8w)^s`-style depth-`t`
+  collapse-probability bound (term-count-independent) over matchings;
 - a measure-theoretic probability measure, expectation, or
   with-high-probability theorem over restriction distributions.  The
   matching-distribution/probability layers prove exact finite counting,
@@ -198,6 +199,11 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.PHPFullMatchingDNFBound.matchingCollapseBad_dnf_probability_le` | `propext`, `Classical.choice`, `Quot.sound` | proven depth-1 multi-term DNF union-bound collapse probability `\|tvs.join\|*(h - s)/h`, linear in TOTAL DNF size (weak, NOT the switching-lemma regime) |
 | `PvNP.PHPFullMatchingDNFBound.matchingCollapseBad_nil_dnf_count` | `propext`, `Classical.choice`, `Quot.sound` | proven exactly empty bad event for the empty DNF (`.or []` is constantly false) |
 | `PvNP.PHPFullMatchingDNFBound.matchingCollapseBad_dnf_three_two_strict` | `propext`, `Classical.choice`, `Quot.sound` | proven strictly-below-one two-term DNF instance `2/3` at `h = 3`, `s = 2` over a nonempty space |
+| `PvNP.PHPFullMatchingCanonicalDT.eval_phpDNFFormula_eq_dnfEval` | `propext`, `Quot.sound` | proven semantic bridge from the PHP DNF formula syntax to the generic DNF semantics |
+| `PvNP.PHPFullMatchingCanonicalDT.canonicalRestrictedDNFTree_correct` | `propext`, `Quot.sound` | proven deterministic restricted-DNF term-canonical decision tree computes the restricted PHP DNF under agreeing assignments |
+| `PvNP.PHPFullMatchingCanonicalDT.treeVarsIn_canonicalRestrictedDNFTree` | `propext`, `Classical.choice`, `Quot.sound` | proven every decision-node variable queried by the restricted canonical tree is among the original PHP DNF variables |
+| `PvNP.PHPFullMatchingCanonicalDT.canonicalRestrictedDNFTree_depth_le_total` | `propext`, `Quot.sound` | proven deterministic worst-case depth bound by total literal occurrences `tvs.join.length` (not probabilistic) |
+| `PvNP.PHPFullMatchingCanonicalDT.canonicalRestrictedDNFTree_path_length_le_total` | `propext`, `Quot.sound` | proven every assignment path has at most `tvs.join.length` queries |
 | `PvNP.GeneratedGoodRestriction.simultaneousCollapse_exists` | `propext`, `Classical.choice`, `Quot.sound` | proven B1/B2 generated simultaneous collapse (supplied counting beat) |
 | `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` | none | openness certificate (intentionally nonempty frozen-form obstruction map) |
 | `PvNP.GeneratedOneStepDepthReduction.generatedOneStepDepthReduction_exists` | `propext`, `Classical.choice`, `Quot.sound` | proven B3 one-step generated depth reduction (supplied minimal layered view) |
@@ -485,9 +491,11 @@ collapse-probability analysis covers depth-1 events only —
 single-literal/single-term (`PHPFullMatchingCollapseBound`), with the
 single-literal event's probability additionally made exact and its
 realizability certified in `PHPFullMatchingCollapseExact`, and the
-multi-term DNF total-size union bound of `PHPFullMatchingDNFBound`; no
-depth-`t` bound, bad-set encoding argument, or geometric
-term-count-independent bound of any kind is proved.
+multi-term DNF total-size union bound of `PHPFullMatchingDNFBound`; the
+restricted-DNF canonical-tree skeleton of `PHPFullMatchingCanonicalDT` is
+deterministic infrastructure only. No matching-space bad-set
+encoding/counting theorem or geometric term-count-independent depth-`t`
+collapse-probability bound is proved.
 
 ## Re-Verification
 

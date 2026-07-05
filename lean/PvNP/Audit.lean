@@ -21,6 +21,7 @@ import PvNP.PHPFullMatchingDistribution
 import PvNP.PHPFullMatchingProbability
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
+import PvNP.PHPFullMatchingCanonicalDT
 import PvNP.PHPFullMatchingDNFBound
 import PvNP.TreePathViews
 import PvNP.AutoReviewedIteration
@@ -5775,3 +5776,38 @@ over matchings; Gate A rung 4 as a whole remains open.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPFullMatchingDNFBound.matchingCollapseBad_dnf_three_two_strict
+
+/-! ## Restricted PHP DNF canonical decision-tree skeleton
+
+Pins for `PvNP.PHPFullMatchingCanonicalDT`: the translation from the PHP DNF
+list representation to the generic DNF semantics, the restricted
+term-canonical decision tree's semantic correctness, decision-node support
+inside the original PHP DNF variable set, and deterministic worst-case
+depth/path-length bounds by `tvs.join.length`.  This is deterministic
+infrastructure only: no switching lemma, no bad-set encoding/counting theorem,
+no geometric collapse-probability bound, no rectangular injection-space result,
+and no proof-complexity or P-vs-NP lower-bound claim.
+-/
+
+/-- info: 'PvNP.PHPFullMatchingCanonicalDT.eval_phpDNFFormula_eq_dnfEval' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCanonicalDT.eval_phpDNFFormula_eq_dnfEval
+
+/-- info: 'PvNP.PHPFullMatchingCanonicalDT.canonicalRestrictedDNFTree_correct' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCanonicalDT.canonicalRestrictedDNFTree_correct
+
+/-- info: 'PvNP.PHPFullMatchingCanonicalDT.treeVarsIn_canonicalRestrictedDNFTree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCanonicalDT.treeVarsIn_canonicalRestrictedDNFTree
+
+/-- info: 'PvNP.PHPFullMatchingCanonicalDT.canonicalRestrictedDNFTree_depth_le_total' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCanonicalDT.canonicalRestrictedDNFTree_depth_le_total
+
+/-- info: 'PvNP.PHPFullMatchingCanonicalDT.canonicalRestrictedDNFTree_path_length_le_total' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCanonicalDT.canonicalRestrictedDNFTree_path_length_le_total
