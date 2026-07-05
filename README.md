@@ -271,6 +271,21 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   original matching point as its first coordinate, so it is not a geometric
   compression, not a switching lemma, and not a collapse-probability
   improvement.
+- `PvNP.PHPFullMatchingCompressedBadPathCount.canonicalDepthBad_freePathCode_exists`,
+  `fullRowsFree_count`, and
+  `canonicalDepthBad_count_le_target_mul_pathCode_of_injOn`: the first
+  compressed-count scaffold after the conservative bad-path count.  The module
+  proves that variables surviving DNF restriction, variables queried by
+  `canonicalRestrictedDNFTree`, and variables on its deepest path are free under
+  the concrete `fullRestrictionOf P`, then packages every depth-`t` bad point
+  with a `P`-dependent free-certified path code.  It also gives the exact count
+  of full matching points leaving any specified row set free,
+  `choose (h - rows.card) s * |Equiv.Perm (Fin h)|`, as row-level
+  multiplicity infrastructure.  The compressed bad-event count theorem is only
+  conditional: if later work supplies a genuine compressed target and an
+  injective encoder into that target paired with `BadPathCode`, the bad-event
+  count follows.  It does not construct that encoder, prove a path-code fiber
+  bound, prove a geometric probability bound, or prove a PHP switching lemma.
 - `PvNP.GeneratedGoodRestriction.jointBadSet_card_le`, `goodRestriction_exists`,
   and `simultaneousCollapse_exists`: Gate B stages B1/B2 — the first theorems in
   this repository where the switching lemma's counting GENERATES restrictions
@@ -645,11 +660,13 @@ This artifact does **not** prove or imply:
   union bound of `PHPFullMatchingDNFBound`, plus the deterministic restricted
   DNF canonical-tree skeleton of `PHPFullMatchingCanonicalDT`, plus the
   conservative optional-code bad-path count of
-  `PHPFullMatchingBadPathEncoding`,
+  `PHPFullMatchingBadPathEncoding`, plus the free-variable, row-level
+  multiplicity, and conditional compressed-target scaffold of
+  `PHPFullMatchingCompressedBadPathCount`,
   no collapse-probability upper bound for restricted formulas over the
   matching-restriction space is stated or proved — in particular no
   multi-term DNF bad-set bound beyond the depth-1 total-size union bound of
-  `PHPFullMatchingDNFBound`, no compressed matching-space bad-set
+  `PHPFullMatchingDNFBound`, no constructed compressed matching-space bad-set
   encoding/counting theorem, and no geometric `(8w)^s`-style depth-`t`
   collapse-probability bound (term-count-independent) over matchings (that
   rung of the general PHP depth-floor ladder remains open);
@@ -769,6 +786,15 @@ Version `v0.1.0` is archived on Zenodo:
 
 Version `v0.5.0` adds the opening rungs of the general-PHP-depth-floor ladder
 and the Gate B generated-collapse routes.  This release opens the general-PHP-depth-floor ladder ("Gate A") with two proved rungs of satisfiable-PHP decision-tree floors plus the first increment of the rung-3 counting layer (at that release, only the identity-subset matching distribution was formalized). Rung 1 (`PvNP.PHPBooleanDepthFloor`): the satisfiable `h × h` pigeonhole Boolean function is evasive — every correct decision tree under the empty restriction has depth at least `h·h` (`fullPHPBoundary_depthFloor`), the first genuine family instance of `PHPDepthFloorStatement` beyond the trivial `1 × 1` boundary, with non-vacuity at depth `h·h + 1`. Rung 2 (`PvNP.PHPRestrictedDepthFloor`): the floor survives every fixed partial-matching restriction — the master theorem `matchingRestriction_depthFloor` gives depth at least the number of free variables, and the two-parameter family `matchingBoundary_depthFloor` instantiates the statement surface with floor `(h − s)·h` under genuinely nontrivial restriction families. Rung 3, first increment (`PvNP.PHPMatchingDistribution`): the uniform space of `s`-subset identity-matching restrictions with exact star counting — `star_ratio` (`h * choose (h−1) s = (h − s) * choose h s`, axioms `propext` only) is the exact counting form of "every variable is a star with probability `(h−s)/h`", the quantity switching-lemma arguments consume — plus probability-one transfer of the rung-2 floor to every point of the space (`subsetSpace_depthFloor`). The current post-v0.5.0 surface adds `PvNP.PHPFullMatchingDistribution`, the full square `h × h` permutation-matching space `subsetSpace h s × Equiv.Perm (Fin h)` with exact star counting and every-point floor transfer, plus `PvNP.PHPFullMatchingProbability`, an exact finite event-probability interface over that square space, plus `PvNP.PHPFullMatchingCollapseBound`, the first depth-1 single-literal and single-conjunctive-term collapse-probability upper bounds over that space, plus `PvNP.PHPFullMatchingDNFBound`, the depth-1 multi-term DNF total-size union bound over that space, plus `PvNP.PHPFullMatchingCanonicalDT`, the deterministic restricted-DNF canonical-tree skeleton over that space, plus `PvNP.PHPFullMatchingBadPathEncoding`, the conservative optional-code bad-path count over that space. Rectangular `p > h` injection spaces remain unformalized. These Gate A rungs are elementary sensitivity, deterministic tree, and finite-counting mathematics; no measure-theoretic probability, expectation theorem, or high-probability theorem is defined. The PHP switching lemma itself (Gate A rung 4 as a whole) remains OPEN: beyond those depth-1 literal/term/DNF events, the deterministic canonical-tree skeleton, and the conservative optional-code count, there is no multi-term DNF bad-set bound beyond the depth-1 total-size union bound, no compressed matching-space bad-set encoding/counting theorem, and no geometric term-count-independent depth-`t` collapse-probability bound over matchings, and none of this is a Frege/PHP proof-size bound, an NP/circuit bound, or a statement about P vs NP.
+
+Post-v0.5.0 S2120 also adds `PvNP.PHPFullMatchingCompressedBadPathCount`,
+which proves free-variable certification for restricted DNF survivors and
+canonical restricted-DNF tree paths, an exact row-level free-set count
+`fullRowsFree_count`, and a conditional compressed-target count theorem.  This
+is still only scaffold infrastructure: no compressed encoder, path-code
+fiber/multiplicity theorem, geometric collapse-probability bound, PHP switching
+lemma, Frege/PHP lower bound, NP/circuit lower bound, or P-vs-NP claim is
+proved.
 
 It also adds the Gate B generated-restriction ladder: B1/B2 counting-generated good restrictions with the explicit joint union bound and simultaneous collapse (`GeneratedGoodRestriction`), the shared-layer obstruction map with its intentionally nonempty machine-readable `openObligations` list (`GeneratedIteratedCollapse`), the B3 one-step generated depth reduction for supplied minimal layered views (`GeneratedOneStepDepthReduction`), first-wins restriction composition with consistent-subspace counting and the full-star-space closed form (`RestrictionComposition`), and the plan-supplied B4 route theorem `generatedIteratedCollapse` (`GeneratedIteratedCollapseFinal`), shipped with its satisfiability gap disclosed — the consistent-route stage beats compared full-space bad-set counts against consistent-subspace cardinalities, with no exhibited nonempty-gate multi-stage instance.  That gap is closed for the REFINEMENT ROUTE by the renormalized free-subcube counting: refinement subspaces with a closed-form cardinality (`RefinedSubspace`), support-injective relabel transport (`SwitchingRelabel`), the renormalized bad-set bound `badSetTerm_refines_card_le` and refined route theorem `generatedRefinedIteratedCollapse` (`GeneratedRefinedCollapse`), and the concrete depth-2, `n = 306`, width-budget-1 two-stage instance `refinedTwoStage_nonemptyGates_nonvacuous` (`RefinedTwoStageInstance`; realized stage-2 width is not certified).  Frozen-form B4 (single upfront depth-`d` layered view, product hypothesis `B(m, w, s, d)`, `t(d, s)` tree bound) remains open, and `GeneratedIteratedCollapse.openObligations` intentionally remains nonempty.
 
@@ -1062,7 +1088,15 @@ event is bounded by the full matching-space size times the optional path-code
 count.  Because the encoder keeps the original matching point, this is not a
 geometric compression or collapse-probability improvement.
 
-The current audit surface has 957 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
+The compressed bad-path scaffold (`PHPFullMatchingCompressedBadPathCount`)
+proves that restricted DNF survivors, canonical restricted-tree queries, and
+deepest-path queries are free under `fullRestrictionOf P`; it also extracts a
+free-certified `P`-dependent path code and exposes a conditional target-count
+theorem for a future compressed encoder.  It still does not construct the
+compressed encoder, prove a path-code fiber/multiplicity bound, or prove a
+geometric collapse-probability theorem.
+
+The current audit surface has 964 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
 
 - DOI: `10.5281/zenodo.21184992`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`

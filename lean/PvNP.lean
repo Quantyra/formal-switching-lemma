@@ -53,6 +53,7 @@ import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
 import PvNP.PHPFullMatchingBadPathEncoding
+import PvNP.PHPFullMatchingCompressedBadPathCount
 import PvNP.PHPFullMatchingDNFBound
 import PvNP.PHPFullMatchingDistribution
 import PvNP.PHPFullMatchingProbability

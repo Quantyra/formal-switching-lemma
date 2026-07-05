@@ -23,6 +23,7 @@ import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
 import PvNP.PHPFullMatchingBadPathEncoding
+import PvNP.PHPFullMatchingCompressedBadPathCount
 import PvNP.PHPFullMatchingDNFBound
 import PvNP.TreePathViews
 import PvNP.AutoReviewedIteration
@@ -5846,3 +5847,55 @@ improvement, and no proof-complexity or P-vs-NP lower-bound claim.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPFullMatchingBadPathEncoding.canonicalDepthBad_count_le_space_mul_optional_pathCode
+
+/-! ## Compressed bad-path count scaffold over full matching space
+
+Pins for `PvNP.PHPFullMatchingCompressedBadPathCount`: surviving restricted DNF
+variables are free; canonical restricted PHP DNF trees and their deepest paths
+query only free variables; every depth-`t` bad point has a free-certified path
+code; a specified set of rows has an exact free-row matching-space count; and a
+later compressed-target injection immediately yields the finite bad-event count
+bound.  This is only a scaffold: no final compressed encoder, path-code fiber
+bound, geometric probability bound, switching lemma, proof-complexity lower
+bound, or P-vs-NP claim is proved here.
+-/
+
+/-- info: 'PvNP.PHPFullMatchingCompressedBadPathCount.termRestrict_mem_free' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCompressedBadPathCount.termRestrict_mem_free
+
+/-- info: 'PvNP.PHPFullMatchingCompressedBadPathCount.dnfVarsIn_dnfRestrict_free' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCompressedBadPathCount.dnfVarsIn_dnfRestrict_free
+
+/-- info: 'PvNP.PHPFullMatchingCompressedBadPathCount.treeVarsIn_free_canonicalRestrictedDNFTree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCompressedBadPathCount.treeVarsIn_free_canonicalRestrictedDNFTree
+
+/-- info: 'PvNP.PHPFullMatchingCompressedBadPathCount.deepestPath_canonicalRestrictedDNFTree_free' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCompressedBadPathCount.deepestPath_canonicalRestrictedDNFTree_free
+
+/-- info: 'PvNP.PHPFullMatchingCompressedBadPathCount.canonicalDepthBad_freePathCode_exists' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCompressedBadPathCount.canonicalDepthBad_freePathCode_exists
+
+/-- info: 'PvNP.PHPFullMatchingCompressedBadPathCount.canonicalDepthBad_count_le_target_mul_pathCode_of_injOn' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCompressedBadPathCount.canonicalDepthBad_count_le_target_mul_pathCode_of_injOn
+
+/-- info: 'PvNP.PHPFullMatchingCompressedBadPathCount.fullRowsFree_count' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCompressedBadPathCount.fullRowsFree_count

@@ -49,11 +49,13 @@ This repository does **not** establish or imply:
   union bound of `PHPFullMatchingDNFBound`, plus the deterministic restricted
   DNF canonical-tree skeleton of `PHPFullMatchingCanonicalDT`, plus the
   conservative optional-code bad-path count of
-  `PHPFullMatchingBadPathEncoding`,
+  `PHPFullMatchingBadPathEncoding`, plus the free-variable, row-level
+  multiplicity, and conditional compressed-target scaffold of
+  `PHPFullMatchingCompressedBadPathCount`,
   no collapse-probability upper bound for restricted formulas over the
   matching-restriction space is stated or proved — in particular no
   multi-term DNF bad-set bound beyond the depth-1 total-size union bound of
-  `PHPFullMatchingDNFBound`, no compressed matching-space bad-set
+  `PHPFullMatchingDNFBound`, no constructed compressed matching-space bad-set
   encoding/counting theorem, and no geometric `(8w)^s`-style depth-`t`
   collapse-probability bound (term-count-independent) over matchings;
 - a measure-theoretic probability measure, expectation, or
@@ -210,6 +212,13 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.PHPFullMatchingBadPathEncoding.canonicalDepthBad_pathCode_exists` | `propext`, `Classical.choice`, `Quot.sound` | proven every depth-`t` bad matching point has a certified path code over the original PHP DNF variable set |
 | `PvNP.PHPFullMatchingBadPathEncoding.canonicalDepthBadEncoding_injective_on` | `propext`, `Classical.choice`, `Quot.sound` | proven conservative bad-point encoder is injective on the filtered full matching space because it retains the original matching point |
 | `PvNP.PHPFullMatchingBadPathEncoding.canonicalDepthBad_count_le_space_mul_optional_pathCode` | `propext`, `Classical.choice`, `Quot.sound` | proven first finite bad-path count over `fullMatchingSpace`, bounded by space size times optional path-code count (not geometric/compressed) |
+| `PvNP.PHPFullMatchingCompressedBadPathCount.termRestrict_mem_free` | `propext` | proven every surviving restricted-term literal has a free variable under the restriction |
+| `PvNP.PHPFullMatchingCompressedBadPathCount.dnfVarsIn_dnfRestrict_free` | `propext`, `Classical.choice`, `Quot.sound` | proven every variable in a restricted DNF is free under the restriction |
+| `PvNP.PHPFullMatchingCompressedBadPathCount.treeVarsIn_free_canonicalRestrictedDNFTree` | `propext`, `Classical.choice`, `Quot.sound` | proven every restricted canonical PHP DNF tree query is free under `fullRestrictionOf P` |
+| `PvNP.PHPFullMatchingCompressedBadPathCount.deepestPath_canonicalRestrictedDNFTree_free` | `propext`, `Classical.choice`, `Quot.sound` | proven every deepest-path query in the restricted canonical PHP DNF tree is free under `fullRestrictionOf P` |
+| `PvNP.PHPFullMatchingCompressedBadPathCount.canonicalDepthBad_freePathCode_exists` | `propext`, `Classical.choice`, `Quot.sound` | proven every depth-`t` bad matching point has a `P`-dependent path code certified free under `fullRestrictionOf P` |
+| `PvNP.PHPFullMatchingCompressedBadPathCount.canonicalDepthBad_count_le_target_mul_pathCode_of_injOn` | `propext`, `Classical.choice`, `Quot.sound` | conditional scaffold: any future compressed-target injection paired with `BadPathCode` gives the corresponding finite bad-event count bound; no encoder or fiber bound is constructed here |
+| `PvNP.PHPFullMatchingCompressedBadPathCount.fullRowsFree_count` | `propext`, `Classical.choice`, `Quot.sound` | exact count of full matching points that leave a specified row set free; row-level multiplicity scaffold only, not a path-code fiber theorem |
 | `PvNP.GeneratedGoodRestriction.simultaneousCollapse_exists` | `propext`, `Classical.choice`, `Quot.sound` | proven B1/B2 generated simultaneous collapse (supplied counting beat) |
 | `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` | none | openness certificate (intentionally nonempty frozen-form obstruction map) |
 | `PvNP.GeneratedOneStepDepthReduction.generatedOneStepDepthReduction_exists` | `propext`, `Classical.choice`, `Quot.sound` | proven B3 one-step generated depth reduction (supplied minimal layered view) |
@@ -498,11 +507,14 @@ single-literal/single-term (`PHPFullMatchingCollapseBound`), with the
 single-literal event's probability additionally made exact and its
 realizability certified in `PHPFullMatchingCollapseExact`, and the
 multi-term DNF total-size union bound of `PHPFullMatchingDNFBound`; the
-restricted-DNF canonical-tree skeleton of `PHPFullMatchingCanonicalDT` is
-deterministic infrastructure only, and `PHPFullMatchingBadPathEncoding` keeps
-the original matching point in a conservative optional-code count. No compressed
-matching-space bad-set encoding/counting theorem or geometric
-term-count-independent depth-`t` collapse-probability bound is proved.
+  restricted-DNF canonical-tree skeleton of `PHPFullMatchingCanonicalDT` is
+  deterministic infrastructure only, `PHPFullMatchingBadPathEncoding` keeps
+  the original matching point in a conservative optional-code count, and
+  `PHPFullMatchingCompressedBadPathCount` proves only free-variable
+  certification, a row-level free-set multiplicity count, and a conditional
+  compressed-target count scaffold. No constructed compressed matching-space
+  bad-set encoding/counting theorem, path-code fiber bound, or geometric
+  term-count-independent depth-`t` collapse-probability bound is proved.
 
 ## Re-Verification
 
