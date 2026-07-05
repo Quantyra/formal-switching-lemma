@@ -214,6 +214,22 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   single-literal/single-term events only: NOT a PHP switching lemma — no
   multi-term DNF bad-set bound, no depth-`t` canonical decision-tree
   argument, no geometric `(8w)^s`-style bound over matchings.
+- `PvNP.PHPFullMatchingCollapseExact.matchingCollapseBad_lit_probability_eq`:
+  the single-literal bound is EXACT in this artifact.  The converse
+  containment (`matchingCollapseBad_lit_of_fullStarEvent`, via two explicit
+  agreeing assignments flipping the free variable under a depth-0 leaf)
+  makes the depth-1 single-literal collapse-bad event pointwise EQUAL to the
+  star event of its variable
+  (`matchingCollapseBad_lit_iff_fullStarEvent`), so its probability is
+  exactly `(h−s)/h` in cross-multiplied counting form, and at `h = 3`,
+  `s = 2` the event count is positive
+  (`matchingCollapseBad_lit_three_two_count_pos`), certifying the event is
+  realized by actual points of the space.  Exactness covers ONLY the
+  single-literal event: the single-term union bound remains an inequality
+  (a term with a literal fixed to false collapses to a leaf even when its
+  other variables are free), and this is still NOT a PHP switching lemma —
+  no multi-term DNF bad-set bound, no depth-`t` canonical decision-tree
+  argument, no geometric `(8w)^s`-style bound over matchings.
 - `PvNP.GeneratedGoodRestriction.jointBadSet_card_le`, `goodRestriction_exists`,
   and `simultaneousCollapse_exists`: Gate B stages B1/B2 — the first theorems in
   this repository where the switching lemma's counting GENERATES restrictions
@@ -582,7 +598,9 @@ This artifact does **not** prove or imply:
   cut-free system from its completeness theorem (completeness alone proves no
   hardness; the naive constructed refutations are exponential-size).
 - a PHP switching lemma: beyond the depth-1 single-literal and
-  single-conjunctive-term collapse bounds of `PHPFullMatchingCollapseBound`,
+  single-conjunctive-term collapse bounds of `PHPFullMatchingCollapseBound`
+  (made exact for the single-literal event in
+  `PHPFullMatchingCollapseExact`),
   no collapse-probability upper bound for restricted formulas over the
   matching-restriction space is stated or proved — in particular no
   multi-term DNF bad-set bound, no depth-`t` canonical decision-tree
@@ -963,7 +981,18 @@ A rung 4 but is NOT a PHP switching lemma: no multi-term DNF bad-set bound,
 no depth-`t` canonical decision-tree argument, and no geometric bound over
 matchings.
 
-The current audit surface has 940 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
+The exact single-literal follow-up (`PHPFullMatchingCollapseExact`) upgrades
+the literal bound to an equality: the converse containment is proved via two
+explicit agreeing assignments flipping the free variable, so the depth-1
+single-literal collapse-bad event coincides pointwise with the star event of
+its variable and its probability is exactly `(h−s)/h`, with a positive event
+count at `h = 3`, `s = 2` certifying realizability.  Exactness covers the
+single-literal event only — the single-term union bound remains an
+inequality (a term with a literal fixed to false collapses to a leaf even
+when its other variables are free) — and this is still NOT a PHP switching
+lemma.
+
+The current audit surface has 944 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
 
 - DOI: `10.5281/zenodo.21184992`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`

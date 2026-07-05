@@ -20,6 +20,7 @@ import PvNP.PHPMatchingDistribution
 import PvNP.PHPFullMatchingDistribution
 import PvNP.PHPFullMatchingProbability
 import PvNP.PHPFullMatchingCollapseBound
+import PvNP.PHPFullMatchingCollapseExact
 import PvNP.TreePathViews
 import PvNP.AutoReviewedIteration
 import PvNP.ScheduledAutoCollapse
@@ -5704,3 +5705,35 @@ bound over matchings; Gate A rung 4 as a whole remains open.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPFullMatchingCollapseBound.matchingCollapseBad_term_three_two_strict
+
+/-! ## Exact single-literal collapse probability
+
+Pins for `PvNP.PHPFullMatchingCollapseExact`: the converse containment
+(star implies collapse-bad), the pointwise event identity, the exact
+probability `(h-s)/h` for the depth-1 single-literal collapse-bad event, and
+its positive-count realizability at `h = 3`, `s = 2`.  Exactness covers the
+single-literal event only; the single-term union bound remains an inequality,
+and this is still NOT a PHP switching lemma: no multi-term DNF bad-set bound,
+no depth-`t` canonical decision-tree argument, no geometric `(8w)^s`-style
+bound over matchings; Gate A rung 4 as a whole remains open.
+-/
+
+/-- info: 'PvNP.PHPFullMatchingCollapseExact.matchingCollapseBad_lit_of_fullStarEvent' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCollapseExact.matchingCollapseBad_lit_of_fullStarEvent
+
+/-- info: 'PvNP.PHPFullMatchingCollapseExact.matchingCollapseBad_lit_iff_fullStarEvent' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCollapseExact.matchingCollapseBad_lit_iff_fullStarEvent
+
+/-- info: 'PvNP.PHPFullMatchingCollapseExact.matchingCollapseBad_lit_probability_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCollapseExact.matchingCollapseBad_lit_probability_eq
+
+/-- info: 'PvNP.PHPFullMatchingCollapseExact.matchingCollapseBad_lit_three_two_count_pos' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCollapseExact.matchingCollapseBad_lit_three_two_count_pos

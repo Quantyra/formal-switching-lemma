@@ -43,7 +43,9 @@ This repository does **not** establish or imply:
   cut-free system from its completeness theorem (completeness alone proves no
   hardness; the naive constructed refutations are exponential-size).
 - a PHP switching lemma: beyond the depth-1 single-literal and
-  single-conjunctive-term collapse bounds of `PHPFullMatchingCollapseBound`,
+  single-conjunctive-term collapse bounds of `PHPFullMatchingCollapseBound`
+  (made exact for the single-literal event in
+  `PHPFullMatchingCollapseExact`),
   no collapse-probability upper bound for restricted formulas over the
   matching-restriction space is stated or proved — in particular no
   multi-term DNF bad-set bound, no depth-`t` canonical decision-tree
@@ -185,6 +187,10 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.PHPFullMatchingCollapseBound.matchingCollapseBad_term_probability_le` | `propext`, `Classical.choice`, `Quot.sound` | proven depth-1 single-conjunctive-term union-bound collapse-probability upper bound `w*(h - s)/h` (weak, NOT the switching-lemma ratio regime) |
 | `PvNP.PHPFullMatchingCollapseBound.matchingCollapseBad_lit_three_two_strict` | `propext`, `Classical.choice`, `Quot.sound` | proven strictly-below-one literal instance `1/3` at `h = 3`, `s = 2` over a nonempty space |
 | `PvNP.PHPFullMatchingCollapseBound.matchingCollapseBad_term_three_two_strict` | `propext`, `Classical.choice`, `Quot.sound` | proven strictly-below-one width-2 term instance `2/3` at `h = 3`, `s = 2` over a nonempty space |
+| `PvNP.PHPFullMatchingCollapseExact.matchingCollapseBad_lit_of_fullStarEvent` | `propext`, `Quot.sound` | proven converse containment: a free literal variable makes the point collapse-bad at depth 1 |
+| `PvNP.PHPFullMatchingCollapseExact.matchingCollapseBad_lit_iff_fullStarEvent` | `propext`, `Quot.sound` | proven pointwise identity of the depth-1 single-literal collapse-bad event with the star event |
+| `PvNP.PHPFullMatchingCollapseExact.matchingCollapseBad_lit_probability_eq` | `propext`, `Classical.choice`, `Quot.sound` | proven EXACT depth-1 single-literal collapse probability `(h - s)/h` (single-literal event only; NOT a PHP switching lemma) |
+| `PvNP.PHPFullMatchingCollapseExact.matchingCollapseBad_lit_three_two_count_pos` | `propext`, `Classical.choice`, `Quot.sound` | proven positive bad-event count at `h = 3`, `s = 2` (realizability of the literal collapse-bad event) |
 | `PvNP.GeneratedGoodRestriction.simultaneousCollapse_exists` | `propext`, `Classical.choice`, `Quot.sound` | proven B1/B2 generated simultaneous collapse (supplied counting beat) |
 | `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` | none | openness certificate (intentionally nonempty frozen-form obstruction map) |
 | `PvNP.GeneratedOneStepDepthReduction.generatedOneStepDepthReduction_exists` | `propext`, `Classical.choice`, `Quot.sound` | proven B3 one-step generated depth reduction (supplied minimal layered view) |
@@ -468,8 +474,11 @@ formula syntax, synthesize normalized/simple syntactic DNF views or efficient
 width profiles, prove a global efficient `t(d,s)` theorem, or close full
 frozen-form B4.
 The PHP switching lemma (Gate A rung 4 as a whole) remains open: the
-depth-1 single-literal/single-term collapse bounds of
-`PHPFullMatchingCollapseBound` open the upper-bound direction only.
+collapse-probability analysis covers depth-1 single-literal/single-term
+events only (`PHPFullMatchingCollapseBound`), with the single-literal
+event's probability additionally made exact and its realizability certified
+in `PHPFullMatchingCollapseExact`; no multi-term or depth-`t` bound of any
+kind is proved.
 
 ## Re-Verification
 
