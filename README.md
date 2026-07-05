@@ -212,8 +212,9 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   (`matchingCollapseBad_lit_three_two_strict` and
   `matchingCollapseBad_term_three_two_strict`).  These are depth-1
   single-literal/single-term events only: NOT a PHP switching lemma — no
-  multi-term DNF bad-set bound, no matching-space bad-set encoding/counting
-  theorem, no geometric depth-`t` `(8w)^s`-style bound over matchings.
+  multi-term DNF bad-set bound, no compressed matching-space bad-set
+  encoding/counting theorem, no geometric depth-`t` `(8w)^s`-style bound
+  over matchings.
 - `PvNP.PHPFullMatchingCollapseExact.matchingCollapseBad_lit_probability_eq`:
   the single-literal bound is EXACT in this artifact.  The converse
   containment (`matchingCollapseBad_lit_of_fullStarEvent`, via two explicit
@@ -228,7 +229,7 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   single-literal event: the single-term union bound remains an inequality
   (a term with a literal fixed to false collapses to a leaf even when its
   other variables are free), and this is still NOT a PHP switching lemma —
-  no multi-term DNF bad-set bound, no matching-space bad-set
+  no multi-term DNF bad-set bound, no compressed matching-space bad-set
   encoding/counting theorem, no geometric depth-`t` `(8w)^s`-style bound
   over matchings.
 - `PvNP.PHPFullMatchingDNFBound.matchingCollapseBad_dnf_probability_le`: the
@@ -242,10 +243,10 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   empty term have exactly empty bad events), and a two-term instance at
   `h = 3`, `s = 2` gives `2/3 < 1` over a nonempty space
   (`matchingCollapseBad_dnf_three_two_strict`).  Depth-1 collapse-bad means
-  only "the restricted DNF fails to be constant": no matching-space bad-set
-  encoding/counting theorem, no geometric term-count-independent depth-`t`
-  `(8w)^s`-style collapse-probability bound; Gate A rung 4 as a whole
-  remains open.
+  only "the restricted DNF fails to be constant": no compressed matching-space
+  bad-set encoding/counting theorem, no geometric term-count-independent
+  depth-`t` `(8w)^s`-style collapse-probability bound; Gate A rung 4 as a
+  whole remains open.
 - `PvNP.PHPFullMatchingCanonicalDT.canonicalRestrictedDNFTree_correct`:
   deterministic restricted-DNF canonical decision-tree skeleton over the full
   square matching space.  `phpDNFAsDNF` translates the PHP DNF list format to
@@ -256,9 +257,20 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   `canonicalRestrictedDNFTree_depth_le_total` /
   `canonicalRestrictedDNFTree_path_length_le_total` bound deterministic
   worst-case depth and assignment-path query count by `tvs.join.length`.
-  This is representation and structural infrastructure only: no bad-set
-  encoding/counting theorem, no geometric collapse-probability bound, and no
-  rectangular `p > h` injection-space result.
+  This is representation and structural infrastructure only: no compressed
+  bad-set encoding/counting theorem, no geometric collapse-probability bound,
+  and no rectangular `p > h` injection-space result.
+- `PvNP.PHPFullMatchingBadPathEncoding.canonicalDepthBad_count_le_space_mul_optional_pathCode`:
+  the first conservative bad-path encoding/counting theorem for
+  `canonicalRestrictedDNFTree` over `fullMatchingSpace`.  A depth-`t` bad
+  matching point carries a certified `BadPathCode` consisting of `t`
+  deepest-path query/direction pairs, with queries in `phpDNFVarSet h tvs`
+  (`deepestPath_treeVarsIn`, `canonicalDepthBad_pathCode_exists`), and the
+  filtered bad event has cardinality at most the matching-space cardinality
+  times the optional path-code count.  This encoder deliberately keeps the
+  original matching point as its first coordinate, so it is not a geometric
+  compression, not a switching lemma, and not a collapse-probability
+  improvement.
 - `PvNP.GeneratedGoodRestriction.jointBadSet_card_le`, `goodRestriction_exists`,
   and `simultaneousCollapse_exists`: Gate B stages B1/B2 — the first theorems in
   this repository where the switching lemma's counting GENERATES restrictions
@@ -631,12 +643,14 @@ This artifact does **not** prove or imply:
   (made exact for the single-literal event in
   `PHPFullMatchingCollapseExact`) and the depth-1 multi-term DNF total-size
   union bound of `PHPFullMatchingDNFBound`, plus the deterministic restricted
-  DNF canonical-tree skeleton of `PHPFullMatchingCanonicalDT`,
+  DNF canonical-tree skeleton of `PHPFullMatchingCanonicalDT`, plus the
+  conservative optional-code bad-path count of
+  `PHPFullMatchingBadPathEncoding`,
   no collapse-probability upper bound for restricted formulas over the
   matching-restriction space is stated or proved — in particular no
   multi-term DNF bad-set bound beyond the depth-1 total-size union bound of
-  `PHPFullMatchingDNFBound`, no matching-space bad-set encoding/counting
-  theorem, and no geometric `(8w)^s`-style depth-`t`
+  `PHPFullMatchingDNFBound`, no compressed matching-space bad-set
+  encoding/counting theorem, and no geometric `(8w)^s`-style depth-`t`
   collapse-probability bound (term-count-independent) over matchings (that
   rung of the general PHP depth-floor ladder remains open);
 - a measure-theoretic probability measure, expectation, or
@@ -754,7 +768,7 @@ Version `v0.1.0` is archived on Zenodo:
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.1.0`
 
 Version `v0.5.0` adds the opening rungs of the general-PHP-depth-floor ladder
-and the Gate B generated-collapse routes.  This release opens the general-PHP-depth-floor ladder ("Gate A") with two proved rungs of satisfiable-PHP decision-tree floors plus the first increment of the rung-3 counting layer (at that release, only the identity-subset matching distribution was formalized). Rung 1 (`PvNP.PHPBooleanDepthFloor`): the satisfiable `h × h` pigeonhole Boolean function is evasive — every correct decision tree under the empty restriction has depth at least `h·h` (`fullPHPBoundary_depthFloor`), the first genuine family instance of `PHPDepthFloorStatement` beyond the trivial `1 × 1` boundary, with non-vacuity at depth `h·h + 1`. Rung 2 (`PvNP.PHPRestrictedDepthFloor`): the floor survives every fixed partial-matching restriction — the master theorem `matchingRestriction_depthFloor` gives depth at least the number of free variables, and the two-parameter family `matchingBoundary_depthFloor` instantiates the statement surface with floor `(h − s)·h` under genuinely nontrivial restriction families. Rung 3, first increment (`PvNP.PHPMatchingDistribution`): the uniform space of `s`-subset identity-matching restrictions with exact star counting — `star_ratio` (`h * choose (h−1) s = (h − s) * choose h s`, axioms `propext` only) is the exact counting form of "every variable is a star with probability `(h−s)/h`", the quantity switching-lemma arguments consume — plus probability-one transfer of the rung-2 floor to every point of the space (`subsetSpace_depthFloor`). The current post-v0.5.0 surface adds `PvNP.PHPFullMatchingDistribution`, the full square `h × h` permutation-matching space `subsetSpace h s × Equiv.Perm (Fin h)` with exact star counting and every-point floor transfer, plus `PvNP.PHPFullMatchingProbability`, an exact finite event-probability interface over that square space, plus `PvNP.PHPFullMatchingCollapseBound`, the first depth-1 single-literal and single-conjunctive-term collapse-probability upper bounds over that space, plus `PvNP.PHPFullMatchingDNFBound`, the depth-1 multi-term DNF total-size union bound over that space, plus `PvNP.PHPFullMatchingCanonicalDT`, the deterministic restricted-DNF canonical-tree skeleton over that space. Rectangular `p > h` injection spaces remain unformalized. These Gate A rungs are elementary sensitivity, deterministic tree, and finite-counting mathematics; no measure-theoretic probability, expectation theorem, or high-probability theorem is defined. The PHP switching lemma itself (Gate A rung 4 as a whole) remains OPEN: beyond those depth-1 literal/term/DNF events and the deterministic canonical-tree skeleton there is no multi-term DNF bad-set bound beyond the depth-1 total-size union bound, no matching-space bad-set encoding/counting theorem, and no geometric term-count-independent depth-`t` collapse-probability bound over matchings, and none of this is a Frege/PHP proof-size bound, an NP/circuit bound, or a statement about P vs NP.
+and the Gate B generated-collapse routes.  This release opens the general-PHP-depth-floor ladder ("Gate A") with two proved rungs of satisfiable-PHP decision-tree floors plus the first increment of the rung-3 counting layer (at that release, only the identity-subset matching distribution was formalized). Rung 1 (`PvNP.PHPBooleanDepthFloor`): the satisfiable `h × h` pigeonhole Boolean function is evasive — every correct decision tree under the empty restriction has depth at least `h·h` (`fullPHPBoundary_depthFloor`), the first genuine family instance of `PHPDepthFloorStatement` beyond the trivial `1 × 1` boundary, with non-vacuity at depth `h·h + 1`. Rung 2 (`PvNP.PHPRestrictedDepthFloor`): the floor survives every fixed partial-matching restriction — the master theorem `matchingRestriction_depthFloor` gives depth at least the number of free variables, and the two-parameter family `matchingBoundary_depthFloor` instantiates the statement surface with floor `(h − s)·h` under genuinely nontrivial restriction families. Rung 3, first increment (`PvNP.PHPMatchingDistribution`): the uniform space of `s`-subset identity-matching restrictions with exact star counting — `star_ratio` (`h * choose (h−1) s = (h − s) * choose h s`, axioms `propext` only) is the exact counting form of "every variable is a star with probability `(h−s)/h`", the quantity switching-lemma arguments consume — plus probability-one transfer of the rung-2 floor to every point of the space (`subsetSpace_depthFloor`). The current post-v0.5.0 surface adds `PvNP.PHPFullMatchingDistribution`, the full square `h × h` permutation-matching space `subsetSpace h s × Equiv.Perm (Fin h)` with exact star counting and every-point floor transfer, plus `PvNP.PHPFullMatchingProbability`, an exact finite event-probability interface over that square space, plus `PvNP.PHPFullMatchingCollapseBound`, the first depth-1 single-literal and single-conjunctive-term collapse-probability upper bounds over that space, plus `PvNP.PHPFullMatchingDNFBound`, the depth-1 multi-term DNF total-size union bound over that space, plus `PvNP.PHPFullMatchingCanonicalDT`, the deterministic restricted-DNF canonical-tree skeleton over that space, plus `PvNP.PHPFullMatchingBadPathEncoding`, the conservative optional-code bad-path count over that space. Rectangular `p > h` injection spaces remain unformalized. These Gate A rungs are elementary sensitivity, deterministic tree, and finite-counting mathematics; no measure-theoretic probability, expectation theorem, or high-probability theorem is defined. The PHP switching lemma itself (Gate A rung 4 as a whole) remains OPEN: beyond those depth-1 literal/term/DNF events, the deterministic canonical-tree skeleton, and the conservative optional-code count, there is no multi-term DNF bad-set bound beyond the depth-1 total-size union bound, no compressed matching-space bad-set encoding/counting theorem, and no geometric term-count-independent depth-`t` collapse-probability bound over matchings, and none of this is a Frege/PHP proof-size bound, an NP/circuit bound, or a statement about P vs NP.
 
 It also adds the Gate B generated-restriction ladder: B1/B2 counting-generated good restrictions with the explicit joint union bound and simultaneous collapse (`GeneratedGoodRestriction`), the shared-layer obstruction map with its intentionally nonempty machine-readable `openObligations` list (`GeneratedIteratedCollapse`), the B3 one-step generated depth reduction for supplied minimal layered views (`GeneratedOneStepDepthReduction`), first-wins restriction composition with consistent-subspace counting and the full-star-space closed form (`RestrictionComposition`), and the plan-supplied B4 route theorem `generatedIteratedCollapse` (`GeneratedIteratedCollapseFinal`), shipped with its satisfiability gap disclosed — the consistent-route stage beats compared full-space bad-set counts against consistent-subspace cardinalities, with no exhibited nonempty-gate multi-stage instance.  That gap is closed for the REFINEMENT ROUTE by the renormalized free-subcube counting: refinement subspaces with a closed-form cardinality (`RefinedSubspace`), support-injective relabel transport (`SwitchingRelabel`), the renormalized bad-set bound `badSetTerm_refines_card_le` and refined route theorem `generatedRefinedIteratedCollapse` (`GeneratedRefinedCollapse`), and the concrete depth-2, `n = 306`, width-budget-1 two-stage instance `refinedTwoStage_nonemptyGates_nonvacuous` (`RefinedTwoStageInstance`; realized stage-2 width is not certified).  Frozen-form B4 (single upfront depth-`d` layered view, product hypothesis `B(m, w, s, d)`, `t(d, s)` tree bound) remains open, and `GeneratedIteratedCollapse.openObligations` intentionally remains nonempty.
 
@@ -1011,8 +1025,8 @@ cross-multiplied counting form, with strictly-below-one nonvacuous
 instances at `h = 3`, `s = 2` for both the literal and a width-`2` term.
 This opens the upper-bound direction of Gate
 A rung 4 but is NOT a PHP switching lemma: no multi-term DNF bad-set bound,
-no matching-space bad-set encoding/counting theorem, and no geometric
-depth-`t` collapse-probability bound over matchings.
+no compressed matching-space bad-set encoding/counting theorem, and no
+geometric depth-`t` collapse-probability bound over matchings.
 
 The exact single-literal follow-up (`PHPFullMatchingCollapseExact`) upgrades
 the literal bound to an equality: the converse containment is proved via two
@@ -1038,10 +1052,17 @@ connects those PHP DNFs to the existing generic term-canonical DNF tree: the
 tree computes the restricted PHP DNF under agreeing assignments, queries only
 variables from the original PHP DNF, and has deterministic worst-case
 depth/path length at most `tvs.join.length`.  This remains infrastructure
-only: no matching-space bad-set encoding/counting theorem or geometric
-collapse-probability bound is proved.
+only: no compressed matching-space bad-set encoding/counting theorem or
+geometric collapse-probability bound is proved.
 
-The current audit surface has 953 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
+The conservative bad-path encoding/count (`PHPFullMatchingBadPathEncoding`)
+extracts a certified depth-`t` deepest-path code for any bad
+`canonicalRestrictedDNFTree` point and proves the filtered full-matching bad
+event is bounded by the full matching-space size times the optional path-code
+count.  Because the encoder keeps the original matching point, this is not a
+geometric compression or collapse-probability improvement.
+
+The current audit surface has 957 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
 
 - DOI: `10.5281/zenodo.21184992`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`

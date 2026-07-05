@@ -52,6 +52,7 @@ import PvNP.MixedFormulaFamilyCollapse
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
+import PvNP.PHPFullMatchingBadPathEncoding
 import PvNP.PHPFullMatchingDNFBound
 import PvNP.PHPFullMatchingDistribution
 import PvNP.PHPFullMatchingProbability

@@ -22,6 +22,7 @@ import PvNP.PHPFullMatchingProbability
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
+import PvNP.PHPFullMatchingBadPathEncoding
 import PvNP.PHPFullMatchingDNFBound
 import PvNP.TreePathViews
 import PvNP.AutoReviewedIteration
@@ -5811,3 +5812,37 @@ and no proof-complexity or P-vs-NP lower-bound claim.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPFullMatchingCanonicalDT.canonicalRestrictedDNFTree_path_length_le_total
+
+/-! ## Conservative bad-path encoding/counting over full matching space
+
+Pins for `PvNP.PHPFullMatchingBadPathEncoding`: deepest-path query support
+inside the original PHP DNF variable set, existence of a certified depth-`t`
+path code for each bad matching point, injectivity of the conservative encoder,
+and the first finite bad-event count bound over `fullMatchingSpace`.  This is
+only a skeleton encoding/counting theorem: the encoder keeps the original
+matching point as its first coordinate and uses an optional code component, so
+it proves no geometric compression, no switching lemma, no collapse-probability
+improvement, and no proof-complexity or P-vs-NP lower-bound claim.
+-/
+
+/-- info: 'PvNP.PHPFullMatchingBadPathEncoding.deepestPath_treeVarsIn' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingBadPathEncoding.deepestPath_treeVarsIn
+
+/-- info: 'PvNP.PHPFullMatchingBadPathEncoding.canonicalDepthBad_pathCode_exists' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingBadPathEncoding.canonicalDepthBad_pathCode_exists
+
+/-- info: 'PvNP.PHPFullMatchingBadPathEncoding.canonicalDepthBadEncoding_injective_on' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingBadPathEncoding.canonicalDepthBadEncoding_injective_on
+
+/-- info: 'PvNP.PHPFullMatchingBadPathEncoding.canonicalDepthBad_count_le_space_mul_optional_pathCode' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingBadPathEncoding.canonicalDepthBad_count_le_space_mul_optional_pathCode
