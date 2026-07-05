@@ -45,11 +45,14 @@ This repository does **not** establish or imply:
 - a PHP switching lemma: beyond the depth-1 single-literal and
   single-conjunctive-term collapse bounds of `PHPFullMatchingCollapseBound`
   (made exact for the single-literal event in
-  `PHPFullMatchingCollapseExact`),
+  `PHPFullMatchingCollapseExact`) and the depth-1 multi-term DNF total-size
+  union bound of `PHPFullMatchingDNFBound`,
   no collapse-probability upper bound for restricted formulas over the
   matching-restriction space is stated or proved — in particular no
-  multi-term DNF bad-set bound, no depth-`t` canonical decision-tree
-  argument, and no geometric `(8w)^s`-style bound over matchings;
+  multi-term DNF bad-set bound beyond the depth-1 total-size union bound of
+  `PHPFullMatchingDNFBound`, no depth-`t` canonical decision-tree
+  argument, and no geometric `(8w)^s`-style bound (term-count-independent)
+  over matchings;
 - a measure-theoretic probability measure, expectation, or
   with-high-probability theorem over restriction distributions.  The
   matching-distribution/probability layers prove exact finite counting,
@@ -191,6 +194,10 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.PHPFullMatchingCollapseExact.matchingCollapseBad_lit_iff_fullStarEvent` | `propext`, `Quot.sound` | proven pointwise identity of the depth-1 single-literal collapse-bad event with the star event |
 | `PvNP.PHPFullMatchingCollapseExact.matchingCollapseBad_lit_probability_eq` | `propext`, `Classical.choice`, `Quot.sound` | proven EXACT depth-1 single-literal collapse probability `(h - s)/h` (single-literal event only; NOT a PHP switching lemma) |
 | `PvNP.PHPFullMatchingCollapseExact.matchingCollapseBad_lit_three_two_count_pos` | `propext`, `Classical.choice`, `Quot.sound` | proven positive bad-event count at `h = 3`, `s = 2` (realizability of the literal collapse-bad event) |
+| `PvNP.PHPFullMatchingDNFBound.exists_fullStarEvent_of_matchingCollapseBad_dnf` | `propext`, `Quot.sound` | proven containment of the multi-term DNF depth-1 collapse-bad event in the union of the star events of all literal occurrences |
+| `PvNP.PHPFullMatchingDNFBound.matchingCollapseBad_dnf_probability_le` | `propext`, `Classical.choice`, `Quot.sound` | proven depth-1 multi-term DNF union-bound collapse probability `\|tvs.join\|*(h - s)/h`, linear in TOTAL DNF size (weak, NOT the switching-lemma regime) |
+| `PvNP.PHPFullMatchingDNFBound.matchingCollapseBad_nil_dnf_count` | `propext`, `Classical.choice`, `Quot.sound` | proven exactly empty bad event for the empty DNF (`.or []` is constantly false) |
+| `PvNP.PHPFullMatchingDNFBound.matchingCollapseBad_dnf_three_two_strict` | `propext`, `Classical.choice`, `Quot.sound` | proven strictly-below-one two-term DNF instance `2/3` at `h = 3`, `s = 2` over a nonempty space |
 | `PvNP.GeneratedGoodRestriction.simultaneousCollapse_exists` | `propext`, `Classical.choice`, `Quot.sound` | proven B1/B2 generated simultaneous collapse (supplied counting beat) |
 | `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` | none | openness certificate (intentionally nonempty frozen-form obstruction map) |
 | `PvNP.GeneratedOneStepDepthReduction.generatedOneStepDepthReduction_exists` | `propext`, `Classical.choice`, `Quot.sound` | proven B3 one-step generated depth reduction (supplied minimal layered view) |
@@ -474,11 +481,13 @@ formula syntax, synthesize normalized/simple syntactic DNF views or efficient
 width profiles, prove a global efficient `t(d,s)` theorem, or close full
 frozen-form B4.
 The PHP switching lemma (Gate A rung 4 as a whole) remains open: the
-collapse-probability analysis covers depth-1 single-literal/single-term
-events only (`PHPFullMatchingCollapseBound`), with the single-literal
-event's probability additionally made exact and its realizability certified
-in `PHPFullMatchingCollapseExact`; no multi-term or depth-`t` bound of any
-kind is proved.
+collapse-probability analysis covers depth-1 events only —
+single-literal/single-term (`PHPFullMatchingCollapseBound`), with the
+single-literal event's probability additionally made exact and its
+realizability certified in `PHPFullMatchingCollapseExact`, and the
+multi-term DNF total-size union bound of `PHPFullMatchingDNFBound`; no
+depth-`t` bound, bad-set encoding argument, or geometric
+term-count-independent bound of any kind is proved.
 
 ## Re-Verification
 

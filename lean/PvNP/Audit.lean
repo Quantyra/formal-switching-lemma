@@ -21,6 +21,7 @@ import PvNP.PHPFullMatchingDistribution
 import PvNP.PHPFullMatchingProbability
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
+import PvNP.PHPFullMatchingDNFBound
 import PvNP.TreePathViews
 import PvNP.AutoReviewedIteration
 import PvNP.ScheduledAutoCollapse
@@ -5737,3 +5738,40 @@ bound over matchings; Gate A rung 4 as a whole remains open.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPFullMatchingCollapseExact.matchingCollapseBad_lit_three_two_count_pos
+
+/-! ## First multi-term DNF depth-1 bad-set bound over the matching space
+
+Pins for `PvNP.PHPFullMatchingDNFBound`: the containment of the multi-term
+DNF depth-1 collapse-bad event in the union of the star events of all
+literal occurrences, the headline union-bound probability
+`tvs.join.length * (h-s) / h` (linear in TOTAL DNF size, duplicates
+counted), the empty-DNF count-zero degenerate case, and the strictly-below-
+one two-term instance `2/3` at `h = 3`, `s = 2`.  This is the first
+multi-term DNF bad-set bound in this artifact but ONLY for the depth-1
+constant-collapse event via the trivial union bound: still NOT a PHP
+switching lemma — no depth-`t` canonical decision-tree argument, no bad-set
+encoding argument, no geometric term-count-independent `(8w)^s`-style bound
+over matchings; Gate A rung 4 as a whole remains open.
+-/
+
+/-- info: 'PvNP.PHPFullMatchingDNFBound.exists_fullStarEvent_of_matchingCollapseBad_dnf' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingDNFBound.exists_fullStarEvent_of_matchingCollapseBad_dnf
+
+/-- info: 'PvNP.PHPFullMatchingDNFBound.matchingCollapseBad_dnf_probability_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingDNFBound.matchingCollapseBad_dnf_probability_le
+
+/-- info: 'PvNP.PHPFullMatchingDNFBound.matchingCollapseBad_nil_dnf_count' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingDNFBound.matchingCollapseBad_nil_dnf_count
+
+/-- info: 'PvNP.PHPFullMatchingDNFBound.matchingCollapseBad_dnf_three_two_strict' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingDNFBound.matchingCollapseBad_dnf_three_two_strict
