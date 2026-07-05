@@ -56,6 +56,7 @@ import PvNP.PHPFullMatchingBadPathEncoding
 import PvNP.PHPFullMatchingCompressedBadPathCount
 import PvNP.PHPFullMatchingPathCodeFiberBound
 import PvNP.PHPFullMatchingStageRows
+import PvNP.PHPFullMatchingStageRowObstruction
 import PvNP.PHPFullMatchingDNFBound
 import PvNP.PHPFullMatchingDistribution
 import PvNP.PHPFullMatchingProbability

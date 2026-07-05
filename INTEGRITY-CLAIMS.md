@@ -61,7 +61,11 @@ This repository does **not** establish or imply:
   recovery and conditional `q`-row coarsening infrastructure of
   `PHPFullMatchingStageRows` (which preserves recovered stage rows in the
   fiber bound but does not prove distinct recovered rows or instantiate
-  `q = t`),
+  `q = t`), plus the S2123 one-row nonemptiness and duplicate-stage obstruction
+  in `PHPFullMatchingStageRowObstruction` (which proves every positive-length
+  code has at least one recovered row, and that a concrete `h = 1`, `t = 2`
+  duplicate-stage code has only one recovered row, so the current all-
+  `BadPathCode` coarsening cannot yield `q = 2` globally for that witness),
   no collapse-probability upper bound for restricted formulas over the
   matching-restriction space is stated or proved — in particular no
   multi-term DNF bad-set bound beyond the depth-1 total-size union bound of
@@ -244,6 +248,12 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.PHPFullMatchingStageRows.canonicalDepthBad_fiber_count_le_stageRows` | `propext`, `Classical.choice`, `Quot.sound` | per-code fiber bound preserving recovered stage-row set |
 | `PvNP.PHPFullMatchingStageRows.canonicalDepthBad_count_le_sum_codeStageRows` | `propext`, `Classical.choice`, `Quot.sound` | bad-event count bounded by sum over code-specific recovered-row multiplicities |
 | `PvNP.PHPFullMatchingStageRows.canonicalDepthBad_count_le_pathCode_mul_rowFree_of_codeStageRows_card_ge` | `propext`, `Classical.choice`, `Quot.sound` | conditional uniform coarsening from supplied `q <= (codeStageRows c).card`; does not prove distinct rows or instantiate `q = t` |
+| `PvNP.PHPFullMatchingStageRowObstruction.codeStageRows_nonempty` | `propext`, `Classical.choice`, `Quot.sound` | every positive-length code recovers at least one stage row |
+| `PvNP.PHPFullMatchingStageRowObstruction.one_le_codeStageRows_card` | `propext`, `Classical.choice`, `Quot.sound` | cardinal form of positive-length one-row nonemptiness |
+| `PvNP.PHPFullMatchingStageRowObstruction.codeStageRows_card_eq_of_injective` | `propext`, `Classical.choice`, `Quot.sound` | conditional exact `t` recovered rows under injectivity of the stage-row map |
+| `PvNP.PHPFullMatchingStageRowObstruction.duplicateStageCode_h1_t2_codeStageRows_card` | `propext`, `Classical.choice`, `Quot.sound` | duplicate-stage witness over `h = 1`, `t = 2` has exactly one recovered row |
+| `PvNP.PHPFullMatchingStageRowObstruction.not_two_le_duplicateStageCode_h1_t2_codeStageRows_card` | `propext`, `Classical.choice`, `Quot.sound` | duplicate-stage witness refutes a two-row lower bound for that code |
+| `PvNP.PHPFullMatchingStageRowObstruction.not_forall_two_le_codeStageRows_card_duplicateStageTvs_h1_t2` | `propext`, `Classical.choice`, `Quot.sound` | not all codes over the tiny support recover at least two rows |
 | `PvNP.GeneratedGoodRestriction.simultaneousCollapse_exists` | `propext`, `Classical.choice`, `Quot.sound` | proven B1/B2 generated simultaneous collapse (supplied counting beat) |
 | `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` | none | openness certificate (intentionally nonempty frozen-form obstruction map) |
 | `PvNP.GeneratedOneStepDepthReduction.generatedOneStepDepthReduction_exists` | `propext`, `Classical.choice`, `Quot.sound` | proven B3 one-step generated depth reduction (supplied minimal layered view) |

@@ -26,6 +26,7 @@ import PvNP.PHPFullMatchingBadPathEncoding
 import PvNP.PHPFullMatchingCompressedBadPathCount
 import PvNP.PHPFullMatchingPathCodeFiberBound
 import PvNP.PHPFullMatchingStageRows
+import PvNP.PHPFullMatchingStageRowObstruction
 import PvNP.PHPFullMatchingDNFBound
 import PvNP.TreePathViews
 import PvNP.AutoReviewedIteration
@@ -6003,3 +6004,50 @@ distinct recovered rows, does not instantiate the conditional theorem with
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPFullMatchingStageRows.canonicalDepthBad_count_le_pathCode_mul_rowFree_of_codeStageRows_card_ge
+
+/-! ## S2123 stage-row lower bound and duplicate-stage obstruction
+
+Pins for `PvNP.PHPFullMatchingStageRowObstruction`: positive-length bad-path
+codes recover at least one row; injective stage-row maps recover exactly `t`
+rows; and a concrete `h = 1`, `t = 2` duplicate-stage code over a one-literal
+support has recovered-row cardinality `1`, refuting a global two-row lower bound
+for all codes under the current definition.  This is finite code-space/matching-
+space infrastructure only: no distinct-row theorem for all codes, no `q = t`
+coarsening, no geometric decay bound, and no PHP switching lemma is proved.
+-/
+
+/-- info: 'PvNP.PHPFullMatchingStageRowObstruction.codeStageRows_nonempty' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingStageRowObstruction.codeStageRows_nonempty
+
+/-- info: 'PvNP.PHPFullMatchingStageRowObstruction.one_le_codeStageRows_card' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingStageRowObstruction.one_le_codeStageRows_card
+
+/-- info: 'PvNP.PHPFullMatchingStageRowObstruction.codeStageRows_card_eq_of_injective' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingStageRowObstruction.codeStageRows_card_eq_of_injective
+
+/-- info: 'PvNP.PHPFullMatchingStageRowObstruction.duplicateStageCode_h1_t2_codeStageRows_card' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingStageRowObstruction.duplicateStageCode_h1_t2_codeStageRows_card
+
+/-- info: 'PvNP.PHPFullMatchingStageRowObstruction.not_two_le_duplicateStageCode_h1_t2_codeStageRows_card' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingStageRowObstruction.not_two_le_duplicateStageCode_h1_t2_codeStageRows_card
+
+/-- info: 'PvNP.PHPFullMatchingStageRowObstruction.not_forall_two_le_codeStageRows_card_duplicateStageTvs_h1_t2' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingStageRowObstruction.not_forall_two_le_codeStageRows_card_duplicateStageTvs_h1_t2
