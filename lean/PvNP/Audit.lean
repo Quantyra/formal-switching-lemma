@@ -25,6 +25,7 @@ import PvNP.PHPFullMatchingCanonicalDT
 import PvNP.PHPFullMatchingBadPathEncoding
 import PvNP.PHPFullMatchingCompressedBadPathCount
 import PvNP.PHPFullMatchingPathCodeFiberBound
+import PvNP.PHPFullMatchingStageRows
 import PvNP.PHPFullMatchingDNFBound
 import PvNP.TreePathViews
 import PvNP.AutoReviewedIteration
@@ -5952,3 +5953,53 @@ lemma, and no proof-complexity or P-vs-NP claim is made.
 /-- info: 'PvNP.PHPFullMatchingPathCodeFiberBound.demo_bad_count_pos' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPFullMatchingPathCodeFiberBound.demo_bad_count_pos
+
+/-! ## Stage-indexed path-code row recovery over the full matching space
+
+Pins for `PvNP.PHPFullMatchingStageRows`: each bad-path-code stage decodes to
+a PHP row/column occurrence whose variable equals the stored code variable; the
+set of recovered stage rows is row-free for every bad point in the corresponding
+code fiber; the bad event is bounded by the sum of row-free multiplicities using
+all recovered stage rows; and a conditional coarsening is available from any
+separately proved lower bound on recovered-row cardinality.  This does not prove
+distinct recovered rows, does not instantiate the conditional theorem with
+`q = t`, and does not state a geometric switching-lemma or lower-bound claim.
+-/
+
+/-- info: 'PvNP.PHPFullMatchingStageRows.codeStageEntry_var_eq' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingStageRows.codeStageEntry_var_eq
+
+/-- info: 'PvNP.PHPFullMatchingStageRows.mem_codeStageRows' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingStageRows.mem_codeStageRows
+
+/-- info: 'PvNP.PHPFullMatchingStageRows.codeStageRow_free_of_encoding_eq_some' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingStageRows.codeStageRow_free_of_encoding_eq_some
+
+/-- info: 'PvNP.PHPFullMatchingStageRows.fullRowsFree_codeStageRows_of_encoding_eq_some' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingStageRows.fullRowsFree_codeStageRows_of_encoding_eq_some
+
+/-- info: 'PvNP.PHPFullMatchingStageRows.canonicalDepthBad_fiber_count_le_stageRows' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingStageRows.canonicalDepthBad_fiber_count_le_stageRows
+
+/-- info: 'PvNP.PHPFullMatchingStageRows.canonicalDepthBad_count_le_sum_codeStageRows' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingStageRows.canonicalDepthBad_count_le_sum_codeStageRows
+
+/-- info: 'PvNP.PHPFullMatchingStageRows.canonicalDepthBad_count_le_pathCode_mul_rowFree_of_codeStageRows_card_ge' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingStageRows.canonicalDepthBad_count_le_pathCode_mul_rowFree_of_codeStageRows_card_ge

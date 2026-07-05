@@ -57,14 +57,18 @@ This repository does **not** establish or imply:
   but which uses the coarse support-based code space, exploits only one
   guaranteed free row, and in relative form is
   `(2 * |support|)^t * (h - s) / h` of the space size — weakening as `t`
-  grows rather than strengthening geometrically),
+  grows rather than strengthening geometrically), plus the stage-indexed row
+  recovery and conditional `q`-row coarsening infrastructure of
+  `PHPFullMatchingStageRows` (which preserves recovered stage rows in the
+  fiber bound but does not prove distinct recovered rows or instantiate
+  `q = t`),
   no collapse-probability upper bound for restricted formulas over the
   matching-restriction space is stated or proved — in particular no
   multi-term DNF bad-set bound beyond the depth-1 total-size union bound of
   `PHPFullMatchingDNFBound` and the coarse path-code count above, no
   geometric `(8w)^s`-style depth-`t` collapse-probability bound
   (term-count-independent) over matchings, and no depth-`t` canonical
-  decision-tree encoding argument with per-stage information recovery;
+  decision-tree encoding argument with distinct per-stage row recovery;
 - a measure-theoretic probability measure, expectation, or
   with-high-probability theorem over restriction distributions.  The
   matching-distribution/probability layers prove exact finite counting,
@@ -233,6 +237,13 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.PHPFullMatchingPathCodeFiberBound.card_badPathCode_demo` | `propext`, `Classical.choice`, `Quot.sound` | proven demo path-code space at `h = 3`, `t = 1` has exactly 2 elements |
 | `PvNP.PHPFullMatchingPathCodeFiberBound.demo_bound_lt_space` | `propext`, `Classical.choice`, `Quot.sound` | proven demo compressed bound `12` is strictly below the space size `18` at `h = 3`, `s = 2`, `t = 1` |
 | `PvNP.PHPFullMatchingPathCodeFiberBound.demo_bad_count_pos` | `propext`, `Classical.choice`, `Quot.sound` | proven demo depth-1 bad event is nonempty, so the strict demo bound is non-vacuous |
+| `PvNP.PHPFullMatchingStageRows.codeStageEntry_var_eq` | `propext`, `Classical.choice`, `Quot.sound` | decoded stage entry variable equals the stored bad-path-code variable |
+| `PvNP.PHPFullMatchingStageRows.mem_codeStageRows` | `propext`, `Classical.choice`, `Quot.sound` | membership in recovered stage rows iff some stage decodes to the row |
+| `PvNP.PHPFullMatchingStageRows.codeStageRow_free_of_encoding_eq_some` | `propext`, `Classical.choice`, `Quot.sound` | each recovered stage row is free for a bad point whose encoding is the code |
+| `PvNP.PHPFullMatchingStageRows.fullRowsFree_codeStageRows_of_encoding_eq_some` | `propext`, `Classical.choice`, `Quot.sound` | all recovered stage rows are free in the matching point/code fiber |
+| `PvNP.PHPFullMatchingStageRows.canonicalDepthBad_fiber_count_le_stageRows` | `propext`, `Classical.choice`, `Quot.sound` | per-code fiber bound preserving recovered stage-row set |
+| `PvNP.PHPFullMatchingStageRows.canonicalDepthBad_count_le_sum_codeStageRows` | `propext`, `Classical.choice`, `Quot.sound` | bad-event count bounded by sum over code-specific recovered-row multiplicities |
+| `PvNP.PHPFullMatchingStageRows.canonicalDepthBad_count_le_pathCode_mul_rowFree_of_codeStageRows_card_ge` | `propext`, `Classical.choice`, `Quot.sound` | conditional uniform coarsening from supplied `q <= (codeStageRows c).card`; does not prove distinct rows or instantiate `q = t` |
 | `PvNP.GeneratedGoodRestriction.simultaneousCollapse_exists` | `propext`, `Classical.choice`, `Quot.sound` | proven B1/B2 generated simultaneous collapse (supplied counting beat) |
 | `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` | none | openness certificate (intentionally nonempty frozen-form obstruction map) |
 | `PvNP.GeneratedOneStepDepthReduction.generatedOneStepDepthReduction_exists` | `propext`, `Classical.choice`, `Quot.sound` | proven B3 one-step generated depth reduction (supplied minimal layered view) |
