@@ -60,7 +60,9 @@ This repository does **not** establish or imply:
   grows rather than strengthening geometrically), plus the stage-indexed row
   recovery and conditional `q`-row coarsening infrastructure of
   `PHPFullMatchingStageRows` (which preserves recovered stage rows in the
-  fiber bound but does not prove distinct recovered rows or instantiate
+  fiber bound and now includes a realized-code-only coarsening requiring the
+  `q`-row lower bound only for nonempty canonical bad-path code fibers, but
+  does not prove realized row growth, distinct recovered rows, or instantiate
   `q = t`), plus the S2123 one-row nonemptiness and duplicate-stage obstruction
   in `PHPFullMatchingStageRowObstruction` (which proves every positive-length
   code has at least one recovered row, and that a concrete `h = 1`, `t = 2`
@@ -248,6 +250,8 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.PHPFullMatchingStageRows.canonicalDepthBad_fiber_count_le_stageRows` | `propext`, `Classical.choice`, `Quot.sound` | per-code fiber bound preserving recovered stage-row set |
 | `PvNP.PHPFullMatchingStageRows.canonicalDepthBad_count_le_sum_codeStageRows` | `propext`, `Classical.choice`, `Quot.sound` | bad-event count bounded by sum over code-specific recovered-row multiplicities |
 | `PvNP.PHPFullMatchingStageRows.canonicalDepthBad_count_le_pathCode_mul_rowFree_of_codeStageRows_card_ge` | `propext`, `Classical.choice`, `Quot.sound` | conditional uniform coarsening from supplied `q <= (codeStageRows c).card`; does not prove distinct rows or instantiate `q = t` |
+| `PvNP.PHPFullMatchingStageRows.canonicalDepthBadCodeFiber_count_le_rowFree_of_realized_codeStageRows_card_ge` | `propext`, `Classical.choice`, `Quot.sound` | per-code realized-fiber coarsening; the `q`-row lower bound is required only when the code fiber is nonempty |
+| `PvNP.PHPFullMatchingStageRows.canonicalDepthBad_count_le_pathCode_mul_rowFree_of_realized_codeStageRows_card_ge` | `propext`, `Classical.choice`, `Quot.sound` | realized-code-only conditional uniform coarsening; no realized row-growth, `q = t`, geometric decay, PHP switching lemma, or lower-bound claim |
 | `PvNP.PHPFullMatchingStageRowObstruction.codeStageRows_nonempty` | `propext`, `Classical.choice`, `Quot.sound` | every positive-length code recovers at least one stage row |
 | `PvNP.PHPFullMatchingStageRowObstruction.one_le_codeStageRows_card` | `propext`, `Classical.choice`, `Quot.sound` | cardinal form of positive-length one-row nonemptiness |
 | `PvNP.PHPFullMatchingStageRowObstruction.codeStageRows_card_eq_of_injective` | `propext`, `Classical.choice`, `Quot.sound` | conditional exact `t` recovered rows under injectivity of the stage-row map |

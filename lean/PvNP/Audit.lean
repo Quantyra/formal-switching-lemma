@@ -5961,9 +5961,10 @@ Pins for `PvNP.PHPFullMatchingStageRows`: each bad-path-code stage decodes to
 a PHP row/column occurrence whose variable equals the stored code variable; the
 set of recovered stage rows is row-free for every bad point in the corresponding
 code fiber; the bad event is bounded by the sum of row-free multiplicities using
-all recovered stage rows; and a conditional coarsening is available from any
-separately proved lower bound on recovered-row cardinality.  This does not prove
-distinct recovered rows, does not instantiate the conditional theorem with
+all recovered stage rows; and conditional coarsenings are available from
+separately proved lower bounds on recovered-row cardinality, either for every
+code or only for codes with nonempty canonical bad-path fibers.  This does not
+prove distinct recovered rows, does not instantiate the conditional theorem with
 `q = t`, and does not state a geometric switching-lemma or lower-bound claim.
 -/
 
@@ -6004,6 +6005,18 @@ distinct recovered rows, does not instantiate the conditional theorem with
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPFullMatchingStageRows.canonicalDepthBad_count_le_pathCode_mul_rowFree_of_codeStageRows_card_ge
+
+/-- info: 'PvNP.PHPFullMatchingStageRows.canonicalDepthBadCodeFiber_count_le_rowFree_of_realized_codeStageRows_card_ge' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingStageRows.canonicalDepthBadCodeFiber_count_le_rowFree_of_realized_codeStageRows_card_ge
+
+/-- info: 'PvNP.PHPFullMatchingStageRows.canonicalDepthBad_count_le_pathCode_mul_rowFree_of_realized_codeStageRows_card_ge' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingStageRows.canonicalDepthBad_count_le_pathCode_mul_rowFree_of_realized_codeStageRows_card_ge
 
 /-! ## S2123 stage-row lower bound and duplicate-stage obstruction
 

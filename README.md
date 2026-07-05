@@ -855,10 +855,11 @@ for any bad point in the corresponding code fiber; and the bad event is bounded
 by the sum of row-free multiplicities using the full set of recovered stage
 rows.  A conditional coarsening theorem turns any separately proved lower bound
 `q <= (codeStageRows c).card` into the uniform `choose (h-q) s * h!` factor,
-but this module does not prove distinct recovered rows, does not instantiate
-the condition with `q = t`, and does not prove a geometric-in-`t` switching
-lemma, rectangular `p > h` injection-space theorem, Frege/PHP lower bound,
-NP/circuit lower bound, or P-vs-NP claim.
+and S2124 adds a realized-code-only refinement where that `q`-row lower bound is
+required only for codes whose canonical bad-path fiber is nonempty.  These
+theorems do not prove realized row growth, distinct recovered rows, `q = t`, a
+geometric-in-`t` switching lemma, rectangular `p > h` injection-space theorem,
+Frege/PHP lower bound, NP/circuit lower bound, or P-vs-NP claim.
 
 Post-v0.5.0 S2123 adds `PvNP.PHPFullMatchingStageRowObstruction`, a bounded
 follow-up for the same finite code-space/matching-space surface.  It proves the

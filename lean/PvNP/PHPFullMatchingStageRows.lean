@@ -134,6 +134,20 @@ theorem fullRowsFree_codeStageRows_of_encoding_eq_some {h t : Nat}
 
 /-! ## Counting with recovered stage rows preserved -/
 
+/-- The realized canonical bad-path fiber for a fixed code, inside the finite
+full matching space. -/
+noncomputable def canonicalDepthBadCodeFiber {h s t : Nat}
+    (tvs : List (List (Fin h × Fin h × Bool)))
+    (c : BadPathCode h tvs t) : Finset (Finset (Fin h) × Equiv.Perm (Fin h)) :=
+  (fullMatchingSpace h s).filter (fun P => canonicalDepthBad h tvs t P ∧
+    (canonicalDepthBadEncoding h tvs t P).2 = some c)
+
+/-- A code is realized when its canonical bad-path fiber is nonempty. -/
+def canonicalDepthBadCodeFiberNonempty {h s t : Nat}
+    (tvs : List (List (Fin h × Fin h × Bool)))
+    (c : BadPathCode h tvs t) : Prop :=
+  (canonicalDepthBadCodeFiber (h := h) (s := s) (t := t) tvs c).Nonempty
+
 /-- Fiber bound preserving all rows recovered by the stage-indexed code. -/
 theorem canonicalDepthBad_fiber_count_le_stageRows {h s t : Nat}
     (tvs : List (List (Fin h × Fin h × Bool)))
@@ -154,6 +168,35 @@ theorem canonicalDepthBad_fiber_count_le_stageRows {h s t : Nat}
   have hcount := fullRowsFree_count h s (codeStageRows c)
   unfold eventCount at hcount
   exact Nat.le_trans (Finset.card_le_card hsubset) (Nat.le_of_eq hcount)
+
+/-- Realized-code-only coarsening for one fiber: the `q`-row hypothesis is
+needed only if this code's canonical bad-path fiber is nonempty; empty fibers
+contribute zero. -/
+theorem canonicalDepthBadCodeFiber_count_le_rowFree_of_realized_codeStageRows_card_ge
+    {h s t q : Nat}
+    (tvs : List (List (Fin h × Fin h × Bool)))
+    (c : BadPathCode h tvs t)
+    (hrows : canonicalDepthBadCodeFiberNonempty (h := h) (s := s) (t := t) tvs c ->
+      q <= (codeStageRows c).card) :
+    (canonicalDepthBadCodeFiber (h := h) (s := s) (t := t) tvs c).card <=
+      Nat.choose (h - q) s * Fintype.card (Equiv.Perm (Fin h)) := by
+  classical
+  by_cases hreal : canonicalDepthBadCodeFiberNonempty (h := h) (s := s) (t := t) tvs c
+  · calc
+      (canonicalDepthBadCodeFiber (h := h) (s := s) (t := t) tvs c).card
+          <= Nat.choose (h - (codeStageRows c).card) s *
+              Fintype.card (Equiv.Perm (Fin h)) := by
+          simpa [canonicalDepthBadCodeFiber] using
+            (canonicalDepthBad_fiber_count_le_stageRows (h := h) (s := s) (t := t) tvs c)
+      _ <= Nat.choose (h - q) s * Fintype.card (Equiv.Perm (Fin h)) := by
+          refine Nat.mul_le_mul ?_ (Nat.le_refl _)
+          exact Nat.choose_le_choose s (Nat.sub_le_sub_left (hrows hreal) h)
+  · have hzero :
+        (canonicalDepthBadCodeFiber (h := h) (s := s) (t := t) tvs c).card = 0 := by
+      rw [Finset.card_eq_zero]
+      exact Finset.eq_empty_iff_forall_not_mem.mpr (fun P hP => hreal ⟨P, hP⟩)
+    rw [hzero]
+    exact Nat.zero_le _
 
 /-- Sum of stage-row-preserving fiber bounds over all bad-path codes. -/
 theorem canonicalDepthBad_count_le_sum_codeStageRows {h s t : Nat}
@@ -208,6 +251,51 @@ theorem canonicalDepthBad_count_le_pathCode_mul_rowFree_of_codeStageRows_card_ge
           intro c _hc
           refine Nat.mul_le_mul ?_ (Nat.le_refl _)
           exact Nat.choose_le_choose s (Nat.sub_le_sub_left (hrows c) h)
+    _ = Fintype.card (BadPathCode h tvs t) *
+          (Nat.choose (h - q) s * Fintype.card (Equiv.Perm (Fin h))) := by
+           rw [Finset.sum_const, Finset.card_univ, Nat.nsmul_eq_mul]
+
+/-- Realized-code-only coarsening: it suffices to supply the `q`-row lower bound
+only for bad-path codes whose canonical bad-path fiber is nonempty.  Empty code
+fibers contribute zero and impose no row-growth obligation. -/
+theorem canonicalDepthBad_count_le_pathCode_mul_rowFree_of_realized_codeStageRows_card_ge
+    {h s t q : Nat}
+    (tvs : List (List (Fin h × Fin h × Bool)))
+    (hrows : ∀ c : BadPathCode h tvs t,
+      canonicalDepthBadCodeFiberNonempty (h := h) (s := s) (t := t) tvs c ->
+        q <= (codeStageRows c).card) :
+    eventCount (fullMatchingSpace h s) (canonicalDepthBad h tvs t) <=
+      Fintype.card (BadPathCode h tvs t) *
+        (Nat.choose (h - q) s * Fintype.card (Equiv.Perm (Fin h))) := by
+  classical
+  unfold eventCount
+  have hmap : forall P, P ∈
+      (fullMatchingSpace h s).filter (canonicalDepthBad h tvs t) ->
+      (canonicalDepthBadEncoding h tvs t P).2 ∈
+        (Finset.univ : Finset (Option (BadPathCode h tvs t))) :=
+    fun P _ => Finset.mem_univ _
+  rw [Finset.card_eq_sum_card_fiberwise hmap]
+  rw [Fintype.sum_option]
+  have hnone : forall P, P ∈
+      (fullMatchingSpace h s).filter (canonicalDepthBad h tvs t) ->
+      ¬ ((canonicalDepthBadEncoding h tvs t P).2 = none) := by
+    intro P hP hcontra
+    have hbad : canonicalDepthBad h tvs t P := (Finset.mem_filter.mp hP).2
+    unfold canonicalDepthBadEncoding at hcontra
+    rw [dif_pos hbad] at hcontra
+    exact Option.noConfusion hcontra
+  rw [Finset.filter_false_of_mem hnone, Finset.card_empty, Nat.zero_add]
+  calc
+    (∑ c : BadPathCode h tvs t,
+        (Finset.filter (fun P => (canonicalDepthBadEncoding h tvs t P).2 = some c)
+          (Finset.filter (canonicalDepthBad h tvs t) (fullMatchingSpace h s))).card)
+        <= ∑ _c : BadPathCode h tvs t,
+          Nat.choose (h - q) s * Fintype.card (Equiv.Perm (Fin h)) := by
+          refine Finset.sum_le_sum ?_
+          intro c _hc
+          rw [Finset.filter_filter]
+          exact canonicalDepthBadCodeFiber_count_le_rowFree_of_realized_codeStageRows_card_ge
+            (h := h) (s := s) (t := t) (q := q) tvs c (hrows c)
     _ = Fintype.card (BadPathCode h tvs t) *
           (Nat.choose (h - q) s * Fintype.card (Equiv.Perm (Fin h))) := by
           rw [Finset.sum_const, Finset.card_univ, Nat.nsmul_eq_mul]
