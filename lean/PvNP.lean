@@ -49,6 +49,7 @@ import PvNP.FormulaSyntacticDNF
 import PvNP.FormulaSyntacticSimpleBridge
 import PvNP.FormulaVarWidthSchedule
 import PvNP.MixedFormulaFamilyCollapse
+import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingDistribution
 import PvNP.PHPFullMatchingProbability
 import PvNP.RestrictedPHPFloor

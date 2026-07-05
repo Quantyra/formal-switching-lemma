@@ -19,6 +19,7 @@ import PvNP.RefinedThreeStageInstance
 import PvNP.PHPMatchingDistribution
 import PvNP.PHPFullMatchingDistribution
 import PvNP.PHPFullMatchingProbability
+import PvNP.PHPFullMatchingCollapseBound
 import PvNP.TreePathViews
 import PvNP.AutoReviewedIteration
 import PvNP.ScheduledAutoCollapse
@@ -5634,3 +5635,72 @@ NP/circuit, or P vs NP result is proved.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaVarWidthSchedule.positiveDepthFormula_ratioRegimeCollapseWithVarWidth
+
+/-! ## Gate A rung 4 opening: first collapse-probability upper bounds
+
+Pins for `PvNP.PHPFullMatchingCollapseBound`: the first collapse-probability
+UPPER bounds over the full square matching space.  Containment of the depth-1
+collapse-bad event in the star event(s) gives `(h-s)/h` for a single PHP
+literal and `w*(h-s)/h` for a width-`w` conjunctive term via a finite list
+union bound, with a strictly-below-one nonvacuous instance at `h = 3`,
+`s = 2`.  This is NOT a PHP switching lemma: no multi-term DNF bad-set bound,
+no depth-`t` canonical decision-tree argument, no geometric `(8w)^s`-style
+bound over matchings; Gate A rung 4 as a whole remains open.
+-/
+
+/-- info: 'PvNP.PHPFullMatchingCollapseBound.eventCount_mono_of_imp' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCollapseBound.eventCount_mono_of_imp
+
+/-- info: 'PvNP.PHPFullMatchingCollapseBound.eventProbLe_of_imp' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCollapseBound.eventProbLe_of_imp
+
+/-- info: 'PvNP.PHPFullMatchingCollapseBound.eventCount_exists_mem_le_sum' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCollapseBound.eventCount_exists_mem_le_sum
+
+/-- info: 'PvNP.PHPFullMatchingCollapseBound.matchingCollapseBad_phpFormula_iff' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCollapseBound.matchingCollapseBad_phpFormula_iff
+
+/-- info: 'PvNP.PHPFullMatchingCollapseBound.fullStarEvent_of_matchingCollapseBad_lit' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCollapseBound.fullStarEvent_of_matchingCollapseBad_lit
+
+/-- info: 'PvNP.PHPFullMatchingCollapseBound.matchingCollapseBad_lit_probability_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCollapseBound.matchingCollapseBad_lit_probability_le
+
+/-- info: 'PvNP.PHPFullMatchingCollapseBound.exists_fullStarEvent_of_matchingCollapseBad_term' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCollapseBound.exists_fullStarEvent_of_matchingCollapseBad_term
+
+/-- info: 'PvNP.PHPFullMatchingCollapseBound.matchingCollapseBad_nil_term_count' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCollapseBound.matchingCollapseBad_nil_term_count
+
+/-- info: 'PvNP.PHPFullMatchingCollapseBound.matchingCollapseBad_term_probability_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCollapseBound.matchingCollapseBad_term_probability_le
+
+/-- info: 'PvNP.PHPFullMatchingCollapseBound.matchingCollapseBad_lit_three_two_strict' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCollapseBound.matchingCollapseBad_lit_three_two_strict
+
+/-- info: 'PvNP.PHPFullMatchingCollapseBound.matchingCollapseBad_term_three_two_strict' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCollapseBound.matchingCollapseBad_term_three_two_strict

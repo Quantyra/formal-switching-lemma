@@ -42,8 +42,12 @@ This repository does **not** establish or imply:
 - any strength, efficiency, or size/depth-optimality claim for the local
   cut-free system from its completeness theorem (completeness alone proves no
   hardness; the naive constructed refutations are exponential-size).
-- a PHP switching lemma: no collapse-probability upper bound for restricted
-  formulas over the matching-restriction space is stated or proved;
+- a PHP switching lemma: beyond the depth-1 single-literal and
+  single-conjunctive-term collapse bounds of `PHPFullMatchingCollapseBound`,
+  no collapse-probability upper bound for restricted formulas over the
+  matching-restriction space is stated or proved — in particular no
+  multi-term DNF bad-set bound, no depth-`t` canonical decision-tree
+  argument, and no geometric `(8w)^s`-style bound over matchings;
 - a measure-theoretic probability measure, expectation, or
   with-high-probability theorem over restriction distributions.  The
   matching-distribution/probability layers prove exact finite counting,
@@ -177,6 +181,10 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.PHPFullMatchingProbability.fullStarEvent_probability_eq` | `propext`, `Classical.choice`, `Quot.sound` | proven finite event-probability form of the full square star ratio |
 | `PvNP.PHPFullMatchingProbability.fullStarEvent_probability_le` | `propext`, `Classical.choice`, `Quot.sound` | proven finite event-probability upper-bound wrapper for the full square star event |
 | `PvNP.PHPFullMatchingProbability.fullPHPCollapseBad_depthFloor_probability_one` | `propext`, `Classical.choice`, `Quot.sound` | proven probability-one finite event form of the square-PHP depth-floor obstruction |
+| `PvNP.PHPFullMatchingCollapseBound.matchingCollapseBad_lit_probability_le` | `propext`, `Classical.choice`, `Quot.sound` | proven depth-1 single-literal collapse-probability upper bound `(h - s)/h` over the full square matching space (NOT a PHP switching lemma) |
+| `PvNP.PHPFullMatchingCollapseBound.matchingCollapseBad_term_probability_le` | `propext`, `Classical.choice`, `Quot.sound` | proven depth-1 single-conjunctive-term union-bound collapse-probability upper bound `w*(h - s)/h` (weak, NOT the switching-lemma ratio regime) |
+| `PvNP.PHPFullMatchingCollapseBound.matchingCollapseBad_lit_three_two_strict` | `propext`, `Classical.choice`, `Quot.sound` | proven strictly-below-one literal instance `1/3` at `h = 3`, `s = 2` over a nonempty space |
+| `PvNP.PHPFullMatchingCollapseBound.matchingCollapseBad_term_three_two_strict` | `propext`, `Classical.choice`, `Quot.sound` | proven strictly-below-one width-2 term instance `2/3` at `h = 3`, `s = 2` over a nonempty space |
 | `PvNP.GeneratedGoodRestriction.simultaneousCollapse_exists` | `propext`, `Classical.choice`, `Quot.sound` | proven B1/B2 generated simultaneous collapse (supplied counting beat) |
 | `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` | none | openness certificate (intentionally nonempty frozen-form obstruction map) |
 | `PvNP.GeneratedOneStepDepthReduction.generatedOneStepDepthReduction_exists` | `propext`, `Classical.choice`, `Quot.sound` | proven B3 one-step generated depth reduction (supplied minimal layered view) |
@@ -459,7 +467,9 @@ formulas, derive efficient recursive depth-`d` layered views from arbitrary
 formula syntax, synthesize normalized/simple syntactic DNF views or efficient
 width profiles, prove a global efficient `t(d,s)` theorem, or close full
 frozen-form B4.
-The PHP switching lemma (Gate A rung 4) remains open.
+The PHP switching lemma (Gate A rung 4 as a whole) remains open: the
+depth-1 single-literal/single-term collapse bounds of
+`PHPFullMatchingCollapseBound` open the upper-bound direction only.
 
 ## Re-Verification
 
