@@ -51,13 +51,20 @@ This repository does **not** establish or imply:
   conservative optional-code bad-path count of
   `PHPFullMatchingBadPathEncoding`, plus the free-variable, row-level
   multiplicity, and conditional compressed-target scaffold of
-  `PHPFullMatchingCompressedBadPathCount`,
+  `PHPFullMatchingCompressedBadPathCount`, plus the shared path-code fiber
+  bound and coarse compressed count of `PHPFullMatchingPathCodeFiberBound`
+  (the first count in this artifact whose encoder forgets the matching point,
+  but which uses the coarse support-based code space, exploits only one
+  guaranteed free row, and in relative form is
+  `(2 * |support|)^t * (h - s) / h` of the space size — weakening as `t`
+  grows rather than strengthening geometrically),
   no collapse-probability upper bound for restricted formulas over the
   matching-restriction space is stated or proved — in particular no
   multi-term DNF bad-set bound beyond the depth-1 total-size union bound of
-  `PHPFullMatchingDNFBound`, no constructed compressed matching-space bad-set
-  encoding/counting theorem, and no geometric `(8w)^s`-style depth-`t`
-  collapse-probability bound (term-count-independent) over matchings;
+  `PHPFullMatchingDNFBound` and the coarse path-code count above, no
+  geometric `(8w)^s`-style depth-`t` collapse-probability bound
+  (term-count-independent) over matchings, and no depth-`t` canonical
+  decision-tree encoding argument with per-stage information recovery;
 - a measure-theoretic probability measure, expectation, or
   with-high-probability theorem over restriction distributions.  The
   matching-distribution/probability layers prove exact finite counting,
@@ -219,6 +226,13 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.PHPFullMatchingCompressedBadPathCount.canonicalDepthBad_freePathCode_exists` | `propext`, `Classical.choice`, `Quot.sound` | proven every depth-`t` bad matching point has a `P`-dependent path code certified free under `fullRestrictionOf P` |
 | `PvNP.PHPFullMatchingCompressedBadPathCount.canonicalDepthBad_count_le_target_mul_pathCode_of_injOn` | `propext`, `Classical.choice`, `Quot.sound` | conditional scaffold: any future compressed-target injection paired with `BadPathCode` gives the corresponding finite bad-event count bound; no encoder or fiber bound is constructed here |
 | `PvNP.PHPFullMatchingCompressedBadPathCount.fullRowsFree_count` | `propext`, `Classical.choice`, `Quot.sound` | exact count of full matching points that leave a specified row set free; row-level multiplicity scaffold only, not a path-code fiber theorem |
+| `PvNP.PHPFullMatchingPathCodeFiberBound.codeRows_nonempty` | `propext`, `Classical.choice`, `Quot.sound` | proven every positive-length path code touches at least one pigeon row |
+| `PvNP.PHPFullMatchingPathCodeFiberBound.canonicalDepthBad_fiber_count_le` | `propext`, `Classical.choice`, `Quot.sound` | proven per-code fiber bound: bad matching points sharing a path code number at most the row-free multiplicity `choose (h - |codeRows c|) s * h!` |
+| `PvNP.PHPFullMatchingPathCodeFiberBound.canonicalDepthBad_count_le_pathCode_mul_rowFree` | `propext`, `Classical.choice`, `Quot.sound` | for `1 <= t`, proven compressed bad-path count `card (BadPathCode) * (choose (h-1) s * h!)`; first in this artifact whose encoder forgets the matching point, but coarse: support-based code space, one guaranteed free row |
+| `PvNP.PHPFullMatchingPathCodeFiberBound.canonicalDepthBad_ratio_le` | `propext`, `Classical.choice`, `Quot.sound` | for `1 <= t`, proven cross-multiplied ratio form of the compressed count via `star_ratio_full`; not a geometric `(8w)^s`-style bound |
+| `PvNP.PHPFullMatchingPathCodeFiberBound.card_badPathCode_demo` | `propext`, `Classical.choice`, `Quot.sound` | proven demo path-code space at `h = 3`, `t = 1` has exactly 2 elements |
+| `PvNP.PHPFullMatchingPathCodeFiberBound.demo_bound_lt_space` | `propext`, `Classical.choice`, `Quot.sound` | proven demo compressed bound `12` is strictly below the space size `18` at `h = 3`, `s = 2`, `t = 1` |
+| `PvNP.PHPFullMatchingPathCodeFiberBound.demo_bad_count_pos` | `propext`, `Classical.choice`, `Quot.sound` | proven demo depth-1 bad event is nonempty, so the strict demo bound is non-vacuous |
 | `PvNP.GeneratedGoodRestriction.simultaneousCollapse_exists` | `propext`, `Classical.choice`, `Quot.sound` | proven B1/B2 generated simultaneous collapse (supplied counting beat) |
 | `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` | none | openness certificate (intentionally nonempty frozen-form obstruction map) |
 | `PvNP.GeneratedOneStepDepthReduction.generatedOneStepDepthReduction_exists` | `propext`, `Classical.choice`, `Quot.sound` | proven B3 one-step generated depth reduction (supplied minimal layered view) |
@@ -509,12 +523,19 @@ realizability certified in `PHPFullMatchingCollapseExact`, and the
 multi-term DNF total-size union bound of `PHPFullMatchingDNFBound`; the
   restricted-DNF canonical-tree skeleton of `PHPFullMatchingCanonicalDT` is
   deterministic infrastructure only, `PHPFullMatchingBadPathEncoding` keeps
-  the original matching point in a conservative optional-code count, and
-  `PHPFullMatchingCompressedBadPathCount` proves only free-variable
+  the original matching point in a conservative optional-code count,
+  `PHPFullMatchingCompressedBadPathCount` proves free-variable
   certification, a row-level free-set multiplicity count, and a conditional
-  compressed-target count scaffold. No constructed compressed matching-space
-  bad-set encoding/counting theorem, path-code fiber bound, or geometric
-  term-count-independent depth-`t` collapse-probability bound is proved.
+  compressed-target count scaffold, and `PHPFullMatchingPathCodeFiberBound`
+  proves the artifact's first compressed bad-path count whose encoder forgets
+  the matching point, with each shared path-code fiber bounded by row-free
+  multiplicity.  That compressed count is coarse: the path-code space is the
+  support-based code space and only one guaranteed free row is exploited.
+  No geometric term-count-independent depth-`t` collapse-probability bound
+  over matchings,
+  no depth-`t` canonical decision-tree encoding argument with per-stage
+  information recovery, and no rectangular `p > h` matching-space result is
+  proved.
 
 ## Re-Verification
 

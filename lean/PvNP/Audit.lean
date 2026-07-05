@@ -24,6 +24,7 @@ import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
 import PvNP.PHPFullMatchingBadPathEncoding
 import PvNP.PHPFullMatchingCompressedBadPathCount
+import PvNP.PHPFullMatchingPathCodeFiberBound
 import PvNP.PHPFullMatchingDNFBound
 import PvNP.TreePathViews
 import PvNP.AutoReviewedIteration
@@ -5899,3 +5900,55 @@ bound, or P-vs-NP claim is proved here.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPFullMatchingCompressedBadPathCount.fullRowsFree_count
+
+/-! ## Shared path-code fiber bound over the full matching space
+
+Pins for `PvNP.PHPFullMatchingPathCodeFiberBound`: positive-length path codes
+touch at least one pigeon row; each fixed path code's bad-point fiber over the
+full matching space is bounded by the row-free multiplicity of its code rows;
+the headline compressed count bounds the depth-`t` bad event (for `1 <= t`) by
+`card (BadPathCode) * (choose (h-1) s * h!)` — the first such count in this
+artifact whose encoder does not retain the original matching point — with its
+cross-multiplied ratio corollary; and the `h = 3`, `s = 2`, `t = 1` demo
+instance is strictly below the full-space size over a nonempty bad event.
+The path-code space is
+still the coarse support-based code space and only one guaranteed free row is
+exploited: this is not a geometric `(8w)^s`-style bound, not a PHP switching
+lemma, and no proof-complexity or P-vs-NP claim is made.
+-/
+
+/-- info: 'PvNP.PHPFullMatchingPathCodeFiberBound.codeRows_nonempty' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingPathCodeFiberBound.codeRows_nonempty
+
+/-- info: 'PvNP.PHPFullMatchingPathCodeFiberBound.canonicalDepthBad_fiber_count_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingPathCodeFiberBound.canonicalDepthBad_fiber_count_le
+
+/-- info: 'PvNP.PHPFullMatchingPathCodeFiberBound.canonicalDepthBad_count_le_pathCode_mul_rowFree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingPathCodeFiberBound.canonicalDepthBad_count_le_pathCode_mul_rowFree
+
+/-- info: 'PvNP.PHPFullMatchingPathCodeFiberBound.canonicalDepthBad_ratio_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingPathCodeFiberBound.canonicalDepthBad_ratio_le
+
+/-- info: 'PvNP.PHPFullMatchingPathCodeFiberBound.card_badPathCode_demo' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingPathCodeFiberBound.card_badPathCode_demo
+
+/-- info: 'PvNP.PHPFullMatchingPathCodeFiberBound.demo_bound_lt_space' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingPathCodeFiberBound.demo_bound_lt_space
+
+/-- info: 'PvNP.PHPFullMatchingPathCodeFiberBound.demo_bad_count_pos' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingPathCodeFiberBound.demo_bad_count_pos
