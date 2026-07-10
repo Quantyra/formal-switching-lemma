@@ -385,6 +385,31 @@ duplicate-stage code has only one recovered row, so the current all-
   proves no arbitrary-class width synthesis, no threshold improvement, no full
   B4, no PHP switching lemma, no Frege/PHP, no NP/circuit, no P-vs-NP, and no
   Gate A work;
+- any broad consequence from the S2160 concrete unconditional instances of the
+  supplied-width final-tree route:
+  `FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance`
+  only instantiates the S2158 disjoint-support route on one fixed
+  AND-of-two-variable-disjoint-ORs shape (`formulaSize = 7`, `depth = 2`,
+  `formulaRecurrenceWidth = 2`) at two large ambients (`2^22` with `rounds = 1`,
+  `2^31` with `rounds = 2`), discharging the coarse ambient thresholds
+  `2*(64*7)^1*(64*7*7) ≤ 2^22` and `2*(64*7)^2*(64*7*7) ≤ 2^31` numerically so
+  the resulting `SuppliedWidthClassDepthFinalTreeAt` payloads carry zero open
+  side conditions, with an ∃-extraction of the level-0 certificate/final-tree
+  conjuncts and nonempty-frontier non-degeneracy pins at both ambients.
+  Zero-hypothesis supplied-width instances already exist via the S2155/S2156
+  bounded-shallow packed families (nested-OR spines of width 1 with
+  threshold-defined ambient arity); the new content is the numeric threshold
+  discharge at fixed ambients and the first unconditional instances on the
+  S2157/S2158 recurrence-width route.
+  These are single finite instances only, not an asymptotic family; budgets
+  (`t(d,s)=S(d)*(s-1)`, per-stage budget 2), the geometric star schedule, the
+  class-derived width schedule, and the coarse ambient threshold shape are all
+  unchanged; the caveat that the S2156–S2158 small-ambient witnesses'
+  final-tree payloads were hypothesis-conditional is closed for these
+  instances only, not in general; and shared-variable ANDs still require a
+  supplied compatibility proof.  It proves no threshold improvement,
+  no arbitrary-class width synthesis, no full B4, no PHP switching lemma, no
+  Frege/PHP, no NP/circuit, no P-vs-NP, and no Gate A work;
 - unsupplied or automatically synthesized product hypotheses for the scheduled
   route: `FrozenProductSchedule` proves only that an explicit
   `FrozenProductHypothesis` over a supplied `B` and `t` yields `ValidFrom` and

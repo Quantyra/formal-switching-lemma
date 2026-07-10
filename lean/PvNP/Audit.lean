@@ -91,6 +91,7 @@ import PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget
 import PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget
 import PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget
 import PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget
+import PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance
 import PvNP.FormulaRecursiveTerminalSchedule
 import PvNP.FormulaRecursiveNonempty
 import PvNP.FormulaRecursiveSizeBound
@@ -8556,3 +8557,128 @@ NP/circuit, Gate A, or P-vs-NP.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.exists_disjointSupportFanin_class_andOrWitness_orOnlyEmbed_finalTreeRoute
+
+/-!
+Pins for S2160 numerically-discharged supplied-width final-tree instances:
+`FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance`
+instantiates the S2158 disjoint-support supplied-width final-tree route on
+one fixed AND-of-two-variable-disjoint-ORs shape (positive literals on
+variables 0,1,2,3; `formulaSize = 7`, `depth = 2`,
+`formulaRecurrenceWidth = 2`) at two large ambients — `2^22 = 4194304` with
+`rounds = 1` (two-stage certificate) and `2^31 = 2147483648` with
+`rounds = 2` (three-stage certificate) — where the coarse ambient thresholds
+`2*(64*7)^1*(64*7*7) = 2809856 ≤ 2^22` and
+`2*(64*7)^2*(64*7*7) = 1258815488 ≤ 2^31` are discharged numerically
+(`decide` on `Nat` literals), so the resulting
+`SuppliedWidthClassDepthFinalTreeAt` instances (level 0 at both ambients,
+all levels at `2^22`) have zero open side conditions, plus an ∃-extraction
+of the level-0 certificate/final-tree conjuncts (including the last-stage
+linkage tying the star count to the certificate) and nonempty-frontier
+non-degeneracy pins at both ambients.  Priority scope: zero-hypothesis
+supplied-width instances already exist via the S2155/S2156 bounded-shallow
+packed families (pure nested-OR spines of width 1 whose ambient arity is
+threshold-defined, the coarse entry product times two); new here are the numeric
+threshold discharge at fixed ambients chosen independently of the threshold
+shape and the first unconditional instances on the S2157/S2158
+recurrence-width route, whose prior consumers all carry the
+ambient-threshold hypothesis.  These are two single finite concrete
+instances, not an asymptotic family; class budget
+`t(d,s)=S(d)*(s-1)`, geometric star schedule, per-stage budget 2, width
+schedule `max 1 (formulaRecurrenceWidth F)`, and the coarse ambient
+threshold shape are all unchanged; the caveat that the S2156–S2158
+small-ambient witnesses' final-tree payloads were hypothesis-conditional is
+closed for these instances only, not in general; shared-variable ANDs still
+require a supplied compatibility proof.  Not threshold improvement, not
+arbitrary-class width synthesis, not full B4, not PHP switching, not
+Frege/PHP, not NP/circuit, not Gate A, not P-vs-NP.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.largeWitness' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.largeWitness
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.hugeWitness' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.hugeWitness
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.largeWitness_formulaSize' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.largeWitness_formulaSize
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.largeWitness_depth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.largeWitness_depth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.largeWitness_recurrenceWidth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.largeWitness_recurrenceWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.hugeWitness_formulaSize' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.hugeWitness_formulaSize
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.hugeWitness_depth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.hugeWitness_depth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.hugeWitness_recurrenceWidth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.hugeWitness_recurrenceWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.largeWitness_disjointSupportFanin' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.largeWitness_disjointSupportFanin
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.hugeWitness_disjointSupportFanin' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.hugeWitness_disjointSupportFanin
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.largeAmbientThreshold' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.largeAmbientThreshold
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.hugeAmbientThreshold' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.hugeAmbientThreshold
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.largeWitness_finalTree_level0' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.largeWitness_finalTree_level0
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.largeWitness_finalTree_allLevels' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.largeWitness_finalTree_allLevels
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.hugeWitness_finalTree_level0' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.hugeWitness_finalTree_level0
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.largeWitness_finalTree_exists' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.largeWitness_finalTree_exists
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.largeWitness_frontierGateCount_pos' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.largeWitness_frontierGateCount_pos
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.hugeWitness_frontierGateCount_pos' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.hugeWitness_frontierGateCount_pos
