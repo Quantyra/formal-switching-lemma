@@ -813,6 +813,25 @@ Version `v0.1.0` is archived on Zenodo:
 - DOI: `10.5281/zenodo.20757628`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.1.0`
 
+Version `v0.6.0` publishes the post-`v0.5.0` Gate A and Gate B formal stack
+through S2156.  Gate A adds realized-code counting, row-variable uniqueness
+diagnostics, row-collision splits, parametric and rectangular obstructions, and
+the current SimpleDNF row-collision denominator-route no-go package
+(`PHPFullMatchingGateANoGoAfterS2139`).  Gate B adds terminal-aware and
+syntactic-terminal class envelopes, packed-family sources, ambient adequacy and
+small-arity obstruction packages, efficient and tight width budgets, recursive
+nested-OR families, and the restricted nonempty OR-only class
+(`FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget`) with
+width-one frontier closure and supplied-width final-tree routing under
+unchanged `t(d,s)=S(d)*(s-1)`.  The current audit surface has `1336`
+`#guard_msgs`-pinned `#print axioms` profiles.  Boundary: finite named Gate A
+witnesses and restricted Gate B classes/families only; no PHP switching lemma,
+full B4, Frege/PHP, NP/circuit, arbitrary-class width synthesis, or P-vs-NP.
+
+- Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.6.0`
+- Zenodo version DOI: pending GitHub/Zenodo archive after tag publication
+  (concept DOI remains `10.5281/zenodo.20757627`)
+
 Version `v0.5.0` adds the opening rungs of the general-PHP-depth-floor ladder
 and the Gate B generated-collapse routes.  This release opens the general-PHP-depth-floor ladder ("Gate A") with two proved rungs of satisfiable-PHP decision-tree floors plus the first increment of the rung-3 counting layer (at that release, only the identity-subset matching distribution was formalized). Rung 1 (`PvNP.PHPBooleanDepthFloor`): the satisfiable `h × h` pigeonhole Boolean function is evasive — every correct decision tree under the empty restriction has depth at least `h·h` (`fullPHPBoundary_depthFloor`), the first genuine family instance of `PHPDepthFloorStatement` beyond the trivial `1 × 1` boundary, with non-vacuity at depth `h·h + 1`. Rung 2 (`PvNP.PHPRestrictedDepthFloor`): the floor survives every fixed partial-matching restriction — the master theorem `matchingRestriction_depthFloor` gives depth at least the number of free variables, and the two-parameter family `matchingBoundary_depthFloor` instantiates the statement surface with floor `(h − s)·h` under genuinely nontrivial restriction families. Rung 3, first increment (`PvNP.PHPMatchingDistribution`): the uniform space of `s`-subset identity-matching restrictions with exact star counting — `star_ratio` (`h * choose (h−1) s = (h − s) * choose h s`, axioms `propext` only) is the exact counting form of "every variable is a star with probability `(h−s)/h`", the quantity switching-lemma arguments consume — plus probability-one transfer of the rung-2 floor to every point of the space (`subsetSpace_depthFloor`). The current post-v0.5.0 surface adds `PvNP.PHPFullMatchingDistribution`, the full square `h × h` permutation-matching space `subsetSpace h s × Equiv.Perm (Fin h)` with exact star counting and every-point floor transfer, plus `PvNP.PHPFullMatchingProbability`, an exact finite event-probability interface over that square space, plus `PvNP.PHPFullMatchingCollapseBound`, the first depth-1 single-literal and single-conjunctive-term collapse-probability upper bounds over that space, plus `PvNP.PHPFullMatchingDNFBound`, the depth-1 multi-term DNF total-size union bound over that space, plus `PvNP.PHPFullMatchingCanonicalDT`, the deterministic restricted-DNF canonical-tree skeleton over that space, plus `PvNP.PHPFullMatchingBadPathEncoding`, the conservative optional-code bad-path count over that space. Rectangular `p > h` injection spaces remain unformalized. These Gate A rungs are elementary sensitivity, deterministic tree, and finite-counting mathematics; no measure-theoretic probability, expectation theorem, or high-probability theorem is defined. The PHP switching lemma itself (Gate A rung 4 as a whole) remains OPEN: beyond those depth-1 literal/term/DNF events, the deterministic canonical-tree skeleton, and the conservative optional-code count, there is no multi-term DNF bad-set bound beyond the depth-1 total-size union bound, no compressed matching-space bad-set encoding/counting theorem beyond the later coarse S2121 path-code fiber count described below, and no geometric term-count-independent depth-`t` collapse-probability bound over matchings, and none of this is a Frege/PHP proof-size bound, an NP/circuit bound, or a statement about P vs NP.
 
@@ -1188,7 +1207,7 @@ support-based code space and a single guaranteed free row — so it is not a
 geometric `(8w)^s`-style bound, not a per-stage information-recovery encoding
 argument, and not a PHP switching lemma.
 
-The current audit surface has 971 `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
+As of `v0.6.0`, the audit surface has `1336` `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
 
 - DOI: `10.5281/zenodo.21184992`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`
