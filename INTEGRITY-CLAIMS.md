@@ -61,27 +61,150 @@ This repository does **not** establish or imply:
   recovery and conditional `q`-row coarsening infrastructure of
   `PHPFullMatchingStageRows` (which preserves recovered stage rows in the
   fiber bound and now includes a realized-code-only coarsening requiring the
-  `q`-row lower bound only for nonempty canonical bad-path code fibers, but
-  does not prove realized row growth, distinct recovered rows, or instantiate
-  `q = t`), plus the S2123 one-row nonemptiness and duplicate-stage obstruction
-  in `PHPFullMatchingStageRowObstruction` (which proves every positive-length
-  code has at least one recovered row, and that a concrete `h = 1`, `t = 2`
-  duplicate-stage code has only one recovered row, so the current all-
-  `BadPathCode` coarsening cannot yield `q = 2` globally for that witness),
+  `q`-row lower bound only for nonempty canonical bad-path code fibers, a
+  `q = t` specialization under the corresponding realized row-growth
+  hypothesis, a proved pure row-free binomial/geometric ratio for the full square
+  matching space, geometric full-square counting and finite-probability forms
+  conditional only on supplied realized row-growth, and a simple-DNF structural
+  replacement proving realized fibers satisfy `t <= h * |rows|`, which instantiates
+  the same row-free consumer at `q = t / h`; it does not prove exact
+  `t <= |rows|`, distinct recovered rows, or a term-count-independent PHP
+  switching lemma), plus the code-factor quantification of
+  `PHPFullMatchingCodeFactor` (which proves
+  `card (BadPathCode h tvs t) = (2 * |phpDNFVarSet h tvs|)^t`, the coarser
+  literal-occurrence bound `(2 * tvs.join.length)^t`, the resulting simple-DNF
+  `EventProbLe` numerator `(2*m)^t * (h-s)^(t/h)`, and the obstruction that when
+  `(h-s)^(t/h) >= 1`, nontriviality forces `(2*m)^t < h^(t/h)`), plus the
+  S2127 realized-code count replacement of `PHPFullMatchingRealizedCodeCount`
+  (which defines the finite subset of `BadPathCode` values with nonempty
+  canonical full-matching bad-event fibers, replaces the simple-DNF `q = t / h`
+  all-code numerator by this realized cardinality in the count, geometric count,
+   and `EventProbLe` wrappers, and exposes that nontriviality still requires this
+   realized-code cardinality below `h^(t/h)` whenever the row-free factor is at
+   least one; it does not prove a genuinely smaller realized-code cardinality
+   bound), plus the S2128 concrete realized-code obstruction of
+   `PHPFullMatchingRealizedCodeObstruction` (which proves that a simple `2 x 2`
+   full-square witness at `s = 1`, `t = 2` has at least two realized canonical
+   bad-path codes, so the S2127 denominator `2^(2/2)` is already no larger than
+   the realized-code cardinality and SimpleDNF alone cannot force the strict
+   cardinality inequality needed by that route), plus the S2129/S2130 strict
+   row-variable-unique gate of `PHPFullMatchingRowUniqueStrict` (which introduces
+   the whole-DNF `PHPDNFGlobalRowVarUnique` hypothesis requiring same-row entries
+   to use the same PHP column, proves the S2128 witness does not satisfy it, and
+   under SimpleDNF plus that extra hypothesis first proves the finite `h = 2`,
+   `s = 1`, `t = 2` realized-code set is empty and hence strictly below
+   `2^(2/2)`, then generalizes the diagnostic to a square full-matching
+    parametric realized-code emptiness theorem under the fit condition
+    `h < s + t`, with strict-cardinality and zero-numerator `EventProbLe`
+    corollaries; the earlier whole-DNF `PHPDNFGlobalRowUnique` condition, which
+    also requires sign equality, is retained only as a stronger corollary; this is
+    not general PHP switching, not arbitrary SimpleDNF compression, not
+    rectangular, not Frege/PHP, not NP/circuit, not AC0, and not a P-vs-NP
+    theorem), plus the S2131 code-local realized-code split of
+    `PHPFullMatchingRealizedCodeSplit` (which splits realized canonical bad-path
+    codes into code-local row-variable-unique codes and row-collision codes,
+    proves the row-variable-unique realized-code class is empty under SimpleDNF
+    and `h < s + t`, rewrites the full realized-code set and cardinality as the
+    row-collision class in that finite row-capacity regime, and proves the S2128
+    two-by-two witness has at least two row-collision realized codes so the
+    displayed denominator `2^(2/2)` is no larger than the collision-class count;
+    it also proves row collisions are impossible when `h = 1`, so the obstruction
+    is minimal in the PHP-column-count direction only; this is not a strict
+    row-collision compression theorem, not general PHP switching, not arbitrary
+    SimpleDNF compression, not rectangular, not Frege/PHP, not NP/circuit, not
+    AC0, and not a P-vs-NP theorem), plus the S2132 parametric row-collision
+    obstruction of `PHPFullMatchingRealizedCodeParametricObstruction` (which for
+    every `h >= 2` constructs the full-row SimpleDNF family at `s = h - 1`,
+    `t = h`, proves at least `h` row-collision realized canonical bad-path
+    codes, proves the denominator `h^(h/h)` is no larger than that
+    collision-class cardinality, and proves the corresponding strict
+    denominator route impossible for this family; this closes only the
+    SimpleDNF-only row-collision denominator route for the displayed finite
+    square full-matching family and is not a general compression theorem, not
+    PHP switching, not rectangular, not Frege/PHP, not NP/circuit, not AC0, and
+    not a P-vs-NP theorem), plus the S2133 Gate-A invariant surface of
+     `PHPFullMatchingGateAInvariant` (which defines the code-local invariant that
+     every realized code is row-variable-unique, proves the row-collision
+     realized-code set has cardinality zero under that invariant, and proves the
+     S2132 full-row family violates the invariant for every `h >= 2`; this is not
+     a compression theorem, not PHP switching, not rectangular, not Frege/PHP, not
+     NP/circuit, not AC0, and not a P-vs-NP theorem), plus the S2134 natural
+     Gate-A invariant variants of `PHPFullMatchingGateANaturalInvariant` (which
+     define finite whole-DNF row-variable capacity one, per-term row-variable
+     uniqueness, code-local row-to-variable functionality, and a canonical-code
+     discipline; prove that row-to-variable functionality, whole-DNF capacity one,
+     or the canonical discipline imply the S2133 realized-code row-variable
+     invariant and its row-collision denominator-control corollary; prove the
+     S2132 full-row family violates capacity-one, per-term uniqueness,
+     realized-code functionality, and canonical functionality for every `h >= 2`;
+     and give a concrete `h = 2`, `s = 1`, `t = 2` cross-term witness showing
+      per-term uniqueness alone does not imply realized-code row-variable
+      uniqueness; this is bounded finite bookkeeping only, not a compression
+      theorem, not PHP switching, not rectangular, not Frege/PHP, not NP/circuit,
+      not AC0, and not a P-vs-NP theorem), plus the S2135 canonical row
+      discipline increment of `PHPFullMatchingGateACanonicalRowDiscipline` (which
+      defines cross-term same-row conflict exclusion, named canonical-path row
+      compatibility, named syntax-facing realized row-to-variable functionality,
+      and realized/canonical row-collision-free disciplines; proves term-pair
+      compatibility implies whole-DNF row capacity one, realized/canonical
+      row-to-variable functionality, the S2133 realized row-variable invariant,
+      and the same finite row-collision denominator-control corollary; proves the
+      named canonical-path and syntax-facing realized-functionality surfaces also
+      recover the S2133 invariant or denominator-control route; and records
+      bounded full-row and `h = 2`, `s = 1`, `t = 2` cross-term obstructions
+      showing that weaker per-term uniqueness and the tested weaker candidate
+      wrappers do not imply the needed realized or canonical row-to-variable
+      functionality; this is bounded finite square full-matching bookkeeping only,
+      not a natural-syntax satisfaction theorem, not a general compression
+      theorem, not PHP switching, not rectangular, not Frege/PHP, not NP/circuit,
+      not AC0, and not a P-vs-NP theorem), plus the S2136 route-decision
+      obstruction of `PHPFullMatchingGateARouteDecision` (which proves S2135
+      term-pair row compatibility is equivalent to S2134 whole-DNF row-capacity
+      one, defines the natural local discipline `SimpleDNF` plus per-term
+      row-variable uniqueness, and proves via the concrete `h = 2`, `s = 1`,
+      `t = 2` cross-term witness that this natural local discipline does not
+      imply realized row-to-variable functionality, canonical-path compatibility,
+      term-pair compatibility, or whole-DNF row-capacity one; this is a bounded
+      finite list-support obstruction only and does not prove a general
+      natural-syntax theorem, PHP switching, rectangular PHP, Frege/PHP,
+      NP/circuit, AC0, or P-vs-NP theorem), plus the S2137 realized-code
+      bad-path/good-path split of
+      `PHPFullMatchingGateARealizedCodePathSplit` (which splits the existing
+      realized canonical bad-path codes by code-local row-to-variable
+      functionality, proves the S2136 `h = 2`, `s = 1`, `t = 2` cross-term code
+      is bad and not good, proves the bad side is empty exactly when realized
+      row-to-variable functionality holds, and pins that bad-empty recovers the
+      existing row-collision denominator-control theorem; this is bounded finite
+      square full-matching/list-support bookkeeping only, not a natural-syntax
+      satisfaction theorem, not a compression theorem, not PHP switching, not
+      rectangular PHP, not Frege/PHP, not NP/circuit, not AC0, and not a P-vs-NP
+      theorem), plus the S2138 bad-conflict-signature extraction of
+   `PHPFullMatchingGateABadConflictSignature` (which extracts a canonical
+      same-row/different-column conflict signature from every S2137 bad realized
+      code, proves the S2137 bad class equals the S2131 row-collision class for
+      finite square full-matching/list-support instances, and transfers the
+      concrete two-by-two denominator obstruction to the bad class; this is not a
+      natural-syntax theorem, not a general compression or charging theorem, not
+       PHP switching, not rectangular `p > h`, not Frege/PHP, not NP/circuit, not arbitrary AC0, and not a P-vs-NP theorem), plus the S2139 rectangular/injection-space obstruction of `PHPRectMatchingInjectionObstruction` (which defines a rectangular selected-row injection space, ports the realized bad-path code/fiber interface, proves row-var-unique vs row-collision splitting/capacity results, and proves a bounded 3-by-2 full-row obstruction showing the naive rectangular row-collision denominator route still fails; this is finite rectangular matching/injection bookkeeping only; not a PHP switching lemma, not rectangular `p > h` theorem, not Frege/PHP, not NP/circuit, not AC0, and not a P-vs-NP theorem), plus the S2140 Gate-A no-go packaging of `PHPFullMatchingGateANoGoAfterS2139` (which defines only the named square full-row and rectangular 3-by-2 full-row SimpleDNF row-collision denominator/nontrivial targets and proves those current realized-code/row-collision targets fail on the S2132/S2139 witness families; this says a future route needs stronger structure, a different invariant, or a different counting/denominator target, and it is not a global Gate A impossibility theorem, not a broad SimpleDNF no-go beyond the named full-row/3-by-2 targets, not a natural-syntax theorem, not arbitrary DNF compression, not Frege/PHP, not NP/circuit, not arbitrary AC0, and not P-vs-NP), plus the S2123 one-row
+   nonemptiness and duplicate-stage obstruction
+in `PHPFullMatchingStageRowObstruction` (which proves every positive-length
+code has at least one recovered row, and that a concrete `h = 1`, `t = 2`
+duplicate-stage code has only one recovered row, so the current all-
+`BadPathCode` coarsening cannot yield `q = 2` globally for that witness),
   no collapse-probability upper bound for restricted formulas over the
   matching-restriction space is stated or proved — in particular no
   multi-term DNF bad-set bound beyond the depth-1 total-size union bound of
   `PHPFullMatchingDNFBound` and the coarse path-code count above, no
   geometric `(8w)^s`-style depth-`t` collapse-probability bound
   (term-count-independent) over matchings, and no depth-`t` canonical
-  decision-tree encoding argument with distinct per-stage row recovery;
+  decision-tree encoding argument with exact distinct per-stage row recovery;
 - a measure-theoretic probability measure, expectation, or
   with-high-probability theorem over restriction distributions.  The
   matching-distribution/probability layers prove exact finite counting,
   cross-multiplied event-probability equalities/inequalities, and
   every-point floor transfer only, over the identity-subset and
-  square-permutation matching spaces; rectangular `p > h` injection spaces are
-  not formalized;
+  square-permutation matching spaces; rectangular `p > h` injection spaces remain
+  unformalized and were not routed by the current theorem surface;
 - a positive Boolean decision-tree depth floor for any unsatisfiable PHP
   formula (`p > h`);
 - a discharge of the full frozen-form B4 goal: supplied `FrozenDepthView`
@@ -123,6 +246,109 @@ This repository does **not** establish or imply:
   counts, budgets, star counts); the `nextLayer` re-viewing is a property of
   the constructed witness only, and the theorem must not be cited for the
   re-viewing property of an arbitrary witness;
+- any broad consequence from the S2147 exact-threshold packed-family surface:
+  `FormulaRecursiveSyntacticTerminalExact` only defines the restricted
+  exact-threshold subclass, routes it through the existing packed-family
+  adequacy/parameter/final-tree consumers, and gives the bounded gated
+  literal/true witness (`lit0` at depth index `0`, `lit0 OR true` at positive
+  depth indices).  It proves no product/counting synthesis, threshold
+  improvement, arbitrary normalization, arbitrary AC0/bounded-depth collapse,
+  PHP switching lemma, Frege/PHP, NP/circuit, P-vs-NP, full B4, or Gate A work;
+- any schematic negative claim from the S2148 small-arity obstruction:
+  `FormulaRecursiveSyntacticTerminalObstruction` records only one concrete
+  arity-source obstruction for the current packed-family packaging, with the same
+  size/depth/class profile as the S2147 gated exact-threshold witness but fixed
+  packed arity `1`, hence not ambient adequate.  It proves no product/counting
+  synthesis, threshold improvement, arbitrary normalization, arbitrary
+  AC0/bounded-depth collapse, PHP switching lemma, Frege/PHP, NP/circuit,
+  P-vs-NP, full B4, or Gate A work;
+- any broad consequence from the S2149 product/counting ambient arity source:
+  `FormulaRecursiveSyntacticTerminalProduct` only names the S2144 coarse threshold
+  as an explicit product of counting factors, obtains ambient adequacy from a
+  positive counting multiplicity without exact-threshold equality, and gives a
+  multiplicity-2 gated literal/true witness with class/depth/parameter/final-tree
+  wrappers.  It proves no threshold improvement, efficient width-profile
+  synthesis, arbitrary normalization, arbitrary AC0/bounded-depth collapse, PHP
+  switching lemma, Frege/PHP, NP/circuit, P-vs-NP, full B4, or Gate A work;
+- any broad consequence from the S2150 structural restricted-family package:
+  `FormulaRecursiveSyntacticTerminalStructural` only packages class-size and width
+  envelope data for the packed-family interface, derives width from class-size for
+  the syntactic-terminal class, states structural ambient adequacy against the
+  class-size envelope, recovers S2145 ambient adequacy by threshold monotonicity,
+  and routes S2142 final-tree consumers under `t(d,s)=S(d)*(s-1)`.  It proves no
+  efficient width-profile synthesis, threshold improvement, arbitrary
+  normalization, arbitrary AC0/bounded-depth collapse, PHP switching lemma,
+  Frege/PHP, NP/circuit, P-vs-NP, full B4, or Gate A work;
+- any broad consequence from the S2151 efficient width-profile package:
+  `FormulaRecursiveSyntacticTerminalWidth` only synthesizes a terminal-sharp
+  non-fallback width envelope for restricted syntactic-terminal packed families,
+  proves depth-zero envelope `1` is stricter than ambient arity under ambient
+  adequacy, and routes S2142 consumers for a one-literal witness under
+  `t(d,s)=S(d)*(s-1)`.  It proves no global efficient width-profile synthesis for
+  arbitrary formula classes, threshold improvement, arbitrary normalization,
+  arbitrary AC0/bounded-depth collapse, PHP switching lemma, Frege/PHP,
+  NP/circuit, P-vs-NP, full B4, or Gate A work;
+- any broad consequence from the S2152 intermediate-depth efficient width package:
+  the same module only adds a positive-depth budget efficient envelope for the
+  restricted product/counting family (non-fallback vs ambient, budget still
+  equals size cap at positive depth) plus a *parallel* intermediate actual-width
+  envelope with `W=1 < sizeCap` on depth-1 formulas, routing S2142 final-tree
+  consumers via the budget structural data under `t(d,s)=S(d)*(s-1)`.  The
+  intermediate envelope does not discharge budget `WidthEnvelope` (which still
+  requires `W ≥ formulaSize` at non-terminal levels).  It proves no global
+  efficient width-profile synthesis for arbitrary formula classes, threshold
+  improvement, arbitrary normalization, arbitrary AC0/bounded-depth collapse,
+  PHP switching lemma, Frege/PHP, NP/circuit, P-vs-NP, full B4, or Gate A work;
+- any broad consequence from the S2153 restricted depth-1 tight frontier width
+  budget package: `FormulaRecursiveSyntacticTerminalTightBudget` only adds a
+  *parallel* depth-1 tight budget (constantly `1` when `depth F ≤ 1`, otherwise
+  the standard S2142 budget) without changing the global
+  `syntacticTerminalFrontierWidthBudget`, discharges a tight WidthEnvelope-style
+  predicate with `W=1` and actual gate-width ≤ 1 for the restricted
+  product/counting (gated lit-OR-true) family, and routes a specialized
+  final-tree consumer under unchanged `t(d,s)=S(d)*(s-1)` whose geometric
+  schedule uses width budget `1`.  It proves no global budget change, no global
+  arbitrary-class width synthesis, no threshold improvement, no arbitrary
+  normalization, no arbitrary AC0/bounded-depth collapse, no PHP switching
+  lemma, no Frege/PHP, no NP/circuit, no P-vs-NP, no full B4, and no Gate A
+  work;
+- any broad consequence from the S2154 restricted depth-2 tight frontier width
+  budget package: `FormulaRecursiveSyntacticTerminalDepthTwoTightBudget` only
+  adds a *parallel* depth-2 tight budget (constantly `1` when `depth F ≤ 2`)
+  without changing the global `syntacticTerminalFrontierWidthBudget`, a concrete
+  nested-OR witness family with actual gate DNF width at most `1`, and
+  specialized final-tree consumers under unchanged `t(d,s)=S(d)*(s-1)`.  It
+  proves no global budget change, no arbitrary-class width synthesis, no
+  threshold improvement, no arbitrary AC0/bounded-depth collapse, no PHP
+  switching lemma, no Frege/PHP, no NP/circuit, no P-vs-NP, no full B4, and no
+  Gate A work;
+- any broad consequence from the S2155 restricted k-indexed bounded-shallow tight
+  frontier width budget package:
+  `FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget` only adds a
+  *parallel* k-indexed tight budget (constantly `1` when `depth F ≤ k`) without
+  changing the global S2142 `syntacticTerminalFrontierWidthBudget` or the coarse
+  ambient threshold; for each fixed `k`, one recursively defined pure nested-OR
+  family with depth `min(d,k)`, size `2*min(d,k)+1`, and width `1` at every
+  selected frontier; reusable supplied-width syntactic-terminal consumer
+  schedules on a supplied `W` level; and a concrete route that instantiates
+  `W=1` and retains `t=S*(s-1)`.  Budget equality is only for the `k=1`/`k=2`
+  specializations (not whole-family definitional equality).  It proves no
+  arbitrary-class width synthesis, no threshold improvement, no arbitrary
+  collapse, no full B4, no PHP switching lemma, no Frege/PHP, no NP/circuit, no
+  P-vs-NP, and no Gate A work;
+- any broad consequence from the S2156 restricted nonempty OR-only formula class
+  under the S2155 bounded-shallow tight budget:
+  `FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget` only adds an
+  inductive OR-only class over constants/literals closed under nonempty OR lists
+  (no AND), proves syntactic simplicity / no empty fanins / syntactic DNF width
+  ≤ 1 with top-child and recursive-frontier closure, discharges the S2155 tight
+  envelope at `W=1` under `depth F ≤ k`, and routes formula-level plus
+  packed-family final-tree consumers by reusing the S2155 supplied/bounded-shallow
+  path under unchanged `t(d,s)=S(d)*(s-1)` and the coarse ambient threshold,
+  with the S2155 nested-OR family as an instance and a concrete fan-in-three
+  branching witness.  It proves no arbitrary-class width synthesis, no threshold
+  improvement, no full B4, no PHP switching lemma, no Frege/PHP, no NP/circuit,
+  no P-vs-NP, and no Gate A work;
 - unsupplied or automatically synthesized product hypotheses for the scheduled
   route: `FrozenProductSchedule` proves only that an explicit
   `FrozenProductHypothesis` over a supplied `B` and `t` yields `ValidFrom` and
@@ -247,11 +473,88 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.PHPFullMatchingStageRows.mem_codeStageRows` | `propext`, `Classical.choice`, `Quot.sound` | membership in recovered stage rows iff some stage decodes to the row |
 | `PvNP.PHPFullMatchingStageRows.codeStageRow_free_of_encoding_eq_some` | `propext`, `Classical.choice`, `Quot.sound` | each recovered stage row is free for a bad point whose encoding is the code |
 | `PvNP.PHPFullMatchingStageRows.fullRowsFree_codeStageRows_of_encoding_eq_some` | `propext`, `Classical.choice`, `Quot.sound` | all recovered stage rows are free in the matching point/code fiber |
+| `PvNP.PHPFullMatchingStageRows.choose_rowFree_one_step_le` | `propext`, `Quot.sound` | pure one-step row-free binomial comparison |
+| `PvNP.PHPFullMatchingStageRows.choose_rowFree_geometric_le` | `propext`, `Quot.sound` | pure row-free binomial geometric comparison, with no realized row-growth content |
+| `PvNP.PHPFullMatchingStageRows.rowFree_geometric_ratio_full` | `propext`, `Classical.choice`, `Quot.sound` | full-square row-free geometric-ratio inequality from finite cardinality arithmetic |
 | `PvNP.PHPFullMatchingStageRows.canonicalDepthBad_fiber_count_le_stageRows` | `propext`, `Classical.choice`, `Quot.sound` | per-code fiber bound preserving recovered stage-row set |
 | `PvNP.PHPFullMatchingStageRows.canonicalDepthBad_count_le_sum_codeStageRows` | `propext`, `Classical.choice`, `Quot.sound` | bad-event count bounded by sum over code-specific recovered-row multiplicities |
 | `PvNP.PHPFullMatchingStageRows.canonicalDepthBad_count_le_pathCode_mul_rowFree_of_codeStageRows_card_ge` | `propext`, `Classical.choice`, `Quot.sound` | conditional uniform coarsening from supplied `q <= (codeStageRows c).card`; does not prove distinct rows or instantiate `q = t` |
 | `PvNP.PHPFullMatchingStageRows.canonicalDepthBadCodeFiber_count_le_rowFree_of_realized_codeStageRows_card_ge` | `propext`, `Classical.choice`, `Quot.sound` | per-code realized-fiber coarsening; the `q`-row lower bound is required only when the code fiber is nonempty |
 | `PvNP.PHPFullMatchingStageRows.canonicalDepthBad_count_le_pathCode_mul_rowFree_of_realized_codeStageRows_card_ge` | `propext`, `Classical.choice`, `Quot.sound` | realized-code-only conditional uniform coarsening; no realized row-growth, `q = t`, geometric decay, PHP switching lemma, or lower-bound claim |
+| `PvNP.PHPFullMatchingStageRows.canonicalDepthBad_count_le_pathCode_mul_rowFree_of_realized_codeStageRows_card_ge_t` | `propext`, `Classical.choice`, `Quot.sound` | S2124 `q = t` specialization under supplied realized row-growth; does not prove realized row-growth or distinct stages |
+| `PvNP.PHPFullMatchingStageRows.canonicalDepthBad_probability_geometric_le_of_realized_codeStageRows_card_ge_t` | `propext`, `Classical.choice`, `Quot.sound` | geometric full-square counting bound from supplied realized row-growth plus the proved row-free geometric-ratio inequality; does not prove realized row-growth or a rectangular injection result |
+| `PvNP.PHPFullMatchingStageRows.canonicalDepthBad_eventProbLe_geometric_of_realized_codeStageRows_card_ge_t` | `propext`, `Classical.choice`, `Quot.sound` | thin `EventProbLe` wrapper for the conditional geometric full-square bound; exposes finite probability interface only and does not prove realized row-growth, rectangular `p > h`, or a PHP switching lemma |
+| `PvNP.PHPFullMatchingStageRows.codeStageVar_injective_of_realized_simple` | `propext`, `Classical.choice`, `Quot.sound` | under `SimpleDNF (phpDNFAsDNF h tvs)`, realized nonempty fibers have injective recovered PHP variables along the code stages; no distinct-row theorem |
+| `PvNP.PHPFullMatchingStageRows.canonicalDepthBadCodeFiberNonempty.le_h_mul_codeStageRows_card_of_simple` | `propext`, `Classical.choice`, `Quot.sound` | simple-DNF structural replacement: realized fibers satisfy `t <= h * (codeStageRows c).card`; this is not exact `t <= |rows|` |
+| `PvNP.PHPFullMatchingStageRows.canonicalDepthBad_count_le_pathCode_mul_rowFree_of_simple_realized_div_h` | `propext`, `Classical.choice`, `Quot.sound` | instantiates the realized-code-only row-free consumer with `q = t / h` using the simple-DNF structural replacement |
+| `PvNP.PHPFullMatchingStageRows.canonicalDepthBad_probability_geometric_le_of_simple_realized_div_h` | `propext`, `Classical.choice`, `Quot.sound` | geometric full-square count form at `q = t / h` under `SimpleDNF`; retains the `BadPathCode` factor and square matching space |
+| `PvNP.PHPFullMatchingStageRows.canonicalDepthBad_eventProbLe_geometric_of_simple_realized_div_h` | `propext`, `Classical.choice`, `Quot.sound` | finite `EventProbLe` wrapper for the simple-DNF structural replacement at `q = t / h`; not rectangular `p > h` and not a PHP switching lemma |
+| `PvNP.PHPFullMatchingCodeFactor.eventProbLe_mono_num` | `propext`, `Quot.sound` | generic finite-probability numerator monotonicity used only to enlarge proved bounds |
+| `PvNP.PHPFullMatchingCodeFactor.phpDNFVarSet_card_le_join_length` | `propext`, `Classical.choice`, `Quot.sound` | PHP DNF variable support cardinality is at most total literal-occurrence count `tvs.join.length` |
+| `PvNP.PHPFullMatchingCodeFactor.badPathCode_card_support` | `propext`, `Classical.choice`, `Quot.sound` | exact current all-code cardinality `card (BadPathCode h tvs t) = (2 * |phpDNFVarSet h tvs|)^t` |
+| `PvNP.PHPFullMatchingCodeFactor.badPathCode_card_le_of_support_card_le` | `propext`, `Classical.choice`, `Quot.sound` | if the PHP DNF variable support has size at most `m`, then `card (BadPathCode h tvs t) <= (2*m)^t` |
+| `PvNP.PHPFullMatchingCodeFactor.badPathCode_card_le_join_length` | `propext`, `Classical.choice`, `Quot.sound` | coarser input-data bound `card (BadPathCode h tvs t) <= (2 * tvs.join.length)^t` |
+| `PvNP.PHPFullMatchingCodeFactor.canonicalDepthBad_eventProbLe_geometric_of_simple_realized_div_h_support_bound` | `propext`, `Classical.choice`, `Quot.sound` | S2125 simple-DNF `q = t/h` EventProbLe bound with explicit numerator `(2*m)^t * (h-s)^(t/h)` under support cap `m` |
+| `PvNP.PHPFullMatchingCodeFactor.canonicalDepthBad_eventProbLe_geometric_of_simple_realized_div_h_join_length` | `propext`, `Classical.choice`, `Quot.sound` | input-data-expanded S2125 simple-DNF bound with numerator `(2 * tvs.join.length)^t * (h-s)^(t/h)` |
+| `PvNP.PHPFullMatchingCodeFactor.canonicalDepthBad_eventProbLe_geometric_of_simple_realized_div_h_support_bound_nontrivial` | `propext`, `Classical.choice`, `Quot.sound` | packages the support-bound EventProbLe result with the explicit below-one parameter inequality; does not prove that inequality automatically |
+| `PvNP.PHPFullMatchingCodeFactor.codeFactor_nontrivial_requires_code_factor_lt_denominator` | `propext` | formal obstruction: if `(h-s)^(t/h) >= 1`, nontriviality of the current all-code bound forces `(2*m)^t < h^(t/h)` |
+| `PvNP.PHPFullMatchingCodeFactor.codeFactor_nontrivial_impossible_of_denominator_le_code_factor` | `propext` | formal obstruction: if `h^(t/h) <= (2*m)^t` and the row-free factor is at least one, the current all-code bound cannot be below one |
+| `PvNP.PHPFullMatchingRealizedCodeCount.realizedBadPathCodes_card_le_badPathCode` | `propext`, `Classical.choice`, `Quot.sound` | realized canonical bad-path codes form a finite subset of the ambient `BadPathCode` type; no strict or asymptotic saving is proved |
+| `PvNP.PHPFullMatchingRealizedCodeCount.canonicalDepthBad_count_le_realizedCode_mul_rowFree_of_realized_codeStageRows_card_ge` | `propext`, `Classical.choice`, `Quot.sound` | realized-code-count replacement: the row-free multiplicity is paid only for nonempty canonical bad-path code fibers under supplied realized row-growth |
+| `PvNP.PHPFullMatchingRealizedCodeCount.canonicalDepthBad_count_le_realizedCode_mul_rowFree_of_simple_realized_div_h` | `propext`, `Classical.choice`, `Quot.sound` | simple-DNF realized-code count bound at `q = t/h`; replaces the all-code factor by realized-code cardinality but does not bound that cardinality sharply |
+| `PvNP.PHPFullMatchingRealizedCodeCount.canonicalDepthBad_probability_geometric_le_of_simple_realizedCode_div_h` | `propext`, `Classical.choice`, `Quot.sound` | geometric full-square count form at `q = t/h` with realized-code cardinality numerator; finite square matching-space bookkeeping only |
+| `PvNP.PHPFullMatchingRealizedCodeCount.canonicalDepthBad_eventProbLe_geometric_of_simple_realizedCode_div_h` | `propext`, `Classical.choice`, `Quot.sound` | finite EventProbLe wrapper for the simple-DNF realized-code replacement; not a term-count-independent PHP switching lemma |
+| `PvNP.PHPFullMatchingRealizedCodeCount.realizedCode_nontrivial_requires_realized_card_lt_denominator` | `propext`, `Classical.choice`, `Quot.sound` | realized-code obstruction: if `(h-s)^(t/h) >= 1`, nontriviality forces the realized-code cardinality below `h^(t/h)` |
+| `PvNP.PHPFullMatchingRealizedCodeCount.realizedCode_nontrivial_impossible_of_denominator_le_realized_card` | `propext`, `Classical.choice`, `Quot.sound` | realized-code obstruction: if `h^(t/h)` is no larger than the realized-code cardinality, this realized-code route cannot be below one when the row-free factor is at least one |
+| `PvNP.PHPFullMatchingRealizedCodeObstruction.twoRowsTwoCols_realizedBadPathCodes_card_ge_two` | `propext`, `Classical.choice`, `Quot.sound` | concrete simple-DNF `h = 2`, `s = 1`, `t = 2` witness has at least two realized canonical bad-path codes |
+| `PvNP.PHPFullMatchingRealizedCodeObstruction.twoRowsTwoCols_denominator_le_realizedBadPathCodes_card` | `propext`, `Classical.choice`, `Quot.sound` | in the concrete witness, the S2127 denominator `2^(2/2)` is no larger than the realized-code cardinality |
+| `PvNP.PHPFullMatchingRealizedCodeObstruction.twoRowsTwoCols_not_realizedBadPathCodes_card_lt_denominator` | `propext`, `Classical.choice`, `Quot.sound` | finite obstruction showing SimpleDNF alone cannot force the strict realized-cardinality inequality in the concrete witness |
+| `PvNP.PHPFullMatchingRealizedCodeObstruction.twoRowsTwoCols_realizedCode_route_nontrivial_impossible` | `propext`, `Classical.choice`, `Quot.sound` | applies the S2127 obstruction to the concrete witness: the realized-code numerator is not strictly below the displayed denominator |
+| `PvNP.PHPFullMatchingRowUniqueStrict.twoRowsTwoColsTvs_h2_not_globalRowUnique` | `propext` | the S2128 two-by-two witness is not sign-sensitive globally row-unique |
+| `PvNP.PHPFullMatchingRowUniqueStrict.twoRowsTwoColsTvs_h2_not_globalRowVarUnique` | `propext` | the S2128 two-by-two witness is not globally row-variable-unique: one row uses two PHP columns |
+| `PvNP.PHPFullMatchingRowUniqueStrict.codeStageVar_eq_of_globalRowVarUnique_row_eq` | `propext`, `Classical.choice`, `Quot.sound` | under whole-DNF row-variable uniqueness, equal recovered rows force equal stored code variables |
+| `PvNP.PHPFullMatchingRowUniqueStrict.codeStageRow_injective_of_realized_simple_globalRowVarUnique` | `propext`, `Classical.choice`, `Quot.sound` | realized SimpleDNF plus whole-DNF row-variable uniqueness gives injective recovered stage rows |
+| `PvNP.PHPFullMatchingRowUniqueStrict.codeStageRow_injective_of_realized_simple_globalRowUnique` | `propext`, `Classical.choice`, `Quot.sound` | stronger row-unique corollary of realized SimpleDNF recovered-stage-row injectivity |
+| `PvNP.PHPFullMatchingRowUniqueStrict.twoByTwo_realizedBadPathCodes_eq_empty_of_globalRowVarUnique` | `propext`, `Classical.choice`, `Quot.sound` | finite `h = 2`, `s = 1`, `t = 2` realized-code set is empty under SimpleDNF plus whole-DNF row-variable uniqueness |
+| `PvNP.PHPFullMatchingRowUniqueStrict.twoByTwo_realizedBadPathCodes_eq_empty_of_globalRowUnique` | `propext`, `Classical.choice`, `Quot.sound` | stronger row-unique corollary of the finite two-by-two realized-code emptiness theorem |
+| `PvNP.PHPFullMatchingRowUniqueStrict.twoByTwo_realizedBadPathCodes_card_lt_denominator_of_globalRowVarUnique` | `propext`, `Classical.choice`, `Quot.sound` | finite two-by-two strict cardinality consequence under row-variable uniqueness; not a general compression theorem |
+| `PvNP.PHPFullMatchingRowUniqueStrict.twoByTwo_realizedBadPathCodes_card_lt_denominator_of_globalRowUnique` | `propext`, `Classical.choice`, `Quot.sound` | stronger row-unique corollary of the finite two-by-two strict cardinality theorem |
+| `PvNP.PHPFullMatchingRowUniqueStrict.realizedBadPathCodes_eq_empty_of_simple_globalRowVarUnique_of_h_lt_s_add_t` | `propext`, `Classical.choice`, `Quot.sound` | S2130 finite square row-capacity theorem: under SimpleDNF plus row-variable uniqueness, realized-code emptiness follows from `h < s + t` |
+| `PvNP.PHPFullMatchingRowUniqueStrict.realizedBadPathCodes_eq_empty_of_simple_globalRowUnique_of_h_lt_s_add_t` | `propext`, `Classical.choice`, `Quot.sound` | stronger row-unique corollary of the S2130 parametric realized-code emptiness theorem |
+| `PvNP.PHPFullMatchingRowUniqueStrict.realizedBadPathCodes_card_lt_denominator_of_simple_globalRowVarUnique_of_h_lt_s_add_t` | `propext`, `Classical.choice`, `Quot.sound` | S2130 strict realized-code cardinality consequence under the same finite square row-capacity hypotheses |
+| `PvNP.PHPFullMatchingRowUniqueStrict.realizedBadPathCodes_card_lt_denominator_of_simple_globalRowUnique_of_h_lt_s_add_t` | `propext`, `Classical.choice`, `Quot.sound` | stronger row-unique corollary of the S2130 strict realized-code cardinality theorem |
+| `PvNP.PHPFullMatchingRowUniqueStrict.canonicalDepthBad_eventProbLe_zero_of_simple_globalRowVarUnique_of_h_lt_s_add_t` | `propext`, `Classical.choice`, `Quot.sound` | S2130 zero-numerator finite `EventProbLe` wrapper; finite square bookkeeping only, not measure-theoretic probability |
+| `PvNP.PHPFullMatchingRowUniqueStrict.canonicalDepthBad_eventProbLe_zero_of_simple_globalRowUnique_of_h_lt_s_add_t` | `propext`, `Classical.choice`, `Quot.sound` | stronger row-unique corollary of the S2130 zero-numerator finite `EventProbLe` wrapper |
+| `PvNP.PHPFullMatchingRealizedCodeSplit.codeRowCollision_iff_not_codeRowVarUnique` | `propext`, `Classical.choice`, `Quot.sound` | code-local split predicate: row-collision codes are exactly non-row-variable-unique codes |
+| `PvNP.PHPFullMatchingRealizedCodeSplit.realizedBadPathCodes_eq_rowVarUnique_union_rowCollision` | `propext`, `Classical.choice`, `Quot.sound` | realized bad-path codes split into code-local row-variable-unique and row-collision classes |
+| `PvNP.PHPFullMatchingRealizedCodeSplit.disjoint_rowVarUniqueRealizedBadPathCodes_rowCollision` | `propext`, `Classical.choice`, `Quot.sound` | the two S2131 realized-code classes are disjoint |
+| `PvNP.PHPFullMatchingRealizedCodeSplit.codeStageVar_eq_of_codeRowVarUnique_row_eq` | `propext`, `Classical.choice`, `Quot.sound` | code-local row-variable uniqueness turns equal recovered rows into equal stored code variables |
+| `PvNP.PHPFullMatchingRealizedCodeSplit.codeStageRow_injective_of_realized_simple_codeRowVarUnique` | `propext`, `Classical.choice`, `Quot.sound` | realized SimpleDNF plus code-local row-variable uniqueness gives injective recovered stage rows |
+| `PvNP.PHPFullMatchingRealizedCodeSplit.rowVarUniqueRealizedBadPathCodes_eq_empty_of_simple_of_h_lt_s_add_t` | `propext`, `Classical.choice`, `Quot.sound` | S2131 finite square row-capacity theorem: code-local row-variable-unique realized codes are empty under SimpleDNF and `h < s + t` |
+| `PvNP.PHPFullMatchingRealizedCodeSplit.realizedBadPathCodes_eq_rowCollisionRealizedBadPathCodes_of_simple_of_h_lt_s_add_t` | `propext`, `Classical.choice`, `Quot.sound` | in the S2131 row-capacity regime, every realized code is a row-collision code |
+| `PvNP.PHPFullMatchingRealizedCodeSplit.rowCollisionRealizedBadPathCodes_card_eq_realizedBadPathCodes_card_of_simple_of_h_lt_s_add_t` | `propext`, `Classical.choice`, `Quot.sound` | in the S2131 row-capacity regime, row-collision cardinality equals full realized-code cardinality; no strict collision compression is proved |
+| `PvNP.PHPFullMatchingRealizedCodeSplit.canonicalDepthBad_eventProbLe_geometric_of_simple_rowCollision_of_h_lt_s_add_t` | `propext`, `Classical.choice`, `Quot.sound` | finite `EventProbLe` wrapper using row-collision cardinality in the row-capacity regime; square bookkeeping only |
+| `PvNP.PHPFullMatchingRealizedCodeSplit.twoRowsTwoColsCode_row0_h2_t2_codeRowCollision` | `propext`, `Classical.choice`, `Quot.sound` | the S2128 row-0 realized code is a same-row/different-column collision code |
+| `PvNP.PHPFullMatchingRealizedCodeSplit.twoRowsTwoColsCode_row1_h2_t2_codeRowCollision` | `propext`, `Classical.choice`, `Quot.sound` | the S2128 row-1 realized code is a same-row/different-column collision code |
+| `PvNP.PHPFullMatchingRealizedCodeSplit.twoRowsTwoCols_rowCollisionRealizedBadPathCodes_card_ge_two` | `propext`, `Classical.choice`, `Quot.sound` | the concrete S2128 witness has at least two row-collision realized codes |
+| `PvNP.PHPFullMatchingRealizedCodeSplit.twoRowsTwoCols_denominator_le_rowCollisionRealizedBadPathCodes_card` | `propext`, `Classical.choice`, `Quot.sound` | in the concrete witness, the S2127 denominator `2^(2/2)` is no larger than the row-collision realized-code cardinality |
+| `PvNP.PHPFullMatchingRealizedCodeSplit.twoRowsTwoCols_not_rowCollisionRealizedBadPathCodes_card_lt_denominator` | `propext`, `Classical.choice`, `Quot.sound` | finite obstruction showing SimpleDNF alone cannot force the collision-class cardinality below the displayed denominator in the concrete witness |
+| `PvNP.PHPFullMatchingRealizedCodeSplit.twoRowsTwoCols_rowCollision_route_nontrivial_impossible` | `propext`, `Classical.choice`, `Quot.sound` | applies the collision-class obstruction to the concrete witness: the collision numerator is not strictly below the displayed denominator |
+| `PvNP.PHPFullMatchingRealizedCodeSplit.not_codeRowCollision_h_one` | `propext`, `Classical.choice`, `Quot.sound` | row collisions are impossible over one PHP column |
+| `PvNP.PHPFullMatchingRealizedCodeSplit.rowCollisionRealizedBadPathCodes_eq_empty_h_one` | `propext`, `Classical.choice`, `Quot.sound` | over `h = 1`, the row-collision realized-code class is empty for every square full-matching parameter choice |
+| `PvNP.PHPFullMatchingRealizedCodeParametricObstruction.fullRowP_canonicalDepthBad` | `propext`, `Classical.choice`, `Quot.sound` | in the S2132 full-row family, the one-free-row matching point has canonical depth at least `h` |
+| `PvNP.PHPFullMatchingRealizedCodeParametricObstruction.fullRowCode_mem_realized` | `propext`, `Classical.choice`, `Quot.sound` | each free row in the S2132 family yields a realized canonical bad-path code |
+| `PvNP.PHPFullMatchingRealizedCodeParametricObstruction.fullRowCode_injective` | `propext`, `Classical.choice`, `Quot.sound` | distinct free rows yield distinct realized codes in the S2132 family |
+| `PvNP.PHPFullMatchingRealizedCodeParametricObstruction.fullRowTvs_simple` | `propext`, `Classical.choice`, `Quot.sound` | the S2132 full-row DNF family is syntactically simple |
+| `PvNP.PHPFullMatchingRealizedCodeParametricObstruction.fullRowTvs_rowCollisionRealizedBadPathCodes_card_ge_h` | `propext`, `Classical.choice`, `Quot.sound` | parametric row-collision obstruction: for every `h >= 2`, the S2132 family has at least `h` row-collision realized codes at `s = h - 1`, `t = h` |
+| `PvNP.PHPFullMatchingRealizedCodeParametricObstruction.fullRowTvs_denominator_le_rowCollisionRealizedBadPathCodes_card` | `propext`, `Classical.choice`, `Quot.sound` | in the S2132 family, the denominator `h^(h/h)` is no larger than the row-collision realized-code count |
+| `PvNP.PHPFullMatchingRealizedCodeParametricObstruction.fullRowTvs_not_rowCollisionRealizedBadPathCodes_card_lt_denominator` | `propext`, `Classical.choice`, `Quot.sound` | finite parametric obstruction: SimpleDNF alone cannot force the row-collision count below the displayed denominator on the S2132 family |
+| `PvNP.PHPFullMatchingRealizedCodeParametricObstruction.fullRowTvs_rowCollision_route_nontrivial_impossible` | `propext`, `Classical.choice`, `Quot.sound` | applies the S2132 denominator obstruction to the row-collision numerator route for `s = h - 1`, `t = h` |
+| `PvNP.PHPFullMatchingGateAInvariant.RealizedCodeRowVarUnique` | (definition) | S2133 code-local invariant: every realized code is row-variable-unique |
+| `PvNP.PHPFullMatchingGateAInvariant.rowCollisionRealizedBadPathCodes_eq_empty_of_realizedCodeRowVarUnique` | (check-pinned) | under the S2133 invariant, the row-collision realized-code set is empty |
+| `PvNP.PHPFullMatchingGateAInvariant.rowCollisionRealizedBadPathCodes_card_eq_zero_of_realizedCodeRowVarUnique` | (check-pinned) | cardinal-zero corollary for the row-collision realized-code set under the S2133 invariant |
+| `PvNP.PHPFullMatchingGateAInvariant.rowCollisionRealizedBadPathCodes_card_lt_denominator_of_realizedCodeRowVarUnique` | (check-pinned) | finite denominator-control corollary: under the S2133 invariant, the row-collision count is below any supplied positive `h^(t/h)` denominator |
+| `PvNP.PHPFullMatchingGateAInvariant.fullRowTvs_not_realizedCodeRowVarUnique` | (check-pinned) | the S2132 full-row family violates the S2133 invariant for every `h >= 2` |
 | `PvNP.PHPFullMatchingStageRowObstruction.codeStageRows_nonempty` | `propext`, `Classical.choice`, `Quot.sound` | every positive-length code recovers at least one stage row |
 | `PvNP.PHPFullMatchingStageRowObstruction.one_le_codeStageRows_card` | `propext`, `Classical.choice`, `Quot.sound` | cardinal form of positive-length one-row nonemptiness |
 | `PvNP.PHPFullMatchingStageRowObstruction.codeStageRows_card_eq_of_injective` | `propext`, `Classical.choice`, `Quot.sound` | conditional exact `t` recovered rows under injectivity of the stage-row map |
@@ -535,11 +838,141 @@ Product-beat hypotheses remain supplied on the frozen-product route;
 ratio-regime schedules remain supplied except for explicit-bound geometric
 corollaries, and the recursive width profile remains supplied.  Intermediate
 child views still use the truth-table fallback unless an external profile is
-provided, and the artifact still does not synthesize `B` from arbitrary
+provided.  `FormulaRecursiveTerminalClassProfile` adds only the bounded S2141
+class-envelope terminal-aware Gate B surface: final-tree wrappers are proved
+under supplied class-size envelope `S`, terminal-aware width envelope `W`,
+`NoEmptyFanins`, and the ambient geometric entry inequality, with a fixed-width
+truth-table fallback.  It does not synthesize class envelopes or product/counting
+beats, does not give automatic B4, arbitrary formula-class synthesis, arbitrary
+AC0 collapse, Frege/PHP, NP/circuit, or P-vs-NP.
+`FormulaRecursiveSyntacticTerminalClassProfile` adds only a named restricted
+syntactic-terminal class (`syntacticFormulaSimpleDNF F ∧ NoEmptyFanins F`) with a
+separate S2142 selector: syntactic/formula-size width at intermediate recursive
+frontiers, terminal width one at full depth, class budget
+`t(d,s)=S(d)*(s-1)`, and ambient inequality with `W := S`.  Its main all-level
+theorem no longer has a caller-supplied width-envelope premise, but it still
+relies on the supplied class-size envelope `formulaSize F <= S d` and does not
+synthesize `S`, product/counting beats, or arbitrary normalization.
+`FormulaRecursiveSyntacticTerminalEntry` adds only a named entry-size
+feasibility/no-go packet for that S2142 ambient inequality:
+`syntacticTerminalClassEntryThreshold S d rounds =
+2 * (64 * S d) ^ rounds * (64 * S d * S d)` and
+`SyntacticTerminalClassEntryFeasible S d rounds n` names threshold feasibility.
+It proves exact-threshold feasibility, monotonicity in `n`, no-go below the
+threshold, and wrappers routing the S2142 all-level final-tree theorem through
+the named predicate or discharging it at the exact threshold.  This packet does
+not add product/counting synthesis beyond naming/discharging the ambient bound,
+does not add arbitrary normalization, arbitrary AC0/bounded-depth collapse, PHP
+switching, Frege/PHP, NP/circuit, or P-vs-NP content, and Gate A remains closed.
+`FormulaRecursiveSyntacticTerminalRegime` adds only the bounded S2144 coarse
+parameter-regime sufficient condition for the same named S2143 entry predicate:
+if `S d <= M d` and `N d` is at least
+`2 * (64 * M d) ^ (roundsOf d) * (64 * M d * M d)`, then the S2143 exact entry
+threshold is feasible at depth `d`, and the existing S2142 all-level final-tree
+theorem can be routed under the unchanged class budget `t(d,s)=S(d)*(s-1)` for
+restricted `SyntacticTerminalFormulaClass` formulas.  This is not a broad
+product/counting synthesis, not a threshold improvement, not arbitrary formula
+normalization, not arbitrary AC0/bounded-depth collapse, not full B4, not PHP
+switching, not Frege/PHP, not NP/circuit, not P-vs-NP, and not Gate A work.
+`FormulaRecursiveSyntacticTerminalFamily` adds only the bounded S2145 packed
+family source for that S2144 regime: for a depth-indexed packed family
+`Nat -> Sigma (fun n => BDFormula n)`, the cap `M` and class envelope `S` are
+the actual formula size of the packed formula at each depth, and `N` is the
+actual packed arity, with a separate explicit ambient-adequacy hypothesis
+against the same coarse threshold.  It provides pointwise entry feasibility and
+final-tree wrappers under the unchanged class budget `t(d,s)=S(d)*(s-1)` for the
+restricted syntactic-terminal class.  It is not broad product/counting
+synthesis, not a threshold improvement, not arbitrary normalization, not
+arbitrary AC0/bounded-depth collapse, not full B4, not PHP switching, not
+Frege/PHP, not NP/circuit, not P-vs-NP, and not Gate A work.
+`FormulaRecursiveSyntacticTerminalConcrete` adds only the bounded S2146 concrete
+one-literal exact-threshold packed-family adequacy witness: for each depth index,
+the packed formula is a positive literal over variable `0`, the formula-size cap
+is exactly `1`, the depth is `0`, and the ambient arity is exactly the S2144
+coarse threshold for size cap `1` and the supplied `roundsOf d`.  It provides the
+corresponding parameter-regime, pointwise entry-feasibility, and final-tree
+wrappers for this concrete family only.  It is not product/counting synthesis,
+not a threshold improvement, not arbitrary normalization, not arbitrary AC0,
+not PHP switching, not Frege/PHP, not NP-circuit, not P-vs-NP, and not Gate A.
+`FormulaRecursiveSyntacticTerminalExact` adds only the bounded S2147 restricted
+exact-threshold packed-family subclass and gated literal/true witness.  At depth
+index `0` the packed formula is a positive literal, at positive depth indices it
+is `lit0 OR true`, and the corresponding size caps are `1` and `3` respectively;
+exact-threshold status discharges ambient adequacy through the existing S2145
+consumers.  This is not product/counting synthesis, not a threshold improvement,
+not arbitrary normalization, not arbitrary AC0/bounded-depth collapse, not full
+B4, not PHP switching, not Frege/PHP, not NP/circuit, not P-vs-NP, and not Gate A.
+`FormulaRecursiveSyntacticTerminalObstruction` adds only the bounded S2148
+concrete arity-source obstruction: the same gated literal/true formula-side
+size/depth/class profile is packaged at fixed ambient arity `1`, so the family is
+not ambient adequate for any `roundsOf`.  This is not a schematic negative claim,
+not product/counting synthesis, not a threshold improvement, not arbitrary
+normalization, not arbitrary AC0/bounded-depth collapse, not full B4, not PHP
+switching, not Frege/PHP, not NP/circuit, not P-vs-NP, and not Gate A.
+`FormulaRecursiveSyntacticTerminalProduct` adds only the bounded S2149 product/
+counting ambient arity source: the S2144 coarse threshold is named as an explicit
+product of counting factors, ambient adequacy is obtained from a positive
+counting multiplicity without exact-threshold arity equality, and a multiplicity-2
+gated literal/true family witnesses strict super-threshold adequacy with class,
+depth, parameter-regime, entry-feasibility, and final-tree wrappers.  This is not
+threshold improvement, not efficient width-profile synthesis, not arbitrary
+normalization, not arbitrary AC0/bounded-depth collapse, not full B4, not PHP
+switching, not Frege/PHP, not NP/circuit, not P-vs-NP, and not Gate A.
+`FormulaRecursiveSyntacticTerminalStructural` adds only the bounded S2150
+structural restricted-family ambient-adequacy package: class-size and width
+envelope data for the S2145 packed-family interface, width envelope derived from
+class-size for the syntactic-terminal class, structural ambient adequacy against
+the class-size envelope, recovery of S2145 ambient adequacy by threshold
+monotonicity, and S2142 final-tree routing under unchanged `t(d,s)=S(d)*(s-1)`,
+with the S2149 multiplicity-2 family as a concrete structural witness.  This is
+not efficient width-profile synthesis, not threshold improvement, not arbitrary
+normalization, not arbitrary AC0/bounded-depth collapse, not full B4, not PHP
+switching, not Frege/PHP, not NP/circuit, not P-vs-NP, and not Gate A.
+`FormulaRecursiveSyntacticTerminalWidth` adds only the bounded S2151 efficient
+width-profile synthesis package for restricted syntactic-terminal packed
+families: a terminal-sharp non-fallback width envelope synthesized from formula
+structure, depth-zero envelope `1` stricter than ambient arity under ambient
+adequacy, a one-literal concrete witness, and S2142 final-tree routing under
+unchanged `t(d,s)=S(d)*(s-1)`.  S2152 extends the same module with an
+intermediate-depth package for the restricted product/counting family: positive-
+depth budget efficient envelope (equals size cap, non-fallback vs ambient) and a
+parallel intermediate actual-width envelope `W=1` that is stricter than size cap
+and ambient arity at depth one, with S2142 final-tree routing still discharged
+via the budget structural data under unchanged `t(d,s)=S(d)*(s-1)`.  The
+intermediate envelope is not a budget `WidthEnvelope` discharge.  This is not
+global efficient width-profile synthesis for arbitrary formula classes, not
+threshold improvement, not arbitrary normalization, not arbitrary
+AC0/bounded-depth collapse, not full B4, not PHP switching, not Frege/PHP, not
+NP/circuit, not P-vs-NP, and not Gate A.
+`FormulaRecursiveSyntacticTerminalTightBudget` adds only the bounded S2153
+restricted depth-1 tight frontier width budget package: a parallel budget that
+is constantly `1` when `depth F ≤ 1` (falling back to the standard S2142 budget
+otherwise) without changing the global `syntacticTerminalFrontierWidthBudget`,
+a tight WidthEnvelope-style predicate discharged at `W=1` for the
+product/counting family, actual gate-width discharge against that tight budget
+for the gated lit-OR-true witness, and a specialized final-tree consumer under
+unchanged `t(d,s)=S(d)*(s-1)` whose geometric schedule uses width budget `1`.
+This is not a global budget change, not global arbitrary-class width synthesis,
+not threshold improvement, not arbitrary normalization, not arbitrary
+AC0/bounded-depth collapse, not full B4, not PHP switching, not Frege/PHP, not
+NP/circuit, not P-vs-NP, and not Gate A.
+`FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget` adds only the
+bounded S2155 restricted k-indexed bounded-shallow tight frontier width budget
+package: a parallel budget that is constantly `1` when `depth F ≤ k` without
+changing the global S2142 `syntacticTerminalFrontierWidthBudget` or the coarse
+ambient threshold; for each fixed `k`, one recursively defined pure nested-OR
+family with depth `min(d,k)`, size `2*min(d,k)+1`, and width `1` at every
+selected frontier; reusable supplied-width syntactic-terminal consumer
+schedules on a supplied `W` level; and a concrete route that instantiates
+`W=1` and retains `t=S*(s-1)`.  Only `k=1`/`k=2` budget equality is claimed
+(not whole-family definitional equality).  This is not arbitrary-class width
+synthesis, not threshold improvement, not arbitrary collapse, not full B4, not
+PHP switching, not Frege/PHP, not NP/circuit, not P-vs-NP, and not Gate A.
+The artifact still does not synthesize `B` from arbitrary
 formulas, derive efficient recursive depth-`d` layered views from arbitrary
-formula syntax, synthesize normalized/simple syntactic DNF views or efficient
-width profiles, prove a global efficient `t(d,s)` theorem, or close full
-frozen-form B4.
+formula syntax, synthesize normalized/simple syntactic DNF views or global
+efficient width profiles for arbitrary classes, prove a global efficient
+`t(d,s)` theorem, or close full frozen-form B4.
 The PHP switching lemma (Gate A rung 4 as a whole) remains open: the
 collapse-probability analysis covers depth-1 events only —
 single-literal/single-term (`PHPFullMatchingCollapseBound`), with the

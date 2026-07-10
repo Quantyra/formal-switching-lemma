@@ -26,6 +26,20 @@ import PvNP.PHPFullMatchingBadPathEncoding
 import PvNP.PHPFullMatchingCompressedBadPathCount
 import PvNP.PHPFullMatchingPathCodeFiberBound
 import PvNP.PHPFullMatchingStageRows
+import PvNP.PHPFullMatchingCodeFactor
+import PvNP.PHPFullMatchingRealizedCodeCount
+import PvNP.PHPFullMatchingRealizedCodeObstruction
+import PvNP.PHPFullMatchingRowUniqueStrict
+import PvNP.PHPFullMatchingRealizedCodeSplit
+import PvNP.PHPFullMatchingRealizedCodeParametricObstruction
+import PvNP.PHPFullMatchingGateAInvariant
+import PvNP.PHPFullMatchingGateACanonicalRowDiscipline
+import PvNP.PHPFullMatchingGateANaturalInvariant
+import PvNP.PHPFullMatchingGateARouteDecision
+import PvNP.PHPFullMatchingGateARealizedCodePathSplit
+import PvNP.PHPFullMatchingGateABadConflictSignature
+import PvNP.PHPRectMatchingInjectionObstruction
+import PvNP.PHPFullMatchingGateANoGoAfterS2139
 import PvNP.PHPFullMatchingStageRowObstruction
 import PvNP.PHPFullMatchingDNFBound
 import PvNP.TreePathViews
@@ -60,6 +74,21 @@ import PvNP.FormulaRecursiveClassDefault
 import PvNP.FormulaRecursiveDecompositionTree
 import PvNP.FormulaRecursiveTerminalTree
 import PvNP.FormulaRecursiveTerminalProfile
+import PvNP.FormulaRecursiveTerminalClassProfile
+import PvNP.FormulaRecursiveSyntacticTerminalClassProfile
+import PvNP.FormulaRecursiveSyntacticTerminalEntry
+import PvNP.FormulaRecursiveSyntacticTerminalRegime
+import PvNP.FormulaRecursiveSyntacticTerminalFamily
+import PvNP.FormulaRecursiveSyntacticTerminalConcrete
+import PvNP.FormulaRecursiveSyntacticTerminalExact
+import PvNP.FormulaRecursiveSyntacticTerminalObstruction
+import PvNP.FormulaRecursiveSyntacticTerminalProduct
+import PvNP.FormulaRecursiveSyntacticTerminalStructural
+import PvNP.FormulaRecursiveSyntacticTerminalWidth
+import PvNP.FormulaRecursiveSyntacticTerminalTightBudget
+import PvNP.FormulaRecursiveSyntacticTerminalDepthTwoTightBudget
+import PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget
+import PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget
 import PvNP.FormulaRecursiveTerminalSchedule
 import PvNP.FormulaRecursiveNonempty
 import PvNP.FormulaRecursiveSizeBound
@@ -1875,6 +1904,36 @@ info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteTraceProfileToQueryExtractionBridgeTarget
+
+/-- info: 'PvNP.PHPFullMatchingGateANoGoAfterS2139.not_squareSimpleDNF_rowCollision_denominatorSavingTarget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateANoGoAfterS2139.not_squareSimpleDNF_rowCollision_denominatorSavingTarget
+
+/-- info: 'PvNP.PHPFullMatchingGateANoGoAfterS2139.not_rectThreeTwoSimpleDNF_rowCollision_denominatorSavingTarget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateANoGoAfterS2139.not_rectThreeTwoSimpleDNF_rowCollision_denominatorSavingTarget
+
+/-- info: 'PvNP.PHPFullMatchingGateANoGoAfterS2139.not_squareSimpleDNF_rowCollision_nontrivialTarget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateANoGoAfterS2139.not_squareSimpleDNF_rowCollision_nontrivialTarget
+
+/-- info: 'PvNP.PHPFullMatchingGateANoGoAfterS2139.not_rectThreeTwoSimpleDNF_rowCollision_nontrivialTarget' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateANoGoAfterS2139.not_rectThreeTwoSimpleDNF_rowCollision_nontrivialTarget
+
+/-- info: 'PvNP.PHPFullMatchingGateANoGoAfterS2139.currentSimpleDNF_rowCollision_route_no_go' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateANoGoAfterS2139.currentSimpleDNF_rowCollision_route_no_go
 
 /-- info: 'PvNP.BDTraceToSearchPremise.twoCyclePath3TraceToThreeTwoPHPSearchPremise_concreteConstructorFieldTarget_traceProfileToQueryBridge' depends on axioms: [propext,
  Classical.choice,
@@ -5396,6 +5455,1154 @@ Frege/PHP, NP/circuit, or P vs NP.
 #print axioms PvNP.FormulaRecursiveTerminalProfile.exists_fullDepthRecursiveDecomposition_geometricCollapseWithTerminalAwareFormulaSize_noEmptyFanins_finalTree
 
 /-!
+Pins for `PvNP.FormulaRecursiveTerminalClassProfile`: terminal-aware final-tree
+wrappers now consume supplied class-size envelope `S`, terminal-aware width
+envelope `W`, `NoEmptyFanins`, and the ambient geometric entry inequality.  The
+pins do not claim synthesized class envelopes, product/counting synthesis,
+automatic B4, arbitrary AC0 collapse, Frege/PHP, NP/circuit, or P vs NP.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveTerminalClassProfile.TerminalAwareClassDepthFinalTreeAt' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveTerminalClassProfile.TerminalAwareClassDepthFinalTreeAt
+
+/-- info: 'PvNP.FormulaRecursiveTerminalClassProfile.frontierLayer_geometricCollapseWithTerminalAwareClassDepthWidth_noEmptyFanins_finalTree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveTerminalClassProfile.frontierLayer_geometricCollapseWithTerminalAwareClassDepthWidth_noEmptyFanins_finalTree
+
+/-- info: 'PvNP.FormulaRecursiveTerminalClassProfile.allFrontierLayers_geometricCollapseWithTerminalAwareClassDepthWidth_noEmptyFanins_finalTree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveTerminalClassProfile.allFrontierLayers_geometricCollapseWithTerminalAwareClassDepthWidth_noEmptyFanins_finalTree
+
+/-- info: 'PvNP.FormulaRecursiveTerminalClassProfile.allFrontierLayers_geometricCollapseWithTerminalAwareClassFixedWidth_noEmptyFanins_finalTree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveTerminalClassProfile.allFrontierLayers_geometricCollapseWithTerminalAwareClassFixedWidth_noEmptyFanins_finalTree
+
+/-!
+Pins for `PvNP.FormulaRecursiveSyntacticTerminalClassProfile`: the named
+syntactic-terminal class combines root syntactic-simple DNF syntax with
+`NoEmptyFanins`.  The main S2142 selector uses syntactic/formula-size width at
+intermediate recursive frontiers and terminal width one at full depth, under the
+class budget `t(d,s)=S(d)*(s-1)`, with no caller-supplied width envelope beyond
+`formulaSize F <= S d`.  These pins do not claim product/counting synthesis,
+arbitrary AC0 collapse, PHP switching, Frege/PHP, NP/circuit, or P vs NP.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalClassProfile.SyntacticTerminalFormulaClass' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalClassProfile.SyntacticTerminalFormulaClass
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalClassProfile.terminalAwareFrontierWidthBudget_fullDepth_le_classSize' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalClassProfile.terminalAwareFrontierWidthBudget_fullDepth_le_classSize
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalClassProfile.syntacticFrontierMinimalLayer_width_le_classSize_of_syntacticTerminal' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalClassProfile.syntacticFrontierMinimalLayer_width_le_classSize_of_syntacticTerminal
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalClassProfile.syntacticTerminalFrontierWidthBudget' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalClassProfile.syntacticTerminalFrontierWidthBudget
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalClassProfile.syntacticTerminalFrontierLayer' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalClassProfile.syntacticTerminalFrontierLayer
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalClassProfile.syntacticTerminalFrontierLayer_originalFormula' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalClassProfile.syntacticTerminalFrontierLayer_originalFormula
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalClassProfile.syntacticTerminalFrontierLayer_gateCount' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalClassProfile.syntacticTerminalFrontierLayer_gateCount
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalClassProfile.syntacticTerminalFrontierLayer_width_le_budget' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalClassProfile.syntacticTerminalFrontierLayer_width_le_budget
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalClassProfile.syntacticTerminalFrontierWidthBudget_pos' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalClassProfile.syntacticTerminalFrontierWidthBudget_pos
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalClassProfile.syntacticTerminalFrontierWidthBudget_le_classSize' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalClassProfile.syntacticTerminalFrontierWidthBudget_le_classSize
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalClassProfile.SyntacticTerminalClassDepthFinalTreeAt' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalClassProfile.SyntacticTerminalClassDepthFinalTreeAt
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalClassProfile.syntacticTerminalFrontierLayer_geometricCollapseWithClassBudget_finalTree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalClassProfile.syntacticTerminalFrontierLayer_geometricCollapseWithClassBudget_finalTree
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalClassProfile.allSyntacticTerminalFrontierLayers_geometricCollapseWithClassBudget_finalTree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalClassProfile.allSyntacticTerminalFrontierLayers_geometricCollapseWithClassBudget_finalTree
+
+/-!
+Pins for `PvNP.FormulaRecursiveSyntacticTerminalEntry`: this is only the Gate B
+entry-size feasibility/no-go packet for the S2142 ambient inequality under the
+restricted syntactic-terminal class and class budget `t(d,s)=S(d)*(s-1)`.  It
+does not synthesize product/counting hypotheses, arbitrary normalization,
+arbitrary AC0/bounded-depth collapse, PHP switching, Frege/PHP, NP/circuit, or
+P vs NP, and it does not perform Gate A work.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalEntry.syntacticTerminalClassEntryThreshold' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalEntry.syntacticTerminalClassEntryThreshold
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalEntry.SyntacticTerminalClassEntryFeasible' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalEntry.SyntacticTerminalClassEntryFeasible
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalEntry.not_syntacticTerminalClassEntryFeasible_of_lt_threshold' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalEntry.not_syntacticTerminalClassEntryFeasible_of_lt_threshold
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalEntry.allSyntacticTerminalFrontierLayers_geometricCollapseWithClassBudget_finalTree_of_entryFeasible' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalEntry.allSyntacticTerminalFrontierLayers_geometricCollapseWithClassBudget_finalTree_of_entryFeasible
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalEntry.allSyntacticTerminalFrontierLayers_geometricCollapseWithClassBudget_finalTree_at_entryThreshold' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalEntry.allSyntacticTerminalFrontierLayers_geometricCollapseWithClassBudget_finalTree_at_entryThreshold
+
+/-!
+Pins for `PvNP.FormulaRecursiveSyntacticTerminalRegime`: this is only a Gate B
+parameter-regime/coarse-size sufficient condition for the S2143 named entry
+predicate under the restricted syntactic-terminal class and class budget
+`t(d,s)=S(d)*(s-1)`.  It does not claim product/counting synthesis, threshold
+improvement, arbitrary normalization, arbitrary AC0/bounded-depth collapse, PHP
+switching, Frege/PHP, NP/circuit, P vs NP, or Gate A work.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRegime.syntacticTerminalClassCoarseEntryThreshold' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRegime.syntacticTerminalClassCoarseEntryThreshold
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRegime.SyntacticTerminalClassCoarseEntryFeasible' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRegime.SyntacticTerminalClassCoarseEntryFeasible
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRegime.syntacticTerminalClassEntryThreshold_le_coarse' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRegime.syntacticTerminalClassEntryThreshold_le_coarse
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRegime.SyntacticTerminalClassEntryFeasible.of_coarse' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRegime.SyntacticTerminalClassEntryFeasible.of_coarse
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRegime.SyntacticTerminalClassParameterRegime' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRegime.SyntacticTerminalClassParameterRegime
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRegime.SyntacticTerminalClassEntryFeasible.of_parameterRegime' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRegime.SyntacticTerminalClassEntryFeasible.of_parameterRegime
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRegime.allSyntacticTerminalFrontierLayers_geometricCollapseWithClassBudget_finalTree_of_parameterRegime' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRegime.allSyntacticTerminalFrontierLayers_geometricCollapseWithClassBudget_finalTree_of_parameterRegime
+
+/-!
+Pins for `PvNP.FormulaRecursiveSyntacticTerminalFamily`: family-derived size-cap
+and ambient-adequacy target only.  The coarse cap `M` and class envelope `S` are
+the actual packed formula size, and `N` is the actual packed arity, under the
+unchanged class budget `t(d,s)=S(d)*(s-1)`.  It does not claim broad
+product/counting synthesis, threshold improvement, arbitrary normalization,
+arbitrary AC0/bounded-depth collapse, full B4, PHP switching, Frege/PHP,
+NP/circuit, P vs NP, or Gate A work.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFamily.SyntacticTerminalPackedFamily' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFamily.SyntacticTerminalPackedFamily
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFamily.syntacticTerminalPackedFamilyArity' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFamily.syntacticTerminalPackedFamilyArity
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFamily.syntacticTerminalPackedFamilyFormula' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFamily.syntacticTerminalPackedFamilyFormula
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFamily.syntacticTerminalPackedFamilySizeCap' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFamily.syntacticTerminalPackedFamilySizeCap
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFamily.SyntacticTerminalPackedFamilyClass' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFamily.SyntacticTerminalPackedFamilyClass
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFamily.SyntacticTerminalPackedFamilyDepthBound' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFamily.SyntacticTerminalPackedFamilyDepthBound
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFamily.SyntacticTerminalPackedFamilyAmbientAdequate' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFamily.SyntacticTerminalPackedFamilyAmbientAdequate
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFamily.SyntacticTerminalClassParameterRegime.of_packedFamily' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFamily.SyntacticTerminalClassParameterRegime.of_packedFamily
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFamily.SyntacticTerminalClassEntryFeasible.of_packedFamily' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFamily.SyntacticTerminalClassEntryFeasible.of_packedFamily
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFamily.allSyntacticTerminalFrontierLayers_geometricCollapseWithClassBudget_finalTree_of_packedFamily' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFamily.allSyntacticTerminalFrontierLayers_geometricCollapseWithClassBudget_finalTree_of_packedFamily
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFamily.allSyntacticTerminalFrontierLayers_geometricCollapseWithClassBudget_finalTree_of_packedFamily_predicates' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFamily.allSyntacticTerminalFrontierLayers_geometricCollapseWithClassBudget_finalTree_of_packedFamily_predicates
+
+/-!
+Pins for `PvNP.FormulaRecursiveSyntacticTerminalConcrete`: concrete one-literal
+exact-threshold packed-family adequacy witness only.  The ambient arity is exactly
+the S2144 coarse threshold for formula-size cap `1`.  This does not claim
+product/counting synthesis, threshold improvement, arbitrary normalization,
+arbitrary AC0/bounded-depth collapse, full B4, PHP switching, Frege/PHP,
+NP/circuit, P vs NP, or Gate A work.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalConcrete.oneLiteralThresholdArity' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalConcrete.oneLiteralThresholdArity
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalConcrete.oneLiteralThresholdArity_pos' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalConcrete.oneLiteralThresholdArity_pos
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalConcrete.oneLiteralThresholdFormula' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalConcrete.oneLiteralThresholdFormula
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalConcrete.oneLiteralThresholdPackedFamily' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalConcrete.oneLiteralThresholdPackedFamily
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalConcrete.oneLiteralThresholdPackedFamily_sizeCap' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalConcrete.oneLiteralThresholdPackedFamily_sizeCap
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalConcrete.oneLiteralThresholdPackedFamily_depth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalConcrete.oneLiteralThresholdPackedFamily_depth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalConcrete.oneLiteralThresholdPackedFamily_class' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalConcrete.oneLiteralThresholdPackedFamily_class
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalConcrete.oneLiteralThresholdPackedFamily_depthBound' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalConcrete.oneLiteralThresholdPackedFamily_depthBound
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalConcrete.oneLiteralThresholdPackedFamily_ambientAdequate' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalConcrete.oneLiteralThresholdPackedFamily_ambientAdequate
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalConcrete.SyntacticTerminalClassParameterRegime.of_oneLiteralThresholdPackedFamily' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalConcrete.SyntacticTerminalClassParameterRegime.of_oneLiteralThresholdPackedFamily
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalConcrete.SyntacticTerminalClassEntryFeasible.of_oneLiteralThresholdPackedFamily' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalConcrete.SyntacticTerminalClassEntryFeasible.of_oneLiteralThresholdPackedFamily
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalConcrete.allSyntacticTerminalFrontierLayers_geometricCollapseWithClassBudget_finalTree_of_oneLiteralThresholdPackedFamily' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalConcrete.allSyntacticTerminalFrontierLayers_geometricCollapseWithClassBudget_finalTree_of_oneLiteralThresholdPackedFamily
+
+/-!
+Pins for `PvNP.FormulaRecursiveSyntacticTerminalExact`: exact-threshold
+packed-family subclass consumers and the gated literal/true concrete witness.
+This is restricted syntactic-terminal packed-family adequacy only: no
+product/counting synthesis, threshold improvement, arbitrary normalization,
+arbitrary AC0/bounded-depth collapse, PHP switching, Frege/PHP, NP/circuit,
+P vs NP, or Gate A work.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalExact.SyntacticTerminalPackedFamilyExactThreshold' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalExact.SyntacticTerminalPackedFamilyExactThreshold
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalExact.SyntacticTerminalPackedFamilyAmbientAdequate.of_exactThreshold' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalExact.SyntacticTerminalPackedFamilyAmbientAdequate.of_exactThreshold
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalExact.SyntacticTerminalClassParameterRegime.of_exactThresholdPackedFamily' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalExact.SyntacticTerminalClassParameterRegime.of_exactThresholdPackedFamily
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalExact.SyntacticTerminalClassEntryFeasible.of_exactThresholdPackedFamily' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalExact.SyntacticTerminalClassEntryFeasible.of_exactThresholdPackedFamily
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalExact.allSyntacticTerminalFrontierLayers_geometricCollapseWithClassBudget_finalTree_of_exactThresholdPackedFamily' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalExact.allSyntacticTerminalFrontierLayers_geometricCollapseWithClassBudget_finalTree_of_exactThresholdPackedFamily
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalExact.gatedLiteralTrueThresholdPackedFamily' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalExact.gatedLiteralTrueThresholdPackedFamily
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalExact.gatedLiteralTrueThresholdSizeCap' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalExact.gatedLiteralTrueThresholdSizeCap
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalExact.gatedLiteralTrueThresholdDepth' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalExact.gatedLiteralTrueThresholdDepth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalExact.gatedLiteralTrueThresholdPackedFamily_class' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalExact.gatedLiteralTrueThresholdPackedFamily_class
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalExact.gatedLiteralTrueThresholdPackedFamily_depthBound' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalExact.gatedLiteralTrueThresholdPackedFamily_depthBound
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalExact.gatedLiteralTrueThresholdPackedFamily_exactThreshold' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalExact.gatedLiteralTrueThresholdPackedFamily_exactThreshold
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalExact.gatedLiteralTrueThresholdPackedFamily_ambientAdequate' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalExact.gatedLiteralTrueThresholdPackedFamily_ambientAdequate
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalExact.SyntacticTerminalClassParameterRegime.of_gatedLiteralTrueThresholdPackedFamily' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalExact.SyntacticTerminalClassParameterRegime.of_gatedLiteralTrueThresholdPackedFamily
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalExact.SyntacticTerminalClassEntryFeasible.of_gatedLiteralTrueThresholdPackedFamily' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalExact.SyntacticTerminalClassEntryFeasible.of_gatedLiteralTrueThresholdPackedFamily
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalExact.allSyntacticTerminalFrontierLayers_geometricCollapseWithClassBudget_finalTree_of_gatedLiteralTrueThresholdPackedFamily' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalExact.allSyntacticTerminalFrontierLayers_geometricCollapseWithClassBudget_finalTree_of_gatedLiteralTrueThresholdPackedFamily
+
+/-!
+Pins for `PvNP.FormulaRecursiveSyntacticTerminalObstruction`: a concrete
+arity-source obstruction for the current packed-family interface.  This is only
+the fixed-arity gated literal/true family with the same formula-side profile as
+the exact-threshold witness, and is not product/counting synthesis, threshold
+improvement, arbitrary normalization, arbitrary AC0/bounded-depth collapse, PHP
+switching, Frege/PHP, NP/circuit, P vs NP, full B4, or Gate A work.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalObstruction.smallArityGatedLiteralTruePackedFamily' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalObstruction.smallArityGatedLiteralTruePackedFamily
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalObstruction.smallArityGatedLiteralTrueSizeCap' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalObstruction.smallArityGatedLiteralTrueSizeCap
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalObstruction.smallArityGatedLiteralTrueDepth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalObstruction.smallArityGatedLiteralTrueDepth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalObstruction.smallArityGatedLiteralTruePackedFamily_class' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalObstruction.smallArityGatedLiteralTruePackedFamily_class
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalObstruction.smallArityGatedLiteralTruePackedFamily_depthBound' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalObstruction.smallArityGatedLiteralTruePackedFamily_depthBound
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalObstruction.smallArityGatedLiteralTrue_sizeProfile_eq_gatedLiteralTrueThreshold' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalObstruction.smallArityGatedLiteralTrue_sizeProfile_eq_gatedLiteralTrueThreshold
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalObstruction.smallArityGatedLiteralTrue_depthProfile_eq_gatedLiteralTrueThreshold' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalObstruction.smallArityGatedLiteralTrue_depthProfile_eq_gatedLiteralTrueThreshold
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalObstruction.one_lt_syntacticTerminalClassCoarseEntryThreshold_of_pos' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalObstruction.one_lt_syntacticTerminalClassCoarseEntryThreshold_of_pos
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalObstruction.smallArityGatedLiteralTruePackedFamily_not_ambientAdequate' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalObstruction.smallArityGatedLiteralTruePackedFamily_not_ambientAdequate
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalObstruction.exists_gatedLiteralTrueProfile_not_ambientAdequate' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalObstruction.exists_gatedLiteralTrueProfile_not_ambientAdequate
+
+/-!
+Pins for `PvNP.FormulaRecursiveSyntacticTerminalProduct`: a bounded product/
+counting ambient arity source for the packed-family interface.  The S2144
+coarse threshold is named as an explicit product of counting factors, ambient
+adequacy is obtained from a positive multiplicity without exact-threshold
+equality, and a multiplicity-2 gated family witnesses strict super-threshold
+adequacy.  This is not threshold improvement, efficient width synthesis,
+arbitrary normalization, arbitrary AC0/bounded-depth collapse, full B4, PHP
+switching, Frege/PHP, NP/circuit, P vs NP, or Gate A work.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalProduct.syntacticTerminalCoarseEntryProduct' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalProduct.syntacticTerminalCoarseEntryProduct
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalProduct.syntacticTerminalCoarseEntryProduct_eq_threshold' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalProduct.syntacticTerminalCoarseEntryProduct_eq_threshold
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalProduct.SyntacticTerminalPackedFamilyProductCountingSource' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalProduct.SyntacticTerminalPackedFamilyProductCountingSource
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalProduct.SyntacticTerminalPackedFamilyAmbientAdequate.of_productCountingSource' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalProduct.SyntacticTerminalPackedFamilyAmbientAdequate.of_productCountingSource
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalProduct.productCountingGatedLiteralTruePackedFamily' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalProduct.productCountingGatedLiteralTruePackedFamily
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalProduct.productCountingGatedLiteralTrueSizeCap' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalProduct.productCountingGatedLiteralTrueSizeCap
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalProduct.productCountingGatedLiteralTrueDepth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalProduct.productCountingGatedLiteralTrueDepth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalProduct.productCountingGatedLiteralTruePackedFamily_class' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalProduct.productCountingGatedLiteralTruePackedFamily_class
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalProduct.productCountingGatedLiteralTruePackedFamily_depthBound' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalProduct.productCountingGatedLiteralTruePackedFamily_depthBound
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalProduct.productCountingGatedLiteralTruePackedFamily_productCountingSource' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalProduct.productCountingGatedLiteralTruePackedFamily_productCountingSource
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalProduct.productCountingGatedLiteralTruePackedFamily_ambientAdequate' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalProduct.productCountingGatedLiteralTruePackedFamily_ambientAdequate
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalProduct.productCountingGatedLiteralTrueArity_gt_threshold' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalProduct.productCountingGatedLiteralTrueArity_gt_threshold
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalProduct.productCountingGatedLiteralTruePackedFamily_not_exactThreshold' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalProduct.productCountingGatedLiteralTruePackedFamily_not_exactThreshold
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalProduct.exists_productCountingSource_ambientAdequate_not_exactThreshold' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalProduct.exists_productCountingSource_ambientAdequate_not_exactThreshold
+
+/-!
+Pins for `PvNP.FormulaRecursiveSyntacticTerminalStructural`: a bounded structural
+restricted-family ambient-adequacy package with class-size and width envelope
+data for the packed-family interface.  Width envelopes are derived from
+class-size for the syntactic-terminal class, structural ambient adequacy is
+stated against the class-size envelope, S2145 ambient adequacy is recovered by
+threshold monotonicity, and S2142 final-tree consumers route under unchanged
+`t(d,s)=S(d)*(s-1)`.  This is not efficient width-profile synthesis, threshold
+improvement, arbitrary normalization, arbitrary AC0/bounded-depth collapse,
+full B4, PHP switching, Frege/PHP, NP/circuit, P vs NP, or Gate A work.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalStructural.SyntacticTerminalPackedFamilyClassSizeEnvelope' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalStructural.SyntacticTerminalPackedFamilyClassSizeEnvelope
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalStructural.SyntacticTerminalPackedFamilyWidthEnvelope' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalStructural.SyntacticTerminalPackedFamilyWidthEnvelope
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalStructural.SyntacticTerminalPackedFamilyStructuralData' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalStructural.SyntacticTerminalPackedFamilyStructuralData
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalStructural.SyntacticTerminalPackedFamilyStructuralAmbientAdequate' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalStructural.SyntacticTerminalPackedFamilyStructuralAmbientAdequate
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalStructural.SyntacticTerminalPackedFamilyWidthEnvelope.of_classSizeEnvelope' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalStructural.SyntacticTerminalPackedFamilyWidthEnvelope.of_classSizeEnvelope
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalStructural.SyntacticTerminalPackedFamilyStructuralData.of_classSizeEnvelope' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalStructural.SyntacticTerminalPackedFamilyStructuralData.of_classSizeEnvelope
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalStructural.syntacticTerminalClassCoarseEntryThreshold_mono' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalStructural.syntacticTerminalClassCoarseEntryThreshold_mono
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalStructural.SyntacticTerminalPackedFamilyAmbientAdequate.of_structural' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalStructural.SyntacticTerminalPackedFamilyAmbientAdequate.of_structural
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalStructural.SyntacticTerminalClassParameterRegime.of_structural' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalStructural.SyntacticTerminalClassParameterRegime.of_structural
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalStructural.allSyntacticTerminalFrontierLayers_geometricCollapseWithClassBudget_finalTree_of_structural' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalStructural.allSyntacticTerminalFrontierLayers_geometricCollapseWithClassBudget_finalTree_of_structural
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalStructural.productCountingGatedLiteralTruePackedFamily_structuralData' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalStructural.productCountingGatedLiteralTruePackedFamily_structuralData
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalStructural.productCountingGatedLiteralTruePackedFamily_structuralAmbientAdequate' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalStructural.productCountingGatedLiteralTruePackedFamily_structuralAmbientAdequate
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalStructural.allSyntacticTerminalFrontierLayers_geometricCollapseWithClassBudget_finalTree_of_productCountingStructural' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalStructural.allSyntacticTerminalFrontierLayers_geometricCollapseWithClassBudget_finalTree_of_productCountingStructural
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalStructural.exists_structuralRestrictedFamily_classWidthEnvelope_ambientAdequate' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalStructural.exists_structuralRestrictedFamily_classWidthEnvelope_ambientAdequate
+
+/-!
+Pins for `PvNP.FormulaRecursiveSyntacticTerminalWidth`: a bounded efficient
+width-profile synthesis package for restricted syntactic-terminal packed
+families.  The synthesized envelope is terminal-sharp and non-fallback relative
+to ambient arity, with a depth-zero one-literal witness and S2142 final-tree
+routing under unchanged `t(d,s)=S(d)*(s-1)`.  This is not global efficient
+width-profile synthesis for arbitrary formula classes, not threshold
+improvement, not arbitrary normalization, not arbitrary AC0/bounded-depth
+collapse, not full B4, not PHP switching, Frege/PHP, NP/circuit, P vs NP, or
+Gate A work.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.efficientSyntacticTerminalWidthProfile' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.efficientSyntacticTerminalWidthProfile
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.efficientSyntacticTerminalWidthEnvelope' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.efficientSyntacticTerminalWidthEnvelope
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.efficientSyntacticTerminalWidthEnvelope_le_sizeCap' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.efficientSyntacticTerminalWidthEnvelope_le_sizeCap
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.SyntacticTerminalPackedFamilyWidthEnvelope.of_efficient' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.SyntacticTerminalPackedFamilyWidthEnvelope.of_efficient
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.SyntacticTerminalPackedFamilyStructuralData.of_efficientWidth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.SyntacticTerminalPackedFamilyStructuralData.of_efficientWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.SyntacticTerminalPackedFamilyDepthZero' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.SyntacticTerminalPackedFamilyDepthZero
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.efficientSyntacticTerminalWidthEnvelope_lt_ambient_of_depthZero' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.efficientSyntacticTerminalWidthEnvelope_lt_ambient_of_depthZero
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.efficientSyntacticTerminalWidthEnvelope_lt_arity_of_ambientAdequate' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.efficientSyntacticTerminalWidthEnvelope_lt_arity_of_ambientAdequate
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.oneLiteralThresholdPackedFamily_depthZero' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.oneLiteralThresholdPackedFamily_depthZero
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.oneLiteralThresholdPackedFamily_efficientWidth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.oneLiteralThresholdPackedFamily_efficientWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.oneLiteralThresholdPackedFamily_widthEnvelope_one' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.oneLiteralThresholdPackedFamily_widthEnvelope_one
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.oneLiteralThresholdPackedFamily_efficientWidth_lt_arity' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.oneLiteralThresholdPackedFamily_efficientWidth_lt_arity
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.allSyntacticTerminalFrontierLayers_geometricCollapseWithClassBudget_finalTree_of_oneLiteralEfficientWidth' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.allSyntacticTerminalFrontierLayers_geometricCollapseWithClassBudget_finalTree_of_oneLiteralEfficientWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.exists_efficientWidthProfile_nonFallback_finalTreeRoute' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.exists_efficientWidthProfile_nonFallback_finalTreeRoute
+
+/-!
+Pins for S2152 intermediate-depth efficient width on the restricted
+product/counting family: positive-depth budget envelope (non-fallback vs
+ambient), parallel intermediate actual-width envelope `W=1 < sizeCap` at
+depth one, and S2142 final-tree routing under unchanged `t(d,s)=S(d)*(s-1)`.
+This is not global efficient width-profile synthesis, not threshold
+improvement, not arbitrary normalization, not arbitrary AC0/bounded-depth
+collapse, not full B4, not PHP switching, Frege/PHP, NP/circuit, P vs NP, or
+Gate A work.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.SyntacticTerminalPackedFamilyPosFormulaDepth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.SyntacticTerminalPackedFamilyPosFormulaDepth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.productCountingGatedLiteralTruePackedFamily_posFormulaDepth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.productCountingGatedLiteralTruePackedFamily_posFormulaDepth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.productCountingGatedLiteralTruePackedFamily_efficientWidth_zero' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.productCountingGatedLiteralTruePackedFamily_efficientWidth_zero
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.productCountingGatedLiteralTruePackedFamily_efficientWidth_succ' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.productCountingGatedLiteralTruePackedFamily_efficientWidth_succ
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.productCountingGatedLiteralTruePackedFamily_structuralData_efficient' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.productCountingGatedLiteralTruePackedFamily_structuralData_efficient
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.productCountingGatedLiteralTruePackedFamily_structuralAmbientAdequate_efficient' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.productCountingGatedLiteralTruePackedFamily_structuralAmbientAdequate_efficient
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.productCountingGatedLiteralTruePackedFamily_efficientWidth_lt_arity_succ' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.productCountingGatedLiteralTruePackedFamily_efficientWidth_lt_arity_succ
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.allSyntacticTerminalFrontierLayers_geometricCollapseWithClassBudget_finalTree_of_productCountingEfficientWidth' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.allSyntacticTerminalFrontierLayers_geometricCollapseWithClassBudget_finalTree_of_productCountingEfficientWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.intermediateEfficientSyntacticTerminalWidthEnvelope' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.intermediateEfficientSyntacticTerminalWidthEnvelope
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.intermediateEfficientSyntacticTerminalWidthEnvelope_le_sizeCap' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.intermediateEfficientSyntacticTerminalWidthEnvelope_le_sizeCap
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.intermediateEfficientSyntacticTerminalWidthEnvelope_of_depth_le_one' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.intermediateEfficientSyntacticTerminalWidthEnvelope_of_depth_le_one
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.intermediateEfficient_lt_sizeCap_of_depth_one_size_gt_one' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.intermediateEfficient_lt_sizeCap_of_depth_one_size_gt_one
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.productCountingGatedLiteralTruePackedFamily_intermediateEfficient_succ' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.productCountingGatedLiteralTruePackedFamily_intermediateEfficient_succ
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.productCountingGatedLiteralTruePackedFamily_intermediateEfficient_lt_sizeCap_succ' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.productCountingGatedLiteralTruePackedFamily_intermediateEfficient_lt_sizeCap_succ
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.productCountingGatedLiteralTruePackedFamily_intermediateEfficient_lt_arity_succ' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.productCountingGatedLiteralTruePackedFamily_intermediateEfficient_lt_arity_succ
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.productCountingGatedLiteralTruePackedFamily_depth_eq_one_of_pos' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.productCountingGatedLiteralTruePackedFamily_depth_eq_one_of_pos
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.productCountingGatedLiteralTrueFormula_succ_widthDNF_syntactic_le_one' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.productCountingGatedLiteralTrueFormula_succ_widthDNF_syntactic_le_one
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalWidth.exists_intermediateDepth_efficientWidth_stricter_than_sizeCap_and_arity_finalTreeRoute' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalWidth.exists_intermediateDepth_efficientWidth_stricter_than_sizeCap_and_arity_finalTreeRoute
+
+/-!
+Pins for S2153 restricted depth-1 tight frontier width budget: parallel budget
+that is constantly `1` when `depth F ≤ 1` (without changing the global S2142
+`syntacticTerminalFrontierWidthBudget`), tight WidthEnvelope discharge with
+`W=1` for the product/counting family, gate-width discharge against the tight
+budget, and a specialized final-tree consumer under unchanged
+`t(d,s)=S(d)*(s-1)` whose geometric schedule uses width budget `1`.  This is
+not a global budget change, not global arbitrary-class width synthesis, not
+threshold improvement, not arbitrary normalization, not arbitrary
+AC0/bounded-depth collapse, not full B4, not PHP switching, Frege/PHP,
+NP/circuit, P vs NP, or Gate A work.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalTightBudget.depthOneTightSyntacticTerminalFrontierWidthBudget' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalTightBudget.depthOneTightSyntacticTerminalFrontierWidthBudget
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalTightBudget.depthOneTight_le_standard' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalTightBudget.depthOneTight_le_standard
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalTightBudget.depthOneTight_pos' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalTightBudget.depthOneTight_pos
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalTightBudget.depthOneTight_eq_one_of_depth_le_one' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalTightBudget.depthOneTight_eq_one_of_depth_le_one
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalTightBudget.depthOneTight_eq_standard_of_depth_gt_one' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalTightBudget.depthOneTight_eq_standard_of_depth_gt_one
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalTightBudget.depthOneTight_lt_standard_of_depth_one_intermediate' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalTightBudget.depthOneTight_lt_standard_of_depth_one_intermediate
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalTightBudget.SyntacticTerminalPackedFamilyTightWidthEnvelope' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalTightBudget.SyntacticTerminalPackedFamilyTightWidthEnvelope
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalTightBudget.SyntacticTerminalPackedFamilyTightWidthEnvelope.of_depth_le_one_const_one' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalTightBudget.SyntacticTerminalPackedFamilyTightWidthEnvelope.of_depth_le_one_const_one
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalTightBudget.DepthOneTightClassDepthFinalTreeAt' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalTightBudget.DepthOneTightClassDepthFinalTreeAt
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalTightBudget.syntacticTerminalFrontierLayer_geometricCollapseWithDepthOneTightBudget_finalTree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalTightBudget.syntacticTerminalFrontierLayer_geometricCollapseWithDepthOneTightBudget_finalTree
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalTightBudget.allSyntacticTerminalFrontierLayers_geometricCollapseWithDepthOneTightBudget_finalTree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalTightBudget.allSyntacticTerminalFrontierLayers_geometricCollapseWithDepthOneTightBudget_finalTree
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalTightBudget.productCountingGatedLiteralTrueFormula_succ_width_le_depthOneTight' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalTightBudget.productCountingGatedLiteralTrueFormula_succ_width_le_depthOneTight
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalTightBudget.productCountingGatedLiteralTruePackedFamily_width_le_depthOneTight' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalTightBudget.productCountingGatedLiteralTruePackedFamily_width_le_depthOneTight
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalTightBudget.productCountingGatedLiteralTruePackedFamily_depthOneTight_eq_one' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalTightBudget.productCountingGatedLiteralTruePackedFamily_depthOneTight_eq_one
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalTightBudget.productCountingGatedLiteralTruePackedFamily_tightWidthEnvelope_one' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalTightBudget.productCountingGatedLiteralTruePackedFamily_tightWidthEnvelope_one
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalTightBudget.productCountingGatedLiteralTruePackedFamily_depthOneTight_lt_standard_intermediate_succ' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalTightBudget.productCountingGatedLiteralTruePackedFamily_depthOneTight_lt_standard_intermediate_succ
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalTightBudget.allSyntacticTerminalFrontierLayers_geometricCollapseWithDepthOneTightBudget_finalTree_of_productCounting' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalTightBudget.allSyntacticTerminalFrontierLayers_geometricCollapseWithDepthOneTightBudget_finalTree_of_productCounting
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalTightBudget.exists_depthOneTightWidthBudget_dischargesEnvelope_finalTreeRoute' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalTightBudget.exists_depthOneTightWidthBudget_dischargesEnvelope_finalTreeRoute
+
+/-!
+Pins for S2154 restricted depth-2 tight frontier width budget: parallel budget
+that is constantly `1` when `depth F ≤ 2` (without changing the global S2142
+`syntacticTerminalFrontierWidthBudget`), a nested-OR packed-family witness with
+actual gate width at most `1`, and specialized final-tree consumers under the
+unchanged class budget `t(d,s)=S(d)*(s-1)`.  This is not a global budget change,
+not arbitrary-class width synthesis, not threshold improvement, not PHP
+switching, Frege/PHP, NP/circuit, AC0, or P-vs-NP work.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalDepthTwoTightBudget.depthTwoTightSyntacticTerminalFrontierWidthBudget' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalDepthTwoTightBudget.depthTwoTightSyntacticTerminalFrontierWidthBudget
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalDepthTwoTightBudget.depthTwoTight_pos' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalDepthTwoTightBudget.depthTwoTight_pos
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalDepthTwoTightBudget.depthTwoTight_le_standard' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalDepthTwoTightBudget.depthTwoTight_le_standard
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalDepthTwoTightBudget.SyntacticTerminalPackedFamilyDepthTwoTightWidthEnvelope' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalDepthTwoTightBudget.SyntacticTerminalPackedFamilyDepthTwoTightWidthEnvelope
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalDepthTwoTightBudget.DepthTwoTightClassDepthFinalTreeAt' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalDepthTwoTightBudget.DepthTwoTightClassDepthFinalTreeAt
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalDepthTwoTightBudget.syntacticTerminalFrontierLayer_geometricCollapseWithDepthTwoTightBudget_finalTree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalDepthTwoTightBudget.syntacticTerminalFrontierLayer_geometricCollapseWithDepthTwoTightBudget_finalTree
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalDepthTwoTightBudget.allSyntacticTerminalFrontierLayers_geometricCollapseWithDepthTwoTightBudget_finalTree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalDepthTwoTightBudget.allSyntacticTerminalFrontierLayers_geometricCollapseWithDepthTwoTightBudget_finalTree
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalDepthTwoTightBudget.depthTwoTightPackedFamily_width_le_depthTwoTight' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalDepthTwoTightBudget.depthTwoTightPackedFamily_width_le_depthTwoTight
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalDepthTwoTightBudget.allSyntacticTerminalFrontierLayers_geometricCollapseWithDepthTwoTightBudget_finalTree_of_depthTwoTight' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalDepthTwoTightBudget.allSyntacticTerminalFrontierLayers_geometricCollapseWithDepthTwoTightBudget_finalTree_of_depthTwoTight
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalDepthTwoTightBudget.exists_depthTwoTightWidthBudget_dischargesEnvelope_finalTreeRoute' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalDepthTwoTightBudget.exists_depthTwoTightWidthBudget_dischargesEnvelope_finalTreeRoute
+
+/-!
+Pins for S2155 restricted k-indexed bounded-shallow tight frontier width budget:
+parallel budget that is constantly `1` when `depth F ≤ k` (without changing the
+global S2142 `syntacticTerminalFrontierWidthBudget`), reusable supplied-width
+syntactic-terminal final-tree consumers on a caller-supplied `W` schedule, a
+recursive pure nested-OR packed-family witness with depth `min(d,k)`, size
+`2*min(d,k)+1`, and actual gate width at most `1` at every selected frontier,
+plus specialized final-tree consumers under the unchanged class budget
+`t(d,s)=S(d)*(s-1)`.  Budget equality for `k=1`/`k=2` only is pinned; this is
+not whole-family definitional equality, not a global budget change, not
+arbitrary-class width synthesis, not threshold improvement, not arbitrary
+collapse, not full B4, not PHP switching, Frege/PHP, NP/circuit, Gate A, or
+P-vs-NP work.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.boundedShallowTightSyntacticTerminalFrontierWidthBudget' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.boundedShallowTightSyntacticTerminalFrontierWidthBudget
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.boundedShallowTight_eq_depthOneTight' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.boundedShallowTight_eq_depthOneTight
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.boundedShallowTight_eq_depthTwoTight' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.boundedShallowTight_eq_depthTwoTight
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.SyntacticTerminalPackedFamilyBoundedShallowTightWidthEnvelope' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.SyntacticTerminalPackedFamilyBoundedShallowTightWidthEnvelope
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.SuppliedWidthClassDepthFinalTreeAt' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.SuppliedWidthClassDepthFinalTreeAt
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.syntacticTerminalFrontierLayer_geometricCollapseWithSuppliedWidth_finalTree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.syntacticTerminalFrontierLayer_geometricCollapseWithSuppliedWidth_finalTree
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.allSyntacticTerminalFrontierLayers_geometricCollapseWithSuppliedWidth_finalTree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.allSyntacticTerminalFrontierLayers_geometricCollapseWithSuppliedWidth_finalTree
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.nestedOrFormula_frontier_member' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.nestedOrFormula_frontier_member
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.nestedOrFormula_frontier_member_widthDNF_le_one' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.nestedOrFormula_frontier_member_widthDNF_le_one
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.boundedShallowTightPackedFamily_depth_eq_k_of_k_le_d' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.boundedShallowTightPackedFamily_depth_eq_k_of_k_le_d
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.boundedShallowTightPackedFamily_sizeCap_eq_two_mul_k_add_one_of_k_le_d' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.boundedShallowTightPackedFamily_sizeCap_eq_two_mul_k_add_one_of_k_le_d
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.boundedShallowTightPackedFamily_tightWidthEnvelope_one' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.boundedShallowTightPackedFamily_tightWidthEnvelope_one
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.boundedShallowTightPackedFamily_width_le_boundedShallowTight' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.boundedShallowTightPackedFamily_width_le_boundedShallowTight
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.allSyntacticTerminalFrontierLayers_geometricCollapseWithBoundedShallowTightBudget_finalTree_of_boundedShallow' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.allSyntacticTerminalFrontierLayers_geometricCollapseWithBoundedShallowTightBudget_finalTree_of_boundedShallow
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.exists_boundedShallowTightWidthBudget_dischargesEnvelope_finalTreeRoute' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget.exists_boundedShallowTightWidthBudget_dischargesEnvelope_finalTreeRoute
+
+/-!
+Pins for S2156 restricted nonempty OR-only formula class under the S2155
+bounded-shallow tight budget: inductive OR-only trees over constants/literals
+closed under nonempty OR lists only (no AND), syntactic simplicity / no empty
+fanins / syntactic DNF width ≤ 1, top-child and recursive-frontier closure,
+selected GateSpec width ≤ 1 and ≤ the S2155 tight budget under `depth F ≤ k`,
+packed-family OR-only / bounded-shallow predicates discharging
+`SyntacticTerminalPackedFamilyClass` and the S2155 tight envelope at `W = 1`,
+formula-level and packed-family final-tree routing reusing the S2155
+supplied/bounded-shallow consumers under unchanged
+`formulaClassDepthTreeBudget` / `t(d,s)=S(d)*(s-1)` and the coarse ambient
+threshold, S2155 nested-OR instantiation, and a concrete fan-in-three
+branching OR-only witness with `topChildCount = 3`.  No second packed numeric
+family.  Not arbitrary-class width synthesis, not threshold improvement, not
+full B4, not PHP switching, Frege/PHP, NP/circuit, Gate A, or P-vs-NP.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.OrOnlyFormula' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.OrOnlyFormula
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.orOnlyFormula_syntacticFormulaSimpleDNF' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.orOnlyFormula_syntacticFormulaSimpleDNF
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.orOnlyFormula_noEmptyFanins' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.orOnlyFormula_noEmptyFanins
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.orOnlyFormula_widthDNF_syntactic_le_one' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.orOnlyFormula_widthDNF_syntactic_le_one
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.orOnlyFormula_topChildren_closed' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.orOnlyFormula_topChildren_closed
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.orOnlyFormula_frontier_closed' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.orOnlyFormula_frontier_closed
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.orOnlyFormula_width_le_boundedShallowTight' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.orOnlyFormula_width_le_boundedShallowTight
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.SyntacticTerminalPackedFamilyBoundedShallowOrOnly' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.SyntacticTerminalPackedFamilyBoundedShallowOrOnly
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.SyntacticTerminalPackedFamilyClass.of_orOnly' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.SyntacticTerminalPackedFamilyClass.of_orOnly
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.SyntacticTerminalPackedFamilyBoundedShallowTightWidthEnvelope.of_orOnly_boundedShallow' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.SyntacticTerminalPackedFamilyBoundedShallowTightWidthEnvelope.of_orOnly_boundedShallow
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.allSyntacticTerminalFrontierLayers_geometricCollapseWithBoundedShallowTightBudget_finalTree_of_orOnly' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.allSyntacticTerminalFrontierLayers_geometricCollapseWithBoundedShallowTightBudget_finalTree_of_orOnly
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.allSyntacticTerminalFrontierLayers_geometricCollapseWithBoundedShallowTightBudget_finalTree_of_orOnlyPacked' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.allSyntacticTerminalFrontierLayers_geometricCollapseWithBoundedShallowTightBudget_finalTree_of_orOnlyPacked
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.nestedOrFormula_orOnly' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.nestedOrFormula_orOnly
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.boundedShallowTightPackedFamily_boundedShallowOrOnly' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.boundedShallowTightPackedFamily_boundedShallowOrOnly
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.branchingOrOnlyFanInThree_orOnly' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.branchingOrOnlyFanInThree_orOnly
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.branchingOrOnlyFanInThree_topChildCount' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.branchingOrOnlyFanInThree_topChildCount
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.exists_orOnlyBoundedShallow_class_dischargesEnvelope_finalTreeRoute' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.exists_orOnlyBoundedShallow_class_dischargesEnvelope_finalTreeRoute
+
+/-!
 Pins for `PvNP.FormulaRecursiveTerminalSchedule`: the terminal-aware layer
 selector now also consumes supplied ratio/geometric schedules under the
 formula-local recursive max-frontier budget `t_F`.  This is still not
@@ -5961,12 +7168,27 @@ Pins for `PvNP.PHPFullMatchingStageRows`: each bad-path-code stage decodes to
 a PHP row/column occurrence whose variable equals the stored code variable; the
 set of recovered stage rows is row-free for every bad point in the corresponding
 code fiber; the bad event is bounded by the sum of row-free multiplicities using
-all recovered stage rows; and conditional coarsenings are available from
-separately proved lower bounds on recovered-row cardinality, either for every
-code or only for codes with nonempty canonical bad-path fibers.  This does not
-prove distinct recovered rows, does not instantiate the conditional theorem with
-`q = t`, and does not state a geometric switching-lemma or lower-bound claim.
+all recovered stage rows; the pure full-square row-free geometric ratio is
+proved arithmetically; conditional coarsenings are available from separately
+proved lower bounds on recovered-row cardinality, either for every code or only
+for codes with nonempty canonical bad-path fibers; and a simple-DNF structural
+replacement proves realized fibers satisfy `t <= h * |rows|`, yielding a
+geometric wrapper at `q = t / h`.  This does not prove distinct recovered rows,
+does not prove `t <= |rows|`, and does not state a PHP switching-lemma or lower-
+bound claim.
 -/
+
+/-- info: 'PvNP.PHPFullMatchingStageRows.choose_rowFree_one_step_le' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingStageRows.choose_rowFree_one_step_le
+
+/-- info: 'PvNP.PHPFullMatchingStageRows.choose_rowFree_geometric_le' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingStageRows.choose_rowFree_geometric_le
+
+/-- info: 'PvNP.PHPFullMatchingStageRows.rowFree_geometric_ratio_full' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingStageRows.rowFree_geometric_ratio_full
 
 /-- info: 'PvNP.PHPFullMatchingStageRows.codeStageEntry_var_eq' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
@@ -6018,6 +7240,981 @@ prove distinct recovered rows, does not instantiate the conditional theorem with
 #guard_msgs in
 #print axioms PvNP.PHPFullMatchingStageRows.canonicalDepthBad_count_le_pathCode_mul_rowFree_of_realized_codeStageRows_card_ge
 
+/-- info: 'PvNP.PHPFullMatchingStageRows.canonicalDepthBad_count_le_pathCode_mul_rowFree_of_realized_codeStageRows_card_ge_t' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingStageRows.canonicalDepthBad_count_le_pathCode_mul_rowFree_of_realized_codeStageRows_card_ge_t
+
+/-- info: 'PvNP.PHPFullMatchingStageRows.canonicalDepthBad_probability_geometric_le_of_realized_codeStageRows_card_ge_t' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingStageRows.canonicalDepthBad_probability_geometric_le_of_realized_codeStageRows_card_ge_t
+
+/-- info: 'PvNP.PHPFullMatchingStageRows.canonicalDepthBad_eventProbLe_geometric_of_realized_codeStageRows_card_ge_t' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingStageRows.canonicalDepthBad_eventProbLe_geometric_of_realized_codeStageRows_card_ge_t
+
+/-- info: 'PvNP.PHPFullMatchingStageRows.codeStageVar_injective_of_realized_simple' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingStageRows.codeStageVar_injective_of_realized_simple
+
+/-- info: 'PvNP.PHPFullMatchingStageRows.canonicalDepthBadCodeFiberNonempty.le_h_mul_codeStageRows_card_of_simple' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingStageRows.canonicalDepthBadCodeFiberNonempty.le_h_mul_codeStageRows_card_of_simple
+
+/-- info: 'PvNP.PHPFullMatchingStageRows.canonicalDepthBad_count_le_pathCode_mul_rowFree_of_simple_realized_div_h' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingStageRows.canonicalDepthBad_count_le_pathCode_mul_rowFree_of_simple_realized_div_h
+
+/-- info: 'PvNP.PHPFullMatchingStageRows.canonicalDepthBad_probability_geometric_le_of_simple_realized_div_h' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingStageRows.canonicalDepthBad_probability_geometric_le_of_simple_realized_div_h
+
+/-- info: 'PvNP.PHPFullMatchingStageRows.canonicalDepthBad_eventProbLe_geometric_of_simple_realized_div_h' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingStageRows.canonicalDepthBad_eventProbLe_geometric_of_simple_realized_div_h
+
+/-! ## S2126 code-factor quantification and obstruction
+
+Pins for `PvNP.PHPFullMatchingCodeFactor`: the exact current all-`BadPathCode`
+cardinality, support-length upper bound, S2125 simple-DNF `q = t / h` bound with
+the code factor made explicit, and the obstruction showing that nontriviality
+requires the code factor itself below the S2125 denominator whenever the row-free
+factor is at least one.  This is finite full-square matching-space bookkeeping;
+it is not a PHP switching lemma, not rectangular `p > h`, and not a lower-bound
+claim.
+-/
+
+/-- info: 'PvNP.PHPFullMatchingCodeFactor.eventProbLe_mono_num' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCodeFactor.eventProbLe_mono_num
+
+/-- info: 'PvNP.PHPFullMatchingCodeFactor.phpDNFVarSet_card_le_join_length' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCodeFactor.phpDNFVarSet_card_le_join_length
+
+/-- info: 'PvNP.PHPFullMatchingCodeFactor.badPathCode_card_support' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCodeFactor.badPathCode_card_support
+
+/-- info: 'PvNP.PHPFullMatchingCodeFactor.badPathCode_card_le_of_support_card_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCodeFactor.badPathCode_card_le_of_support_card_le
+
+/-- info: 'PvNP.PHPFullMatchingCodeFactor.badPathCode_card_le_join_length' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCodeFactor.badPathCode_card_le_join_length
+
+/-- info: 'PvNP.PHPFullMatchingCodeFactor.canonicalDepthBad_eventProbLe_geometric_of_simple_realized_div_h_support_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCodeFactor.canonicalDepthBad_eventProbLe_geometric_of_simple_realized_div_h_support_bound
+
+/-- info: 'PvNP.PHPFullMatchingCodeFactor.canonicalDepthBad_eventProbLe_geometric_of_simple_realized_div_h_join_length' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCodeFactor.canonicalDepthBad_eventProbLe_geometric_of_simple_realized_div_h_join_length
+
+/-- info: 'PvNP.PHPFullMatchingCodeFactor.canonicalDepthBad_eventProbLe_geometric_of_simple_realized_div_h_support_bound_nontrivial' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCodeFactor.canonicalDepthBad_eventProbLe_geometric_of_simple_realized_div_h_support_bound_nontrivial
+
+/-- info: 'PvNP.PHPFullMatchingCodeFactor.codeFactor_nontrivial_requires_code_factor_lt_denominator' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCodeFactor.codeFactor_nontrivial_requires_code_factor_lt_denominator
+
+/-- info: 'PvNP.PHPFullMatchingCodeFactor.codeFactor_nontrivial_impossible_of_denominator_le_code_factor' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingCodeFactor.codeFactor_nontrivial_impossible_of_denominator_le_code_factor
+
+/-! ## S2127 realized-code count replacement
+
+Pins for `PvNP.PHPFullMatchingRealizedCodeCount`: the all-`BadPathCode` factor
+in the S2125/S2126 simple-DNF `q = t / h` route is replaced by the cardinality
+of the finite set of codes with nonempty canonical full-matching bad-event
+fibers.  The resulting counting/geometric/`EventProbLe` wrappers remain over
+`fullMatchingSpace h s`; no genuinely smaller realized-code cardinality bound is
+proved.  The obstruction lemmas record that nontriviality still requires the
+realized-code cardinality itself below the displayed denominator whenever the
+row-free factor is at least one.  This pins finite full-square bookkeeping only,
+not a PHP switching lemma, Frege/PHP lower bound, rectangular `p > h` result,
+arbitrary AC0 result, or P-vs-NP claim.
+-/
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeCount.realizedBadPathCodes_card_le_badPathCode' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeCount.realizedBadPathCodes_card_le_badPathCode
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeCount.canonicalDepthBad_count_le_realizedCode_mul_rowFree_of_realized_codeStageRows_card_ge' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeCount.canonicalDepthBad_count_le_realizedCode_mul_rowFree_of_realized_codeStageRows_card_ge
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeCount.canonicalDepthBad_count_le_realizedCode_mul_rowFree_of_simple_realized_div_h' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeCount.canonicalDepthBad_count_le_realizedCode_mul_rowFree_of_simple_realized_div_h
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeCount.canonicalDepthBad_probability_geometric_le_of_simple_realizedCode_div_h' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeCount.canonicalDepthBad_probability_geometric_le_of_simple_realizedCode_div_h
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeCount.canonicalDepthBad_eventProbLe_geometric_of_simple_realizedCode_div_h' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeCount.canonicalDepthBad_eventProbLe_geometric_of_simple_realizedCode_div_h
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeCount.realizedCode_nontrivial_requires_realized_card_lt_denominator' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeCount.realizedCode_nontrivial_requires_realized_card_lt_denominator
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeCount.realizedCode_nontrivial_impossible_of_denominator_le_realized_card' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeCount.realizedCode_nontrivial_impossible_of_denominator_le_realized_card
+
+/-! ## S2128 realized-code cardinality obstruction
+
+Pins for `PvNP.PHPFullMatchingRealizedCodeObstruction`: a concrete `h = 2`,
+`s = 1`, `t = 2` simple-DNF witness over the full square matching space has at
+least two realized canonical bad-path codes, so the S2127 denominator
+`2^(2/2)` is already no larger than the realized-code cardinality.  This is a
+finite obstruction to any SimpleDNF-only theorem forcing the strict realized-code
+cardinality inequality needed by the S2127 route; it is not a PHP switching
+lemma, Frege/PHP lower bound, rectangular `p > h` result, arbitrary AC0 result,
+or P-vs-NP claim.
+-/
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeObstruction.twoRowsTwoCols_realizedBadPathCodes_card_ge_two' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeObstruction.twoRowsTwoCols_realizedBadPathCodes_card_ge_two
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeObstruction.twoRowsTwoCols_denominator_le_realizedBadPathCodes_card' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeObstruction.twoRowsTwoCols_denominator_le_realizedBadPathCodes_card
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeObstruction.twoRowsTwoCols_not_realizedBadPathCodes_card_lt_denominator' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeObstruction.twoRowsTwoCols_not_realizedBadPathCodes_card_lt_denominator
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeObstruction.twoRowsTwoCols_realizedCode_route_nontrivial_impossible' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeObstruction.twoRowsTwoCols_realizedCode_route_nontrivial_impossible
+
+/-! ## S2129/S2130 strict whole-DNF row-variable-unique finite gate
+
+Pins for `PvNP.PHPFullMatchingRowUniqueStrict`: a whole-DNF row-variable
+uniqueness hypothesis blocks the S2128 two-by-two obstruction and, in S2130,
+generalizes the bounded finite diagnostic to a parametric full-square
+row-capacity theorem: under SimpleDNF plus this whole-DNF row-variable condition,
+realized-code emptiness follows whenever `h < s + t`.  The resulting strict
+cardinality and zero-numerator `EventProbLe` corollaries remain finite
+full-matching realized-code bookkeeping.  The earlier whole-DNF row-uniqueness
+hypothesis is retained as a stronger corollary.  This is not a PHP switching
+lemma, Frege/PHP lower bound, rectangular `p > h` result, NP/circuit result,
+arbitrary AC0 result, or P-vs-NP claim.
+-/
+
+/-- info: 'PvNP.PHPFullMatchingRowUniqueStrict.twoRowsTwoColsTvs_h2_not_globalRowUnique' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRowUniqueStrict.twoRowsTwoColsTvs_h2_not_globalRowUnique
+
+/-- info: 'PvNP.PHPFullMatchingRowUniqueStrict.twoRowsTwoColsTvs_h2_not_globalRowVarUnique' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRowUniqueStrict.twoRowsTwoColsTvs_h2_not_globalRowVarUnique
+
+/-- info: 'PvNP.PHPFullMatchingRowUniqueStrict.codeStageVar_eq_of_globalRowVarUnique_row_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRowUniqueStrict.codeStageVar_eq_of_globalRowVarUnique_row_eq
+
+/-- info: 'PvNP.PHPFullMatchingRowUniqueStrict.codeStageRow_injective_of_realized_simple_globalRowVarUnique' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRowUniqueStrict.codeStageRow_injective_of_realized_simple_globalRowVarUnique
+
+/-- info: 'PvNP.PHPFullMatchingRowUniqueStrict.twoByTwo_realizedBadPathCodes_eq_empty_of_globalRowVarUnique' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRowUniqueStrict.twoByTwo_realizedBadPathCodes_eq_empty_of_globalRowVarUnique
+
+/-- info: 'PvNP.PHPFullMatchingRowUniqueStrict.twoByTwo_realizedBadPathCodes_card_lt_denominator_of_globalRowVarUnique' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRowUniqueStrict.twoByTwo_realizedBadPathCodes_card_lt_denominator_of_globalRowVarUnique
+
+/-- info: 'PvNP.PHPFullMatchingRowUniqueStrict.codeStageRow_injective_of_realized_simple_globalRowUnique' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRowUniqueStrict.codeStageRow_injective_of_realized_simple_globalRowUnique
+
+/-- info: 'PvNP.PHPFullMatchingRowUniqueStrict.twoByTwo_realizedBadPathCodes_eq_empty_of_globalRowUnique' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRowUniqueStrict.twoByTwo_realizedBadPathCodes_eq_empty_of_globalRowUnique
+
+/-- info: 'PvNP.PHPFullMatchingRowUniqueStrict.twoByTwo_realizedBadPathCodes_card_lt_denominator_of_globalRowUnique' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRowUniqueStrict.twoByTwo_realizedBadPathCodes_card_lt_denominator_of_globalRowUnique
+
+/-- info: 'PvNP.PHPFullMatchingRowUniqueStrict.realizedBadPathCodes_eq_empty_of_simple_globalRowVarUnique_of_h_lt_s_add_t' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRowUniqueStrict.realizedBadPathCodes_eq_empty_of_simple_globalRowVarUnique_of_h_lt_s_add_t
+
+/-- info: 'PvNP.PHPFullMatchingRowUniqueStrict.realizedBadPathCodes_card_lt_denominator_of_simple_globalRowVarUnique_of_h_lt_s_add_t' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRowUniqueStrict.realizedBadPathCodes_card_lt_denominator_of_simple_globalRowVarUnique_of_h_lt_s_add_t
+
+/-- info: 'PvNP.PHPFullMatchingRowUniqueStrict.canonicalDepthBad_eventProbLe_zero_of_simple_globalRowVarUnique_of_h_lt_s_add_t' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRowUniqueStrict.canonicalDepthBad_eventProbLe_zero_of_simple_globalRowVarUnique_of_h_lt_s_add_t
+
+/-- info: 'PvNP.PHPFullMatchingRowUniqueStrict.realizedBadPathCodes_eq_empty_of_simple_globalRowUnique_of_h_lt_s_add_t' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRowUniqueStrict.realizedBadPathCodes_eq_empty_of_simple_globalRowUnique_of_h_lt_s_add_t
+
+/-- info: 'PvNP.PHPFullMatchingRowUniqueStrict.realizedBadPathCodes_card_lt_denominator_of_simple_globalRowUnique_of_h_lt_s_add_t' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRowUniqueStrict.realizedBadPathCodes_card_lt_denominator_of_simple_globalRowUnique_of_h_lt_s_add_t
+
+/-- info: 'PvNP.PHPFullMatchingRowUniqueStrict.canonicalDepthBad_eventProbLe_zero_of_simple_globalRowUnique_of_h_lt_s_add_t' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRowUniqueStrict.canonicalDepthBad_eventProbLe_zero_of_simple_globalRowUnique_of_h_lt_s_add_t
+
+/-! ## S2131 realized-code row-variable split and row-collision obstruction
+
+Pins for `PvNP.PHPFullMatchingRealizedCodeSplit`: realized canonical bad-path
+codes are split into code-local row-variable-unique codes and row-collision
+codes.  Under SimpleDNF and the finite row-capacity condition `h < s + t`, the
+row-variable-unique realized-code class is empty, so every realized code lies in
+the row-collision class and the row-collision cardinality equals the full
+realized-code cardinality.  The concrete S2128 `h = 2`, `s = 1`, `t = 2`
+witness has at least two row-collision realized codes, so the displayed S2127
+denominator is no larger than the collision-class count; `h = 1` admits no row
+collisions.  This is finite square full-matching bookkeeping only, not a PHP
+switching lemma, Frege/PHP lower bound, rectangular `p > h` result, NP/circuit
+result, arbitrary AC0 result, or P-vs-NP claim.
+-/
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeSplit.codeRowCollision_iff_not_codeRowVarUnique' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeSplit.codeRowCollision_iff_not_codeRowVarUnique
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeSplit.realizedBadPathCodes_eq_rowVarUnique_union_rowCollision' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeSplit.realizedBadPathCodes_eq_rowVarUnique_union_rowCollision
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeSplit.disjoint_rowVarUniqueRealizedBadPathCodes_rowCollision' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeSplit.disjoint_rowVarUniqueRealizedBadPathCodes_rowCollision
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeSplit.codeStageVar_eq_of_codeRowVarUnique_row_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeSplit.codeStageVar_eq_of_codeRowVarUnique_row_eq
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeSplit.codeStageRow_injective_of_realized_simple_codeRowVarUnique' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeSplit.codeStageRow_injective_of_realized_simple_codeRowVarUnique
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeSplit.rowVarUniqueRealizedBadPathCodes_eq_empty_of_simple_of_h_lt_s_add_t' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeSplit.rowVarUniqueRealizedBadPathCodes_eq_empty_of_simple_of_h_lt_s_add_t
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeSplit.realizedBadPathCodes_eq_rowCollisionRealizedBadPathCodes_of_simple_of_h_lt_s_add_t' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeSplit.realizedBadPathCodes_eq_rowCollisionRealizedBadPathCodes_of_simple_of_h_lt_s_add_t
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeSplit.rowCollisionRealizedBadPathCodes_card_eq_realizedBadPathCodes_card_of_simple_of_h_lt_s_add_t' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeSplit.rowCollisionRealizedBadPathCodes_card_eq_realizedBadPathCodes_card_of_simple_of_h_lt_s_add_t
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeSplit.canonicalDepthBad_eventProbLe_geometric_of_simple_rowCollision_of_h_lt_s_add_t' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeSplit.canonicalDepthBad_eventProbLe_geometric_of_simple_rowCollision_of_h_lt_s_add_t
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeSplit.twoRowsTwoColsCode_row0_h2_t2_codeRowCollision' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeSplit.twoRowsTwoColsCode_row0_h2_t2_codeRowCollision
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeSplit.twoRowsTwoColsCode_row1_h2_t2_codeRowCollision' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeSplit.twoRowsTwoColsCode_row1_h2_t2_codeRowCollision
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeSplit.twoRowsTwoCols_rowCollisionRealizedBadPathCodes_card_ge_two' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeSplit.twoRowsTwoCols_rowCollisionRealizedBadPathCodes_card_ge_two
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeSplit.twoRowsTwoCols_denominator_le_rowCollisionRealizedBadPathCodes_card' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeSplit.twoRowsTwoCols_denominator_le_rowCollisionRealizedBadPathCodes_card
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeSplit.twoRowsTwoCols_not_rowCollisionRealizedBadPathCodes_card_lt_denominator' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeSplit.twoRowsTwoCols_not_rowCollisionRealizedBadPathCodes_card_lt_denominator
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeSplit.twoRowsTwoCols_rowCollision_route_nontrivial_impossible' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeSplit.twoRowsTwoCols_rowCollision_route_nontrivial_impossible
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeSplit.not_codeRowCollision_h_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeSplit.not_codeRowCollision_h_one
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeSplit.rowCollisionRealizedBadPathCodes_eq_empty_h_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeSplit.rowCollisionRealizedBadPathCodes_eq_empty_h_one
+
+/-! ## S2132 parametric row-collision obstruction
+
+Pins for `PvNP.PHPFullMatchingRealizedCodeParametricObstruction`: for every
+`h >= 2`, the full-row SimpleDNF family at `s = h - 1`, `t = h` realizes at
+least `h` row-collision bad-path codes, so the displayed denominator
+`h^(h/h)` is no larger than the row-collision realized-code count.  This is a
+finite square full-matching counterexample family to the SimpleDNF-only
+row-collision denominator route; it is not a PHP switching lemma, Frege/PHP
+lower bound, rectangular `p > h` result, NP/circuit result, arbitrary AC0
+result, or P-vs-NP claim.
+-/
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeParametricObstruction.fullRowP_canonicalDepthBad' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeParametricObstruction.fullRowP_canonicalDepthBad
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeParametricObstruction.fullRowCode_mem_realized' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeParametricObstruction.fullRowCode_mem_realized
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeParametricObstruction.fullRowCode_injective' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeParametricObstruction.fullRowCode_injective
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeParametricObstruction.fullRowTvs_simple' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeParametricObstruction.fullRowTvs_simple
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeParametricObstruction.fullRowTvs_rowCollisionRealizedBadPathCodes_card_ge_h' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeParametricObstruction.fullRowTvs_rowCollisionRealizedBadPathCodes_card_ge_h
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeParametricObstruction.fullRowTvs_denominator_le_rowCollisionRealizedBadPathCodes_card' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeParametricObstruction.fullRowTvs_denominator_le_rowCollisionRealizedBadPathCodes_card
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeParametricObstruction.fullRowTvs_not_rowCollisionRealizedBadPathCodes_card_lt_denominator' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeParametricObstruction.fullRowTvs_not_rowCollisionRealizedBadPathCodes_card_lt_denominator
+
+/-- info: 'PvNP.PHPFullMatchingRealizedCodeParametricObstruction.fullRowTvs_rowCollision_route_nontrivial_impossible' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingRealizedCodeParametricObstruction.fullRowTvs_rowCollision_route_nontrivial_impossible
+
+/-! ## S2133 Gate-A realized-code invariant
+
+Pins for `PvNP.PHPFullMatchingGateAInvariant`: a code-local invariant requiring
+all realized codes to be row-variable-unique makes the row-collision realized-
+code set empty, and the S2132 full-row family violates that invariant for every
+`h >= 2`.  This remains finite square full-matching bookkeeping only.
+-/
+
+/-- info: PvNP.PHPFullMatchingGateAInvariant.RealizedCodeRowVarUnique {h s t : ℕ} (tvs : List (List (Fin h × Fin h × Bool))) :
+  Prop -/
+#guard_msgs in
+#check PvNP.PHPFullMatchingGateAInvariant.RealizedCodeRowVarUnique
+
+/-- info: PvNP.PHPFullMatchingGateAInvariant.rowCollisionRealizedBadPathCodes_eq_empty_of_realizedCodeRowVarUnique {h s t : ℕ}
+  (tvs : List (List (Fin h × Fin h × Bool))) (hinv : PvNP.PHPFullMatchingGateAInvariant.RealizedCodeRowVarUnique tvs) :
+  PvNP.PHPFullMatchingRealizedCodeSplit.rowCollisionRealizedBadPathCodes tvs = ∅ -/
+#guard_msgs in
+#check PvNP.PHPFullMatchingGateAInvariant.rowCollisionRealizedBadPathCodes_eq_empty_of_realizedCodeRowVarUnique
+
+/-- info: PvNP.PHPFullMatchingGateAInvariant.rowCollisionRealizedBadPathCodes_card_eq_zero_of_realizedCodeRowVarUnique {h s t : ℕ}
+  (tvs : List (List (Fin h × Fin h × Bool))) (hinv : PvNP.PHPFullMatchingGateAInvariant.RealizedCodeRowVarUnique tvs) :
+  (PvNP.PHPFullMatchingRealizedCodeSplit.rowCollisionRealizedBadPathCodes tvs).card = 0 -/
+#guard_msgs in
+#check PvNP.PHPFullMatchingGateAInvariant.rowCollisionRealizedBadPathCodes_card_eq_zero_of_realizedCodeRowVarUnique
+
+/-- info: PvNP.PHPFullMatchingGateAInvariant.rowCollisionRealizedBadPathCodes_card_lt_denominator_of_realizedCodeRowVarUnique
+  {h s t : ℕ} (tvs : List (List (Fin h × Fin h × Bool)))
+  (hinv : PvNP.PHPFullMatchingGateAInvariant.RealizedCodeRowVarUnique tvs) (hden : 0 < h ^ (t / h)) :
+  (PvNP.PHPFullMatchingRealizedCodeSplit.rowCollisionRealizedBadPathCodes tvs).card < h ^ (t / h) -/
+#guard_msgs in
+#check PvNP.PHPFullMatchingGateAInvariant.rowCollisionRealizedBadPathCodes_card_lt_denominator_of_realizedCodeRowVarUnique
+
+/-- info: PvNP.PHPFullMatchingGateAInvariant.fullRowTvs_not_realizedCodeRowVarUnique {h : ℕ} (hh : 2 ≤ h) :
+  ¬PvNP.PHPFullMatchingGateAInvariant.RealizedCodeRowVarUnique
+      (PvNP.PHPFullMatchingRealizedCodeParametricObstruction.fullRowTvs h) -/
+#guard_msgs in
+#check PvNP.PHPFullMatchingGateAInvariant.fullRowTvs_not_realizedCodeRowVarUnique
+
+/-! ## S2134 Gate-A natural invariant variants
+
+Pins for `PvNP.PHPFullMatchingGateANaturalInvariant`: finite row-capacity,
+per-term uniqueness, code-local row-to-variable functionality, canonical-code
+discipline implications, denominator-control corollaries, and bounded no-go
+witnesses.  This remains finite square full-matching bookkeeping only.
+-/
+
+/-- info: PvNP.PHPFullMatchingGateANaturalInvariant.PHPDNFRowVarCapacityOne {h : ℕ} (tvs : List (List (Fin h × Fin h × Bool))) :
+  Prop -/
+#guard_msgs in
+#check PvNP.PHPFullMatchingGateANaturalInvariant.PHPDNFRowVarCapacityOne
+
+/-- info: PvNP.PHPFullMatchingGateANaturalInvariant.PHPDNFTermRowVarUnique {h : ℕ} (tvs : List (List (Fin h × Fin h × Bool))) :
+  Prop -/
+#guard_msgs in
+#check PvNP.PHPFullMatchingGateANaturalInvariant.PHPDNFTermRowVarUnique
+
+/-- info: PvNP.PHPFullMatchingGateANaturalInvariant.CodeRowToVarFunctional {h t : ℕ} {tvs : List (List (Fin h × Fin h × Bool))}
+  (c : PvNP.PHPFullMatchingBadPathEncoding.BadPathCode h tvs t) : Prop -/
+#guard_msgs in
+#check PvNP.PHPFullMatchingGateANaturalInvariant.CodeRowToVarFunctional
+
+/-- info: PvNP.PHPFullMatchingGateANaturalInvariant.RealizedCodeRowToVarFunctional {h s t : ℕ}
+  (tvs : List (List (Fin h × Fin h × Bool))) : Prop -/
+#guard_msgs in
+#check PvNP.PHPFullMatchingGateANaturalInvariant.RealizedCodeRowToVarFunctional
+
+/-- info: PvNP.PHPFullMatchingGateANaturalInvariant.CanonicalMatchingCodeRowToVarFunctional {h s t : ℕ}
+  (tvs : List (List (Fin h × Fin h × Bool))) : Prop -/
+#guard_msgs in
+#check PvNP.PHPFullMatchingGateANaturalInvariant.CanonicalMatchingCodeRowToVarFunctional
+
+/-- info: 'PvNP.PHPFullMatchingGateANaturalInvariant.codeRowVarUnique_of_codeRowToVarFunctional' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateANaturalInvariant.codeRowVarUnique_of_codeRowToVarFunctional
+
+/-- info: 'PvNP.PHPFullMatchingGateANaturalInvariant.realizedCodeRowVarUnique_of_rowVarCapacityOne' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateANaturalInvariant.realizedCodeRowVarUnique_of_rowVarCapacityOne
+
+/-- info: 'PvNP.PHPFullMatchingGateANaturalInvariant.rowCollisionRealizedBadPathCodes_card_lt_denominator_of_rowVarCapacityOne' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateANaturalInvariant.rowCollisionRealizedBadPathCodes_card_lt_denominator_of_rowVarCapacityOne
+
+/-- info: 'PvNP.PHPFullMatchingGateANaturalInvariant.realizedCodeRowVarUnique_of_canonicalMatchingCodeRowToVarFunctional' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateANaturalInvariant.realizedCodeRowVarUnique_of_canonicalMatchingCodeRowToVarFunctional
+
+/-- info: 'PvNP.PHPFullMatchingGateANaturalInvariant.fullRowTvs_not_rowVarCapacityOne' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateANaturalInvariant.fullRowTvs_not_rowVarCapacityOne
+
+/-- info: 'PvNP.PHPFullMatchingGateANaturalInvariant.fullRowTvs_not_termRowVarUnique' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateANaturalInvariant.fullRowTvs_not_termRowVarUnique
+
+/-- info: 'PvNP.PHPFullMatchingGateANaturalInvariant.crossTermRowTvs_h2_termRowVarUnique' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateANaturalInvariant.crossTermRowTvs_h2_termRowVarUnique
+
+/-- info: 'PvNP.PHPFullMatchingGateANaturalInvariant.crossTermRowTvs_h2_not_realizedCodeRowVarUnique' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateANaturalInvariant.crossTermRowTvs_h2_not_realizedCodeRowVarUnique
+
+/-! ## S2135 Gate-A canonical row discipline
+
+Pins for `PvNP.PHPFullMatchingGateACanonicalRowDiscipline`: cross-term row-variable
+compatibility, canonical/realized row-collision-free disciplines, positive routes
+to S2134/S2133 functionality and row-collision denominator control, plus bounded
+no-go witnesses for weaker per-term uniqueness.  This remains finite square
+full-matching bookkeeping only.
+-/
+
+/-- info: PvNP.PHPFullMatchingGateACanonicalRowDiscipline.PHPDNFTermPairRowVarCompatible {h : ℕ}
+  (tvs : List (List (Fin h × Fin h × Bool))) : Prop -/
+#guard_msgs in
+#check PvNP.PHPFullMatchingGateACanonicalRowDiscipline.PHPDNFTermPairRowVarCompatible
+
+/-- info: PvNP.PHPFullMatchingGateACanonicalRowDiscipline.CanonicalMatchingCodeRowCollisionFree {h s t : ℕ}
+  (tvs : List (List (Fin h × Fin h × Bool))) : Prop -/
+#guard_msgs in
+#check PvNP.PHPFullMatchingGateACanonicalRowDiscipline.CanonicalMatchingCodeRowCollisionFree
+
+/-- info: PvNP.PHPFullMatchingGateACanonicalRowDiscipline.RealizedCodeRowCollisionFree {h s t : ℕ}
+  (tvs : List (List (Fin h × Fin h × Bool))) : Prop -/
+#guard_msgs in
+#check PvNP.PHPFullMatchingGateACanonicalRowDiscipline.RealizedCodeRowCollisionFree
+
+/-- info: PvNP.PHPFullMatchingGateACanonicalRowDiscipline.CanonicalPathRowCompatible {h s t : ℕ}
+  (tvs : List (List (Fin h × Fin h × Bool))) : Prop -/
+#guard_msgs in
+#check PvNP.PHPFullMatchingGateACanonicalRowDiscipline.CanonicalPathRowCompatible
+
+/-- info: PvNP.PHPFullMatchingGateACanonicalRowDiscipline.RealizedCodeRowToVarFunctionalFromSyntax {h s t : ℕ}
+  (tvs : List (List (Fin h × Fin h × Bool))) : Prop -/
+#guard_msgs in
+#check PvNP.PHPFullMatchingGateACanonicalRowDiscipline.RealizedCodeRowToVarFunctionalFromSyntax
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.codeRowToVarFunctional_of_codeRowVarUnique' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.codeRowToVarFunctional_of_codeRowVarUnique
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.realizedCodeRowToVarFunctional_of_realizedCodeRowVarUnique' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.realizedCodeRowToVarFunctional_of_realizedCodeRowVarUnique
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.realizedCodeRowVarUnique_of_realizedCodeRowCollisionFree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.realizedCodeRowVarUnique_of_realizedCodeRowCollisionFree
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.realizedCodeRowToVarFunctional_of_realizedCodeRowCollisionFree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.realizedCodeRowToVarFunctional_of_realizedCodeRowCollisionFree
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.canonicalMatchingCodeRowToVarFunctional_of_canonicalCodeRowCollisionFree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.canonicalMatchingCodeRowToVarFunctional_of_canonicalCodeRowCollisionFree
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.canonicalMatchingCodeRowToVarFunctional_of_canonicalPathRowCompatible' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.canonicalMatchingCodeRowToVarFunctional_of_canonicalPathRowCompatible
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.realizedCodeRowVarUnique_of_canonicalPathRowCompatible' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.realizedCodeRowVarUnique_of_canonicalPathRowCompatible
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.rowCollisionRealizedBadPathCodes_card_lt_denominator_of_canonicalPathRowCompatible' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.rowCollisionRealizedBadPathCodes_card_lt_denominator_of_canonicalPathRowCompatible
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.realizedCodeRowVarUnique_of_realizedCodeRowToVarFunctionalFromSyntax' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.realizedCodeRowVarUnique_of_realizedCodeRowToVarFunctionalFromSyntax
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.rowCollisionRealizedBadPathCodes_card_lt_denominator_of_realizedCodeRowToVarFunctionalFromSyntax' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.rowCollisionRealizedBadPathCodes_card_lt_denominator_of_realizedCodeRowToVarFunctionalFromSyntax
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.rowVarCapacityOne_of_termPairRowVarCompatible' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.rowVarCapacityOne_of_termPairRowVarCompatible
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.canonicalMatchingCodeRowToVarFunctional_of_termPairRowVarCompatible' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.canonicalMatchingCodeRowToVarFunctional_of_termPairRowVarCompatible
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.realizedCodeRowToVarFunctional_of_termPairRowVarCompatible' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.realizedCodeRowToVarFunctional_of_termPairRowVarCompatible
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.realizedCodeRowVarUnique_of_termPairRowVarCompatible' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.realizedCodeRowVarUnique_of_termPairRowVarCompatible
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.rowCollisionRealizedBadPathCodes_card_lt_denominator_of_termPairRowVarCompatible' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.rowCollisionRealizedBadPathCodes_card_lt_denominator_of_termPairRowVarCompatible
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.fullRowTvs_not_termPairRowVarCompatible' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.fullRowTvs_not_termPairRowVarCompatible
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.crossTermRowTvs_h2_not_termPairRowVarCompatible' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.crossTermRowTvs_h2_not_termPairRowVarCompatible
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.crossTermRowTvs_h2_not_realizedCodeRowToVarFunctional' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.crossTermRowTvs_h2_not_realizedCodeRowToVarFunctional
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.crossTermRowTvs_h2_not_canonicalMatchingCodeRowToVarFunctional' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.crossTermRowTvs_h2_not_canonicalMatchingCodeRowToVarFunctional
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.fullRowTvs_not_canonicalPathRowCompatible' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.fullRowTvs_not_canonicalPathRowCompatible
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.crossTermRowTvs_h2_not_canonicalPathRowCompatible' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.crossTermRowTvs_h2_not_canonicalPathRowCompatible
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.fullRowTvs_not_canonicalMatchingCodeRowCollisionFree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.fullRowTvs_not_canonicalMatchingCodeRowCollisionFree
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.fullRowTvs_not_realizedCodeRowCollisionFree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.fullRowTvs_not_realizedCodeRowCollisionFree
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.crossTermRowTvs_h2_not_canonicalMatchingCodeRowCollisionFree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.crossTermRowTvs_h2_not_canonicalMatchingCodeRowCollisionFree
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.crossTermRowTvs_h2_not_realizedCodeRowCollisionFree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.crossTermRowTvs_h2_not_realizedCodeRowCollisionFree
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.fullRowTvs_not_realizedCodeRowToVarFunctionalFromSyntax' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.fullRowTvs_not_realizedCodeRowToVarFunctionalFromSyntax
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.crossTermRowTvs_h2_not_realizedCodeRowToVarFunctionalFromSyntax' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.crossTermRowTvs_h2_not_realizedCodeRowToVarFunctionalFromSyntax
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.termRowVarUnique_not_implies_realizedCodeRowToVarFunctional_h2_s1_t2' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.termRowVarUnique_not_implies_realizedCodeRowToVarFunctional_h2_s1_t2
+
+/-- info: 'PvNP.PHPFullMatchingGateACanonicalRowDiscipline.termRowVarUnique_not_implies_canonicalMatchingCodeRowToVarFunctional_h2_s1_t2' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateACanonicalRowDiscipline.termRowVarUnique_not_implies_canonicalMatchingCodeRowToVarFunctional_h2_s1_t2
+
+/-! ## S2136 Gate-A route-decision local discipline
+
+Pins for `PvNP.PHPFullMatchingGateARouteDecision`: the natural local
+SimpleDNF/per-term row-uniqueness discipline, its exact separation from the
+whole-DNF row-capacity route, and bounded `h = 2, s = 1, t = 2` obstructions.
+This remains finite square full-matching realized-code/list-support bookkeeping
+only.
+-/
+
+/-- info: PvNP.PHPFullMatchingGateARouteDecision.PHPDNFNaturalLocalRowDiscipline {h : ℕ}
+  (tvs : List (List (Fin h × Fin h × Bool))) : Prop -/
+#guard_msgs in
+#check PvNP.PHPFullMatchingGateARouteDecision.PHPDNFNaturalLocalRowDiscipline
+
+/-- info: 'PvNP.PHPFullMatchingGateARouteDecision.termPairRowVarCompatible_iff_rowVarCapacityOne' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateARouteDecision.termPairRowVarCompatible_iff_rowVarCapacityOne
+
+/-- info: 'PvNP.PHPFullMatchingGateARouteDecision.crossTermRowTvs_h2_simple' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateARouteDecision.crossTermRowTvs_h2_simple
+
+/-- info: 'PvNP.PHPFullMatchingGateARouteDecision.crossTermRowTvs_h2_naturalLocalRowDiscipline' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateARouteDecision.crossTermRowTvs_h2_naturalLocalRowDiscipline
+
+/-- info: 'PvNP.PHPFullMatchingGateARouteDecision.naturalLocalRowDiscipline_not_implies_realizedCodeRowToVarFunctional_h2_s1_t2' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateARouteDecision.naturalLocalRowDiscipline_not_implies_realizedCodeRowToVarFunctional_h2_s1_t2
+
+/-- info: 'PvNP.PHPFullMatchingGateARouteDecision.naturalLocalRowDiscipline_not_implies_canonicalPathRowCompatible_h2_s1_t2' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateARouteDecision.naturalLocalRowDiscipline_not_implies_canonicalPathRowCompatible_h2_s1_t2
+
+/-- info: 'PvNP.PHPFullMatchingGateARouteDecision.naturalLocalRowDiscipline_not_implies_termPairRowVarCompatible_h2' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateARouteDecision.naturalLocalRowDiscipline_not_implies_termPairRowVarCompatible_h2
+
+/-- info: 'PvNP.PHPFullMatchingGateARouteDecision.naturalLocalRowDiscipline_not_implies_rowVarCapacityOne_h2' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateARouteDecision.naturalLocalRowDiscipline_not_implies_rowVarCapacityOne_h2
+
+/-! ## S2137 Gate-A realized-code path split
+
+Pins for `PvNP.PHPFullMatchingGateARealizedCodePathSplit`: realized canonical
+bad-path codes are split by code-local row-to-variable functionality; the S2136
+cross-term witness is on the bad side; and an empty bad side recovers the
+existing finite row-collision denominator-control route.
+-/
+
+/-- info: PvNP.PHPFullMatchingGateARealizedCodePathSplit.GoodRealizedCode {h s t : ℕ} (tvs : List (List (Fin h × Fin h × Bool)))
+  (c : PvNP.PHPFullMatchingBadPathEncoding.BadPathCode h tvs t) : Prop -/
+#guard_msgs in
+#check PvNP.PHPFullMatchingGateARealizedCodePathSplit.GoodRealizedCode
+
+/-- info: PvNP.PHPFullMatchingGateARealizedCodePathSplit.BadRealizedCode {h s t : ℕ} (tvs : List (List (Fin h × Fin h × Bool)))
+  (c : PvNP.PHPFullMatchingBadPathEncoding.BadPathCode h tvs t) : Prop -/
+#guard_msgs in
+#check PvNP.PHPFullMatchingGateARealizedCodePathSplit.BadRealizedCode
+
+/-- info: PvNP.PHPFullMatchingGateARealizedCodePathSplit.badRealizedPathCodes_eq_empty_iff_realizedCodeRowToVarFunctional
+  {h s t : ℕ} (tvs : List (List (Fin h × Fin h × Bool))) :
+  PvNP.PHPFullMatchingGateARealizedCodePathSplit.badRealizedPathCodes tvs = ∅ ↔
+    PvNP.PHPFullMatchingGateANaturalInvariant.RealizedCodeRowToVarFunctional tvs -/
+#guard_msgs in
+#check PvNP.PHPFullMatchingGateARealizedCodePathSplit.badRealizedPathCodes_eq_empty_iff_realizedCodeRowToVarFunctional
+
+/-- info: PvNP.PHPFullMatchingGateARealizedCodePathSplit.crossTermRowCode_h2_t2_mem_badRealizedPathCodes :
+  PvNP.PHPFullMatchingGateANaturalInvariant.crossTermRowCode_h2_t2 ∈
+    PvNP.PHPFullMatchingGateARealizedCodePathSplit.badRealizedPathCodes
+      PvNP.PHPFullMatchingGateANaturalInvariant.crossTermRowTvs_h2 -/
+#guard_msgs in
+#check PvNP.PHPFullMatchingGateARealizedCodePathSplit.crossTermRowCode_h2_t2_mem_badRealizedPathCodes
+
+/-- info: 'PvNP.PHPFullMatchingGateARealizedCodePathSplit.gateA_realizedCodePathSplit_pivot_consequence' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateARealizedCodePathSplit.gateA_realizedCodePathSplit_pivot_consequence
+
+/-! ## S2138 Gate-A bad conflict signatures
+
+Pins for `PvNP.PHPFullMatchingGateABadConflictSignature`: every S2137 bad
+realized code has a canonical same-row/different-column conflict signature; the
+bad class is exactly the S2131 row-collision class; and the two-by-two
+denominator obstruction transfers to the bad class.
+-/
+
+/-- info: PvNP.PHPFullMatchingGateABadConflictSignature.CodeRowConflictSignature {h t : ℕ}
+  {tvs : List (List (Fin h × Fin h × Bool))} (c : PvNP.PHPFullMatchingBadPathEncoding.BadPathCode h tvs t) : Type -/
+#guard_msgs in
+#check PvNP.PHPFullMatchingGateABadConflictSignature.CodeRowConflictSignature
+
+/-- info: PvNP.PHPFullMatchingGateABadConflictSignature.badRealizedCodeConflictSignature_spec {h s t : ℕ}
+  {tvs : List (List (Fin h × Fin h × Bool))} {c : PvNP.PHPFullMatchingBadPathEncoding.BadPathCode h tvs t}
+  (hbad : PvNP.PHPFullMatchingGateARealizedCodePathSplit.BadRealizedCode tvs c) :
+  PvNP.PHPFullMatchingStageRows.codeStageRow c
+        (↑(PvNP.PHPFullMatchingGateABadConflictSignature.badRealizedCodeConflictSignature hbad)).1 =
+      PvNP.PHPFullMatchingStageRows.codeStageRow c
+        (↑(PvNP.PHPFullMatchingGateABadConflictSignature.badRealizedCodeConflictSignature hbad)).2 ∧
+    (PvNP.PHPFullMatchingStageRows.codeStageEntry c
+            (↑(PvNP.PHPFullMatchingGateABadConflictSignature.badRealizedCodeConflictSignature hbad)).1).2.1 ≠
+      (PvNP.PHPFullMatchingStageRows.codeStageEntry c
+            (↑(PvNP.PHPFullMatchingGateABadConflictSignature.badRealizedCodeConflictSignature hbad)).2).2.1 -/
+#guard_msgs in
+#check PvNP.PHPFullMatchingGateABadConflictSignature.badRealizedCodeConflictSignature_spec
+
+/-- info: PvNP.PHPFullMatchingGateABadConflictSignature.badRealizedPathCodes_eq_rowCollisionRealizedBadPathCodes {h s t : ℕ}
+  (tvs : List (List (Fin h × Fin h × Bool))) :
+  PvNP.PHPFullMatchingGateARealizedCodePathSplit.badRealizedPathCodes tvs =
+    PvNP.PHPFullMatchingRealizedCodeSplit.rowCollisionRealizedBadPathCodes tvs -/
+#guard_msgs in
+#check PvNP.PHPFullMatchingGateABadConflictSignature.badRealizedPathCodes_eq_rowCollisionRealizedBadPathCodes
+
+/-- info: 'PvNP.PHPFullMatchingGateABadConflictSignature.badRealizedPathCodes_eq_rowCollisionRealizedBadPathCodes' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateABadConflictSignature.badRealizedPathCodes_eq_rowCollisionRealizedBadPathCodes
+
+/-- info: 'PvNP.PHPFullMatchingGateABadConflictSignature.twoRowsTwoCols_bad_route_nontrivial_impossible' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPFullMatchingGateABadConflictSignature.twoRowsTwoCols_bad_route_nontrivial_impossible
+
+/-! ## S2139 Gate-A rectangular injection-space obstruction
+
+Pins for `PvNP.PHPRectMatchingInjectionObstruction`: a rectangular selected-row
+injection space and rectangular realized-code/fiber interface are defined; in the
+`p = 3`, `h = 2`, `s = 2`, `t = 2` full-row family, row-collision realized
+codes still meet the natural rectangular denominator `3^(2/2)`.  This remains
+finite rectangular matching-space/list-support bookkeeping only.
+-/
+
+/-- info: PvNP.PHPRectMatchingInjectionObstruction.rectMatchingSpace (p h s : ℕ) :
+  Finset (PvNP.PHPRectMatchingInjectionObstruction.RectMatchingPoint p h) -/
+#guard_msgs in
+#check PvNP.PHPRectMatchingInjectionObstruction.rectMatchingSpace
+
+/-- info: PvNP.PHPRectMatchingInjectionObstruction.rectRealizedBadPathCodes {p h s t : ℕ}
+  (tvs : List (List (PvNP.PHPRectMatchingInjectionObstruction.RectLitDatum p h))) :
+  Finset (PvNP.PHPRectMatchingInjectionObstruction.RectBadPathCode p h tvs t) -/
+#guard_msgs in
+#check PvNP.PHPRectMatchingInjectionObstruction.rectRealizedBadPathCodes
+
+/-- info: 'PvNP.PHPRectMatchingInjectionObstruction.rectRealizedBadPathCodes_eq_rectRowCollisionRealizedBadPathCodes_of_simple_of_p_lt_s_add_t' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPRectMatchingInjectionObstruction.rectRealizedBadPathCodes_eq_rectRowCollisionRealizedBadPathCodes_of_simple_of_p_lt_s_add_t
+
+/-- info: 'PvNP.PHPRectMatchingInjectionObstruction.rectThreeTwo_rowCollisionRealizedBadPathCodes_card_ge_three' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPRectMatchingInjectionObstruction.rectThreeTwo_rowCollisionRealizedBadPathCodes_card_ge_three
+
+/-- info: 'PvNP.PHPRectMatchingInjectionObstruction.rectThreeTwo_denominator_le_rowCollisionRealizedBadPathCodes_card' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPRectMatchingInjectionObstruction.rectThreeTwo_denominator_le_rowCollisionRealizedBadPathCodes_card
+
+/-- info: 'PvNP.PHPRectMatchingInjectionObstruction.rectThreeTwo_rectangular_route_nontrivial_impossible' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPRectMatchingInjectionObstruction.rectThreeTwo_rectangular_route_nontrivial_impossible
+
 /-! ## S2123 stage-row lower bound and duplicate-stage obstruction
 
 Pins for `PvNP.PHPFullMatchingStageRowObstruction`: positive-length bad-path
@@ -6025,8 +8222,11 @@ codes recover at least one row; injective stage-row maps recover exactly `t`
 rows; and a concrete `h = 1`, `t = 2` duplicate-stage code over a one-literal
 support has recovered-row cardinality `1`, refuting a global two-row lower bound
 for all codes under the current definition.  This is finite code-space/matching-
-space infrastructure only: no distinct-row theorem for all codes, no `q = t`
-coarsening, no geometric decay bound, and no PHP switching lemma is proved.
+space infrastructure only: the obstruction module itself proves no distinct-row
+theorem for all codes, no realized row-growth theorem, and no PHP switching
+lemma.  The separate `PHPFullMatchingStageRows` module pins the pure row-free
+binomial/geometric-ratio discharge and conditional geometric finite-probability
+wrapper under supplied realized row-growth.
 -/
 
 /-- info: 'PvNP.PHPFullMatchingStageRowObstruction.codeStageRows_nonempty' depends on axioms: [propext,
