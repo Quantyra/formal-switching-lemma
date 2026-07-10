@@ -92,6 +92,7 @@ import PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget
 import PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget
 import PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget
 import PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance
+import PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry
 import PvNP.FormulaRecursiveTerminalSchedule
 import PvNP.FormulaRecursiveNonempty
 import PvNP.FormulaRecursiveSizeBound
@@ -8682,3 +8683,279 @@ Frege/PHP, not NP/circuit, not Gate A, not P-vs-NP.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportUnconditionalInstance.hugeWitness_frontierGateCount_pos
+
+/-!
+Pins for S2161 frontier-local tight-entry supplied-width final-tree
+consumers:
+`FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry`
+adds TIGHT-ENTRY variants of the S2155 supplied-width final-tree consumers
+in which the coarse ambient obligation `2*(64*S d)^rounds*(64*S d*S d) ≤ n`
+is replaced by the frontier-local obligation
+`2*(64*frontierLayerGateCount F level)^rounds*
+  (64*frontierLayerGateCount F level*W level) ≤ n`
+and the `W level ≤ S d` hypothesis is dropped (single-level and all-level
+consumers), a sanity lemma plus subsumption corollary re-deriving the coarse
+route from the tight one (the coarse consumers and their S2160 instances are
+untouched and remain valid), disjoint-support wrappers under the
+class-derived width schedule `max 1 (formulaRecurrenceWidth F)` taking the
+layer-local obligation, and re-instantiations of the S2160
+AND-of-two-variable-disjoint-ORs shape (`formulaSize = 7`, `depth = 2`,
+`formulaRecurrenceWidth = 2`) with exact per-level frontier pins
+(`frontierLayerGateCount` = 1, 2, 4 at levels 0, 1, 2;
+`recurrenceWidthSchedule ≡ 2`) at strictly smaller ambients with strictly
+more rounds than S2160: level 0 at `2^20` with `rounds = 2` (local product
+exactly `2^20`, versus the S2160 `2^22` at `rounds = 1`), level 0 at `2^26`
+with `rounds = 3` (exactly `2^26`, versus the S2160 `2^31` at `rounds = 2`),
+level 0 at `2^32` with `rounds = 4` (exactly `2^32`), and ALL levels at
+`2^26` with `rounds = 2` (per-level products `2^20`, `2^23`, `2^26`), with
+explicit pins that the coarse class-size-7 thresholds fail at every one of
+these ambient/rounds pairs.  Boundary: this is a tighter ENTRY CONDITION
+only — it removes the coarse over-approximation
+`frontierLayerGateCount F level, W level → S(d)` in the ambient obligation
+and changes no switching-lemma constants, no stage budgets (per-stage budget
+2), not the geometric star schedule, not the tree budget
+`t(d,s)=S(d)*(s-1)`, and not the `SuppliedWidthClassDepthFinalTreeAt`
+payload; restricted classes only; the witnesses are single finite concrete
+instances, not an asymptotic family; shared-variable ANDs still require a
+supplied compatibility proof.  Not arbitrary-class width synthesis, not
+threshold improvement of the switching lemma itself, not full B4, not PHP
+switching, not Frege/PHP, not NP/circuit, not Gate A, not P-vs-NP.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.syntacticTerminalFrontierLayer_geometricCollapseWithSuppliedWidth_finalTree_tightEntry' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.syntacticTerminalFrontierLayer_geometricCollapseWithSuppliedWidth_finalTree_tightEntry
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.allSyntacticTerminalFrontierLayers_geometricCollapseWithSuppliedWidth_finalTree_tightEntry' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.allSyntacticTerminalFrontierLayers_geometricCollapseWithSuppliedWidth_finalTree_tightEntry
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightEntryBound_of_coarse' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightEntryBound_of_coarse
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.syntacticTerminalFrontierLayer_geometricCollapseWithSuppliedWidth_finalTree_of_coarse_via_tightEntry' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.syntacticTerminalFrontierLayer_geometricCollapseWithSuppliedWidth_finalTree_of_coarse_via_tightEntry
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.syntacticTerminalFrontierLayer_geometricCollapseWithSuppliedWidth_finalTree_tightEntry_of_disjointSupportFanin' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.syntacticTerminalFrontierLayer_geometricCollapseWithSuppliedWidth_finalTree_tightEntry_of_disjointSupportFanin
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.allSyntacticTerminalFrontierLayers_geometricCollapseWithSuppliedWidth_finalTree_tightEntry_of_disjointSupportFanin' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.allSyntacticTerminalFrontierLayers_geometricCollapseWithSuppliedWidth_finalTree_tightEntry_of_disjointSupportFanin
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness20' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness20
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness20_formulaSize' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness20_formulaSize
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness20_depth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness20_depth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness20_recurrenceWidth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness20_recurrenceWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness20_disjointSupportFanin' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness20_disjointSupportFanin
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness20_frontierGateCount_zero' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness20_frontierGateCount_zero
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness20_frontierGateCount_one' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness20_frontierGateCount_one
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness20_frontierGateCount_two' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness20_frontierGateCount_two
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness20_recurrenceWidthSchedule' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness20_recurrenceWidthSchedule
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness26' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness26
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness26_formulaSize' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness26_formulaSize
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness26_depth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness26_depth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness26_recurrenceWidth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness26_recurrenceWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness26_disjointSupportFanin' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness26_disjointSupportFanin
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness26_frontierGateCount_zero' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness26_frontierGateCount_zero
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness26_frontierGateCount_one' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness26_frontierGateCount_one
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness26_frontierGateCount_two' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness26_frontierGateCount_two
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness26_recurrenceWidthSchedule' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness26_recurrenceWidthSchedule
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness32' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness32
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness32_formulaSize' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness32_formulaSize
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness32_depth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness32_depth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness32_recurrenceWidth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness32_recurrenceWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness32_disjointSupportFanin' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness32_disjointSupportFanin
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness32_frontierGateCount_zero' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness32_frontierGateCount_zero
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness32_frontierGateCount_one' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness32_frontierGateCount_one
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness32_frontierGateCount_two' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness32_frontierGateCount_two
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness32_recurrenceWidthSchedule' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness32_recurrenceWidthSchedule
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness20_entryProduct_eq' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness20_entryProduct_eq
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness26_entryProduct_eq' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness26_entryProduct_eq
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness32_entryProduct_eq' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness32_entryProduct_eq
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness20_tightEntryThreshold_level0' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness20_tightEntryThreshold_level0
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness26_tightEntryThreshold_level0' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness26_tightEntryThreshold_level0
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness32_tightEntryThreshold_level0' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness32_tightEntryThreshold_level0
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness20_finalTree_level0' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness20_finalTree_level0
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness26_finalTree_level0' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness26_finalTree_level0
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness32_finalTree_level0' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness32_finalTree_level0
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness26_finalTree_allLevels_rounds2' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness26_finalTree_allLevels_rounds2
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.coarseEntry_fails_at_ambient20_rounds2' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.coarseEntry_fails_at_ambient20_rounds2
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.coarseEntry_fails_at_ambient26_rounds2' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.coarseEntry_fails_at_ambient26_rounds2
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.coarseEntry_fails_at_ambient26_rounds3' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.coarseEntry_fails_at_ambient26_rounds3
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.coarseEntry_fails_at_ambient32_rounds4' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.coarseEntry_fails_at_ambient32_rounds4
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness_ambient_domination' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness_ambient_domination

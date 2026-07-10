@@ -410,6 +410,41 @@ duplicate-stage code has only one recovered row, so the current all-
   supplied compatibility proof.  It proves no threshold improvement,
   no arbitrary-class width synthesis, no full B4, no PHP switching lemma, no
   Frege/PHP, no NP/circuit, no P-vs-NP, and no Gate A work;
+- any broad consequence from the S2161 frontier-local tight-entry consumers:
+  `FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry`
+  only adds TIGHT-ENTRY variants of the S2155 supplied-width final-tree
+  consumers in which the coarse ambient obligation
+  `2*(64*S d)^rounds*(64*S d*S d) ≤ n` is replaced by the frontier-local
+  obligation `2*(64*frontierLayerGateCount F level)^rounds*
+  (64*frontierLayerGateCount F level*W level) ≤ n` and the `W level ≤ S d`
+  hypothesis is dropped (this is exactly the inequality the S2155 proof
+  consumes internally after `geometricEntryBound_of_class_envelopes`; a
+  sanity lemma and subsumption corollary re-derive the coarse route from the
+  tight one, and the coarse consumers plus the S2160 instances are untouched
+  and remain valid), disjoint-support wrappers under the class-derived width
+  schedule `max 1 (formulaRecurrenceWidth F)` taking the layer-local
+  obligation, and re-instantiations of the S2160
+  AND-of-two-variable-disjoint-ORs shape (`formulaSize = 7`, `depth = 2`,
+  `formulaRecurrenceWidth = 2`; exact frontier pins
+  `frontierLayerGateCount = 1, 2, 4` at levels 0, 1, 2 and
+  `recurrenceWidthSchedule ≡ 2`) at strictly smaller ambients with strictly
+  more rounds than S2160: level 0 at `2^20`/`rounds = 2` (local product
+  exactly `2^20`), level 0 at `2^26`/`rounds = 3` (exactly `2^26`), level 0
+  at `2^32`/`rounds = 4` (exactly `2^32`), and all levels at
+  `2^26`/`rounds = 2` (per-level products `2^20`, `2^23`, `2^26`), with
+  explicit pins that the coarse class-size-7 thresholds fail at every one of
+  these ambient/rounds pairs.
+  This is a tighter ENTRY CONDITION only — it removes the coarse
+  over-approximation `frontierLayerGateCount F level, W level → S(d)` in the
+  ambient obligation and changes no switching-lemma constants, no stage
+  budgets (per-stage budget 2), not the geometric star schedule, not the
+  tree budget `t(d,s)=S(d)*(s-1)`, and not the
+  `SuppliedWidthClassDepthFinalTreeAt` payload; restricted classes only; the
+  witnesses are single finite concrete instances, not an asymptotic family;
+  and shared-variable ANDs still require a supplied compatibility proof.  It
+  proves no arbitrary-class width synthesis, no threshold improvement of the
+  switching lemma itself, no full B4, no PHP switching lemma, no Frege/PHP,
+  no NP/circuit, no P-vs-NP, and no Gate A work;
 - unsupplied or automatically synthesized product hypotheses for the scheduled
   route: `FrozenProductSchedule` proves only that an explicit
   `FrozenProductHypothesis` over a supplied `B` and `t` yields `ValidFrom` and
