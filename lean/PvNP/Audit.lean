@@ -90,6 +90,7 @@ import PvNP.FormulaRecursiveSyntacticTerminalDepthTwoTightBudget
 import PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget
 import PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget
 import PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget
+import PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget
 import PvNP.FormulaRecursiveTerminalSchedule
 import PvNP.FormulaRecursiveNonempty
 import PvNP.FormulaRecursiveSizeBound
@@ -8367,3 +8368,191 @@ wrapper under supplied realized row-growth.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPFullMatchingStageRowObstruction.not_forall_two_le_codeStageRows_card_duplicateStageTvs_h1_t2
+
+/-!
+Pins for S2158 restricted nonempty OR/AND disjoint-support synthesis class
+under the S2157 embedding: a syntactic support function `formulaVars`,
+term-support inclusion lemmas for the syntactic DNF expansion, a
+compatibility-synthesis lemma (pairwise-disjoint child supports synthesize
+`syntacticAndListSimpleDNF` with no constructor-carried compatibility Prop),
+an inductive disjoint-support class over constants/literals closed under
+nonempty OR and AND lists (AND nodes carry pairwise support disjointness),
+an embedding into the S2157 recurrence-fanin class, inherited wrappers for
+syntactic simplicity / no empty fanins / syntactic-terminal class / syntactic
+DNF width ≤ recurrence width / top-child and recursive-frontier closure /
+selected GateSpec width ≤ `max 1 recurrenceWidth`, formula-level and
+packed-family final-tree routing reusing the S2155 supplied-width path under
+unchanged `formulaClassDepthTreeBudget` / `t(d,s)=S(d)*(s-1)` and the coarse
+ambient threshold, an S2156 OR-only embedding, and concrete witnesses (the
+S2157 two-literal AND and an AND-of-two-variable-disjoint-ORs with recurrence
+width 2 and `topChildCount = 2`) certified with no manual `CompatibleDNF`
+proof.  Disjoint-support AND synthesis only; shared-variable ANDs still
+require a supplied compatibility proof.  Not arbitrary-class width synthesis,
+not threshold improvement, not full B4, not PHP switching, Frege/PHP,
+NP/circuit, Gate A, or P-vs-NP.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.formulaVars' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.formulaVars
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.litVar_mem_formulaVars_of_mem_syntacticDNF' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.litVar_mem_formulaVars_of_mem_syntacticDNF
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.exists_child_var_of_mem_syntacticAndDNF' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.exists_child_var_of_mem_syntacticAndDNF
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.exists_child_var_of_mem_syntacticOrDNF' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.exists_child_var_of_mem_syntacticOrDNF
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.compatibleDNF_of_disjointSupport' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.compatibleDNF_of_disjointSupport
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.syntacticAndListSimpleDNF_of_disjointSupports' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.syntacticAndListSimpleDNF_of_disjointSupports
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.DisjointSupportFaninFormula' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.DisjointSupportFaninFormula
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.disjointSupportFanin_recurrenceFanin' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.disjointSupportFanin_recurrenceFanin
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.disjointSupportFanin_syntacticFormulaSimpleDNF' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.disjointSupportFanin_syntacticFormulaSimpleDNF
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.disjointSupportFanin_noEmptyFanins' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.disjointSupportFanin_noEmptyFanins
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.disjointSupportFanin_syntacticTerminalClass' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.disjointSupportFanin_syntacticTerminalClass
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.disjointSupportFanin_widthDNF_le_recurrenceWidth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.disjointSupportFanin_widthDNF_le_recurrenceWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.disjointSupportFanin_topChildren_closed' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.disjointSupportFanin_topChildren_closed
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.disjointSupportFanin_frontier_closed' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.disjointSupportFanin_frontier_closed
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.disjointSupportFanin_frontier_member_widthDNF_le_recurrenceWidth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.disjointSupportFanin_frontier_member_widthDNF_le_recurrenceWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.disjointSupportFanin_width_le_recurrenceWidthSchedule' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.disjointSupportFanin_width_le_recurrenceWidthSchedule
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.syntacticTerminalFrontierLayer_geometricCollapseWithSuppliedWidth_finalTree_of_disjointSupportFanin' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.syntacticTerminalFrontierLayer_geometricCollapseWithSuppliedWidth_finalTree_of_disjointSupportFanin
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.allSyntacticTerminalFrontierLayers_geometricCollapseWithSuppliedWidth_finalTree_of_disjointSupportFanin' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.allSyntacticTerminalFrontierLayers_geometricCollapseWithSuppliedWidth_finalTree_of_disjointSupportFanin
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.SyntacticTerminalPackedFamilyDisjointSupport' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.SyntacticTerminalPackedFamilyDisjointSupport
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.SyntacticTerminalPackedFamilyRecurrenceFanin.of_disjointSupport' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.SyntacticTerminalPackedFamilyRecurrenceFanin.of_disjointSupport
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.SyntacticTerminalPackedFamilyClass.of_disjointSupport' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.SyntacticTerminalPackedFamilyClass.of_disjointSupport
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.allSyntacticTerminalFrontierLayers_geometricCollapseWithSuppliedWidth_finalTree_of_disjointSupportPacked' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.allSyntacticTerminalFrontierLayers_geometricCollapseWithSuppliedWidth_finalTree_of_disjointSupportPacked
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.orOnlyFormula_disjointSupportFanin' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.orOnlyFormula_disjointSupportFanin
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.andTwoDistinctLits_disjointSupportFanin' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.andTwoDistinctLits_disjointSupportFanin
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.andOfTwoDisjointOrs' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.andOfTwoDisjointOrs
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.andOfTwoDisjointOrs_disjointSupportFanin' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.andOfTwoDisjointOrs_disjointSupportFanin
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.andOfTwoDisjointOrs_not_orOnly' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.andOfTwoDisjointOrs_not_orOnly
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.andOfTwoDisjointOrs_recurrenceWidth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.andOfTwoDisjointOrs_recurrenceWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.andOfTwoDisjointOrs_topChildCount' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.andOfTwoDisjointOrs_topChildCount
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.andOfTwoDisjointOrs_syntacticTerminalClass' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.andOfTwoDisjointOrs_syntacticTerminalClass
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.andOfTwoDisjointOrs_widthDNF_le_two' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.andOfTwoDisjointOrs_widthDNF_le_two
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.exists_disjointSupportFanin_class_andOrWitness_orOnlyEmbed_finalTreeRoute' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget.exists_disjointSupportFanin_class_andOrWitness_orOnlyEmbed_finalTreeRoute

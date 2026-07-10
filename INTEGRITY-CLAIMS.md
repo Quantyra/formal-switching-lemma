@@ -365,6 +365,26 @@ duplicate-stage code has only one recovered row, so the current all-
   no arbitrary-class width synthesis, no threshold improvement, no full B4, no
   PHP switching lemma, no Frege/PHP, no NP/circuit, no P-vs-NP, and no Gate A
   work;
+- any broad consequence from the S2158 restricted disjoint-support OR/AND class
+  under the S2157 embedding:
+  `FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget`
+  only adds a syntactic support function `formulaVars` with term-support
+  inclusion lemmas for the syntactic DNF expansion, a compatibility-synthesis
+  lemma (pairwise-disjoint child supports synthesize
+  `syntacticAndListSimpleDNF`), an inductive disjoint-support class over
+  constants/literals closed under nonempty OR and AND lists (AND nodes carry
+  pairwise support disjointness instead of a supplied compatibility Prop), an
+  embedding into the S2157 recurrence-fanin class, inherited wrappers for
+  syntactic simplicity / no empty fanins / syntactic DNF width ≤ recurrence
+  width / frontier closure and the formula-level plus packed-family final-tree
+  routes under unchanged `t(d,s)=S(d)*(s-1)` and the coarse ambient threshold,
+  an S2156 OR-only embedding, and concrete witnesses (the S2157 two-literal AND
+  and an AND-of-two-variable-disjoint-ORs of recurrence width 2) certified with
+  no manual `CompatibleDNF` proof.  This is disjoint-support AND synthesis
+  only; shared-variable ANDs still require a supplied compatibility proof.  It
+  proves no arbitrary-class width synthesis, no threshold improvement, no full
+  B4, no PHP switching lemma, no Frege/PHP, no NP/circuit, no P-vs-NP, and no
+  Gate A work;
 - unsupplied or automatically synthesized product hypotheses for the scheduled
   route: `FrozenProductSchedule` proves only that an explicit
   `FrozenProductHypothesis` over a supplied `B` and `t` yields `ValidFrom` and
