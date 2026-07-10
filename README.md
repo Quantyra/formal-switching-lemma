@@ -814,16 +814,21 @@ Version `v0.1.0` is archived on Zenodo:
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.1.0`
 
 Version `v0.6.0` publishes the post-`v0.5.0` Gate A and Gate B formal stack
-through S2156.  Gate A adds realized-code counting, row-variable uniqueness
+through S2157.  Gate A adds realized-code counting, row-variable uniqueness
 diagnostics, row-collision splits, parametric and rectangular obstructions, and
 the current SimpleDNF row-collision denominator-route no-go package
 (`PHPFullMatchingGateANoGoAfterS2139`).  Gate B adds terminal-aware and
 syntactic-terminal class envelopes, packed-family sources, ambient adequacy and
 small-arity obstruction packages, efficient and tight width budgets, recursive
-nested-OR families, and the restricted nonempty OR-only class
+nested-OR families, the restricted nonempty OR-only class
 (`FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget`) with
 width-one frontier closure and supplied-width final-tree routing under
-unchanged `t(d,s)=S(d)*(s-1)`.  The current audit surface has `1336`
+unchanged `t(d,s)=S(d)*(s-1)`, and the restricted nonempty OR/AND
+recurrence-width class
+(`FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget`)
+with max-OR/sum-AND recurrence width, frontier closure, and supplied-width
+final-tree routing at `W = max 1 (formulaRecurrenceWidth F)` under the same
+unchanged budget.  The current audit surface has `1354`
 `#guard_msgs`-pinned `#print axioms` profiles.  Boundary: finite named Gate A
 witnesses and restricted Gate B classes/families only; no PHP switching lemma,
 full B4, Frege/PHP, NP/circuit, arbitrary-class width synthesis, or P-vs-NP.
@@ -1207,7 +1212,7 @@ support-based code space and a single guaranteed free row — so it is not a
 geometric `(8w)^s`-style bound, not a per-stage information-recovery encoding
 argument, and not a PHP switching lemma.
 
-As of `v0.6.0`, the audit surface has `1336` `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
+As of `v0.6.0`, the audit surface has `1354` `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
 
 - DOI: `10.5281/zenodo.21184992`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`
