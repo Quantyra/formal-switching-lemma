@@ -1,4 +1,5 @@
 import PvNP.PHPFullMatchingPathCodeFiberBound
+import PvNP.SwitchingEncodeConstruct
 import Mathlib.Algebra.Order.BigOperators.Group.Finset
 
 /-!
@@ -10,8 +11,9 @@ space counting infrastructure only: they preserve per-stage recovered row
 information in the row-free fiber bound, and expose only a conditional
 coarsening by a separately supplied lower bound on the number of recovered rows.
 
-No distinct-row theorem is proved here, and no geometric-in-`t` consequence is
-claimed.
+No distinct-row theorem is proved here.  The final geometric counting form
+discharges only the pure row-free full-square geometric ratio; it remains
+conditional on separately supplied realized row-growth.
 
 INTEGRITY: no `sorry`, no `admit`, no new `axiom`, no `native_decide`.
 -/
@@ -35,6 +37,96 @@ open PHPFullMatchingCompressedBadPathCount
 open PHPFullMatchingPathCodeFiberBound
 open PHPFullMatchingProbability
 open SwitchingCardLemma
+open SwitchingEncodeConstruct
+
+/-! ## Pure row-free geometric arithmetic -/
+
+/-- One-step row-free binomial comparison.  If `n + 1 ≤ h`, then replacing a
+row-free universe of size `n + 1` by size `n` costs at most a factor
+`(h - s) / h` in cross-multiplied natural-number form. -/
+theorem choose_rowFree_one_step_le {h s n : Nat} (hn : n + 1 ≤ h) :
+    h * Nat.choose n s ≤ (h - s) * Nat.choose (n + 1) s := by
+  by_cases hs : s ≤ n
+  · have hs1 : s ≤ n + 1 := Nat.le_trans hs (Nat.le_succ n)
+    have hsh : s ≤ h := Nat.le_trans hs1 hn
+    have harith : h * (n + 1 - s) ≤ (h - s) * (n + 1) := by
+      have hadded : h * (n + 1 - s) + s * (n + 1) ≤
+          (h - s) * (n + 1) + s * (n + 1) := by
+        calc
+          h * (n + 1 - s) + s * (n + 1)
+              ≤ h * (n + 1 - s) + h * s := by
+                refine Nat.add_le_add_left ?_ _
+                rw [Nat.mul_comm h s]
+                exact Nat.mul_le_mul_left s hn
+          _ = h * (n + 1) := by
+                rw [← Nat.mul_add, Nat.sub_add_cancel hs1]
+          _ = (h - s) * (n + 1) + s * (n + 1) := by
+                rw [← Nat.add_mul, Nat.sub_add_cancel hsh]
+      exact Nat.add_le_add_iff_right.mp hadded
+    apply Nat.le_of_mul_le_mul_right (c := n + 1)
+    · calc
+        (h * Nat.choose n s) * (n + 1)
+            = h * (Nat.choose n s * (n + 1)) := by ac_rfl
+        _ = h * (Nat.choose (n + 1) s * (n + 1 - s)) := by
+              rw [Nat.choose_mul_succ_eq]
+        _ = Nat.choose (n + 1) s * (h * (n + 1 - s)) := by ac_rfl
+        _ ≤ Nat.choose (n + 1) s * ((h - s) * (n + 1)) := by
+              exact Nat.mul_le_mul_left _ harith
+        _ = ((h - s) * Nat.choose (n + 1) s) * (n + 1) := by ac_rfl
+    · exact Nat.succ_pos n
+  · have hlt : n < s := Nat.lt_of_not_ge hs
+    rw [Nat.choose_eq_zero_of_lt hlt]
+    exact Nat.zero_le _
+
+/-- Pure row-free geometric binomial comparison for the full square:
+`choose (h-q) s` is at most `choose h s` times `((h-s)/h)^q`, stated without
+division. -/
+theorem choose_rowFree_geometric_le (h s q : Nat) :
+    h ^ q * Nat.choose (h - q) s ≤ (h - s) ^ q * Nat.choose h s := by
+  induction q with
+  | zero => simp
+  | succ q ih =>
+      by_cases hq : q < h
+      · have hstep := choose_rowFree_one_step_le (h := h) (s := s)
+          (n := h - (q + 1)) (by omega)
+        have hsub : h - (q + 1) + 1 = h - q := by omega
+        rw [hsub] at hstep
+        calc
+          h ^ (q + 1) * Nat.choose (h - (q + 1)) s
+              = h ^ q * (h * Nat.choose (h - (q + 1)) s) := by
+                rw [Nat.pow_succ]
+                ac_rfl
+          _ ≤ h ^ q * ((h - s) * Nat.choose (h - q) s) := by
+                exact Nat.mul_le_mul_left _ hstep
+          _ = (h - s) * (h ^ q * Nat.choose (h - q) s) := by ac_rfl
+          _ ≤ (h - s) * ((h - s) ^ q * Nat.choose h s) := by
+                exact Nat.mul_le_mul_left _ ih
+          _ = (h - s) ^ (q + 1) * Nat.choose h s := by
+                rw [Nat.pow_succ]
+                ac_rfl
+      · by_cases hs0 : s = 0
+        · simp [hs0]
+        · have hspos : 0 < s := Nat.pos_of_ne_zero hs0
+          have hsubzero : h - (q + 1) = 0 := by omega
+          rw [hsubzero, Nat.choose_eq_zero_of_lt hspos]
+          exact Nat.zero_le _
+
+/-- Row-free geometric-ratio inequality over the full square matching space.
+This is pure finite arithmetic/counting: it uses only the cardinality formula for
+`fullMatchingSpace`, not any realized row-growth theorem. -/
+theorem rowFree_geometric_ratio_full (h s q : Nat) :
+    h ^ q * (Nat.choose (h - q) s * Fintype.card (Equiv.Perm (Fin h))) ≤
+      (h - s) ^ q * (fullMatchingSpace h s).card := by
+  rw [card_fullMatchingSpace]
+  calc
+    h ^ q * (Nat.choose (h - q) s * Fintype.card (Equiv.Perm (Fin h)))
+        = (h ^ q * Nat.choose (h - q) s) *
+            Fintype.card (Equiv.Perm (Fin h)) := by ac_rfl
+    _ ≤ ((h - s) ^ q * Nat.choose h s) *
+          Fintype.card (Equiv.Perm (Fin h)) := by
+          exact Nat.mul_le_mul_right _ (choose_rowFree_geometric_le h s q)
+    _ = (h - s) ^ q *
+          (Nat.choose h s * Fintype.card (Equiv.Perm (Fin h))) := by ac_rfl
 
 /-! ## Stage-indexed row accessors -/
 
@@ -147,6 +239,90 @@ def canonicalDepthBadCodeFiberNonempty {h s t : Nat}
     (tvs : List (List (Fin h × Fin h × Bool)))
     (c : BadPathCode h tvs t) : Prop :=
   (canonicalDepthBadCodeFiber (h := h) (s := s) (t := t) tvs c).Nonempty
+
+/-! ## Realized simple-DNF structural row growth -/
+
+/-- For a realized canonical bad-path code coming from a simple DNF, the recovered
+PHP variables are pairwise distinct.  This is only a structural statement about
+the term-canonical deepest path; it makes no lower-bound claim beyond the finite
+full-square PHP encoding surface. -/
+theorem codeStageVar_injective_of_realized_simple {h s t : Nat}
+    {tvs : List (List (Fin h × Fin h × Bool))}
+    (hsimple : SimpleDNF (phpDNFAsDNF h tvs))
+    (c : BadPathCode h tvs t)
+    (hreal : canonicalDepthBadCodeFiberNonempty (h := h) (s := s) (t := t) tvs c) :
+    Function.Injective (fun k : Fin t => ((c k).1 : Fin (Nat.succ (h * h)))) := by
+  classical
+  rcases hreal with ⟨P, hP⟩
+  rw [canonicalDepthBadCodeFiber, Finset.mem_filter] at hP
+  obtain ⟨_hspace, hbad, henc⟩ := hP
+  have hc : canonicalDepthBadCode tvs t P hbad = c := by
+    unfold canonicalDepthBadEncoding at henc
+    rw [dif_pos hbad] at henc
+    exact Option.some.inj henc
+  intro k l hkl
+  let T := canonicalRestrictedDNFTree h tvs P
+  have hlenk : k.1 < (deepestPath T).length := by
+    rw [deepestPath_length]
+    exact Nat.lt_of_lt_of_le k.2 hbad
+  have hlenl : l.1 < (deepestPath T).length := by
+    rw [deepestPath_length]
+    exact Nat.lt_of_lt_of_le l.2 hbad
+  have hnd : ((deepestPath T).map Prod.fst).Nodup := by
+    unfold T canonicalRestrictedDNFTree
+    exact deepestPath_var_nodup hsimple (fullRestrictionOf P)
+  have hget : ((deepestPath T).map Prod.fst).get ⟨k.1, by simpa using hlenk⟩ =
+      ((deepestPath T).map Prod.fst).get ⟨l.1, by simpa using hlenl⟩ := by
+    have hkl' :
+        ((canonicalDepthBadCode tvs t P hbad k).1 : Fin (Nat.succ (h * h))) =
+          ((canonicalDepthBadCode tvs t P hbad l).1 : Fin (Nat.succ (h * h))) := by
+      simpa [hc] using hkl
+    simpa [canonicalDepthBadCode, T, hlenk, hlenl] using hkl'
+  have hidx : (⟨k.1, by simpa using hlenk⟩ : Fin ((deepestPath T).map Prod.fst).length) =
+      ⟨l.1, by simpa using hlenl⟩ := hnd.get_inj_iff.mp hget
+  have hval :
+      (⟨k.1, by simpa using hlenk⟩ : Fin ((deepestPath T).map Prod.fst).length).val =
+        (⟨l.1, by simpa using hlenl⟩ : Fin ((deepestPath T).map Prod.fst).length).val :=
+    congrArg (fun x : Fin ((deepestPath T).map Prod.fst).length => x.val) hidx
+  exact Fin.ext hval
+
+/-- A realized simple-DNF code of length `t` uses at most `h` columns over each
+recovered row, so distinct recovered PHP variables force the structural bound
+`t ≤ h * |rows|`.  This is the safe replacement for the generally false
+unconditional `t ≤ |rows|` statement. -/
+theorem canonicalDepthBadCodeFiberNonempty.le_h_mul_codeStageRows_card_of_simple
+    {h s t : Nat}
+    {tvs : List (List (Fin h × Fin h × Bool))}
+    (hsimple : SimpleDNF (phpDNFAsDNF h tvs))
+    (c : BadPathCode h tvs t)
+    (hreal : canonicalDepthBadCodeFiberNonempty (h := h) (s := s) (t := t) tvs c) :
+    t <= h * (codeStageRows c).card := by
+  classical
+  let stagePair : Fin t -> Fin h × Fin h := fun k =>
+    (codeStageRow c k, (codeStageEntry c k).2.1)
+  have hinjPair : Function.Injective stagePair := by
+    intro k l hkl
+    have hvar : ((c k).1 : Fin (Nat.succ (h * h))) =
+        ((c l).1 : Fin (Nat.succ (h * h))) := by
+      have := congrArg (fun p : Fin h × Fin h => phpVar h h p.1 p.2) hkl
+      simpa [stagePair, codeStageEntry_var_eq c k, codeStageEntry_var_eq c l] using this
+    exact codeStageVar_injective_of_realized_simple (h := h) (s := s) (t := t)
+      hsimple c hreal hvar
+  have hsubset : (Finset.univ.image stagePair) ⊆
+      (codeStageRows c) ×ˢ (Finset.univ : Finset (Fin h)) := by
+    intro p hp
+    rw [Finset.mem_image] at hp
+    rcases hp with ⟨k, _hk, rfl⟩
+    exact Finset.mem_product.mpr
+      ⟨(mem_codeStageRows c (codeStageRow c k)).mpr ⟨k, rfl⟩, Finset.mem_univ _⟩
+  calc
+    t = (Finset.univ.image stagePair).card := by
+      rw [Finset.card_image_of_injective _ hinjPair, Finset.card_univ, Fintype.card_fin]
+    _ <= ((codeStageRows c) ×ˢ (Finset.univ : Finset (Fin h))).card :=
+      Finset.card_le_card hsubset
+    _ = (codeStageRows c).card * h := by
+      rw [Finset.card_product, Finset.card_univ, Fintype.card_fin]
+    _ = h * (codeStageRows c).card := by rw [Nat.mul_comm]
 
 /-- Fiber bound preserving all rows recovered by the stage-indexed code. -/
 theorem canonicalDepthBad_fiber_count_le_stageRows {h s t : Nat}
@@ -299,6 +475,125 @@ theorem canonicalDepthBad_count_le_pathCode_mul_rowFree_of_realized_codeStageRow
     _ = Fintype.card (BadPathCode h tvs t) *
           (Nat.choose (h - q) s * Fintype.card (Equiv.Perm (Fin h))) := by
           rw [Finset.sum_const, Finset.card_univ, Nat.nsmul_eq_mul]
+
+/-- S2124 specialization at `q = t`: if every realized bad-path code fiber
+recovers at least `t` distinct stage rows, then the canonical depth-bad count is
+bounded by the path-code count times the `t`-row-free full-square matching
+multiplicity.  This theorem only instantiates the supplied realized row-growth
+hypothesis; it does not prove that hypothesis. -/
+theorem canonicalDepthBad_count_le_pathCode_mul_rowFree_of_realized_codeStageRows_card_ge_t
+    {h s t : Nat}
+    (tvs : List (List (Fin h × Fin h × Bool)))
+    (hrows : ∀ c : BadPathCode h tvs t,
+      canonicalDepthBadCodeFiberNonempty (h := h) (s := s) (t := t) tvs c ->
+        t <= (codeStageRows c).card) :
+    eventCount (fullMatchingSpace h s) (canonicalDepthBad h tvs t) <=
+      Fintype.card (BadPathCode h tvs t) *
+        (Nat.choose (h - t) s * Fintype.card (Equiv.Perm (Fin h))) := by
+  exact canonicalDepthBad_count_le_pathCode_mul_rowFree_of_realized_codeStageRows_card_ge
+    (h := h) (s := s) (t := t) (q := t) tvs hrows
+
+/-- Simple-DNF structural instantiation of the realized-row consumer at
+`q = t / h`.  The only row-growth input is the proved finite structural bound
+`t ≤ h * |codeStageRows c|`; no stronger distinct-row claim is asserted. -/
+theorem canonicalDepthBad_count_le_pathCode_mul_rowFree_of_simple_realized_div_h
+    {h s t : Nat}
+    (tvs : List (List (Fin h × Fin h × Bool)))
+    (hsimple : SimpleDNF (phpDNFAsDNF h tvs)) :
+    eventCount (fullMatchingSpace h s) (canonicalDepthBad h tvs t) <=
+      Fintype.card (BadPathCode h tvs t) *
+        (Nat.choose (h - t / h) s * Fintype.card (Equiv.Perm (Fin h))) := by
+  refine canonicalDepthBad_count_le_pathCode_mul_rowFree_of_realized_codeStageRows_card_ge
+    (h := h) (s := s) (t := t) (q := t / h) tvs ?_
+  intro c hreal
+  exact Nat.div_le_of_le_mul
+    (canonicalDepthBadCodeFiberNonempty.le_h_mul_codeStageRows_card_of_simple
+      (h := h) (s := s) (t := t) hsimple c hreal)
+
+/-- Geometric full-square counting form.  The row-growth hypothesis is the S2124
+`q = t` realized-fiber assumption; the pure row-free geometric-ratio inequality
+for the full square matching space is discharged by
+`rowFree_geometric_ratio_full`.  This theorem does not prove realized row growth
+and does not extend the model to rectangular `p > h` injection spaces. -/
+theorem canonicalDepthBad_probability_geometric_le_of_realized_codeStageRows_card_ge_t
+    {h s t : Nat}
+    (tvs : List (List (Fin h × Fin h × Bool)))
+    (hrows : ∀ c : BadPathCode h tvs t,
+      canonicalDepthBadCodeFiberNonempty (h := h) (s := s) (t := t) tvs c ->
+        t <= (codeStageRows c).card) :
+    h ^ t * eventCount (fullMatchingSpace h s) (canonicalDepthBad h tvs t) <=
+      Fintype.card (BadPathCode h tvs t) *
+        ((h - s) ^ t * (fullMatchingSpace h s).card) := by
+  have hcount :=
+    canonicalDepthBad_count_le_pathCode_mul_rowFree_of_realized_codeStageRows_card_ge_t
+      (h := h) (s := s) (t := t) tvs hrows
+  calc
+    h ^ t * eventCount (fullMatchingSpace h s) (canonicalDepthBad h tvs t)
+        <= h ^ t * (Fintype.card (BadPathCode h tvs t) *
+          (Nat.choose (h - t) s * Fintype.card (Equiv.Perm (Fin h)))) := by
+          exact Nat.mul_le_mul_left _ hcount
+    _ = Fintype.card (BadPathCode h tvs t) *
+          (h ^ t * (Nat.choose (h - t) s * Fintype.card (Equiv.Perm (Fin h)))) := by
+          ac_rfl
+    _ <= Fintype.card (BadPathCode h tvs t) *
+           ((h - s) ^ t * (fullMatchingSpace h s).card) := by
+            exact Nat.mul_le_mul_left _ (rowFree_geometric_ratio_full h s t)
+
+/-- Geometric full-square counting corollary from the simple-DNF structural
+realized-fiber replacement, with the Lean-friendly row parameter `q = t / h`. -/
+theorem canonicalDepthBad_probability_geometric_le_of_simple_realized_div_h
+    {h s t : Nat}
+    (tvs : List (List (Fin h × Fin h × Bool)))
+    (hsimple : SimpleDNF (phpDNFAsDNF h tvs)) :
+    h ^ (t / h) * eventCount (fullMatchingSpace h s) (canonicalDepthBad h tvs t) <=
+      Fintype.card (BadPathCode h tvs t) *
+        ((h - s) ^ (t / h) * (fullMatchingSpace h s).card) := by
+  have hcount :=
+    canonicalDepthBad_count_le_pathCode_mul_rowFree_of_simple_realized_div_h
+      (h := h) (s := s) (t := t) tvs hsimple
+  calc
+    h ^ (t / h) * eventCount (fullMatchingSpace h s) (canonicalDepthBad h tvs t)
+        <= h ^ (t / h) * (Fintype.card (BadPathCode h tvs t) *
+          (Nat.choose (h - t / h) s * Fintype.card (Equiv.Perm (Fin h)))) := by
+          exact Nat.mul_le_mul_left _ hcount
+    _ = Fintype.card (BadPathCode h tvs t) *
+          (h ^ (t / h) *
+            (Nat.choose (h - t / h) s * Fintype.card (Equiv.Perm (Fin h)))) := by
+          ac_rfl
+    _ <= Fintype.card (BadPathCode h tvs t) *
+           ((h - s) ^ (t / h) * (fullMatchingSpace h s).card) := by
+           exact Nat.mul_le_mul_left _ (rowFree_geometric_ratio_full h s (t / h))
+
+/-- Thin finite-probability interface for the geometric full-square bound.  This
+is just the `EventProbLe` wrapper around
+`canonicalDepthBad_probability_geometric_le_of_realized_codeStageRows_card_ge_t`;
+it inherits the same supplied realized row-growth hypothesis and proves no such
+growth theorem, rectangular injection result, or PHP switching lemma. -/
+theorem canonicalDepthBad_eventProbLe_geometric_of_realized_codeStageRows_card_ge_t
+    {h s t : Nat}
+    (tvs : List (List (Fin h × Fin h × Bool)))
+    (hrows : ∀ c : BadPathCode h tvs t,
+      canonicalDepthBadCodeFiberNonempty (h := h) (s := s) (t := t) tvs c ->
+        t <= (codeStageRows c).card) :
+    EventProbLe (fullMatchingSpace h s) (canonicalDepthBad h tvs t)
+      (Fintype.card (BadPathCode h tvs t) * (h - s) ^ t) (h ^ t) := by
+  unfold EventProbLe
+  simpa [Nat.mul_assoc, Nat.mul_comm, Nat.mul_left_comm] using
+    canonicalDepthBad_probability_geometric_le_of_realized_codeStageRows_card_ge_t
+      (h := h) (s := s) (t := t) tvs hrows
+
+/-- `EventProbLe` wrapper for the simple-DNF structural replacement at
+`q = t / h`. -/
+theorem canonicalDepthBad_eventProbLe_geometric_of_simple_realized_div_h
+    {h s t : Nat}
+    (tvs : List (List (Fin h × Fin h × Bool)))
+    (hsimple : SimpleDNF (phpDNFAsDNF h tvs)) :
+    EventProbLe (fullMatchingSpace h s) (canonicalDepthBad h tvs t)
+      (Fintype.card (BadPathCode h tvs t) * (h - s) ^ (t / h)) (h ^ (t / h)) := by
+  unfold EventProbLe
+  simpa [Nat.mul_assoc, Nat.mul_comm, Nat.mul_left_comm] using
+    canonicalDepthBad_probability_geometric_le_of_simple_realized_div_h
+      (h := h) (s := s) (t := t) tvs hsimple
 
 end PHPFullMatchingStageRows
 end PvNP
