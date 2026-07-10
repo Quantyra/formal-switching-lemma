@@ -349,6 +349,22 @@ duplicate-stage code has only one recovered row, so the current all-
   branching witness.  It proves no arbitrary-class width synthesis, no threshold
   improvement, no full B4, no PHP switching lemma, no Frege/PHP, no NP/circuit,
   no P-vs-NP, and no Gate A work;
+- any broad consequence from the S2157 restricted nonempty OR/AND recurrence-width
+  class under the S2155 supplied-width consumers:
+  `FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget` only
+  adds an inductive recurrence-fanin class over constants/literals closed under
+  nonempty OR and AND lists (AND nodes carry `syntacticAndListSimpleDNF`), a
+  recurrence-width measure (max under OR, sum under AND), proves syntactic
+  simplicity / no empty fanins / syntactic DNF width ≤ recurrence width with
+  top-child and recursive-frontier closure (frontier recurrence width ≤ root),
+  lifts selected GateSpec widths against `W ≡ max 1 (formulaRecurrenceWidth F)`,
+  and routes formula-level plus packed-family final-tree consumers by reusing the
+  S2155 supplied-width path under unchanged `t(d,s)=S(d)*(s-1)` and the coarse
+  ambient threshold, with S2156 OR-only formulas embedding at recurrence width
+  ≤ 1 and a concrete two-literal AND witness of recurrence width 2.  It proves
+  no arbitrary-class width synthesis, no threshold improvement, no full B4, no
+  PHP switching lemma, no Frege/PHP, no NP/circuit, no P-vs-NP, and no Gate A
+  work;
 - unsupplied or automatically synthesized product hypotheses for the scheduled
   route: `FrozenProductSchedule` proves only that an explicit
   `FrozenProductHypothesis` over a supplied `B` and `t` yields `ValidFrom` and

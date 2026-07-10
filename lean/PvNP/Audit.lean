@@ -89,6 +89,7 @@ import PvNP.FormulaRecursiveSyntacticTerminalTightBudget
 import PvNP.FormulaRecursiveSyntacticTerminalDepthTwoTightBudget
 import PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget
 import PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget
+import PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget
 import PvNP.FormulaRecursiveTerminalSchedule
 import PvNP.FormulaRecursiveNonempty
 import PvNP.FormulaRecursiveSizeBound
@@ -6601,6 +6602,108 @@ full B4, not PHP switching, Frege/PHP, NP/circuit, Gate A, or P-vs-NP.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowOrOnlyTightBudget.exists_orOnlyBoundedShallow_class_dischargesEnvelope_finalTreeRoute
+
+/-!
+Pins for S2157 restricted nonempty OR/AND recurrence-width class under the
+S2155 supplied-width consumers: inductive recurrence-fanin trees over
+constants/literals closed under nonempty OR and AND lists (AND nodes carry
+`syntacticAndListSimpleDNF`), recurrence-width measure (max-OR / sum-AND),
+syntactic simplicity / no empty fanins / syntactic DNF width ≤ recurrence
+width, top-child and recursive-frontier closure with frontier recurrence
+width ≤ root, selected GateSpec width ≤ `max 1 recurrenceWidth`, formula-level
+and packed-family final-tree routing reusing the S2155 supplied-width path
+under unchanged `formulaClassDepthTreeBudget` / `t(d,s)=S(d)*(s-1)` and the
+coarse ambient threshold, S2156 OR-only embedding with recurrence width ≤ 1,
+and a concrete two-literal AND witness with recurrence width 2 and
+`topChildCount = 2`.  Not arbitrary-class width synthesis, not threshold
+improvement, not full B4, not PHP switching, Frege/PHP, NP/circuit, Gate A,
+or P-vs-NP.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.RecurrenceFaninFormula' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.RecurrenceFaninFormula
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.formulaRecurrenceWidth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.formulaRecurrenceWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.recurrenceFanin_syntacticFormulaSimpleDNF' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.recurrenceFanin_syntacticFormulaSimpleDNF
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.recurrenceFanin_noEmptyFanins' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.recurrenceFanin_noEmptyFanins
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.recurrenceFanin_widthDNF_le_recurrenceWidth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.recurrenceFanin_widthDNF_le_recurrenceWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.recurrenceFanin_topChildren_closed' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.recurrenceFanin_topChildren_closed
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.recurrenceFanin_frontier_closed' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.recurrenceFanin_frontier_closed
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.recurrenceFanin_frontier_member_recurrenceWidth_le' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.recurrenceFanin_frontier_member_recurrenceWidth_le
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.recurrenceFanin_width_le_recurrenceWidthSchedule' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.recurrenceFanin_width_le_recurrenceWidthSchedule
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.allSyntacticTerminalFrontierLayers_geometricCollapseWithSuppliedWidth_finalTree_of_recurrenceFanin' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.allSyntacticTerminalFrontierLayers_geometricCollapseWithSuppliedWidth_finalTree_of_recurrenceFanin
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.SyntacticTerminalPackedFamilyRecurrenceFanin' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.SyntacticTerminalPackedFamilyRecurrenceFanin
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.allSyntacticTerminalFrontierLayers_geometricCollapseWithSuppliedWidth_finalTree_of_recurrenceFaninPacked' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.allSyntacticTerminalFrontierLayers_geometricCollapseWithSuppliedWidth_finalTree_of_recurrenceFaninPacked
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.orOnlyFormula_recurrenceFanin' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.orOnlyFormula_recurrenceFanin
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.orOnlyFormula_recurrenceWidth_le_one' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.orOnlyFormula_recurrenceWidth_le_one
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.andTwoDistinctLits_recurrenceFanin' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.andTwoDistinctLits_recurrenceFanin
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.andTwoDistinctLits_recurrenceWidth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.andTwoDistinctLits_recurrenceWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.andTwoDistinctLits_topChildCount' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.andTwoDistinctLits_topChildCount
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.exists_recurrenceFanin_class_andWitness_orOnlyEmbed_finalTreeRoute' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.exists_recurrenceFanin_class_andWitness_orOnlyEmbed_finalTreeRoute
 
 /-!
 Pins for `PvNP.FormulaRecursiveTerminalSchedule`: the terminal-aware layer
