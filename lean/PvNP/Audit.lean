@@ -9321,6 +9321,18 @@ S2163. Normalized-view route parity only. Budgets `t(d,s)=S(d)*(s-1)`, per-stage
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_recurrenceWidthSchedule
 
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_entryProduct_level0_eq' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_entryProduct_level0_eq
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_entryProduct_level1_eq' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_entryProduct_level1_eq
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_entryProduct_level2_eq' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_entryProduct_level2_eq
+
 /-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_finalTree_allLevels_rounds2' depends on axioms: [propext,
  Classical.choice,
  Quot.sound] -/

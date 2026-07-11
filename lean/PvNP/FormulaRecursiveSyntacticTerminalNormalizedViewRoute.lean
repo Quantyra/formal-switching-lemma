@@ -584,6 +584,21 @@ theorem sharedWitness26_recurrenceWidthSchedule (level : Nat) :
     recurrenceWidthSchedule sharedWitness26 level = 2 := by
   simp [recurrenceWidthSchedule, sharedWitness26_recurrenceWidth]
 
+/-- Exact level-0 entry product at `rounds = 2`, count 1, width 2:
+`2*(64*1)^2*(64*1*2) = 1048576 = 2^20`. -/
+theorem sharedWitness26_entryProduct_level0_eq :
+    2 * (64 * 1) ^ 2 * (64 * 1 * 2) = 1048576 := by decide
+
+/-- Exact level-1 entry product at `rounds = 2`, count 2, width 2:
+`2*(64*2)^2*(64*2*2) = 8388608 = 2^23`. -/
+theorem sharedWitness26_entryProduct_level1_eq :
+    2 * (64 * 2) ^ 2 * (64 * 2 * 2) = 8388608 := by decide
+
+/-- Exact level-2 entry product at `rounds = 2`, count 4, width 2:
+`2*(64*4)^2*(64*4*2) = 67108864 = 2^26`. -/
+theorem sharedWitness26_entryProduct_level2_eq :
+    2 * (64 * 4) ^ 2 * (64 * 4 * 2) = 67108864 := by decide
+
 /-- Zero-hypothesis all-level normalized-view instance at ambient `2^26`,
 `rounds = 2`, and parent kind `and`. -/
 theorem sharedWitness26_finalTree_allLevels_rounds2 :
