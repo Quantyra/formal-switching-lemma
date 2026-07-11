@@ -65,6 +65,8 @@ import PvNP.FormulaRecursiveTerminalSchedule
 import PvNP.FormulaRecursiveNonempty
 import PvNP.FormulaRecursiveSizeBound
 import PvNP.FormulaSyntacticDNF
+import PvNP.FormulaSyntacticDNFNormalization
+import PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute
 import PvNP.FormulaSyntacticSimpleBridge
 import PvNP.FormulaVarWidthSchedule
 import PvNP.MixedFormulaFamilyCollapse

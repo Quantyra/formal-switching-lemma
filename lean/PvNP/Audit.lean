@@ -97,6 +97,8 @@ import PvNP.FormulaRecursiveTerminalSchedule
 import PvNP.FormulaRecursiveNonempty
 import PvNP.FormulaRecursiveSizeBound
 import PvNP.FormulaSyntacticDNF
+import PvNP.FormulaSyntacticDNFNormalization
+import PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute
 import PvNP.FormulaSyntacticSimpleBridge
 import PvNP.FormulaVarWidthSchedule
 import PvNP.MixedFormulaFamilyCollapse
@@ -8959,3 +8961,298 @@ switching, not Frege/PHP, not NP/circuit, not Gate A, not P-vs-NP.
 /-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness_ambient_domination' does not depend on any axioms -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightEntry.tightWitness_ambient_domination
+
+/-!
+Pins for S2162 DNF normalization synthesis (normalized-view route):
+`FormulaSyntacticDNFNormalization` adds term/DNF normalization
+(duplicate-literal dedup `dedupTerm`, contradictory-term detection
+`termContradictoryB`, and the map-then-filter pass `normalizeDNF`) with
+pointwise semantic preservation (`dnfEval_normalizeDNF`), UNCONDITIONAL
+simplicity (`simpleDNF_normalizeDNF`, no hypotheses on `D`), width
+non-increase (`widthDNF_normalizeDNF_le`), and the resulting
+hypothesis-free bottom-layer view `normalizedDNFView` for EVERY raw
+formula.  `FormulaRecursiveSyntacticTerminalNormalizedViewRoute` routes the
+supplied-width and tight-entry final-tree consumers through that view for
+the `NonemptyFaninFormula` class (constants, literals, and nonempty OR/AND
+trees — no simplicity Prop, no disjoint-support condition), with the
+simplicity-free recurrence-width bound
+(`nonemptyFanin_widthDNF_syntactic_le_recurrenceWidth`), forgetful
+embeddings from the S2157 `RecurrenceFaninFormula` and S2158
+`DisjointSupportFaninFormula` classes, the shared-variable witness
+`(x₀ ∨ x₁) ∧ (x₀ ∨ x₂)` with the impossibility
+`¬ syntacticFormulaSimpleDNF` pinned for BOTH the ambient-3 witness and
+the ambient-`2^20` instance formula (their raw expansions contain the
+repeated-variable term `[x₀, x₀]`, excluding them from the entire
+S2142–S2161 syntactic-terminal simplicity pipeline, not merely from the
+prior classes), and the zero-hypothesis ambient-`2^20` tight-entry
+instance (level-0 frontier count 1, width schedule 2, rounds 2, entry
+product exactly `2^20`, matching the S2161 numbers).  Boundary:
+normalization BOOKKEEPING and a normalized-view route for the stated
+restricted class only; no minimality or canonicity claim for the
+normalized DNF; budgets (per-stage budget 2, tree budget
+`t(d,s)=S(d)*(s-1)`), the geometric star schedule, and the certificate
+payload shape are unchanged; the width schedule remains the recurrence
+width (sum under AND); the ambient-`2^20` witness instance is a single
+finite concrete instance, not an asymptotic family.  Not
+arbitrary-class width synthesis,
+not a threshold improvement of the switching lemma itself, not full B4,
+not PHP switching, not Frege/PHP, not NP/circuit, not Gate A, not
+P-vs-NP.
+-/
+
+/-- info: 'PvNP.FormulaSyntacticDNFNormalization.dedupTerm' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticDNFNormalization.dedupTerm
+
+/-- info: 'PvNP.FormulaSyntacticDNFNormalization.termContradictoryB' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticDNFNormalization.termContradictoryB
+
+/-- info: 'PvNP.FormulaSyntacticDNFNormalization.normalizeDNF' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticDNFNormalization.normalizeDNF
+
+/-- info: 'PvNP.FormulaSyntacticDNFNormalization.termContradictoryB_eq_true_iff' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticDNFNormalization.termContradictoryB_eq_true_iff
+
+/-- info: 'PvNP.FormulaSyntacticDNFNormalization.mem_normalizeDNF' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticDNFNormalization.mem_normalizeDNF
+
+/-- info: 'PvNP.FormulaSyntacticDNFNormalization.nodup_dedupTerm' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticDNFNormalization.nodup_dedupTerm
+
+/-- info: 'PvNP.FormulaSyntacticDNFNormalization.termEval_dedupTerm' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticDNFNormalization.termEval_dedupTerm
+
+/-- info: 'PvNP.FormulaSyntacticDNFNormalization.termEval_eq_false_of_contradictory' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticDNFNormalization.termEval_eq_false_of_contradictory
+
+/-- info: 'PvNP.FormulaSyntacticDNFNormalization.dnfEval_normalizeDNF' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticDNFNormalization.dnfEval_normalizeDNF
+
+/-- info: 'PvNP.FormulaSyntacticDNFNormalization.simpleTerm_of_nodup_not_contradictory' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticDNFNormalization.simpleTerm_of_nodup_not_contradictory
+
+/-- info: 'PvNP.FormulaSyntacticDNFNormalization.simpleDNF_normalizeDNF' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticDNFNormalization.simpleDNF_normalizeDNF
+
+/-- info: 'PvNP.FormulaSyntacticDNFNormalization.termWidth_dedupTerm_le' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticDNFNormalization.termWidth_dedupTerm_le
+
+/-- info: 'PvNP.FormulaSyntacticDNFNormalization.widthDNF_normalizeDNF_le' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticDNFNormalization.widthDNF_normalizeDNF_le
+
+/-- info: 'PvNP.FormulaSyntacticDNFNormalization.normalizedDNFView' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticDNFNormalization.normalizedDNFView
+
+/-- info: 'PvNP.FormulaSyntacticDNFNormalization.normalizedDNFView_D' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticDNFNormalization.normalizedDNFView_D
+
+/-- info: 'PvNP.FormulaSyntacticDNFNormalization.widthDNF_normalizedDNFView_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaSyntacticDNFNormalization.widthDNF_normalizedDNFView_le
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.NonemptyFaninFormula' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.NonemptyFaninFormula
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nonemptyFanin_noEmptyFanins' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nonemptyFanin_noEmptyFanins
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.recurrenceFanin_nonemptyFanin' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.recurrenceFanin_nonemptyFanin
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.disjointSupportFanin_nonemptyFanin' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.disjointSupportFanin_nonemptyFanin
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nonemptyFanin_topChildren_closed' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nonemptyFanin_topChildren_closed
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nonemptyFanin_frontier_closed' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nonemptyFanin_frontier_closed
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nonemptyFanin_widthDNF_syntactic_le_recurrenceWidth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nonemptyFanin_widthDNF_syntactic_le_recurrenceWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nonemptyFanin_widthDNF_normalized_le_recurrenceWidth' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nonemptyFanin_widthDNF_normalized_le_recurrenceWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.frontier_member_recurrenceWidth_le' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.frontier_member_recurrenceWidth_le
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nonemptyFanin_frontier_normalizedWidth_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nonemptyFanin_frontier_normalizedWidth_le
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFormulaGate' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFormulaGate
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFormulaGate_formula' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFormulaGate_formula
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontierGateList' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontierGateList
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontierMinimalLayer' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontierMinimalLayer
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontierMinimalLayer_originalFormula' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontierMinimalLayer_originalFormula
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontierMinimalLayer_gateCount' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontierMinimalLayer_gateCount
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontierMinimalLayer_width_le_schedule' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontierMinimalLayer_width_le_schedule
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.NormalizedViewClassDepthFinalTreeAt' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.NormalizedViewClassDepthFinalTreeAt
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontier_geometricCollapseWithSuppliedWidth_finalTree_tightEntry' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontier_geometricCollapseWithSuppliedWidth_finalTree_tightEntry
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontier_geometricCollapseWithSuppliedWidth_finalTree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontier_geometricCollapseWithSuppliedWidth_finalTree
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontier_geometricCollapse_finalTree_tightEntry' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontier_geometricCollapse_finalTree_tightEntry
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.andOfTwoSharedOrs' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.andOfTwoSharedOrs
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.andOfTwoSharedOrs_nonemptyFanin' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.andOfTwoSharedOrs_nonemptyFanin
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.andOfTwoSharedOrs_not_syntacticFormulaSimpleDNF' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.andOfTwoSharedOrs_not_syntacticFormulaSimpleDNF
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.andOfTwoSharedOrs_recurrenceWidth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.andOfTwoSharedOrs_recurrenceWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.andOfTwoSharedOrs_normalizedWidth_le_two' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.andOfTwoSharedOrs_normalizedWidth_le_two
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness20' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness20
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness20_nonemptyFanin' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness20_nonemptyFanin
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness20_not_syntacticFormulaSimpleDNF' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness20_not_syntacticFormulaSimpleDNF
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness20_formulaSize' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness20_formulaSize
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness20_depth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness20_depth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness20_recurrenceWidth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness20_recurrenceWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness20_frontierGateCount_zero' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness20_frontierGateCount_zero
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness20_widthSchedule_zero' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness20_widthSchedule_zero
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness20_entryProduct_eq' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness20_entryProduct_eq
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness20_tightEntry' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness20_tightEntry
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness20_finalTree_level0' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness20_finalTree_level0

@@ -445,6 +445,24 @@ duplicate-stage code has only one recovered row, so the current all-
   proves no arbitrary-class width synthesis, no threshold improvement of the
   switching lemma itself, no full B4, no PHP switching lemma, no Frege/PHP,
   no NP/circuit, no P-vs-NP, and no Gate A work;
+- any broad consequence from the normalized-view recurrence route:
+  `FormulaSyntacticDNFNormalization` adds only normalization BOOKKEEPING
+  (duplicate-literal dedup and contradictory-term deletion, with pointwise
+  semantic preservation, unconditional simplicity, and non-increasing width),
+  with no minimality or canonicity claim for the normalized DNF, and
+  `FormulaRecursiveSyntacticTerminalNormalizedViewRoute` removes only the
+  syntactic-simplicity premise of the restricted recurrence-width route by
+  routing through the normalized view.  It covers nonempty-fanin OR/AND trees
+  (including the shared-variable witness `(x0 OR x1) AND (x0 OR x2)`, whose
+  exclusion from the prior S2142-S2161 syntactic-terminal simplicity pipeline
+  is pinned at both the ambient-3 witness and the ambient-2^20 instance
+  formula) with recurrence width summed under AND, while preserving the
+  existing per-stage budget `2`, geometric schedule, tight-entry inequality,
+  and `t(d,s)=S(d)*(s-1)` payload; the ambient-2^20 tight-entry instance is a
+  single finite concrete instance, not an asymptotic family.  It proves no
+  arbitrary-class width synthesis beyond the stated class, no threshold
+  improvement, no arbitrary AC0 collapse, no full B4, no PHP or Frege lower
+  bound, no NP/circuit lower bound, no Gate A result, and no P-vs-NP claim;
 - unsupplied or automatically synthesized product hypotheses for the scheduled
   route: `FrozenProductSchedule` proves only that an explicit
   `FrozenProductHypothesis` over a supplied `B` and `t` yields `ValidFrom` and
