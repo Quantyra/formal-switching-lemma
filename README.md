@@ -813,6 +813,43 @@ Version `v0.1.0` is archived on Zenodo:
 - DOI: `10.5281/zenodo.20757628`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.1.0`
 
+Version `v0.7.0` publishes the post-`v0.6.0` Gate B increments S2158-S2161.
+S2158 adds the disjoint-support AND-compatibility synthesis class
+(`FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget`):
+pairwise-disjoint child variable supports plus child simplicity provably
+synthesize `syntacticAndListSimpleDNF`, so AND nodes carry only a purely
+syntactic disjointness condition instead of a constructor-carried
+compatibility Prop, with an embedding into the S2157 recurrence-width class
+and inherited supplied-width final-tree routing.  S2160 adds the first
+numerically-discharged unconditional final-tree instances
+(`...DisjointSupportUnconditionalInstance`): the coarse ambient threshold is
+discharged by `decide` on `Nat` literals at fixed ambients `2^22`
+(`rounds = 1`) and `2^31` (`rounds = 2`) for an AND-bearing
+recurrence-width-2 witness, yielding `SuppliedWidthClassDepthFinalTreeAt`
+payloads with zero open side conditions (the S2155/S2156 nested-OR packed
+families already gave zero-hypothesis instances via threshold-defined
+ambient arity; the numeric discharge at independently chosen ambients and
+the recurrence-width route are the new content).  S2161 adds frontier-local
+tight-entry consumers (`...DisjointSupportTightEntry`): the ambient
+obligation becomes the layer-local
+`2*(64*count)^rounds*(64*count*W) <= n` instead of the coarse
+`S(d)`-inflated threshold, with subsumption lemmas re-deriving the coarse
+route, and zero-hypothesis instances at `2^20` (`rounds = 2`), `2^26`
+(`rounds = 3`, plus all levels at `rounds = 2`), and `2^32` (`rounds = 4`),
+each strictly dominating an S2160 instance; coarse-entry-failure pins
+document that the class-size-7 coarse threshold fails at every instantiated
+pair.  The audit surface has `1452` `#guard_msgs`-pinned `#print axioms`
+profiles.  Boundary: restricted classes and single finite concrete
+instances only; a tighter entry condition, not a change to switching-lemma
+constants, budgets, schedules, or payloads; shared-variable ANDs still
+require a supplied compatibility proof; no PHP switching lemma, full B4,
+Frege/PHP, NP/circuit, arbitrary-class width synthesis, Gate A revival, or
+P-vs-NP.
+
+- Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.7.0`
+- Zenodo version DOI: pending GitHub/Zenodo archive after tag publication
+  (concept DOI remains `10.5281/zenodo.20757627`)
+
 Version `v0.6.0` publishes the post-`v0.5.0` Gate A and Gate B formal stack
 through S2157.  Gate A adds realized-code counting, row-variable uniqueness
 diagnostics, row-collision splits, parametric and rectangular obstructions, and
@@ -1212,7 +1249,7 @@ support-based code space and a single guaranteed free row — so it is not a
 geometric `(8w)^s`-style bound, not a per-stage information-recovery encoding
 argument, and not a PHP switching lemma.
 
-As of `v0.6.0`, the audit surface has `1354` `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
+As of `v0.7.0`, the audit surface has `1452` `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
 
 - DOI: `10.5281/zenodo.21184992`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`
