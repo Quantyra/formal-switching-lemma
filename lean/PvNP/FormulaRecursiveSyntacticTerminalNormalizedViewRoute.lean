@@ -98,29 +98,34 @@ theorem nonemptyFanin_frontier_closed {n : Nat} {F : BDFormula n}
 /-- Syntactic expansion width obeys the recurrence without any simplicity
 assumption. -/
 theorem nonemptyFanin_widthDNF_syntactic_le_recurrenceWidth {n : Nat}
-    {F : BDFormula n} (h : NonemptyFaninFormula F) :
-    widthDNF (syntacticDNF F) ≤ formulaRecurrenceWidth F := by
-  induction h with
-  | tru => simp [syntacticDNF, FormulaSyntacticDNF.trueDNF, widthDNF,
-      termWidth, formulaRecurrenceWidth]
-  | fls => simp [syntacticDNF, FormulaSyntacticDNF.falseDNF, widthDNF,
-      formulaRecurrenceWidth]
-  | lit l => simp [syntacticDNF, FormulaSyntacticDNF.literalDNF, widthDNF,
-      termWidth, formulaRecurrenceWidth]
-  | or _ _ ih =>
-      change widthDNF (syntacticOrDNF _) ≤ _
-      simpa [formulaRecurrenceWidth_or] using
-        widthDNF_syntacticOrDNF_le_foldr_max _ ih
-  | and _ _ ih =>
-      change widthDNF (syntacticAndDNF _) ≤ _
-      simpa [formulaRecurrenceWidth_and] using
-        widthDNF_syntacticAndDNF_le_foldr_add _ ih
+    {F : BDFormula n} (_h : NonemptyFaninFormula F) :
+    widthDNF (syntacticDNF F) ≤ formulaRecurrenceWidth F :=
+  widthDNF_syntacticDNF_le_recurrenceWidth F
 
-theorem nonemptyFanin_widthDNF_normalized_le_recurrenceWidth {n : Nat}
-    {F : BDFormula n} (h : NonemptyFaninFormula F) :
+/-- Every normalized DNF view has width at most the formula recurrence width. -/
+theorem widthDNF_normalizedDNFView_le_recurrenceWidth {n : Nat}
+    (F : BDFormula n) :
     widthDNF (normalizedDNFView F).D ≤ formulaRecurrenceWidth F :=
   Nat.le_trans (widthDNF_normalizedDNFView_le F)
-    (nonemptyFanin_widthDNF_syntactic_le_recurrenceWidth h)
+    (widthDNF_syntacticDNF_le_recurrenceWidth F)
+
+theorem nonemptyFanin_widthDNF_normalized_le_recurrenceWidth {n : Nat}
+    {F : BDFormula n} (_h : NonemptyFaninFormula F) :
+    widthDNF (normalizedDNFView F).D ≤ formulaRecurrenceWidth F :=
+  widthDNF_normalizedDNFView_le_recurrenceWidth F
+
+/-- The normalized empty-AND view also has width at most zero. -/
+theorem emptyAndOne_normalizedWidth_le_zero :
+    widthDNF (normalizedDNFView emptyAndOne).D ≤ 0 := by
+  simpa [emptyAndOne_recurrenceWidth] using
+    widthDNF_normalizedDNFView_le_recurrenceWidth emptyAndOne
+
+/-- The empty AND is deliberately outside the nonempty-fanin consumer class. -/
+theorem emptyAndOne_not_nonemptyFanin : ¬ NonemptyFaninFormula emptyAndOne := by
+  intro h
+  change NonemptyFaninFormula (.and []) at h
+  cases h with
+  | and hne _ => exact hne rfl
 
 theorem frontier_member_recurrenceWidth_le {n : Nat} (F : BDFormula n)
     (level : Nat) {G : BDFormula n}

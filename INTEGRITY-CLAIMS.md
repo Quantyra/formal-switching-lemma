@@ -464,6 +464,17 @@ duplicate-stage code has only one recovered row, so the current all-
   improvement, no arbitrary AC0 collapse, no full B4, no PHP or Frege lower
   bound, no NP/circuit lower bound, no Gate A result, and no P-vs-NP claim;
 - any broad consequence from S2163: Normalized-view route parity only. Budgets `t(d,s)=S(d)*(s-1)`, per-stage budget 2, geometric star schedule, and payload shape unchanged. Restricted nonempty-fanin class; width schedule remains recurrence width. Single finite instances, not an asymptotic family. NOT threshold improvement, arbitrary-class width synthesis, full B4, PHP switching, Frege/PHP, NP/circuit, Gate A, or P-vs-NP. Do not expand claim language.
+- any broad consequence from S2164: the hypothesis-free theorem
+  `PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.widthDNF_syntacticDNF_le_recurrenceWidth`
+  proves only structural width bookkeeping for every raw formula (maximum under
+  OR and sum under AND), and
+  `PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.widthDNF_normalizedDNFView_le_recurrenceWidth`
+  transfers that bound through normalization.  The ambient-1 empty-AND pins
+  record recurrence, syntactic, and normalized width zero and exclusion from
+  `NonemptyFaninFormula`; empty-fanin formulas are not routed through final-tree
+  consumers and still require `NoEmptyFanins` separately.  This is no schedule
+  improvement, efficient arbitrary-class width synthesis, full B4, PHP
+  switching, Frege/PHP, NP/circuit, Gate A, or P-vs-NP result;
 - unsupplied or automatically synthesized product hypotheses for the scheduled
   route: `FrozenProductSchedule` proves only that an explicit
   `FrozenProductHypothesis` over a supplied `B` and `t` yields `ValidFrom` and
@@ -488,6 +499,13 @@ bounded-depth Frege proof system is proved here.
 
 | Declaration | Axioms | Classification |
 |---|---|---|
+| `PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.widthDNF_syntacticDNF_le_recurrenceWidth` | `propext`, `Quot.sound` | S2164 hypothesis-free structural width bookkeeping |
+| `PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.emptyAndOne` | none | S2164 empty-fanin witness |
+| `PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.emptyAndOne_recurrenceWidth` | `propext`, `Quot.sound` | S2164 empty-fanin recurrence-width pin |
+| `PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.emptyAndOne_syntacticWidth_le_zero` | `propext`, `Quot.sound` | S2164 empty-fanin syntactic-width pin |
+| `PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.widthDNF_normalizedDNFView_le_recurrenceWidth` | `propext`, `Classical.choice`, `Quot.sound` | S2164 normalized structural width bookkeeping |
+| `PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.emptyAndOne_normalizedWidth_le_zero` | `propext`, `Classical.choice`, `Quot.sound` | S2164 empty-fanin normalized-width pin |
+| `PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.emptyAndOne_not_nonemptyFanin` | none | S2164 consumer-boundary pin |
 | `PvNP.SwitchingClose2.switchingLemmaTermSimple_proved` | `propext`, `Classical.choice`, `Quot.sound` | proven-standard |
 | `PvNP.BoundedDepthFregeSwitchingBridge.bdDNF_switching_bridge` | `propext`, `Classical.choice`, `Quot.sound` | proven-standard |
 | `PvNP.BoundedDepthLayerView.bdFormula_dnfView_switching_collapse` | `propext`, `Classical.choice`, `Quot.sound` | proven-standard |

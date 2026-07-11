@@ -279,32 +279,52 @@ theorem widthDNF_syntacticAndDNF_le_foldr_add {n : Nat} :
       simp only [syntacticAndDNF, List.map_cons, List.foldr]
       exact widthDNF_andDNF_le_add hG hRest
 
+/-- Every raw formula's syntactic DNF width is bounded by its recurrence width.
+This is structural bookkeeping and requires no formula-class hypothesis. -/
+theorem widthDNF_syntacticDNF_le_recurrenceWidth {n : Nat} :
+    ∀ F : BDFormula n,
+      widthDNF (syntacticDNF F) ≤ formulaRecurrenceWidth F
+  | .tru => by
+      simp [syntacticDNF, FormulaSyntacticDNF.trueDNF, widthDNF, termWidth,
+        formulaRecurrenceWidth]
+  | .fls => by
+      simp [syntacticDNF, FormulaSyntacticDNF.falseDNF, widthDNF,
+        formulaRecurrenceWidth]
+  | .lit l => by
+      simp [syntacticDNF, FormulaSyntacticDNF.literalDNF, widthDNF, termWidth,
+        formulaRecurrenceWidth]
+  | .or children => by
+      change widthDNF (syntacticOrDNF children) ≤ _
+      simpa [formulaRecurrenceWidth_or] using
+        widthDNF_syntacticOrDNF_le_foldr_max children
+          (fun G _ => widthDNF_syntacticDNF_le_recurrenceWidth G)
+  | .and children => by
+      change widthDNF (syntacticAndDNF children) ≤ _
+      simpa [formulaRecurrenceWidth_and] using
+        widthDNF_syntacticAndDNF_le_foldr_add children
+          (fun G _ => widthDNF_syntacticDNF_le_recurrenceWidth G)
+  termination_by F => sizeOf F
+
 /-- Class members have syntactic DNF width at most the recurrence width. -/
 theorem recurrenceFanin_widthDNF_le_recurrenceWidth {n : Nat}
-    {F : BDFormula n} (h : RecurrenceFaninFormula F) :
-    widthDNF (syntacticDNF F) ≤ formulaRecurrenceWidth F := by
-  induction h with
-  | tru =>
-      have h0 :
-          widthDNF (syntacticDNF (BDFormula.tru : BDFormula n)) = 0 := by
-        simp [syntacticDNF, FormulaSyntacticDNF.trueDNF, widthDNF, termWidth]
-      simpa [formulaRecurrenceWidth_tru] using (le_of_eq h0)
-  | fls =>
-      have h0 :
-          widthDNF (syntacticDNF (BDFormula.fls : BDFormula n)) = 0 := by
-        simp [syntacticDNF, FormulaSyntacticDNF.falseDNF, widthDNF]
-      simpa [formulaRecurrenceWidth_fls] using (le_of_eq h0)
-  | lit l =>
-      simp [syntacticDNF, FormulaSyntacticDNF.literalDNF, widthDNF, termWidth,
-        formulaRecurrenceWidth_lit]
-  | or _ _ ih =>
-      change widthDNF (syntacticOrDNF _) ≤ _
-      simpa [formulaRecurrenceWidth_or] using
-        widthDNF_syntacticOrDNF_le_foldr_max _ ih
-  | and _ _ _ ih =>
-      change widthDNF (syntacticAndDNF _) ≤ _
-      simpa [formulaRecurrenceWidth_and] using
-        widthDNF_syntacticAndDNF_le_foldr_add _ ih
+    {F : BDFormula n} (_h : RecurrenceFaninFormula F) :
+    widthDNF (syntacticDNF F) ≤ formulaRecurrenceWidth F :=
+  widthDNF_syntacticDNF_le_recurrenceWidth F
+
+/-! ## Empty-fanin boundary witness -/
+
+/-- The raw empty AND at ambient arity one. -/
+def emptyAndOne : BDFormula 1 := .and []
+
+/-- Empty AND has recurrence width zero. -/
+theorem emptyAndOne_recurrenceWidth : formulaRecurrenceWidth emptyAndOne = 0 := by
+  simp [emptyAndOne, formulaRecurrenceWidth_and]
+
+/-- Empty AND's syntactic DNF has width at most zero. -/
+theorem emptyAndOne_syntacticWidth_le_zero :
+    widthDNF (syntacticDNF emptyAndOne) ≤ 0 := by
+  simpa [emptyAndOne_recurrenceWidth] using
+    widthDNF_syntacticDNF_le_recurrenceWidth emptyAndOne
 
 /-! ## Top-child and recursive-frontier closure -/
 

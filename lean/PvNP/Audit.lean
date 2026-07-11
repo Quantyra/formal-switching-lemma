@@ -9338,3 +9338,38 @@ S2163. Normalized-view route parity only. Budgets `t(d,s)=S(d)*(s-1)`, per-stage
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_finalTree_allLevels_rounds2
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.widthDNF_syntacticDNF_le_recurrenceWidth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.widthDNF_syntacticDNF_le_recurrenceWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.emptyAndOne' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.emptyAndOne
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.emptyAndOne_recurrenceWidth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.emptyAndOne_recurrenceWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.emptyAndOne_syntacticWidth_le_zero' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.emptyAndOne_syntacticWidth_le_zero
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.widthDNF_normalizedDNFView_le_recurrenceWidth' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.widthDNF_normalizedDNFView_le_recurrenceWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.emptyAndOne_normalizedWidth_le_zero' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.emptyAndOne_normalizedWidth_le_zero
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.emptyAndOne_not_nonemptyFanin' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.emptyAndOne_not_nonemptyFanin
