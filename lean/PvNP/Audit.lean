@@ -9256,3 +9256,73 @@ P-vs-NP.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness20_finalTree_level0
+
+/-!
+S2163. Normalized-view route parity only. Budgets `t(d,s)=S(d)*(s-1)`, per-stage budget 2, geometric star schedule, and payload shape unchanged. Restricted nonempty-fanin class; width schedule remains recurrence width. Single finite instances, not an asymptotic family. NOT threshold improvement, arbitrary-class width synthesis, full B4, PHP switching, Frege/PHP, NP/circuit, Gate A, or P-vs-NP. Do not expand claim language.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.allNormalizedFrontiers_geometricCollapseWithSuppliedWidth_finalTree_tightEntry' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.allNormalizedFrontiers_geometricCollapseWithSuppliedWidth_finalTree_tightEntry
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.allNormalizedFrontiers_geometricCollapse_finalTree_tightEntry' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.allNormalizedFrontiers_geometricCollapse_finalTree_tightEntry
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_nonemptyFanin' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_nonemptyFanin
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_not_syntacticFormulaSimpleDNF' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_not_syntacticFormulaSimpleDNF
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_formulaSize' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_formulaSize
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_depth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_depth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_recurrenceWidth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_recurrenceWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_frontierGateCount_zero' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_frontierGateCount_zero
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_frontierGateCount_one' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_frontierGateCount_one
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_frontierGateCount_two' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_frontierGateCount_two
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_recurrenceWidthSchedule' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_recurrenceWidthSchedule
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_finalTree_allLevels_rounds2' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness26_finalTree_allLevels_rounds2

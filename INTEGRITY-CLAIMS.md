@@ -463,6 +463,7 @@ duplicate-stage code has only one recovered row, so the current all-
   arbitrary-class width synthesis beyond the stated class, no threshold
   improvement, no arbitrary AC0 collapse, no full B4, no PHP or Frege lower
   bound, no NP/circuit lower bound, no Gate A result, and no P-vs-NP claim;
+- any broad consequence from S2163: Normalized-view route parity only. Budgets `t(d,s)=S(d)*(s-1)`, per-stage budget 2, geometric star schedule, and payload shape unchanged. Restricted nonempty-fanin class; width schedule remains recurrence width. Single finite instances, not an asymptotic family. NOT threshold improvement, arbitrary-class width synthesis, full B4, PHP switching, Frege/PHP, NP/circuit, Gate A, or P-vs-NP. Do not expand claim language.
 - unsupplied or automatically synthesized product hypotheses for the scheduled
   route: `FrozenProductSchedule` proves only that an explicit
   `FrozenProductHypothesis` over a supplied `B` and `t` yields `ValidFrom` and

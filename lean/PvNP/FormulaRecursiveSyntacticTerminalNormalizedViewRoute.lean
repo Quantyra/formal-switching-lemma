@@ -286,6 +286,27 @@ theorem normalizedFrontier_geometricCollapseWithSuppliedWidth_finalTree_tightEnt
       · intro a ha
         rw [heval a, finalFormula_restrict_eval cert a ha]
 
+/-- All-level tight-entry supplied-width consumer: one frontier-local
+obligation per level. -/
+theorem allNormalizedFrontiers_geometricCollapseWithSuppliedWidth_finalTree_tightEntry
+    {n : Nat} (F : BDFormula n) (S W : Nat → Nat)
+    (d rounds : Nat) (parent : ParentKind)
+    (hDepth : depth F ≤ d) (hSize : formulaSize F ≤ S d)
+    (hNE : NonemptyFaninFormula F)
+    (hwAll : ∀ level, level ≤ depth F →
+      ∀ g ∈ (normalizedFrontierMinimalLayer F level parent).gates,
+        widthDNF g.theDNF ≤ W level)
+    (hwPos : ∀ level, level ≤ depth F → 1 ≤ W level)
+    (hnAll : ∀ level, level ≤ depth F →
+      2 * (64 * frontierLayerGateCount F level) ^ rounds *
+        (64 * frontierLayerGateCount F level * W level) ≤ n) :
+    ∀ level, level ≤ depth F →
+      NormalizedViewClassDepthFinalTreeAt F S W d rounds parent level := by
+  intro level hk
+  exact normalizedFrontier_geometricCollapseWithSuppliedWidth_finalTree_tightEntry
+    F S W d level rounds parent hDepth hSize hNE hk (hwAll level hk)
+      (hwPos level hk) (hnAll level hk)
+
 /-- Coarse-entry replay of the same normalized-view payload. -/
 theorem normalizedFrontier_geometricCollapseWithSuppliedWidth_finalTree
     {n : Nat} (F : BDFormula n) (S W : Nat → Nat)
@@ -317,6 +338,26 @@ theorem normalizedFrontier_geometricCollapse_finalTree_tightEntry
   · exact normalizedFrontierMinimalLayer_width_le_schedule hNE level parent
   · exact recurrenceWidthSchedule_pos F level
   · exact hn
+
+/-- All-level tight-entry route under the recurrence-width schedule. -/
+theorem allNormalizedFrontiers_geometricCollapse_finalTree_tightEntry
+    {n : Nat} (F : BDFormula n) (S : Nat → Nat)
+    (d rounds : Nat) (parent : ParentKind)
+    (hNE : NonemptyFaninFormula F) (hDepth : depth F ≤ d)
+    (hSize : formulaSize F ≤ S d)
+    (hnAll : ∀ level, level ≤ depth F →
+      2 * (64 * frontierLayerGateCount F level) ^ rounds *
+        (64 * frontierLayerGateCount F level *
+          recurrenceWidthSchedule F level) ≤ n) :
+    ∀ level, level ≤ depth F →
+      NormalizedViewClassDepthFinalTreeAt F S (recurrenceWidthSchedule F)
+        d rounds parent level := by
+  refine allNormalizedFrontiers_geometricCollapseWithSuppliedWidth_finalTree_tightEntry
+    F S (recurrenceWidthSchedule F) d rounds parent hDepth hSize hNE ?_ ?_ hnAll
+  · intro level _
+    exact normalizedFrontierMinimalLayer_width_le_schedule hNE level parent
+  · intro level _
+    exact recurrenceWidthSchedule_pos F level
 
 /-! ## Shared-variable witness excluded by the old simplicity route -/
 
@@ -472,6 +513,100 @@ theorem sharedWitness20_finalTree_level0 :
     sharedWitness20_nonemptyFanin (Nat.le_of_eq sharedWitness20_depth)
     (Nat.le_of_eq sharedWitness20_formulaSize) (Nat.zero_le _)
     sharedWitness20_tightEntry
+
+/-! ## Unconditional ambient `2^26` all-level tight-entry instance -/
+
+private def sharedOrLeft26 : BDFormula 67108864 :=
+  .or [.lit { var := ⟨0, by decide⟩, sign := true },
+       .lit { var := ⟨1, by decide⟩, sign := true }]
+
+private def sharedOrRight26 : BDFormula 67108864 :=
+  .or [.lit { var := ⟨0, by decide⟩, sign := true },
+       .lit { var := ⟨2, by decide⟩, sign := true }]
+
+def sharedWitness26 : BDFormula 67108864 :=
+  .and [sharedOrLeft26, sharedOrRight26]
+
+theorem sharedWitness26_nonemptyFanin : NonemptyFaninFormula sharedWitness26 := by
+  refine .and (List.cons_ne_nil _ _) ?_
+  intro G hG
+  simp [sharedWitness26, sharedOrLeft26, sharedOrRight26] at hG
+  rcases hG with rfl | rfl <;>
+    refine .or (List.cons_ne_nil _ _) ?_ <;>
+    intro H hH <;> simp at hH <;>
+    rcases hH with rfl | rfl <;> exact .lit _
+
+theorem sharedWitness26_not_syntacticFormulaSimpleDNF :
+    ¬ syntacticFormulaSimpleDNF sharedWitness26 := by
+  intro h
+  change syntacticAndListSimpleDNF _ at h
+  have hc := h.2.2
+  have ht : ([{ var := ⟨0, by decide⟩, sign := true }] : Term 67108864) ∈
+      syntacticDNF sharedOrLeft26 := by
+    simp [sharedOrLeft26, syntacticDNF, syntacticOrDNF,
+      FormulaSyntacticDNF.literalDNF, FormulaSyntacticDNF.falseDNF, orDNF]
+  have hu : ([{ var := ⟨0, by decide⟩, sign := true }] : Term 67108864) ∈
+      syntacticAndDNF [sharedOrRight26] := by
+    simp [sharedOrRight26, syntacticAndDNF, syntacticDNF, syntacticOrDNF,
+      FormulaSyntacticDNF.literalDNF, FormulaSyntacticDNF.falseDNF,
+      FormulaSyntacticDNF.trueDNF, orDNF, andDNF]
+  have hs := hc _ ht _ hu
+  simp [SimpleTerm] at hs
+
+theorem sharedWitness26_formulaSize : formulaSize sharedWitness26 = 7 := by
+  simp [sharedWitness26, sharedOrLeft26, sharedOrRight26, formulaSize_and,
+    formulaSize_or, formulaSize_lit]
+
+theorem sharedWitness26_depth : depth sharedWitness26 = 2 := by
+  simp [sharedWitness26, sharedOrLeft26, sharedOrRight26, depth]
+
+theorem sharedWitness26_recurrenceWidth :
+    formulaRecurrenceWidth sharedWitness26 = 2 := by
+  simp [sharedWitness26, sharedOrLeft26, sharedOrRight26,
+    formulaRecurrenceWidth_and, formulaRecurrenceWidth_or,
+    formulaRecurrenceWidth_lit, Nat.max_zero, Nat.max_self]
+
+theorem sharedWitness26_frontierGateCount_zero :
+    frontierLayerGateCount sharedWitness26 0 = 1 :=
+  frontierLayerGateCount_zero sharedWitness26
+
+theorem sharedWitness26_frontierGateCount_one :
+    frontierLayerGateCount sharedWitness26 1 = 2 := by
+  rw [frontierLayerGateCount_eq_formulaDepthFrontier_length]
+  rfl
+
+theorem sharedWitness26_frontierGateCount_two :
+    frontierLayerGateCount sharedWitness26 2 = 4 := by
+  rw [frontierLayerGateCount_eq_formulaDepthFrontier_length]
+  rfl
+
+theorem sharedWitness26_recurrenceWidthSchedule (level : Nat) :
+    recurrenceWidthSchedule sharedWitness26 level = 2 := by
+  simp [recurrenceWidthSchedule, sharedWitness26_recurrenceWidth]
+
+/-- Zero-hypothesis all-level normalized-view instance at ambient `2^26`,
+`rounds = 2`, and parent kind `and`. -/
+theorem sharedWitness26_finalTree_allLevels_rounds2 :
+    ∀ level, level ≤ depth sharedWitness26 →
+      NormalizedViewClassDepthFinalTreeAt sharedWitness26 (fun _ => 7)
+        (recurrenceWidthSchedule sharedWitness26) 2 2 ParentKind.and level := by
+  refine allNormalizedFrontiers_geometricCollapse_finalTree_tightEntry
+    sharedWitness26 (fun _ => 7) 2 2 ParentKind.and
+      sharedWitness26_nonemptyFanin (Nat.le_of_eq sharedWitness26_depth)
+      (Nat.le_of_eq sharedWitness26_formulaSize) ?_
+  intro level hlevel
+  have hd : depth sharedWitness26 = 2 := sharedWitness26_depth
+  have hcase : level = 0 ∨ level = 1 ∨ level = 2 := by omega
+  rcases hcase with rfl | rfl | rfl
+  · rw [sharedWitness26_frontierGateCount_zero,
+      sharedWitness26_recurrenceWidthSchedule 0]
+    decide
+  · rw [sharedWitness26_frontierGateCount_one,
+      sharedWitness26_recurrenceWidthSchedule 1]
+    decide
+  · rw [sharedWitness26_frontierGateCount_two,
+      sharedWitness26_recurrenceWidthSchedule 2]
+    decide
 
 end FormulaRecursiveSyntacticTerminalNormalizedViewRoute
 end PvNP
