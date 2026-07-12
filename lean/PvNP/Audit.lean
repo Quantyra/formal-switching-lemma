@@ -9474,3 +9474,172 @@ S2163. Normalized-view route parity only. Budgets `t(d,s)=S(d)*(s-1)`, per-stage
 /-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.emptyAndOne_not_nonemptyFanin' does not depend on any axioms -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.emptyAndOne_not_nonemptyFanin
+
+/-!
+S2166. Actual normalized-frontier DNF width schedule only. Budgets `t(d,s)=S(d)*(s-1)`, per-stage budget 2, geometric star schedule, and payload shape unchanged. Restricted nonempty-fanin normalized-view route; the schedule is the per-frontier maximum of actual normalized DNF widths, clamped by one, with hypothesis-free width validity; the ambient-2^22-vs-2^25 comparison against the S2165 package is bookkeeping across different witnesses. Single finite instances, not an asymptotic family. NOT threshold improvement, arbitrary-class width synthesis, full B4, PHP switching, Frege/PHP, NP/circuit, Gate A, or P-vs-NP. Do not expand claim language.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.frontierMaxNormalizedWidth' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.frontierMaxNormalizedWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontierWidthSchedule' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontierWidthSchedule
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontierWidthSchedule_pos' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontierWidthSchedule_pos
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontierMinimalLayer_width_le_normalizedFrontierWidthSchedule' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontierMinimalLayer_width_le_normalizedFrontierWidthSchedule
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontierWidthSchedule_le_frontierRecurrenceWidthSchedule' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontierWidthSchedule_le_frontierRecurrenceWidthSchedule
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.frontierRecurrenceWidthSchedule_le_recurrenceWidthSchedule' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.frontierRecurrenceWidthSchedule_le_recurrenceWidthSchedule
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontierWidthSchedule_le_recurrenceWidthSchedule' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontierWidthSchedule_le_recurrenceWidthSchedule
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontier_geometricCollapse_finalTree_tightEntry_normalizedWidth' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontier_geometricCollapse_finalTree_tightEntry_normalizedWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.allNormalizedFrontiers_geometricCollapse_finalTree_tightEntry_normalizedWidth' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.allNormalizedFrontiers_geometricCollapse_finalTree_tightEntry_normalizedWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_nonemptyFanin' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_nonemptyFanin
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_syntacticDNF_not_simple' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_syntacticDNF_not_simple
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_formulaSize' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_formulaSize
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_depth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_depth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_recurrenceWidth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_recurrenceWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_frontierGateCount_zero' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_frontierGateCount_zero
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_frontierGateCount_one' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_frontierGateCount_one
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_frontierGateCount_two' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_frontierGateCount_two
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_normalizedWidth' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_normalizedWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_normalizedFrontierWidthSchedule_zero' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_normalizedFrontierWidthSchedule_zero
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_normalizedFrontierWidthSchedule_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_normalizedFrontierWidthSchedule_one
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_normalizedFrontierWidthSchedule_two' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_normalizedFrontierWidthSchedule_two
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_frontierRecurrenceWidthSchedule_zero' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_frontierRecurrenceWidthSchedule_zero
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_frontierRecurrenceWidthSchedule_one' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_frontierRecurrenceWidthSchedule_one
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_normalizedSchedule_strict_level0' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_normalizedSchedule_strict_level0
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_normalizedSchedule_strict_level1' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_normalizedSchedule_strict_level1
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_entryProduct_level0_eq' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_entryProduct_level0_eq
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_entryProduct_level12_eq' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_entryProduct_level12_eq
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_finalTree_allLevels_rounds2' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_finalTree_allLevels_rounds2
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_frontierSchedule_entry_fails_level1' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_frontierSchedule_entry_fails_level1
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_ambient_lt_sharedWitness25_ambient' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_ambient_lt_sharedWitness25_ambient

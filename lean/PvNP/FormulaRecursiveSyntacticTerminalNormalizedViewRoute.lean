@@ -836,5 +836,340 @@ theorem sharedWitness25_finalTree_allLevels_rounds2 :
 
 theorem sharedWitness25_ambient_domination : 33554432 < 67108864 := by decide
 
+/-! ## Actual normalized-frontier DNF width schedule (S2166) -/
+
+/-- Maximum actual normalized DNF width among the gates on one frontier. -/
+def frontierMaxNormalizedWidth {n : Nat} (F : BDFormula n) (level : Nat) : Nat :=
+  ((formulaDepthFrontier level F).map
+    (fun G => widthDNF (normalizedDNFView G).D)).foldr Nat.max 0
+
+/-- Positive frontier-local actual normalized-width schedule. -/
+def normalizedFrontierWidthSchedule {n : Nat} (F : BDFormula n) : Nat → Nat :=
+  fun level => Nat.max 1 (frontierMaxNormalizedWidth F level)
+
+theorem normalizedFrontierWidthSchedule_pos {n : Nat} (F : BDFormula n)
+    (level : Nat) : 1 ≤ normalizedFrontierWidthSchedule F level :=
+  Nat.le_max_left _ _
+
+/-- Every normalized frontier gate obeys the actual normalized-width schedule.
+No class hypothesis is needed: the schedule is definitionally the frontier
+maximum of the very widths being bounded. -/
+theorem normalizedFrontierMinimalLayer_width_le_normalizedFrontierWidthSchedule
+    {n : Nat} (F : BDFormula n) (level : Nat) (parent : ParentKind)
+    (g : GateSpec n)
+    (hg : g ∈ (normalizedFrontierMinimalLayer F level parent).gates) :
+    widthDNF g.theDNF ≤ normalizedFrontierWidthSchedule F level := by
+  simp only [normalizedFrontierMinimalLayer, normalizedFrontierGateList] at hg
+  rcases List.mem_map.mp hg with ⟨G, hG, rfl⟩
+  exact Nat.le_trans
+    (nat_le_foldr_max_of_mem _
+      (List.mem_map_of_mem (fun G => widthDNF (normalizedDNFView G).D) hG))
+    (Nat.le_max_right _ _)
+
+private theorem foldr_max_map_le_foldr_max_map {α : Type} (xs : List α)
+    (f g : α → Nat) (h : ∀ x ∈ xs, f x ≤ g x) :
+    (xs.map f).foldr Nat.max 0 ≤ (xs.map g).foldr Nat.max 0 := by
+  induction xs with
+  | nil => exact Nat.le_refl 0
+  | cons y ys ih =>
+      simp only [List.map_cons, List.foldr_cons]
+      exact Nat.max_le.mpr
+        ⟨Nat.le_trans (h y (List.mem_cons_self y ys)) (Nat.le_max_left _ _),
+          Nat.le_trans (ih fun x hx => h x (List.mem_cons_of_mem y hx))
+            (Nat.le_max_right _ _)⟩
+
+private theorem foldr_max_le_of_forall_le {xs : List Nat} {B : Nat}
+    (h : ∀ x ∈ xs, x ≤ B) : xs.foldr Nat.max 0 ≤ B := by
+  induction xs with
+  | nil => exact Nat.zero_le B
+  | cons y ys ih =>
+      exact Nat.max_le.mpr ⟨h y (List.mem_cons_self y ys),
+        ih fun x hx => h x (List.mem_cons_of_mem y hx)⟩
+
+/-- Pointwise, for every raw formula, the actual normalized-frontier schedule
+never exceeds the S2165 frontier-local recurrence-width schedule. -/
+theorem normalizedFrontierWidthSchedule_le_frontierRecurrenceWidthSchedule
+    {n : Nat} (F : BDFormula n) (level : Nat) :
+    normalizedFrontierWidthSchedule F level ≤
+      frontierRecurrenceWidthSchedule F level :=
+  Nat.max_le.mpr ⟨Nat.le_max_left _ _,
+    Nat.le_trans (foldr_max_map_le_foldr_max_map _ _ _
+      (fun G _ => widthDNF_normalizedDNFView_le_recurrenceWidth G))
+      (Nat.le_max_right _ _)⟩
+
+/-- Pointwise, for every raw formula, the S2165 frontier-local schedule never
+exceeds the root recurrence-width schedule. -/
+theorem frontierRecurrenceWidthSchedule_le_recurrenceWidthSchedule
+    {n : Nat} (F : BDFormula n) (level : Nat) :
+    frontierRecurrenceWidthSchedule F level ≤ recurrenceWidthSchedule F level := by
+  refine Nat.max_le.mpr ⟨recurrenceWidthSchedule_pos F level, ?_⟩
+  refine Nat.le_trans (foldr_max_le_of_forall_le ?_)
+    (Nat.le_max_right 1 (formulaRecurrenceWidth F))
+  intro x hx
+  rcases List.mem_map.mp hx with ⟨G, hG, rfl⟩
+  exact frontier_member_recurrenceWidth_le F level hG
+
+/-- Pointwise schedule chain endpoint: the actual normalized-frontier schedule
+never exceeds the root recurrence-width schedule, for every raw formula. -/
+theorem normalizedFrontierWidthSchedule_le_recurrenceWidthSchedule
+    {n : Nat} (F : BDFormula n) (level : Nat) :
+    normalizedFrontierWidthSchedule F level ≤ recurrenceWidthSchedule F level :=
+  Nat.le_trans (normalizedFrontierWidthSchedule_le_frontierRecurrenceWidthSchedule F level)
+    (frontierRecurrenceWidthSchedule_le_recurrenceWidthSchedule F level)
+
+/-- Class-derived single-level tight-entry wrapper using the actual
+normalized-frontier DNF width schedule. -/
+theorem normalizedFrontier_geometricCollapse_finalTree_tightEntry_normalizedWidth
+    {n : Nat} (F : BDFormula n) (S : Nat → Nat)
+    (d level rounds : Nat) (parent : ParentKind)
+    (hNE : NonemptyFaninFormula F) (hDepth : depth F ≤ d)
+    (hSize : formulaSize F ≤ S d) (hk : level ≤ depth F)
+    (hn : 2 * (64 * frontierLayerGateCount F level) ^ rounds *
+      (64 * frontierLayerGateCount F level *
+        normalizedFrontierWidthSchedule F level) ≤ n) :
+    NormalizedViewClassDepthFinalTreeAt F S (normalizedFrontierWidthSchedule F)
+      d rounds parent level := by
+  apply normalizedFrontier_geometricCollapseWithSuppliedWidth_finalTree_tightEntry
+    F S (normalizedFrontierWidthSchedule F) d level rounds parent
+      hDepth hSize hNE hk
+  · exact fun g hg =>
+      normalizedFrontierMinimalLayer_width_le_normalizedFrontierWidthSchedule
+        F level parent g hg
+  · exact normalizedFrontierWidthSchedule_pos F level
+  · exact hn
+
+/-- Class-derived all-level tight-entry wrapper using the actual
+normalized-frontier DNF width schedule. -/
+theorem allNormalizedFrontiers_geometricCollapse_finalTree_tightEntry_normalizedWidth
+    {n : Nat} (F : BDFormula n) (S : Nat → Nat)
+    (d rounds : Nat) (parent : ParentKind)
+    (hNE : NonemptyFaninFormula F) (hDepth : depth F ≤ d)
+    (hSize : formulaSize F ≤ S d)
+    (hnAll : ∀ level, level ≤ depth F →
+      2 * (64 * frontierLayerGateCount F level) ^ rounds *
+        (64 * frontierLayerGateCount F level *
+          normalizedFrontierWidthSchedule F level) ≤ n) :
+    ∀ level, level ≤ depth F →
+      NormalizedViewClassDepthFinalTreeAt F S (normalizedFrontierWidthSchedule F)
+        d rounds parent level := by
+  refine allNormalizedFrontiers_geometricCollapseWithSuppliedWidth_finalTree_tightEntry
+    F S (normalizedFrontierWidthSchedule F) d rounds parent hDepth hSize hNE ?_ ?_ hnAll
+  · intro level _
+    exact fun g hg =>
+      normalizedFrontierMinimalLayer_width_le_normalizedFrontierWidthSchedule
+        F level parent g hg
+  · intro level _
+    exact normalizedFrontierWidthSchedule_pos F level
+
+/-! ## Duplicated-literal nested witness at ambient `2^22` (S2166) -/
+
+private def dupInnerAnd22 : BDFormula 4194304 :=
+  .and [.lit { var := ⟨0, by decide⟩, sign := true },
+        .lit { var := ⟨0, by decide⟩, sign := true }]
+
+/-- `x₀ ∧ (x₀ ∧ x₀)` at ambient `2^22`: a nested AND whose raw syntactic
+expansion is the single duplicated-literal term `[x₀, x₀, x₀]`. -/
+def nestedDupWitness22 : BDFormula 4194304 :=
+  .and [.lit { var := ⟨0, by decide⟩, sign := true }, dupInnerAnd22]
+
+private theorem dupInnerAnd22_nonempty : NonemptyFaninFormula dupInnerAnd22 := by
+  refine .and (List.cons_ne_nil _ _) ?_
+  intro G hG
+  simp [dupInnerAnd22] at hG
+  subst hG
+  exact .lit _
+
+theorem nestedDupWitness22_nonemptyFanin :
+    NonemptyFaninFormula nestedDupWitness22 := by
+  refine .and (List.cons_ne_nil _ _) ?_
+  intro G hG
+  simp [nestedDupWitness22] at hG
+  rcases hG with rfl | rfl
+  · exact .lit _
+  · exact dupInnerAnd22_nonempty
+
+private theorem nestedDupWitness22_syntacticDNF_eq :
+    syntacticDNF nestedDupWitness22 =
+      [[{ var := ⟨0, by decide⟩, sign := true },
+        { var := ⟨0, by decide⟩, sign := true },
+        { var := ⟨0, by decide⟩, sign := true }]] := by
+  simp [nestedDupWitness22, dupInnerAnd22, syntacticDNF, syntacticAndDNF,
+    andDNF, FormulaSyntacticDNF.literalDNF, FormulaSyntacticDNF.trueDNF]
+
+/-- The raw syntactic expansion of the witness is not simple: its only term is
+the repeated-variable term `[x₀, x₀, x₀]`.  Normalization does real work on
+this witness. -/
+theorem nestedDupWitness22_syntacticDNF_not_simple :
+    ¬ SimpleDNF (syntacticDNF nestedDupWitness22) := by
+  intro h
+  have ht : ([{ var := ⟨0, by decide⟩, sign := true },
+      { var := ⟨0, by decide⟩, sign := true },
+      { var := ⟨0, by decide⟩, sign := true }] : Term 4194304) ∈
+      syntacticDNF nestedDupWitness22 := by
+    rw [nestedDupWitness22_syntacticDNF_eq]
+    exact List.mem_cons_self _ _
+  have hs := h _ ht
+  simp [SimpleTerm] at hs
+
+theorem nestedDupWitness22_formulaSize : formulaSize nestedDupWitness22 = 5 := by
+  simp [nestedDupWitness22, dupInnerAnd22, formulaSize_and, formulaSize_lit]
+
+theorem nestedDupWitness22_depth : depth nestedDupWitness22 = 2 := by
+  simp [nestedDupWitness22, dupInnerAnd22, depth]
+
+theorem nestedDupWitness22_recurrenceWidth :
+    formulaRecurrenceWidth nestedDupWitness22 = 3 := by
+  simp [nestedDupWitness22, dupInnerAnd22, formulaRecurrenceWidth_and,
+    formulaRecurrenceWidth_lit]
+
+theorem nestedDupWitness22_frontierGateCount_zero :
+    frontierLayerGateCount nestedDupWitness22 0 = 1 :=
+  frontierLayerGateCount_zero nestedDupWitness22
+
+theorem nestedDupWitness22_frontierGateCount_one :
+    frontierLayerGateCount nestedDupWitness22 1 = 2 := by
+  rw [frontierLayerGateCount_eq_formulaDepthFrontier_length]
+  rfl
+
+/-- The level-1 literal has no top children, so the level-2 frontier is exactly
+the inner AND's two literal children. -/
+theorem nestedDupWitness22_frontierGateCount_two :
+    frontierLayerGateCount nestedDupWitness22 2 = 2 := by
+  rw [frontierLayerGateCount_eq_formulaDepthFrontier_length]
+  rfl
+
+/-- The witness's normalized DNF view has width exactly `1`: the normalized
+DNF is a genuine width-`1` DNF rather than the empty DNF (whose width `0`
+would make the schedule value `1` below only the `max 1 0` fallback). -/
+theorem nestedDupWitness22_normalizedWidth :
+    widthDNF (normalizedDNFView nestedDupWitness22).D = 1 := by
+  rw [normalizedDNFView_D, nestedDupWitness22_syntacticDNF_eq]
+  rfl
+
+private theorem dupInnerAnd22_syntacticDNF_eq :
+    syntacticDNF dupInnerAnd22 =
+      [[{ var := ⟨0, by decide⟩, sign := true },
+        { var := ⟨0, by decide⟩, sign := true }]] := by
+  simp [dupInnerAnd22, syntacticDNF, syntacticAndDNF, andDNF,
+    FormulaSyntacticDNF.literalDNF, FormulaSyntacticDNF.trueDNF]
+
+private theorem dupInnerAnd22_normalizedWidth :
+    widthDNF (normalizedDNFView dupInnerAnd22).D = 1 := by
+  rw [normalizedDNFView_D, dupInnerAnd22_syntacticDNF_eq]
+  rfl
+
+private theorem litGate22_syntacticDNF_eq :
+    syntacticDNF
+      (.lit { var := 0, sign := true } : BDFormula 4194304) =
+      [[{ var := 0, sign := true }]] := by
+  simp [syntacticDNF, FormulaSyntacticDNF.literalDNF]
+
+private theorem litGate22_normalizedWidth :
+    widthDNF (normalizedDNFView
+      (.lit { var := 0, sign := true } : BDFormula 4194304)).D = 1 := by
+  rw [normalizedDNFView_D, litGate22_syntacticDNF_eq]
+  rfl
+
+theorem nestedDupWitness22_normalizedFrontierWidthSchedule_zero :
+    normalizedFrontierWidthSchedule nestedDupWitness22 0 = 1 := by
+  simp [normalizedFrontierWidthSchedule, frontierMaxNormalizedWidth,
+    formulaDepthFrontier, depthFrontier, nestedDupWitness22_normalizedWidth]
+
+theorem nestedDupWitness22_normalizedFrontierWidthSchedule_one :
+    normalizedFrontierWidthSchedule nestedDupWitness22 1 = 1 := by
+  simp [normalizedFrontierWidthSchedule, frontierMaxNormalizedWidth,
+    nestedDupWitness22, formulaDepthFrontier, depthFrontier, topChildren,
+    litGate22_normalizedWidth, dupInnerAnd22_normalizedWidth]
+
+theorem nestedDupWitness22_normalizedFrontierWidthSchedule_two :
+    normalizedFrontierWidthSchedule nestedDupWitness22 2 = 1 := by
+  simp [normalizedFrontierWidthSchedule, frontierMaxNormalizedWidth,
+    nestedDupWitness22, dupInnerAnd22, formulaDepthFrontier, depthFrontier,
+    topChildren, litGate22_normalizedWidth]
+
+theorem nestedDupWitness22_frontierRecurrenceWidthSchedule_zero :
+    frontierRecurrenceWidthSchedule nestedDupWitness22 0 = 3 := by
+  simp [frontierRecurrenceWidthSchedule, frontierMaxRecurrenceWidth,
+    nestedDupWitness22, dupInnerAnd22, formulaDepthFrontier, depthFrontier,
+    topChildren, formulaRecurrenceWidth]
+
+theorem nestedDupWitness22_frontierRecurrenceWidthSchedule_one :
+    frontierRecurrenceWidthSchedule nestedDupWitness22 1 = 2 := by
+  simp [frontierRecurrenceWidthSchedule, frontierMaxRecurrenceWidth,
+    nestedDupWitness22, dupInnerAnd22, formulaDepthFrontier, depthFrontier,
+    topChildren, formulaRecurrenceWidth]
+
+/-- At level 0 the actual normalized width `1` is strictly below the S2165
+frontier recurrence-width schedule value `3` on the same witness. -/
+theorem nestedDupWitness22_normalizedSchedule_strict_level0 :
+    normalizedFrontierWidthSchedule nestedDupWitness22 0 <
+      frontierRecurrenceWidthSchedule nestedDupWitness22 0 := by
+  rw [nestedDupWitness22_normalizedFrontierWidthSchedule_zero,
+    nestedDupWitness22_frontierRecurrenceWidthSchedule_zero]
+  decide
+
+/-- At level 1 the actual normalized width `1` is strictly below the S2165
+frontier recurrence-width schedule value `2` on the same witness. -/
+theorem nestedDupWitness22_normalizedSchedule_strict_level1 :
+    normalizedFrontierWidthSchedule nestedDupWitness22 1 <
+      frontierRecurrenceWidthSchedule nestedDupWitness22 1 := by
+  rw [nestedDupWitness22_normalizedFrontierWidthSchedule_one,
+    nestedDupWitness22_frontierRecurrenceWidthSchedule_one]
+  decide
+
+/-- Exact level-0 entry product at `rounds = 2`, count 1, width 1:
+`2*(64*1)^2*(64*1*1) = 524288 = 2^19`. -/
+theorem nestedDupWitness22_entryProduct_level0_eq :
+    2 * (64 * 1) ^ 2 * (64 * 1 * 1) = 524288 := by decide
+
+/-- Exact level-1 and level-2 entry product at `rounds = 2`, count 2, width 1:
+`2*(64*2)^2*(64*2*1) = 4194304 = 2^22`. -/
+theorem nestedDupWitness22_entryProduct_level12_eq :
+    2 * (64 * 2) ^ 2 * (64 * 2 * 1) = 4194304 := by decide
+
+/-- Zero-hypothesis all-level normalized-view instance at ambient `2^22`, using
+the actual normalized-frontier DNF width schedule. -/
+theorem nestedDupWitness22_finalTree_allLevels_rounds2 :
+    ∀ level, level ≤ depth nestedDupWitness22 →
+      NormalizedViewClassDepthFinalTreeAt nestedDupWitness22 (fun _ => 5)
+        (normalizedFrontierWidthSchedule nestedDupWitness22)
+        2 2 ParentKind.and level := by
+  refine allNormalizedFrontiers_geometricCollapse_finalTree_tightEntry_normalizedWidth
+    nestedDupWitness22 (fun _ => 5) 2 2 ParentKind.and
+      nestedDupWitness22_nonemptyFanin (Nat.le_of_eq nestedDupWitness22_depth)
+      (Nat.le_of_eq nestedDupWitness22_formulaSize) ?_
+  intro level hlevel
+  have hcase : level = 0 ∨ level = 1 ∨ level = 2 := by
+    rw [nestedDupWitness22_depth] at hlevel
+    omega
+  rcases hcase with rfl | rfl | rfl
+  · rw [nestedDupWitness22_frontierGateCount_zero,
+      nestedDupWitness22_normalizedFrontierWidthSchedule_zero]
+    decide
+  · rw [nestedDupWitness22_frontierGateCount_one,
+      nestedDupWitness22_normalizedFrontierWidthSchedule_one]
+    decide
+  · rw [nestedDupWitness22_frontierGateCount_two,
+      nestedDupWitness22_normalizedFrontierWidthSchedule_two]
+    decide
+
+/-- Same-witness entry separation at ambient `2^22`: the S2165 frontier
+recurrence-width schedule's level-1 entry product at `rounds = 2` is `2^23`,
+which exceeds this ambient, so the S2165 class-derived tight-entry route's
+entry hypothesis fails here at level 1 at `rounds = 2` while the actual-width
+route enters. -/
+theorem nestedDupWitness22_frontierSchedule_entry_fails_level1 :
+    ¬ (2 * (64 * frontierLayerGateCount nestedDupWitness22 1) ^ 2 *
+      (64 * frontierLayerGateCount nestedDupWitness22 1 *
+        frontierRecurrenceWidthSchedule nestedDupWitness22 1) ≤ 4194304) := by
+  rw [nestedDupWitness22_frontierGateCount_one,
+    nestedDupWitness22_frontierRecurrenceWidthSchedule_one]
+  decide
+
+/-- Bookkeeping comparison across different witnesses: this ambient `2^22`
+against the S2165 package's ambient `2^25`. -/
+theorem nestedDupWitness22_ambient_lt_sharedWitness25_ambient :
+    4194304 < 33554432 := by decide
+
 end FormulaRecursiveSyntacticTerminalNormalizedViewRoute
 end PvNP
