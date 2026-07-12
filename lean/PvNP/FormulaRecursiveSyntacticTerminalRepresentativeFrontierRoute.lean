@@ -617,5 +617,183 @@ against the S2166 package's ambient `2^22`. -/
 theorem dupSquareWitness19_ambient_lt_nestedDupWitness22_ambient :
     524288 < 4194304 := by decide
 
+/-! ## Depth-3 duplicated-cube witness at ambient `2^19` (S2168) -/
+
+/-- The depth-3 duplicate cube obtained by conjoining two copies of
+`dupSquareWitness19`. -/
+def dupCubeWitness19 : BDFormula 524288 :=
+  .and [dupSquareWitness19, dupSquareWitness19]
+
+/-- Singleton representatives for all four levels of `dupCubeWitness19`. -/
+def dupCubeRepLayer19 : Nat → List (BDFormula 524288)
+  | 0 => [dupCubeWitness19]
+  | 1 => [dupSquareWitness19]
+  | 2 => [dupSquareInner19]
+  | _ + 3 => [.lit { var := ⟨0, by decide⟩, sign := true }]
+
+theorem dupCubeWitness19_nonemptyFanin :
+    NonemptyFaninFormula dupCubeWitness19 := by
+  refine .and (List.cons_ne_nil _ _) ?_
+  intro G hG
+  simp [dupCubeWitness19] at hG
+  subst hG
+  exact dupSquareWitness19_nonemptyFanin
+
+private theorem dupCubeWitness19_syntacticDNF_eq :
+    syntacticDNF dupCubeWitness19 =
+      [[{ var := ⟨0, by decide⟩, sign := true },
+        { var := ⟨0, by decide⟩, sign := true },
+        { var := ⟨0, by decide⟩, sign := true },
+        { var := ⟨0, by decide⟩, sign := true },
+        { var := ⟨0, by decide⟩, sign := true },
+        { var := ⟨0, by decide⟩, sign := true },
+        { var := ⟨0, by decide⟩, sign := true },
+        { var := ⟨0, by decide⟩, sign := true }]] := by
+  simp [dupCubeWitness19, dupSquareWitness19, dupSquareInner19, syntacticDNF,
+    syntacticAndDNF, andDNF, FormulaSyntacticDNF.literalDNF,
+    FormulaSyntacticDNF.trueDNF]
+
+theorem dupCubeWitness19_syntacticDNF_not_simple :
+    ¬ SimpleDNF (syntacticDNF dupCubeWitness19) := by
+  intro h
+  have ht : ([{ var := ⟨0, by decide⟩, sign := true },
+      { var := ⟨0, by decide⟩, sign := true },
+      { var := ⟨0, by decide⟩, sign := true },
+      { var := ⟨0, by decide⟩, sign := true },
+      { var := ⟨0, by decide⟩, sign := true },
+      { var := ⟨0, by decide⟩, sign := true },
+      { var := ⟨0, by decide⟩, sign := true },
+      { var := ⟨0, by decide⟩, sign := true }] : Term 524288) ∈
+      syntacticDNF dupCubeWitness19 := by
+    rw [dupCubeWitness19_syntacticDNF_eq]
+    exact List.mem_cons_self _ _
+  have hs := h _ ht
+  simp [SimpleTerm] at hs
+
+theorem dupCubeWitness19_formulaSize :
+    formulaSize dupCubeWitness19 = 15 := by
+  simp [dupCubeWitness19, formulaSize_and, dupSquareWitness19_formulaSize]
+
+theorem dupCubeWitness19_depth : depth dupCubeWitness19 = 3 := by
+  simp [dupCubeWitness19, depth, dupSquareWitness19_depth]
+
+theorem dupCubeWitness19_recurrenceWidth :
+    formulaRecurrenceWidth dupCubeWitness19 = 8 := by
+  simp [dupCubeWitness19, formulaRecurrenceWidth_and,
+    dupSquareWitness19_recurrenceWidth]
+
+theorem dupCubeWitness19_frontierGateCount_zero :
+    frontierLayerGateCount dupCubeWitness19 0 = 1 :=
+  frontierLayerGateCount_zero dupCubeWitness19
+
+theorem dupCubeWitness19_frontierGateCount_one :
+    frontierLayerGateCount dupCubeWitness19 1 = 2 := by
+  rw [frontierLayerGateCount_eq_formulaDepthFrontier_length]
+  rfl
+
+theorem dupCubeWitness19_frontierGateCount_two :
+    frontierLayerGateCount dupCubeWitness19 2 = 4 := by
+  rw [frontierLayerGateCount_eq_formulaDepthFrontier_length]
+  rfl
+
+theorem dupCubeWitness19_frontierGateCount_three :
+    frontierLayerGateCount dupCubeWitness19 3 = 8 := by
+  rw [frontierLayerGateCount_eq_formulaDepthFrontier_length]
+  rfl
+
+theorem dupCubeWitness19_normalizedWidth :
+    widthDNF (normalizedDNFView dupCubeWitness19).D = 1 := by
+  rw [normalizedDNFView_D, dupCubeWitness19_syntacticDNF_eq]
+  rfl
+
+theorem dupCubeWitness19_normalizedFrontierWidthSchedule_zero :
+    normalizedFrontierWidthSchedule dupCubeWitness19 0 = 1 := by
+  simp [normalizedFrontierWidthSchedule, frontierMaxNormalizedWidth,
+    formulaDepthFrontier, depthFrontier, dupCubeWitness19_normalizedWidth]
+
+theorem dupCubeWitness19_normalizedFrontierWidthSchedule_one :
+    normalizedFrontierWidthSchedule dupCubeWitness19 1 = 1 := by
+  simp [normalizedFrontierWidthSchedule, frontierMaxNormalizedWidth,
+    dupCubeWitness19, formulaDepthFrontier, depthFrontier, topChildren,
+    dupSquareWitness19_normalizedWidth]
+
+theorem dupCubeWitness19_normalizedFrontierWidthSchedule_two :
+    normalizedFrontierWidthSchedule dupCubeWitness19 2 = 1 := by
+  simp [normalizedFrontierWidthSchedule, frontierMaxNormalizedWidth,
+    dupCubeWitness19, dupSquareWitness19, formulaDepthFrontier, depthFrontier,
+    topChildren, dupSquareInner19_normalizedWidth]
+
+theorem dupCubeWitness19_normalizedFrontierWidthSchedule_three :
+    normalizedFrontierWidthSchedule dupCubeWitness19 3 = 1 := by
+  simp [normalizedFrontierWidthSchedule, frontierMaxNormalizedWidth,
+    dupCubeWitness19, dupSquareWitness19, dupSquareInner19,
+    formulaDepthFrontier, depthFrontier, topChildren, litGate19_normalizedWidth]
+
+theorem dupCubeWitness19_representativeLayers :
+    ∀ level, level ≤ depth dupCubeWitness19 →
+      RepresentativeFrontierLayer dupCubeWitness19 level
+        (dupCubeRepLayer19 level) := by
+  intro level hlevel
+  have hcase : level = 0 ∨ level = 1 ∨ level = 2 ∨ level = 3 := by
+    rw [dupCubeWitness19_depth] at hlevel
+    omega
+  rcases hcase with rfl | rfl | rfl | rfl <;>
+    constructor <;> intro G hG <;>
+    simp [RepresentativeFrontierLayer, dupCubeRepLayer19, formulaDepthFrontier,
+      depthFrontier, topChildren, dupCubeWitness19, dupSquareWitness19,
+      dupSquareInner19] at hG ⊢ <;> assumption
+
+theorem dupCubeRepLayer19_length :
+    ∀ level, (dupCubeRepLayer19 level).length = 1
+  | 0 => rfl
+  | 1 => rfl
+  | 2 => rfl
+  | _ + 3 => rfl
+
+theorem dupCubeWitness19_entryProduct_eq :
+    2 * (64 * 1) ^ 2 * (64 * 1 * 1) = 524288 := by decide
+
+theorem dupCubeWitness19_finalTree_allLevels_rounds2 :
+    ∀ level, level ≤ depth dupCubeWitness19 →
+      RepresentativeNormalizedViewClassDepthFinalTreeAt dupCubeWitness19
+        (fun _ => 15) (normalizedFrontierWidthSchedule dupCubeWitness19)
+        3 2 ParentKind.and level (dupCubeRepLayer19 level) := by
+  refine allRepresentativeFrontiers_geometricCollapse_finalTree_tightEntry_normalizedWidth
+    dupCubeWitness19 (fun _ => 15) 3 2 ParentKind.and dupCubeRepLayer19
+      dupCubeWitness19_nonemptyFanin (Nat.le_of_eq dupCubeWitness19_depth)
+      (Nat.le_of_eq dupCubeWitness19_formulaSize)
+      dupCubeWitness19_representativeLayers ?_ ?_
+  · intro level _
+    rw [dupCubeRepLayer19_length]
+    decide
+  · intro level hlevel
+    have hcase : level = 0 ∨ level = 1 ∨ level = 2 ∨ level = 3 := by
+      rw [dupCubeWitness19_depth] at hlevel
+      omega
+    rcases hcase with rfl | rfl | rfl | rfl
+    · rw [dupCubeRepLayer19_length,
+        dupCubeWitness19_normalizedFrontierWidthSchedule_zero]
+      decide
+    · rw [dupCubeRepLayer19_length,
+        dupCubeWitness19_normalizedFrontierWidthSchedule_one]
+      decide
+    · rw [dupCubeRepLayer19_length,
+        dupCubeWitness19_normalizedFrontierWidthSchedule_two]
+      decide
+    · rw [dupCubeRepLayer19_length,
+        dupCubeWitness19_normalizedFrontierWidthSchedule_three]
+      decide
+
+theorem dupCubeWitness19_rawCount_entry_fails_level3 :
+    ¬ (2 * (64 * frontierLayerGateCount dupCubeWitness19 3) ^ 2 *
+      (64 * frontierLayerGateCount dupCubeWitness19 3 *
+        normalizedFrontierWidthSchedule dupCubeWitness19 3) ≤ 524288) := by
+  rw [dupCubeWitness19_frontierGateCount_three,
+    dupCubeWitness19_normalizedFrontierWidthSchedule_three]
+  decide
+
+theorem dupCubeWitness19_rawCount_entryProduct_level3_eq :
+    2 * (64 * 8) ^ 2 * (64 * 8 * 1) = 268435456 := by decide
+
 end FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute
 end PvNP
