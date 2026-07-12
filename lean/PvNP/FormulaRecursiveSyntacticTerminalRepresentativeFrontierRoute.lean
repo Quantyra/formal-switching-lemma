@@ -1198,6 +1198,67 @@ theorem allDedupFrontiers_geometricCollapse_finalTree_tightEntryStar_normalizedW
   exact dedupFrontier_geometricCollapse_finalTree_tightEntryStar_normalizedWidth
     F S d level rounds parent hNE hDepth hSize hk (hnAll level hk)
 
+/-! Public coefficient-32 naming aliases.  These preserve the S2170 payload
+and hypotheses while spelling the changed entry coefficient explicitly. -/
+
+theorem representativeFrontier_geometricCollapseWithSuppliedWidth_finalTree_tightEntry32
+    {n : Nat} (F : BDFormula n) (S W : Nat → Nat)
+    (d level rounds : Nat) (parent : ParentKind) (gs : List (BDFormula n))
+    (hrep : RepresentativeFrontierLayer F level gs)
+    (hDepth : depth F ≤ d) (hSize : formulaSize F ≤ S d)
+    (hNE : NonemptyFaninFormula F) (hk : level ≤ depth F)
+    (hcount : gs.length ≤ S d)
+    (hw : ∀ g ∈ (representativeMinimalLayer gs parent).gates,
+      widthDNF g.theDNF ≤ W level)
+    (hw1 : 1 ≤ W level)
+    (hn : 2 * (64 * gs.length) ^ rounds * (32 * gs.length * W level) ≤ n) :
+    RepresentativeNormalizedViewClassDepthFinalTreeAtTightEntryStar F S W d rounds parent
+      level gs :=
+  representativeFrontier_geometricCollapseWithSuppliedWidth_finalTree_tightEntryStar
+    F S W d level rounds parent gs hrep hDepth hSize hNE hk hcount hw hw1 hn
+
+theorem representativeFrontier_geometricCollapse_finalTree_tightEntry_normalizedWidth32
+    {n : Nat} (F : BDFormula n) (S : Nat → Nat) (d level rounds : Nat)
+    (parent : ParentKind) (gs : List (BDFormula n))
+    (hrep : RepresentativeFrontierLayer F level gs) (hNE : NonemptyFaninFormula F)
+    (hDepth : depth F ≤ d) (hSize : formulaSize F ≤ S d)
+    (hk : level ≤ depth F) (hcount : gs.length ≤ S d)
+    (hn : 2 * (64 * gs.length) ^ rounds *
+      (32 * gs.length * normalizedFrontierWidthSchedule F level) ≤ n) :
+    RepresentativeNormalizedViewClassDepthFinalTreeAtTightEntryStar F S
+      (normalizedFrontierWidthSchedule F) d rounds parent level gs :=
+  representativeFrontier_geometricCollapse_finalTree_tightEntryStar_normalizedWidth
+    F S d level rounds parent gs hrep hNE hDepth hSize hk hcount hn
+
+theorem allDedupFrontiers_geometricCollapse_finalTree_tightEntry_normalizedWidth32
+    {n : Nat} (F : BDFormula n) (S : Nat → Nat) (d rounds : Nat)
+    (parent : ParentKind) (hNE : NonemptyFaninFormula F)
+    (hDepth : depth F ≤ d) (hSize : formulaSize F ≤ S d)
+    (hnAll : ∀ level, level ≤ depth F →
+      2 * (64 * (dedupRepresentativeFrontier F level).length) ^ rounds *
+        (32 * (dedupRepresentativeFrontier F level).length *
+          normalizedFrontierWidthSchedule F level) ≤ n) :
+    ∀ level, level ≤ depth F →
+      RepresentativeNormalizedViewClassDepthFinalTreeAtTightEntryStar F S
+        (normalizedFrontierWidthSchedule F) d rounds parent level
+        (dedupRepresentativeFrontier F level) :=
+  allDedupFrontiers_geometricCollapse_finalTree_tightEntryStar_normalizedWidth
+    F S d rounds parent hNE hDepth hSize hnAll
+
+theorem dedupFrontier_geometricCollapse_finalTree_tightEntry_normalizedWidth32
+    {n : Nat} (F : BDFormula n) (S : Nat → Nat) (d level rounds : Nat)
+    (parent : ParentKind) (hNE : NonemptyFaninFormula F)
+    (hDepth : depth F ≤ d) (hSize : formulaSize F ≤ S d)
+    (hk : level ≤ depth F)
+    (hn : 2 * (64 * (dedupRepresentativeFrontier F level).length) ^ rounds *
+      (32 * (dedupRepresentativeFrontier F level).length *
+        normalizedFrontierWidthSchedule F level) ≤ n) :
+    RepresentativeNormalizedViewClassDepthFinalTreeAtTightEntryStar F S
+      (normalizedFrontierWidthSchedule F) d rounds parent level
+      (dedupRepresentativeFrontier F level) :=
+  dedupFrontier_geometricCollapse_finalTree_tightEntryStar_normalizedWidth
+    F S d level rounds parent hNE hDepth hSize hk hn
+
 /-! ## The dedup route on the depth-3 cube witness (S2169) -/
 
 private theorem dedup_replicate_succ {α : Type _} [DecidableEq α] (a : α) :
@@ -1376,6 +1437,16 @@ theorem dupCubeWitness18_tightEntryProduct_eq :
 /-- The former coefficient-`64` entry product fails at ambient `2^18`. -/
 theorem dupCubeWitness18_coarseEntryProduct_fails :
     ¬ (2 * (64 * 1) ^ 2 * (64 * 1 * 1) ≤ 262144) := by decide
+
+/-- Exact coefficient-32 schedule-entry arithmetic at ambient `2^18`. -/
+theorem dupCubeWitness19_tightEntry_product_eq :
+    2 * (64 * 1) ^ 2 * (32 * 1 * 1) = 262144 :=
+  dupCubeWitness18_tightEntryProduct_eq
+
+/-- The former coefficient-64 schedule entry does not fit ambient `2^18`. -/
+theorem dupCubeWitness19_oldEntry_fails_at_2pow18 :
+    ¬ (2 * (64 * 1) ^ 2 * (64 * 1 * 1) ≤ 262144) :=
+  dupCubeWitness18_coarseEntryProduct_fails
 
 /-- Requested S2170 all-level pin: despite the retained historical `19` in
 the declaration name, this theorem is over `dupCubeWitness18` at ambient
