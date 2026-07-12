@@ -542,6 +542,36 @@ private theorem regime_space_bound {m w n : Nat} :
   rw [h3] at h2
   exact Nat.le_trans h2 h4
 
+private theorem regime_space_bound_tightEntry {m w n : Nat} :
+    32 * m * w * (n / (32 * m * w)) ≤ n := by
+  rw [Nat.mul_comm (32 * m * w) (n / (32 * m * w))]
+  exact Nat.div_mul_le_self n (32 * m * w)
+
+/-- The ratio coefficient `32` can also be used in the entry divisor; later
+stages retain the geometric divisor `64*m`. -/
+theorem geometric_regime_of_bound_tightEntry {m w n : Nat}
+    (hm : 1 ≤ m) (hw : 1 ≤ w) (k : Nat)
+    (hn : 2 * (64 * m) ^ k * (32 * m * w) ≤ n) :
+    RegimeFrom m w n
+      (geometricSchedule m (n / (32 * m * w)) (k + 1)) := by
+  have hq : 0 < 32 * m * w :=
+    Nat.mul_pos (Nat.mul_pos (by decide) hm) hw
+  refine geometricSchedule_regime hm k (n / (32 * m * w)) n w hw ?_ ?_
+  · rw [Nat.le_div_iff_mul_le hq]
+    exact hn
+  · exact regime_space_bound_tightEntry
+
+/-- The former coefficient-`64` product is a sufficient coarse corollary of
+the tighter entry condition. -/
+theorem geometric_regime_of_bound_of_coarse {m w n : Nat}
+    (hm : 1 ≤ m) (hw : 1 ≤ w) (k : Nat)
+    (hn : 2 * (64 * m) ^ k * (64 * m * w) ≤ n) :
+    RegimeFrom m w n
+      (geometricSchedule m (n / (32 * m * w)) (k + 1)) := by
+  apply geometric_regime_of_bound_tightEntry hm hw k
+  exact Nat.le_trans (Nat.mul_le_mul_left (2 * (64 * m) ^ k)
+    (Nat.mul_le_mul_right w (Nat.mul_le_mul_right m (by decide)))) hn
+
 /-- One clean entry bound `2 * (64*m)^k * (64*m*w) <= n` puts the geometric
 schedule with entry stars `n / (64*m*w)` inside the ratio regime over the
 full `n`-variable space. -/
