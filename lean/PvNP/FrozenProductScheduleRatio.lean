@@ -381,6 +381,63 @@ theorem geometricSchedule_treeBudget (m q : Nat) :
         (depth - 1)⟩
       exact Nat.le_of_eq (Nat.mul_one m)
 
+/-! ## Uniform coefficient-32 geometric schedule (S2171) -/
+
+def geometricSchedule32 (m : Nat) : Nat → Nat → List ScheduleStage
+  | _, 0 => []
+  | l, k + 1 => ScheduleStage.mk 2 l :: geometricSchedule32 m (l / (32 * m)) k
+
+theorem geometricSchedule32_length (m : Nat) :
+    ∀ (k l : Nat), (geometricSchedule32 m l k).length = k
+  | 0, _ => rfl
+  | k + 1, l => by
+      rw [geometricSchedule32, List.length_cons, geometricSchedule32_length m k]
+
+theorem geometricSchedule32_budgets (m : Nat) :
+    ∀ (k l : Nat),
+      (geometricSchedule32 m l k).map stageS = List.replicate k 2
+  | 0, _ => rfl
+  | k + 1, l => by
+      rw [geometricSchedule32, List.map_cons, geometricSchedule32_budgets m k,
+        List.replicate_succ]
+      rfl
+
+private theorem div_step_regime32 {m l : Nat} :
+    32 * m * 1 * (l / (32 * m)) ≤ l := by
+  rw [Nat.mul_one, Nat.mul_comm (32 * m) (l / (32 * m))]
+  exact Nat.div_mul_le_self l (32 * m)
+
+private theorem div_step_lower32 {m l k : Nat} (hq : 0 < 32 * m)
+    (h : 2 * (32 * m) ^ (k + 1) ≤ l) :
+    2 * (32 * m) ^ k ≤ l / (32 * m) := by
+  rw [Nat.le_div_iff_mul_le hq, Nat.mul_assoc, ← Nat.pow_succ]
+  exact h
+
+private theorem two_le_of_pow32 {m l k : Nat} (hq : 0 < 32 * m)
+    (h : 2 * (32 * m) ^ k ≤ l) : 2 ≤ l := by
+  have h1 : 1 ≤ (32 * m) ^ k := Nat.pos_pow_of_pos k hq
+  exact Nat.le_trans (by simpa using Nat.mul_le_mul_left 2 h1) h
+
+theorem geometricSchedule32_regime {m : Nat} (hm : 1 ≤ m) :
+    ∀ (k l p w : Nat), 1 ≤ w → 2 * (32 * m) ^ k ≤ l →
+      32 * m * w * l ≤ p → RegimeFrom m w p (geometricSchedule32 m l (k + 1))
+  | 0, l, p, w, hw, hl, hp => by
+      have hq : 0 < 32 * m := Nat.mul_pos (by decide) hm
+      exact ⟨hw, ⟨(by decide : (1 : Nat) ≤ 2), two_le_of_pow32 hq hl, hp⟩, trivial⟩
+  | k + 1, l, p, w, hw, hl, hp => by
+      have hq : 0 < 32 * m := Nat.mul_pos (by decide) hm
+      refine ⟨hw, ⟨(by decide : (1 : Nat) ≤ 2), two_le_of_pow32 hq hl, hp⟩, ?_⟩
+      exact geometricSchedule32_regime hm k (l / (32 * m)) l 1 (Nat.le_refl 1)
+        (div_step_lower32 hq hl) div_step_regime32
+
+theorem geometricSchedule32_treeBudget (m q : Nat) :
+    ∀ (k l depth : Nat),
+      TreeBudgetFrom (fun _ _ => m) m depth (geometricSchedule32 q l k)
+  | 0, _, _ => trivial
+  | k + 1, l, depth => by
+      refine ⟨Nat.le_of_eq (Nat.mul_one m),
+        geometricSchedule32_treeBudget m q k (l / (32 * q)) (depth - 1)⟩
+
 /-! ## The supplied start-layer family (one single-literal width-1 gate) -/
 
 /-- The family's start literal for `n + 1` variables: variable `0`,
@@ -546,6 +603,19 @@ private theorem regime_space_bound_tightEntry {m w n : Nat} :
     32 * m * w * (n / (32 * m * w)) ≤ n := by
   rw [Nat.mul_comm (32 * m * w) (n / (32 * m * w))]
   exact Nat.div_mul_le_self n (32 * m * w)
+
+/-- One uniform coefficient-32 product bound validates the coefficient-32
+schedule over the full ambient space. -/
+theorem geometric_regime_of_bound32 {m w n : Nat}
+    (hm : 1 ≤ m) (hw : 1 ≤ w) (k : Nat)
+    (hn : 2 * (32 * m) ^ k * (32 * m * w) ≤ n) :
+    RegimeFrom m w n
+      (geometricSchedule32 m (n / (32 * m * w)) (k + 1)) := by
+  have hq : 0 < 32 * m * w := Nat.mul_pos (Nat.mul_pos (by decide) hm) hw
+  refine geometricSchedule32_regime hm k (n / (32 * m * w)) n w hw ?_
+    regime_space_bound_tightEntry
+  rw [Nat.le_div_iff_mul_le hq]
+  exact hn
 
 /-- The ratio coefficient `32` can also be used in the entry divisor; later
 stages retain the geometric divisor `64*m`. -/

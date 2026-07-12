@@ -105,6 +105,67 @@ import PvNP.FormulaVarWidthSchedule
 import PvNP.MixedFormulaFamilyCollapse
 import PvNP.ScheduledCollapseDemo
 
+/-! S2171 uniform coefficient-32 schedule pins. -/
+
+/-- info: 'PvNP.FrozenProductScheduleRatio.geometricSchedule32' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.geometricSchedule32
+/-- info: 'PvNP.FrozenProductScheduleRatio.geometricSchedule32_length' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.geometricSchedule32_length
+/-- info: 'PvNP.FrozenProductScheduleRatio.geometricSchedule32_budgets' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.geometricSchedule32_budgets
+/-- info: 'PvNP.FrozenProductScheduleRatio.geometricSchedule32_regime' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.geometricSchedule32_regime
+/-- info: 'PvNP.FrozenProductScheduleRatio.geometricSchedule32_treeBudget' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.geometricSchedule32_treeBudget
+/-- info: 'PvNP.FrozenProductScheduleRatio.geometric_regime_of_bound32' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.geometric_regime_of_bound32
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.RepresentativeNormalizedViewClassDepthFinalTreeAtUniform32' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.RepresentativeNormalizedViewClassDepthFinalTreeAtUniform32
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.representativeFrontier_geometricCollapseWithSuppliedWidth_finalTree_uniform32' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.representativeFrontier_geometricCollapseWithSuppliedWidth_finalTree_uniform32
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.representativeFrontier_geometricCollapse_finalTree_uniform32_normalizedWidth' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.representativeFrontier_geometricCollapse_finalTree_uniform32_normalizedWidth
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.allDedupFrontiers_geometricCollapse_finalTree_uniform32_normalizedWidth' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.allDedupFrontiers_geometricCollapse_finalTree_uniform32_normalizedWidth
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dedupFrontier_geometricCollapse_finalTree_uniform32_normalizedWidth' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dedupFrontier_geometricCollapse_finalTree_uniform32_normalizedWidth
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness16' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness16
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness16_uniform32_product_eq' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness16_uniform32_product_eq
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness16_s2170_product_fails' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness16_s2170_product_fails
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness16_dedup_finalTree_allLevels_rounds2_uniform32' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness16_dedup_finalTree_allLevels_rounds2_uniform32
+
 /-! S2170 coefficient-32 entry-star rebalance pins. -/
 
 /-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.representativeFrontier_geometricCollapseWithSuppliedWidth_finalTree_tightEntry32' depends on axioms: [propext,

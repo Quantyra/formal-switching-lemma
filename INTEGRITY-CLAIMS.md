@@ -529,6 +529,16 @@ duplicate-stage code has only one recovered row, so the current all-
   switching factor `(8w)^s`, not a ratio coefficient below `32`, not three
   rounds at ambient `2^19` with unit parameters, not full B4, PHP switching,
   Frege/PHP, NP/circuit, Gate A reopening, or P-vs-NP;
+- any broad consequence from S2171: the new schedule changes only the geometric
+  stage divisor from `64*m` to `32*m`, uniformly matching the existing ratio
+  coefficient.  The route remains conditional on the corresponding
+  representative-layer/class-bound/product inputs; supplied-layer variants
+  take layers explicitly; dedup variants synthesize `dedupRepresentativeFrontier`;
+  normalized-width variants derive width bounds internally from class-depth
+  data.  Stage budget `2`, final-tree payload, and `t(d,s)=S(d)*(s-1)` are unchanged.
+  The ambient-`2^16` object is one finite duplicated-cube witness, not
+  arbitrary-formula synthesis, full B4, PHP switching, Frege/PHP, NP/circuit,
+  Gate A, or a P-vs-NP implication.
 - unsupplied or automatically synthesized product hypotheses for the scheduled
   route: `FrozenProductSchedule` proves only that an explicit
   `FrozenProductHypothesis` over a supplied `B` and `t` yields `ValidFrom` and
@@ -639,6 +649,13 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness19_dedup_finalTree_allLevels_rounds2_ambient18` | `propext`, `Classical.choice`, `Quot.sound` | S2170 ambient-`2^18` all-level synthesized two-round instance |
 | `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.representativeFrontier_geometricCollapseWithSuppliedWidth_finalTree_tightEntry32` / `representativeFrontier_geometricCollapse_finalTree_tightEntry_normalizedWidth32` / `allDedupFrontiers_geometricCollapse_finalTree_tightEntry_normalizedWidth32` / `dedupFrontier_geometricCollapse_finalTree_tightEntry_normalizedWidth32` | `propext`, `Classical.choice`, `Quot.sound` | Public coefficient-32 aliases for the existing S2170 consumers |
 | `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness19_tightEntry_product_eq` / `dupCubeWitness19_oldEntry_fails_at_2pow18` | `propext` | Public exact coefficient-32 product and former coefficient-64 failure pins at ambient `2^18` |
+| `PvNP.FrozenProductScheduleRatio.geometricSchedule32` / `geometricSchedule32_length` / `geometricSchedule32_budgets` / `geometricSchedule32_treeBudget` | none | S2171 uniform coefficient-32 schedule bookkeeping |
+| `PvNP.FrozenProductScheduleRatio.geometricSchedule32_regime` / `geometric_regime_of_bound32` | `propext` | S2171 ratio-regime and ambient-product bounds |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.RepresentativeNormalizedViewClassDepthFinalTreeAtUniform32` | `propext`, `Classical.choice`, `Quot.sound` | S2171 uniform-32 representative payload |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.representativeFrontier_geometricCollapseWithSuppliedWidth_finalTree_uniform32` / `representativeFrontier_geometricCollapse_finalTree_uniform32_normalizedWidth` / `allDedupFrontiers_geometricCollapse_finalTree_uniform32_normalizedWidth` / `dedupFrontier_geometricCollapse_finalTree_uniform32_normalizedWidth` | `propext`, `Classical.choice`, `Quot.sound` | S2171 four public consumers |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness16` | none | S2171 finite ambient-`2^16` duplicated-cube witness |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness16_uniform32_product_eq` / `dupCubeWitness16_s2170_product_fails` | `propext` | S2171 exact uniform product and S2170-product separation |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness16_dedup_finalTree_allLevels_rounds2_uniform32` | `propext`, `Classical.choice`, `Quot.sound` | S2171 ambient-`2^16` all-level synthesized two-round instance |
 | `PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.widthDNF_syntacticDNF_le_recurrenceWidth` | `propext`, `Quot.sound` | S2164 hypothesis-free structural width bookkeeping |
 | `PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.emptyAndOne` | none | S2164 empty-fanin witness |
 | `PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.emptyAndOne_recurrenceWidth` | `propext`, `Quot.sound` | S2164 empty-fanin recurrence-width pin |
