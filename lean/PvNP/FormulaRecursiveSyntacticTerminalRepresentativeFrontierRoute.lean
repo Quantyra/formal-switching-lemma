@@ -1,3 +1,4 @@
+import Mathlib.Data.List.Dedup
 import PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute
 
 /-!
@@ -13,8 +14,13 @@ per-stage budget `2`, and the geometric star schedule are unchanged; only the
 disclosed representative layer and a transported final clause are new.
 
 Representative layers replace only syntactic duplicate gate copies by
-membership-equal lists.  This is not semantic formula minimization, an
-arbitrary bounded-depth collapse theorem, a threshold improvement, full B4,
+membership-equal lists.  The synthesized route (S2169) adds decidable
+syntactic equality for raw formulas and `dedupRepresentativeFrontier`, the
+`List.dedup` of the raw frontier, whose representative-layer membership,
+duplicate-freeness, and count bounds are proved once and for all, so
+consumers no longer take supplied layer lists, membership proofs, or count
+obligations.  This is not semantic formula minimization, an arbitrary
+bounded-depth collapse theorem, a threshold improvement, full B4,
 PHP switching, Frege/PHP, a circuit lower bound, Gate A, or P-versus-NP.
 
 INTEGRITY: no `sorry`, no `admit`, no new `axiom`, no `native_decide`.
@@ -794,6 +800,301 @@ theorem dupCubeWitness19_rawCount_entry_fails_level3 :
 
 theorem dupCubeWitness19_rawCount_entryProduct_level3_eq :
     2 * (64 * 8) ^ 2 * (64 * 8 * 1) = 268435456 := by decide
+
+/-! ## Synthesized duplicate-free representative layers (S2169)
+
+Decidable syntactic equality for raw formulas makes `List.dedup` available on
+raw depth frontiers.  `dedupRepresentativeFrontier` is then AUTOMATICALLY a
+representative layer: its membership equations, duplicate-freeness, and count
+bounds are proved once for every formula and level, so the consumers below
+drop the manually supplied layer lists (`gsAll`), membership proofs
+(`hrepAll`), and count obligations (`hcountAll`) of the S2167 route. -/
+
+mutual
+
+/-- Structural Boolean equality of raw formulas. -/
+def formulaBEq {n : Nat} : BDFormula n → BDFormula n → Bool
+  | .tru, .tru => true
+  | .fls, .fls => true
+  | .lit a, .lit b => decide (a = b)
+  | .and xs, .and ys => formulaListBEq xs ys
+  | .or xs, .or ys => formulaListBEq xs ys
+  | _, _ => false
+termination_by F _ => sizeOf F
+decreasing_by all_goals (simp_wf; try omega)
+
+/-- Structural Boolean equality of raw-formula lists. -/
+def formulaListBEq {n : Nat} : List (BDFormula n) → List (BDFormula n) → Bool
+  | [], [] => true
+  | x :: xs, y :: ys => formulaBEq x y && formulaListBEq xs ys
+  | [], _ :: _ => false
+  | _ :: _, [] => false
+termination_by xs _ => sizeOf xs
+decreasing_by all_goals (simp_wf; try omega)
+
+end
+
+private theorem formulaListBEq_eq_true_iff {n : Nat} :
+    ∀ (xs ys : List (BDFormula n)),
+      (∀ f ∈ xs, ∀ G, formulaBEq f G = true ↔ f = G) →
+      (formulaListBEq xs ys = true ↔ xs = ys)
+  | [], [], _ => by simp [formulaListBEq]
+  | [], _ :: _, _ => by simp [formulaListBEq]
+  | _ :: _, [], _ => by simp [formulaListBEq]
+  | x :: xs, y :: ys, h => by
+      have hx := h x (List.mem_cons_self x xs) y
+      have hxs := formulaListBEq_eq_true_iff xs ys
+        (fun f hf G => h f (List.mem_cons_of_mem x hf) G)
+      simp only [formulaListBEq, Bool.and_eq_true, List.cons.injEq, hx, hxs]
+
+/-- Structural Boolean equality decides propositional equality. -/
+theorem formulaBEq_eq_true_iff {n : Nat} (F : BDFormula n) :
+    ∀ G, formulaBEq F G = true ↔ F = G := by
+  induction F using BDFormula.recAux with
+  | htru => intro G; cases G <;> simp [formulaBEq]
+  | hfls => intro G; cases G <;> simp [formulaBEq]
+  | hlit a => intro G; cases G <;> simp [formulaBEq]
+  | hand xs ih =>
+      intro G
+      cases G with
+      | and ys => simp only [formulaBEq, BDFormula.and.injEq,
+          formulaListBEq_eq_true_iff xs ys ih]
+      | tru => simp [formulaBEq]
+      | fls => simp [formulaBEq]
+      | lit b => simp [formulaBEq]
+      | or ys => simp [formulaBEq]
+  | hor xs ih =>
+      intro G
+      cases G with
+      | or ys => simp only [formulaBEq, BDFormula.or.injEq,
+          formulaListBEq_eq_true_iff xs ys ih]
+      | tru => simp [formulaBEq]
+      | fls => simp [formulaBEq]
+      | lit b => simp [formulaBEq]
+      | and ys => simp [formulaBEq]
+
+/-- Raw formulas have decidable syntactic equality (module-local). -/
+local instance instDecidableEqBDFormula {n : Nat} : DecidableEq (BDFormula n) :=
+  fun F G =>
+    if h : formulaBEq F G = true then
+      isTrue ((formulaBEq_eq_true_iff F G).mp h)
+    else
+      isFalse fun hFG => h ((formulaBEq_eq_true_iff F G).mpr hFG)
+
+/-- The synthesized representative layer: the raw depth frontier with
+syntactic duplicates removed. -/
+def dedupRepresentativeFrontier {n : Nat} (F : BDFormula n) (level : Nat) :
+    List (BDFormula n) :=
+  (formulaDepthFrontier level F).dedup
+
+/-- The synthesized layer is a representative layer of its own frontier with
+zero supplied hypotheses. -/
+theorem dedupRepresentativeFrontier_representative {n : Nat} (F : BDFormula n)
+    (level : Nat) :
+    RepresentativeFrontierLayer F level (dedupRepresentativeFrontier F level) :=
+  ⟨fun _ hG => List.mem_dedup.mp hG, fun _ hG => List.mem_dedup.mpr hG⟩
+
+/-- The synthesized layer is duplicate-free. -/
+theorem dedupRepresentativeFrontier_nodup {n : Nat} (F : BDFormula n)
+    (level : Nat) : (dedupRepresentativeFrontier F level).Nodup :=
+  List.nodup_dedup (formulaDepthFrontier level F)
+
+/-- The synthesized layer never exceeds the raw frontier gate count. -/
+theorem dedupRepresentativeFrontier_length_le_frontierGateCount {n : Nat}
+    (F : BDFormula n) (level : Nat) :
+    (dedupRepresentativeFrontier F level).length ≤
+      frontierLayerGateCount F level := by
+  rw [frontierLayerGateCount_eq_formulaDepthFrontier_length]
+  exact (List.dedup_sublist (formulaDepthFrontier level F)).length_le
+
+/-- The synthesized layer never exceeds the formula size, so the S2167 count
+obligation is derivable from the class size hypothesis alone. -/
+theorem dedupRepresentativeFrontier_length_le_formulaSize {n : Nat}
+    (F : BDFormula n) (level : Nat) :
+    (dedupRepresentativeFrontier F level).length ≤ formulaSize F :=
+  Nat.le_trans
+    (dedupRepresentativeFrontier_length_le_frontierGateCount F level)
+    (frontierLayerGateCount_le_formulaSize F level)
+
+/-- In-depth synthesized layers of nonempty-fanin formulas are nonempty. -/
+theorem dedupRepresentativeFrontier_length_pos {n : Nat} {F : BDFormula n}
+    {level : Nat} (hNE : NonemptyFaninFormula F) (hk : level ≤ depth F) :
+    1 ≤ (dedupRepresentativeFrontier F level).length :=
+  representative_length_pos hNE hk
+    (dedupRepresentativeFrontier_representative F level)
+
+/-! ## Consumers over synthesized layers -/
+
+/-- All-level supplied-width tight-entry consumer over synthesized layers:
+the manually supplied per-level layer lists, membership proofs, and count
+obligations of the S2167 consumer are all synthesized from the raw formula.
+Only the class data and the per-level width and ambient obligations remain. -/
+theorem allDedupFrontiers_geometricCollapseWithSuppliedWidth_finalTree_tightEntry
+    {n : Nat} (F : BDFormula n) (S W : Nat → Nat)
+    (d rounds : Nat) (parent : ParentKind)
+    (hDepth : depth F ≤ d) (hSize : formulaSize F ≤ S d)
+    (hNE : NonemptyFaninFormula F)
+    (hwAll : ∀ level, level ≤ depth F →
+      ∀ g ∈ (representativeMinimalLayer
+        (dedupRepresentativeFrontier F level) parent).gates,
+        widthDNF g.theDNF ≤ W level)
+    (hwPos : ∀ level, level ≤ depth F → 1 ≤ W level)
+    (hnAll : ∀ level, level ≤ depth F →
+      2 * (64 * (dedupRepresentativeFrontier F level).length) ^ rounds *
+        (64 * (dedupRepresentativeFrontier F level).length * W level) ≤ n) :
+    ∀ level, level ≤ depth F →
+      RepresentativeNormalizedViewClassDepthFinalTreeAt F S W d rounds parent
+        level (dedupRepresentativeFrontier F level) :=
+  allRepresentativeFrontiers_geometricCollapseWithSuppliedWidth_finalTree_tightEntry
+    F S W d rounds parent (dedupRepresentativeFrontier F) hDepth hSize hNE
+    (fun level _ => dedupRepresentativeFrontier_representative F level)
+    (fun level _ => Nat.le_trans
+      (dedupRepresentativeFrontier_length_le_formulaSize F level) hSize)
+    hwAll hwPos hnAll
+
+/-- Single-level class-derived consumer over the synthesized layer using the
+actual normalized-frontier DNF width schedule: the only witness-specific
+obligation is the ambient entry product. -/
+theorem dedupFrontier_geometricCollapse_finalTree_tightEntry_normalizedWidth
+    {n : Nat} (F : BDFormula n) (S : Nat → Nat)
+    (d level rounds : Nat) (parent : ParentKind)
+    (hNE : NonemptyFaninFormula F) (hDepth : depth F ≤ d)
+    (hSize : formulaSize F ≤ S d) (hk : level ≤ depth F)
+    (hn : 2 * (64 * (dedupRepresentativeFrontier F level).length) ^ rounds *
+      (64 * (dedupRepresentativeFrontier F level).length *
+        normalizedFrontierWidthSchedule F level) ≤ n) :
+    RepresentativeNormalizedViewClassDepthFinalTreeAt F S
+      (normalizedFrontierWidthSchedule F) d rounds parent level
+      (dedupRepresentativeFrontier F level) :=
+  representativeFrontier_geometricCollapse_finalTree_tightEntry_normalizedWidth
+    F S d level rounds parent (dedupRepresentativeFrontier F level)
+    (dedupRepresentativeFrontier_representative F level) hNE hDepth hSize hk
+    (Nat.le_trans (dedupRepresentativeFrontier_length_le_formulaSize F level)
+      hSize)
+    hn
+
+/-- All-level class-derived consumer over synthesized layers using the actual
+normalized-frontier DNF width schedule: for every nonempty-fanin formula in
+class `(d, S)`, the only remaining per-level obligation is the ambient entry
+product over the synthesized count. -/
+theorem allDedupFrontiers_geometricCollapse_finalTree_tightEntry_normalizedWidth
+    {n : Nat} (F : BDFormula n) (S : Nat → Nat)
+    (d rounds : Nat) (parent : ParentKind)
+    (hNE : NonemptyFaninFormula F) (hDepth : depth F ≤ d)
+    (hSize : formulaSize F ≤ S d)
+    (hnAll : ∀ level, level ≤ depth F →
+      2 * (64 * (dedupRepresentativeFrontier F level).length) ^ rounds *
+        (64 * (dedupRepresentativeFrontier F level).length *
+          normalizedFrontierWidthSchedule F level) ≤ n) :
+    ∀ level, level ≤ depth F →
+      RepresentativeNormalizedViewClassDepthFinalTreeAt F S
+        (normalizedFrontierWidthSchedule F) d rounds parent level
+        (dedupRepresentativeFrontier F level) := by
+  intro level hk
+  exact dedupFrontier_geometricCollapse_finalTree_tightEntry_normalizedWidth
+    F S d level rounds parent hNE hDepth hSize hk (hnAll level hk)
+
+/-! ## The dedup route on the depth-3 cube witness (S2169) -/
+
+private theorem dedup_replicate_succ {α : Type _} [DecidableEq α] (a : α) :
+    ∀ k, (List.replicate (k + 1) a).dedup = [a]
+  | 0 => by
+      rw [List.replicate_succ, List.replicate_zero,
+        List.dedup_cons_of_not_mem (List.not_mem_nil a), List.dedup_nil]
+  | k + 1 => by
+      rw [List.replicate_succ, List.dedup_cons_of_mem (by simp),
+        dedup_replicate_succ a k]
+
+/-- The synthesized level-0 layer coincides with the hand-supplied S2168
+representative layer. -/
+theorem dupCubeWitness19_dedupFrontier_zero :
+    dedupRepresentativeFrontier dupCubeWitness19 0 = dupCubeRepLayer19 0 :=
+  dedup_replicate_succ dupCubeWitness19 0
+
+/-- The synthesized level-1 layer coincides with the hand-supplied S2168
+representative layer: the two duplicate square copies collapse to one. -/
+theorem dupCubeWitness19_dedupFrontier_one :
+    dedupRepresentativeFrontier dupCubeWitness19 1 = dupCubeRepLayer19 1 :=
+  dedup_replicate_succ dupSquareWitness19 1
+
+/-- The synthesized level-2 layer coincides with the hand-supplied S2168
+representative layer: the four duplicate inner copies collapse to one. -/
+theorem dupCubeWitness19_dedupFrontier_two :
+    dedupRepresentativeFrontier dupCubeWitness19 2 = dupCubeRepLayer19 2 :=
+  dedup_replicate_succ dupSquareInner19 3
+
+/-- The synthesized level-3 layer coincides with the hand-supplied S2168
+representative layer: the eight duplicate literal copies collapse to one. -/
+theorem dupCubeWitness19_dedupFrontier_three :
+    dedupRepresentativeFrontier dupCubeWitness19 3 = dupCubeRepLayer19 3 :=
+  dedup_replicate_succ
+    (BDFormula.lit { var := ⟨0, by decide⟩, sign := true }) 7
+
+/-- Synthesized level-0 count. -/
+theorem dupCubeWitness19_dedupFrontier_length_zero :
+    (dedupRepresentativeFrontier dupCubeWitness19 0).length = 1 :=
+  (congrArg List.length dupCubeWitness19_dedupFrontier_zero).trans
+    (dupCubeRepLayer19_length 0)
+
+/-- Synthesized level-1 count. -/
+theorem dupCubeWitness19_dedupFrontier_length_one :
+    (dedupRepresentativeFrontier dupCubeWitness19 1).length = 1 :=
+  (congrArg List.length dupCubeWitness19_dedupFrontier_one).trans
+    (dupCubeRepLayer19_length 1)
+
+/-- Synthesized level-2 count. -/
+theorem dupCubeWitness19_dedupFrontier_length_two :
+    (dedupRepresentativeFrontier dupCubeWitness19 2).length = 1 :=
+  (congrArg List.length dupCubeWitness19_dedupFrontier_two).trans
+    (dupCubeRepLayer19_length 2)
+
+/-- Synthesized level-3 count. -/
+theorem dupCubeWitness19_dedupFrontier_length_three :
+    (dedupRepresentativeFrontier dupCubeWitness19 3).length = 1 :=
+  (congrArg List.length dupCubeWitness19_dedupFrontier_three).trans
+    (dupCubeRepLayer19_length 3)
+
+/-- Pinned strict synthesized-versus-raw separation at the deepest level: the
+synthesized count `1` is strictly below the raw count `8`. -/
+theorem dupCubeWitness19_dedup_length_lt_rawCount_level3 :
+    (dedupRepresentativeFrontier dupCubeWitness19 3).length <
+      frontierLayerGateCount dupCubeWitness19 3 := by
+  rw [dupCubeWitness19_dedupFrontier_length_three,
+    dupCubeWitness19_frontierGateCount_three]
+  decide
+
+/-- Zero-hypothesis all-level instance at ambient `2^19`, `rounds = 2`, parent
+kind `and`, through the SYNTHESIZED layers: no representative layer list,
+membership proof, or count obligation is supplied anywhere; each level's
+ambient entry product is exactly `2^19` because every synthesized layer has
+count `1`. -/
+theorem dupCubeWitness19_dedup_finalTree_allLevels_rounds2 :
+    ∀ level, level ≤ depth dupCubeWitness19 →
+      RepresentativeNormalizedViewClassDepthFinalTreeAt dupCubeWitness19
+        (fun _ => 15) (normalizedFrontierWidthSchedule dupCubeWitness19)
+        3 2 ParentKind.and level
+        (dedupRepresentativeFrontier dupCubeWitness19 level) := by
+  refine allDedupFrontiers_geometricCollapse_finalTree_tightEntry_normalizedWidth
+    dupCubeWitness19 (fun _ => 15) 3 2 ParentKind.and
+    dupCubeWitness19_nonemptyFanin (Nat.le_of_eq dupCubeWitness19_depth)
+    (Nat.le_of_eq dupCubeWitness19_formulaSize) ?_
+  intro level hlevel
+  have hcase : level = 0 ∨ level = 1 ∨ level = 2 ∨ level = 3 := by
+    rw [dupCubeWitness19_depth] at hlevel
+    omega
+  rcases hcase with rfl | rfl | rfl | rfl
+  · rw [dupCubeWitness19_dedupFrontier_length_zero,
+      dupCubeWitness19_normalizedFrontierWidthSchedule_zero]
+    decide
+  · rw [dupCubeWitness19_dedupFrontier_length_one,
+      dupCubeWitness19_normalizedFrontierWidthSchedule_one]
+    decide
+  · rw [dupCubeWitness19_dedupFrontier_length_two,
+      dupCubeWitness19_normalizedFrontierWidthSchedule_two]
+    decide
+  · rw [dupCubeWitness19_dedupFrontier_length_three,
+      dupCubeWitness19_normalizedFrontierWidthSchedule_three]
+    decide
 
 end FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute
 end PvNP

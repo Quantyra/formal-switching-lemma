@@ -510,6 +510,17 @@ duplicate-stage code has only one recovered row, so the current all-
   semantic minimization, threshold redesign, arbitrary-class width synthesis,
   full B4, PHP switching, Frege-PHP, NP-circuit, Gate A, or a P-vs-NP
   implication;
+- any broad consequence from S2169: synthesized duplicate-free representative
+  frontier layers only for the restricted nonempty-fanin normalized-view
+  route.  `dedupRepresentativeFrontier` removes syntactic duplicate gate
+  copies from one raw recursive frontier; its consumers synthesize the
+  representative layer lists, membership proofs, and count obligations, but
+  still take the class depth/size data and every per-level ambient entry
+  product as hypotheses.  Decidable syntactic equality for raw formulas is
+  structural bookkeeping.  This is not semantic formula minimization,
+  threshold redesign, arbitrary-class width synthesis, synthesis of ambient
+  entry products or a global `t(d,s)` theorem, full B4, PHP switching,
+  Frege-PHP, NP-circuit, Gate A, or a P-vs-NP implication;
 - unsupplied or automatically synthesized product hypotheses for the scheduled
   route: `FrozenProductSchedule` proves only that an explicit
   `FrozenProductHypothesis` over a supplied `B` and `t` yields `ValidFrom` and
@@ -598,6 +609,18 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness19_finalTree_allLevels_rounds2` | `propext`, `Classical.choice`, `Quot.sound` | S2168 finite all-level representative instance |
 | `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness19_rawCount_entry_fails_level3` | `propext`, `Classical.choice`, `Quot.sound` | S2168 same-witness raw-count entry separation |
 | `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness19_rawCount_entryProduct_level3_eq` | `propext` | S2168 exact raw-count entry-product pin |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.formulaBEq` / `formulaListBEq` / `formulaBEq_eq_true_iff` / `instDecidableEqBDFormula` | `propext`, `Quot.sound` | S2169 decidable syntactic equality for raw formulas |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dedupRepresentativeFrontier` | `propext`, `Quot.sound` | S2169 synthesized duplicate-free representative layer |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dedupRepresentativeFrontier_representative` | `propext`, `Classical.choice`, `Quot.sound` | S2169 automatic representative-layer membership |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dedupRepresentativeFrontier_nodup` | `propext`, `Quot.sound` | S2169 duplicate-freeness pin |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dedupRepresentativeFrontier_length_le_frontierGateCount` / `dedupRepresentativeFrontier_length_le_formulaSize` | `propext`, `Quot.sound` | S2169 synthesized count bounds |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dedupRepresentativeFrontier_length_pos` | `propext`, `Classical.choice`, `Quot.sound` | S2169 synthesized nonempty pin |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.allDedupFrontiers_geometricCollapseWithSuppliedWidth_finalTree_tightEntry` | `propext`, `Classical.choice`, `Quot.sound` | S2169 supplied-width synthesized consumer |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dedupFrontier_geometricCollapse_finalTree_tightEntry_normalizedWidth` / `allDedupFrontiers_geometricCollapse_finalTree_tightEntry_normalizedWidth` | `propext`, `Classical.choice`, `Quot.sound` | S2169 class-derived synthesized consumers |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness19_dedupFrontier_zero` / `dupCubeWitness19_dedupFrontier_one` / `dupCubeWitness19_dedupFrontier_two` / `dupCubeWitness19_dedupFrontier_three` | `propext`, `Classical.choice`, `Quot.sound` | S2169 synthesized-equals-supplied layer pins |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness19_dedupFrontier_length_zero` / `dupCubeWitness19_dedupFrontier_length_one` / `dupCubeWitness19_dedupFrontier_length_two` / `dupCubeWitness19_dedupFrontier_length_three` | `propext`, `Classical.choice`, `Quot.sound` | S2169 synthesized count pins |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness19_dedup_length_lt_rawCount_level3` | `propext`, `Classical.choice`, `Quot.sound` | S2169 strict synthesized-versus-raw separation pin |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness19_dedup_finalTree_allLevels_rounds2` | `propext`, `Classical.choice`, `Quot.sound` | S2169 finite all-level synthesized instance |
 | `PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.widthDNF_syntacticDNF_le_recurrenceWidth` | `propext`, `Quot.sound` | S2164 hypothesis-free structural width bookkeeping |
 | `PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.emptyAndOne` | none | S2164 empty-fanin witness |
 | `PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.emptyAndOne_recurrenceWidth` | `propext`, `Quot.sound` | S2164 empty-fanin recurrence-width pin |
