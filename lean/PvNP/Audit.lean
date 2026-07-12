@@ -104,6 +104,107 @@ import PvNP.FormulaVarWidthSchedule
 import PvNP.MixedFormulaFamilyCollapse
 import PvNP.ScheduledCollapseDemo
 
+/-! S2165 frontier-local recurrence-width schedule pins. -/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.frontierMaxRecurrenceWidth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.frontierMaxRecurrenceWidth
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.frontierRecurrenceWidthSchedule' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.frontierRecurrenceWidthSchedule
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.frontierRecurrenceWidthSchedule_pos' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.frontierRecurrenceWidthSchedule_pos
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontierMinimalLayer_width_le_frontierRecurrenceWidthSchedule' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontierMinimalLayer_width_le_frontierRecurrenceWidthSchedule
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontier_geometricCollapse_finalTree_tightEntry_frontierWidth' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontier_geometricCollapse_finalTree_tightEntry_frontierWidth
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.allNormalizedFrontiers_geometricCollapse_finalTree_tightEntry_frontierWidth' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.allNormalizedFrontiers_geometricCollapse_finalTree_tightEntry_frontierWidth
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_nonemptyFanin' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_nonemptyFanin
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_formulaSize' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_formulaSize
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_depth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_depth
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_recurrenceWidth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_recurrenceWidth
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_frontierGateCount_zero' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_frontierGateCount_zero
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_frontierGateCount_one' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_frontierGateCount_one
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_frontierGateCount_two' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_frontierGateCount_two
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_frontierRecurrenceWidthSchedule_zero' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_frontierRecurrenceWidthSchedule_zero
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_frontierRecurrenceWidthSchedule_one' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_frontierRecurrenceWidthSchedule_one
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_frontierRecurrenceWidthSchedule_two' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_frontierRecurrenceWidthSchedule_two
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_recurrenceWidthSchedule' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_recurrenceWidthSchedule
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_frontierSchedule_strict_level1' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_frontierSchedule_strict_level1
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_frontierSchedule_strict_level2' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_frontierSchedule_strict_level2
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_entryProduct_level0_eq' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_entryProduct_level0_eq
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_entryProduct_level1_eq' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_entryProduct_level1_eq
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_entryProduct_level2_eq' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_entryProduct_level2_eq
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_finalTree_allLevels_rounds2' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_finalTree_allLevels_rounds2
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_ambient_domination' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_ambient_domination
+
 /-!
 # Formal Switching Lemma Audit Surface
 

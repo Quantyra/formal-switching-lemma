@@ -184,6 +184,49 @@ theorem normalizedFrontierMinimalLayer_gateCount {n : Nat}
   simp [normalizedFrontierMinimalLayer, normalizedFrontierGateList,
     frontierLayerGateCount_eq_formulaDepthFrontier_length]
 
+/-- Maximum recurrence width among the gates on one normalized frontier. -/
+def frontierMaxRecurrenceWidth {n : Nat} (F : BDFormula n) (level : Nat) : Nat :=
+  ((formulaDepthFrontier level F).map formulaRecurrenceWidth).foldr Nat.max 0
+
+/-- Positive frontier-local recurrence-width schedule. -/
+def frontierRecurrenceWidthSchedule {n : Nat} (F : BDFormula n) : Nat → Nat :=
+  fun level => Nat.max 1 (frontierMaxRecurrenceWidth F level)
+
+theorem frontierRecurrenceWidthSchedule_pos {n : Nat} (F : BDFormula n)
+    (level : Nat) : 1 ≤ frontierRecurrenceWidthSchedule F level :=
+  Nat.le_max_left _ _
+
+private theorem nat_le_foldr_max_of_mem (xs : List Nat) {x : Nat}
+    (hx : x ∈ xs) : x ≤ xs.foldr Nat.max 0 := by
+  induction xs with
+  | nil => cases hx
+  | cons y ys ih =>
+      rcases List.mem_cons.mp hx with rfl | hx
+      · exact Nat.le_max_left _ _
+      · exact Nat.le_trans (ih hx) (Nat.le_max_right _ _)
+
+private theorem recurrenceWidth_le_frontierMax_of_mem {n : Nat}
+    (F : BDFormula n) (level : Nat) {G : BDFormula n}
+    (hG : G ∈ formulaDepthFrontier level F) :
+    formulaRecurrenceWidth G ≤ frontierMaxRecurrenceWidth F level := by
+  apply nat_le_foldr_max_of_mem
+  exact List.mem_map_of_mem formulaRecurrenceWidth hG
+
+/-- Every normalized frontier gate obeys the frontier-local recurrence-width
+schedule. -/
+theorem normalizedFrontierMinimalLayer_width_le_frontierRecurrenceWidthSchedule
+    {n : Nat} {F : BDFormula n} (h : NonemptyFaninFormula F) (level : Nat)
+    (parent : ParentKind) (g : GateSpec n)
+    (hg : g ∈ (normalizedFrontierMinimalLayer F level parent).gates) :
+    widthDNF g.theDNF ≤ frontierRecurrenceWidthSchedule F level := by
+  simp only [normalizedFrontierMinimalLayer, normalizedFrontierGateList] at hg
+  rcases List.mem_map.mp hg with ⟨G, hG, rfl⟩
+  exact Nat.le_trans
+    (nonemptyFanin_widthDNF_normalized_le_recurrenceWidth
+      (nonemptyFanin_frontier_closed h level hG))
+    (Nat.le_trans (recurrenceWidth_le_frontierMax_of_mem F level hG)
+      (Nat.le_max_right _ _))
+
 theorem normalizedFrontierMinimalLayer_width_le_schedule {n : Nat}
     {F : BDFormula n} (h : NonemptyFaninFormula F) (level : Nat)
     (parent : ParentKind) (g : GateSpec n)
@@ -363,6 +406,49 @@ theorem allNormalizedFrontiers_geometricCollapse_finalTree_tightEntry
     exact normalizedFrontierMinimalLayer_width_le_schedule hNE level parent
   · intro level _
     exact recurrenceWidthSchedule_pos F level
+
+/-- Class-derived single-level tight-entry wrapper using the frontier-local
+recurrence-width schedule. -/
+theorem normalizedFrontier_geometricCollapse_finalTree_tightEntry_frontierWidth
+    {n : Nat} (F : BDFormula n) (S : Nat → Nat)
+    (d level rounds : Nat) (parent : ParentKind)
+    (hNE : NonemptyFaninFormula F) (hDepth : depth F ≤ d)
+    (hSize : formulaSize F ≤ S d) (hk : level ≤ depth F)
+    (hn : 2 * (64 * frontierLayerGateCount F level) ^ rounds *
+      (64 * frontierLayerGateCount F level *
+        frontierRecurrenceWidthSchedule F level) ≤ n) :
+    NormalizedViewClassDepthFinalTreeAt F S (frontierRecurrenceWidthSchedule F)
+      d rounds parent level := by
+  apply normalizedFrontier_geometricCollapseWithSuppliedWidth_finalTree_tightEntry
+    F S (frontierRecurrenceWidthSchedule F) d level rounds parent
+      hDepth hSize hNE hk
+  · exact normalizedFrontierMinimalLayer_width_le_frontierRecurrenceWidthSchedule
+      hNE level parent
+  · exact frontierRecurrenceWidthSchedule_pos F level
+  · exact hn
+
+/-- Class-derived all-level tight-entry wrapper using the frontier-local
+recurrence-width schedule. -/
+theorem allNormalizedFrontiers_geometricCollapse_finalTree_tightEntry_frontierWidth
+    {n : Nat} (F : BDFormula n) (S : Nat → Nat)
+    (d rounds : Nat) (parent : ParentKind)
+    (hNE : NonemptyFaninFormula F) (hDepth : depth F ≤ d)
+    (hSize : formulaSize F ≤ S d)
+    (hnAll : ∀ level, level ≤ depth F →
+      2 * (64 * frontierLayerGateCount F level) ^ rounds *
+        (64 * frontierLayerGateCount F level *
+          frontierRecurrenceWidthSchedule F level) ≤ n) :
+    ∀ level, level ≤ depth F →
+      NormalizedViewClassDepthFinalTreeAt F S (frontierRecurrenceWidthSchedule F)
+        d rounds parent level := by
+  refine allNormalizedFrontiers_geometricCollapseWithSuppliedWidth_finalTree_tightEntry
+    F S (frontierRecurrenceWidthSchedule F) d rounds parent hDepth hSize hNE
+      ?_ ?_ hnAll
+  · intro level _
+    exact normalizedFrontierMinimalLayer_width_le_frontierRecurrenceWidthSchedule
+      hNE level parent
+  · intro level _
+    exact frontierRecurrenceWidthSchedule_pos F level
 
 /-! ## Shared-variable witness excluded by the old simplicity route -/
 
@@ -627,6 +713,128 @@ theorem sharedWitness26_finalTree_allLevels_rounds2 :
   · rw [sharedWitness26_frontierGateCount_two,
       sharedWitness26_recurrenceWidthSchedule 2]
     decide
+
+/-! ## Frontier-local ambient `2^25` all-level instance (S2165) -/
+
+private def sharedOrLeft25 : BDFormula 33554432 :=
+  .or [.lit { var := ⟨0, by decide⟩, sign := true },
+       .lit { var := ⟨1, by decide⟩, sign := true }]
+
+private def sharedOrRight25 : BDFormula 33554432 :=
+  .or [.lit { var := ⟨0, by decide⟩, sign := true },
+       .lit { var := ⟨2, by decide⟩, sign := true }]
+
+def sharedWitness25 : BDFormula 33554432 :=
+  .and [sharedOrLeft25, sharedOrRight25]
+
+theorem sharedWitness25_nonemptyFanin : NonemptyFaninFormula sharedWitness25 := by
+  refine .and (List.cons_ne_nil _ _) ?_
+  intro G hG
+  simp [sharedWitness25, sharedOrLeft25, sharedOrRight25] at hG
+  rcases hG with rfl | rfl <;>
+    refine .or (List.cons_ne_nil _ _) ?_ <;>
+    intro H hH <;> simp at hH <;>
+    rcases hH with rfl | rfl <;> exact .lit _
+
+theorem sharedWitness25_formulaSize : formulaSize sharedWitness25 = 7 := by
+  simp [sharedWitness25, sharedOrLeft25, sharedOrRight25, formulaSize_and,
+    formulaSize_or, formulaSize_lit]
+
+theorem sharedWitness25_depth : depth sharedWitness25 = 2 := by
+  simp [sharedWitness25, sharedOrLeft25, sharedOrRight25, depth]
+
+theorem sharedWitness25_recurrenceWidth :
+    formulaRecurrenceWidth sharedWitness25 = 2 := by
+  simp [sharedWitness25, sharedOrLeft25, sharedOrRight25,
+    formulaRecurrenceWidth_and, formulaRecurrenceWidth_or,
+    formulaRecurrenceWidth_lit, Nat.max_zero, Nat.max_self]
+
+theorem sharedWitness25_frontierGateCount_zero :
+    frontierLayerGateCount sharedWitness25 0 = 1 :=
+  frontierLayerGateCount_zero sharedWitness25
+
+theorem sharedWitness25_frontierGateCount_one :
+    frontierLayerGateCount sharedWitness25 1 = 2 := by
+  rw [frontierLayerGateCount_eq_formulaDepthFrontier_length]
+  rfl
+
+theorem sharedWitness25_frontierGateCount_two :
+    frontierLayerGateCount sharedWitness25 2 = 4 := by
+  rw [frontierLayerGateCount_eq_formulaDepthFrontier_length]
+  rfl
+
+theorem sharedWitness25_frontierRecurrenceWidthSchedule_zero :
+    frontierRecurrenceWidthSchedule sharedWitness25 0 = 2 := by
+  simp [frontierRecurrenceWidthSchedule, frontierMaxRecurrenceWidth,
+    sharedWitness25, sharedOrLeft25, sharedOrRight25, formulaDepthFrontier,
+    depthFrontier, topChildren, formulaRecurrenceWidth]
+
+theorem sharedWitness25_frontierRecurrenceWidthSchedule_one :
+    frontierRecurrenceWidthSchedule sharedWitness25 1 = 1 := by
+  simp [frontierRecurrenceWidthSchedule, frontierMaxRecurrenceWidth,
+    sharedWitness25, sharedOrLeft25, sharedOrRight25, formulaDepthFrontier,
+    depthFrontier, topChildren, formulaRecurrenceWidth]
+
+theorem sharedWitness25_frontierRecurrenceWidthSchedule_two :
+    frontierRecurrenceWidthSchedule sharedWitness25 2 = 1 := by
+  simp [frontierRecurrenceWidthSchedule, frontierMaxRecurrenceWidth,
+    sharedWitness25, sharedOrLeft25, sharedOrRight25, formulaDepthFrontier,
+    depthFrontier, topChildren, formulaRecurrenceWidth]
+
+theorem sharedWitness25_recurrenceWidthSchedule (level : Nat) :
+    recurrenceWidthSchedule sharedWitness25 level = 2 := by
+  simp [recurrenceWidthSchedule, sharedWitness25_recurrenceWidth]
+
+theorem sharedWitness25_frontierSchedule_strict_level1 :
+    frontierRecurrenceWidthSchedule sharedWitness25 1 <
+      recurrenceWidthSchedule sharedWitness25 1 := by
+  rw [sharedWitness25_frontierRecurrenceWidthSchedule_one,
+    sharedWitness25_recurrenceWidthSchedule]
+  decide
+
+theorem sharedWitness25_frontierSchedule_strict_level2 :
+    frontierRecurrenceWidthSchedule sharedWitness25 2 <
+      recurrenceWidthSchedule sharedWitness25 2 := by
+  rw [sharedWitness25_frontierRecurrenceWidthSchedule_two,
+    sharedWitness25_recurrenceWidthSchedule]
+  decide
+
+theorem sharedWitness25_entryProduct_level0_eq :
+    2 * (64 * 1) ^ 2 * (64 * 1 * 2) = 1048576 := by decide
+
+theorem sharedWitness25_entryProduct_level1_eq :
+    2 * (64 * 2) ^ 2 * (64 * 2 * 1) = 4194304 := by decide
+
+theorem sharedWitness25_entryProduct_level2_eq :
+    2 * (64 * 4) ^ 2 * (64 * 4 * 1) = 33554432 := by decide
+
+/-- Zero-hypothesis all-level normalized-view instance at ambient `2^25`, using
+only the frontier-local recurrence-width schedule. -/
+theorem sharedWitness25_finalTree_allLevels_rounds2 :
+    ∀ level, level ≤ depth sharedWitness25 →
+      NormalizedViewClassDepthFinalTreeAt sharedWitness25 (fun _ => 7)
+        (frontierRecurrenceWidthSchedule sharedWitness25)
+        2 2 ParentKind.and level := by
+  refine allNormalizedFrontiers_geometricCollapse_finalTree_tightEntry_frontierWidth
+    sharedWitness25 (fun _ => 7) 2 2 ParentKind.and
+      sharedWitness25_nonemptyFanin (Nat.le_of_eq sharedWitness25_depth)
+      (Nat.le_of_eq sharedWitness25_formulaSize) ?_
+  intro level hlevel
+  have hcase : level = 0 ∨ level = 1 ∨ level = 2 := by
+    rw [sharedWitness25_depth] at hlevel
+    omega
+  rcases hcase with rfl | rfl | rfl
+  · rw [sharedWitness25_frontierGateCount_zero,
+      sharedWitness25_frontierRecurrenceWidthSchedule_zero]
+    decide
+  · rw [sharedWitness25_frontierGateCount_one,
+      sharedWitness25_frontierRecurrenceWidthSchedule_one]
+    decide
+  · rw [sharedWitness25_frontierGateCount_two,
+      sharedWitness25_frontierRecurrenceWidthSchedule_two]
+    decide
+
+theorem sharedWitness25_ambient_domination : 33554432 < 67108864 := by decide
 
 end FormulaRecursiveSyntacticTerminalNormalizedViewRoute
 end PvNP

@@ -475,6 +475,13 @@ duplicate-stage code has only one recovered row, so the current all-
   consumers and still require `NoEmptyFanins` separately.  This is no schedule
   improvement, efficient arbitrary-class width synthesis, full B4, PHP
   switching, Frege/PHP, NP/circuit, Gate A, or P-vs-NP result;
+- any broad consequence from S2165: frontier-local width scheduling only for
+  the restricted nonempty-fanin normalized-view route.  The schedule is the
+  maximum recurrence width of the selected finite frontier, clamped by one;
+  it changes no threshold, switching constant, stage budget, geometric
+  schedule, or final-tree payload.  The ambient-`2^25` witness is one finite
+  instance.  This is not threshold redesign, full B4, PHP switching,
+  Frege/PHP, NP/circuit, Gate A, or P-vs-NP;
 - unsupplied or automatically synthesized product hypotheses for the scheduled
   route: `FrozenProductSchedule` proves only that an explicit
   `FrozenProductHypothesis` over a supplied `B` and `t` yields `ValidFrom` and
@@ -499,6 +506,18 @@ bounded-depth Frege proof system is proved here.
 
 | Declaration | Axioms | Classification |
 |---|---|---|
+| `PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.frontierMaxRecurrenceWidth` / `frontierRecurrenceWidthSchedule` / `frontierRecurrenceWidthSchedule_pos` | `propext`, `Quot.sound` | S2165 frontier-local schedule definitions and positivity |
+| `PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontierMinimalLayer_width_le_frontierRecurrenceWidthSchedule` | `propext`, `Classical.choice`, `Quot.sound` | S2165 restricted normalized-frontier width validity |
+| `PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.normalizedFrontier_geometricCollapse_finalTree_tightEntry_frontierWidth` / `allNormalizedFrontiers_geometricCollapse_finalTree_tightEntry_frontierWidth` | `propext`, `Classical.choice`, `Quot.sound` | S2165 frontier-local consumer wrappers |
+| `PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25` | none | S2165 finite ambient-2^25 witness |
+| `PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_nonemptyFanin` | `propext` | S2165 restricted-class witness pin |
+| `PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_formulaSize` / `sharedWitness25_depth` / `sharedWitness25_recurrenceWidth` | `propext`, `Quot.sound` | S2165 structural witness pins |
+| `PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_frontierGateCount_zero` / `sharedWitness25_frontierGateCount_one` / `sharedWitness25_frontierGateCount_two` | `propext`, `Quot.sound` | S2165 frontier-count pins |
+| `PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_frontierRecurrenceWidthSchedule_zero` / `sharedWitness25_frontierRecurrenceWidthSchedule_one` / `sharedWitness25_frontierRecurrenceWidthSchedule_two` / `sharedWitness25_recurrenceWidthSchedule` | `propext`, `Quot.sound` | S2165 frontier/local and root schedule pins |
+| `PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_frontierSchedule_strict_level1` / `sharedWitness25_frontierSchedule_strict_level2` | `propext`, `Quot.sound` | S2165 strict schedule comparison pins |
+| `PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_entryProduct_level0_eq` / `sharedWitness25_entryProduct_level1_eq` / `sharedWitness25_entryProduct_level2_eq` | `propext` | S2165 exact finite entry-product pins |
+| `PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_finalTree_allLevels_rounds2` | `propext`, `Classical.choice`, `Quot.sound` | S2165 finite all-level normalized-view instance |
+| `PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.sharedWitness25_ambient_domination` | none | S2165 finite ambient domination pin |
 | `PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.widthDNF_syntacticDNF_le_recurrenceWidth` | `propext`, `Quot.sound` | S2164 hypothesis-free structural width bookkeeping |
 | `PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.emptyAndOne` | none | S2164 empty-fanin witness |
 | `PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.emptyAndOne_recurrenceWidth` | `propext`, `Quot.sound` | S2164 empty-fanin recurrence-width pin |
