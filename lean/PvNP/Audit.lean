@@ -99,6 +99,7 @@ import PvNP.FormulaRecursiveSizeBound
 import PvNP.FormulaSyntacticDNF
 import PvNP.FormulaSyntacticDNFNormalization
 import PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute
+import PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute
 import PvNP.FormulaSyntacticSimpleBridge
 import PvNP.FormulaVarWidthSchedule
 import PvNP.MixedFormulaFamilyCollapse
@@ -9643,3 +9644,180 @@ S2166. Actual normalized-frontier DNF width schedule only. Budgets `t(d,s)=S(d)*
 /-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_ambient_lt_sharedWitness25_ambient' does not depend on any axioms -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.nestedDupWitness22_ambient_lt_sharedWitness25_ambient
+
+/-!
+S2167. Representative frontier layers only: duplicate-free free-multiplicity gate lists with the same membership as one recursive frontier, for the restricted nonempty-fanin normalized-view route. Budgets `t(d,s)=S(d)*(s-1)`, per-stage budget 2, geometric star schedule, and payload shape unchanged apart from the disclosed representative layer and a transported final clause. Representative layers replace only syntactic duplicate gate copies; the certified target remains the original parent-merged frontier formula; not semantic formula minimization. The ambient-2^19 witness is a single finite instance; the raw-count level-2 entry-failure pin is a same-witness bookkeeping comparison at rounds = 2, and the ambient-2^19-vs-2^22 comparison against the S2166 package is bookkeeping across different witnesses. Single finite instances, not an asymptotic family. NOT threshold redesign, arbitrary-class width synthesis, full B4, PHP switching, Frege/PHP, NP/circuit, Gate A, or P-vs-NP. Do not expand claim language.
+-/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.RepresentativeFrontierLayer' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.RepresentativeFrontierLayer
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.eval_parentMerge_congr_of_mem_iff' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.eval_parentMerge_congr_of_mem_iff
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.eval_restrict_parentMerge_congr_of_mem_iff' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.eval_restrict_parentMerge_congr_of_mem_iff
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.representativeMinimalLayer' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.representativeMinimalLayer
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.representativeMinimalLayer_originalFormula' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.representativeMinimalLayer_originalFormula
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.representativeMinimalLayer_gateCount' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.representativeMinimalLayer_gateCount
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.representativeMinimalLayer_width_le_normalizedFrontierWidthSchedule' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.representativeMinimalLayer_width_le_normalizedFrontierWidthSchedule
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.representative_length_pos' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.representative_length_pos
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.RepresentativeNormalizedViewClassDepthFinalTreeAt' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.RepresentativeNormalizedViewClassDepthFinalTreeAt
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.representativeFrontier_geometricCollapseWithSuppliedWidth_finalTree_tightEntry' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.representativeFrontier_geometricCollapseWithSuppliedWidth_finalTree_tightEntry
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.allRepresentativeFrontiers_geometricCollapseWithSuppliedWidth_finalTree_tightEntry' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.allRepresentativeFrontiers_geometricCollapseWithSuppliedWidth_finalTree_tightEntry
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.representativeFrontier_geometricCollapse_finalTree_tightEntry_normalizedWidth' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.representativeFrontier_geometricCollapse_finalTree_tightEntry_normalizedWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.allRepresentativeFrontiers_geometricCollapse_finalTree_tightEntry_normalizedWidth' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.allRepresentativeFrontiers_geometricCollapse_finalTree_tightEntry_normalizedWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareRepLayer19' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareRepLayer19
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_nonemptyFanin' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_nonemptyFanin
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_syntacticDNF_not_simple' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_syntacticDNF_not_simple
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_formulaSize' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_formulaSize
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_depth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_depth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_recurrenceWidth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_recurrenceWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_frontierGateCount_zero' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_frontierGateCount_zero
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_frontierGateCount_one' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_frontierGateCount_one
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_frontierGateCount_two' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_frontierGateCount_two
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_normalizedWidth' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_normalizedWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_normalizedFrontierWidthSchedule_zero' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_normalizedFrontierWidthSchedule_zero
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_normalizedFrontierWidthSchedule_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_normalizedFrontierWidthSchedule_one
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_normalizedFrontierWidthSchedule_two' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_normalizedFrontierWidthSchedule_two
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_representativeLayers' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_representativeLayers
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareRepLayer19_length' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareRepLayer19_length
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_entryProduct_eq' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_entryProduct_eq
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_finalTree_allLevels_rounds2' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_finalTree_allLevels_rounds2
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_rawCount_entry_fails_level2' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_rawCount_entry_fails_level2
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_ambient_lt_nestedDupWitness22_ambient' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupSquareWitness19_ambient_lt_nestedDupWitness22_ambient
