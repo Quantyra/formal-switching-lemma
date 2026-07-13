@@ -1703,5 +1703,187 @@ theorem dupCubeWitness16_dedup_finalTree_allLevels_rounds2_uniform32 :
     dupCubeWitness16_widthSchedule level hlevel]
   decide
 
+/-! ## Uniform-32 witnesses at ambients `2^21` and `2^26` (S2172) -/
+
+private def dupSquareInner21 : BDFormula 2097152 :=
+  .and [.lit { var := ⟨0, by decide⟩, sign := true },
+        .lit { var := ⟨0, by decide⟩, sign := true }]
+
+private def dupSquareWitness21 : BDFormula 2097152 :=
+  .and [dupSquareInner21, dupSquareInner21]
+
+/-- The depth-3 duplicated cube at ambient `2^21`. -/
+def dupCubeWitness21 : BDFormula 2097152 :=
+  .and [dupSquareWitness21, dupSquareWitness21]
+
+private theorem dupSquareInner21_nonempty : NonemptyFaninFormula dupSquareInner21 := by
+  refine .and (List.cons_ne_nil _ _) ?_
+  intro G hG
+  simp [dupSquareInner21] at hG
+  subst hG
+  exact .lit _
+
+private theorem dupSquareWitness21_nonempty : NonemptyFaninFormula dupSquareWitness21 := by
+  refine .and (List.cons_ne_nil _ _) ?_
+  intro G hG
+  simp [dupSquareWitness21] at hG
+  subst hG
+  exact dupSquareInner21_nonempty
+
+private theorem dupCubeWitness21_nonempty : NonemptyFaninFormula dupCubeWitness21 := by
+  refine .and (List.cons_ne_nil _ _) ?_
+  intro G hG
+  simp [dupCubeWitness21] at hG
+  subst hG
+  exact dupSquareWitness21_nonempty
+
+private theorem dupCubeWitness21_size : formulaSize dupCubeWitness21 = 15 := by
+  simp [dupCubeWitness21, dupSquareWitness21, dupSquareInner21, formulaSize_and,
+    formulaSize_lit]
+
+private theorem dupCubeWitness21_depth : depth dupCubeWitness21 = 3 := by
+  simp [dupCubeWitness21, dupSquareWitness21, dupSquareInner21, depth]
+
+private theorem dupCubeWitness21_widthSchedule :
+    ∀ level, level ≤ depth dupCubeWitness21 →
+      normalizedFrontierWidthSchedule dupCubeWitness21 level = 1 := by
+  intro level hlevel
+  have hcase : level = 0 ∨ level = 1 ∨ level = 2 ∨ level = 3 := by
+    rw [dupCubeWitness21_depth] at hlevel
+    omega
+  rcases hcase with rfl | rfl | rfl | rfl <;>
+    simp [normalizedFrontierWidthSchedule, frontierMaxNormalizedWidth,
+      normalizedDNFView_D, syntacticDNF, syntacticAndDNF, andDNF,
+      FormulaSyntacticDNF.literalDNF, FormulaSyntacticDNF.trueDNF,
+      formulaDepthFrontier, depthFrontier, topChildren, dupCubeWitness21,
+      dupSquareWitness21, dupSquareInner21] <;> rfl
+
+private theorem dupCubeWitness21_dedup_length :
+    ∀ level, level ≤ depth dupCubeWitness21 →
+      (dedupRepresentativeFrontier dupCubeWitness21 level).length = 1 := by
+  intro level hlevel
+  have hcase : level = 0 ∨ level = 1 ∨ level = 2 ∨ level = 3 := by
+    rw [dupCubeWitness21_depth] at hlevel
+    omega
+  rcases hcase with rfl | rfl | rfl | rfl
+  · exact congrArg List.length (dedup_replicate_succ dupCubeWitness21 0)
+  · exact congrArg List.length (dedup_replicate_succ dupSquareWitness21 1)
+  · exact congrArg List.length (dedup_replicate_succ dupSquareInner21 3)
+  · exact congrArg List.length (dedup_replicate_succ
+      (BDFormula.lit { var := ⟨0, by decide⟩, sign := true }) 7)
+
+/-- Exact three-round uniform-32 product at count and width one. -/
+theorem dupCubeWitness21_uniform32_product_eq :
+    2 * (32 * 1) ^ 3 * (32 * 1 * 1) = 2097152 := by decide
+
+/-- The three-round uniform-32 product does not fit ambient `2^16`. -/
+theorem dupCubeWitness21_uniform32_product_fails_at_ambient16 :
+    ¬ (2 * (32 * 1) ^ 3 * (32 * 1 * 1) ≤ 65536) := by decide
+
+/-- All synthesized representative levels of the finite witness carry the
+uniform-32 three-round final-tree payload. -/
+theorem dupCubeWitness21_dedup_finalTree_allLevels_rounds3_uniform32 :
+    ∀ level, level ≤ depth dupCubeWitness21 →
+      RepresentativeNormalizedViewClassDepthFinalTreeAtUniform32 dupCubeWitness21
+        (fun _ => 15) (normalizedFrontierWidthSchedule dupCubeWitness21)
+        3 3 ParentKind.and level
+        (dedupRepresentativeFrontier dupCubeWitness21 level) := by
+  refine allDedupFrontiers_geometricCollapse_finalTree_uniform32_normalizedWidth
+    dupCubeWitness21 (fun _ => 15) 3 3 ParentKind.and dupCubeWitness21_nonempty
+      (Nat.le_of_eq dupCubeWitness21_depth) (Nat.le_of_eq dupCubeWitness21_size)
+      ?_
+  intro level hlevel
+  rw [dupCubeWitness21_dedup_length level hlevel,
+    dupCubeWitness21_widthSchedule level hlevel]
+  decide
+
+private def dupSquareInner26 : BDFormula 67108864 :=
+  .and [.lit { var := ⟨0, by decide⟩, sign := true },
+        .lit { var := ⟨0, by decide⟩, sign := true }]
+
+private def dupSquareWitness26 : BDFormula 67108864 :=
+  .and [dupSquareInner26, dupSquareInner26]
+
+/-- The depth-3 duplicated cube at ambient `2^26`. -/
+def dupCubeWitness26 : BDFormula 67108864 :=
+  .and [dupSquareWitness26, dupSquareWitness26]
+
+private theorem dupSquareInner26_nonempty : NonemptyFaninFormula dupSquareInner26 := by
+  refine .and (List.cons_ne_nil _ _) ?_
+  intro G hG
+  simp [dupSquareInner26] at hG
+  subst hG
+  exact .lit _
+
+private theorem dupSquareWitness26_nonempty : NonemptyFaninFormula dupSquareWitness26 := by
+  refine .and (List.cons_ne_nil _ _) ?_
+  intro G hG
+  simp [dupSquareWitness26] at hG
+  subst hG
+  exact dupSquareInner26_nonempty
+
+private theorem dupCubeWitness26_nonempty : NonemptyFaninFormula dupCubeWitness26 := by
+  refine .and (List.cons_ne_nil _ _) ?_
+  intro G hG
+  simp [dupCubeWitness26] at hG
+  subst hG
+  exact dupSquareWitness26_nonempty
+
+private theorem dupCubeWitness26_size : formulaSize dupCubeWitness26 = 15 := by
+  simp [dupCubeWitness26, dupSquareWitness26, dupSquareInner26, formulaSize_and,
+    formulaSize_lit]
+
+private theorem dupCubeWitness26_depth : depth dupCubeWitness26 = 3 := by
+  simp [dupCubeWitness26, dupSquareWitness26, dupSquareInner26, depth]
+
+private theorem dupCubeWitness26_widthSchedule :
+    ∀ level, level ≤ depth dupCubeWitness26 →
+      normalizedFrontierWidthSchedule dupCubeWitness26 level = 1 := by
+  intro level hlevel
+  have hcase : level = 0 ∨ level = 1 ∨ level = 2 ∨ level = 3 := by
+    rw [dupCubeWitness26_depth] at hlevel
+    omega
+  rcases hcase with rfl | rfl | rfl | rfl <;>
+    simp [normalizedFrontierWidthSchedule, frontierMaxNormalizedWidth,
+      normalizedDNFView_D, syntacticDNF, syntacticAndDNF, andDNF,
+      FormulaSyntacticDNF.literalDNF, FormulaSyntacticDNF.trueDNF,
+      formulaDepthFrontier, depthFrontier, topChildren, dupCubeWitness26,
+      dupSquareWitness26, dupSquareInner26] <;> rfl
+
+private theorem dupCubeWitness26_dedup_length :
+    ∀ level, level ≤ depth dupCubeWitness26 →
+      (dedupRepresentativeFrontier dupCubeWitness26 level).length = 1 := by
+  intro level hlevel
+  have hcase : level = 0 ∨ level = 1 ∨ level = 2 ∨ level = 3 := by
+    rw [dupCubeWitness26_depth] at hlevel
+    omega
+  rcases hcase with rfl | rfl | rfl | rfl
+  · exact congrArg List.length (dedup_replicate_succ dupCubeWitness26 0)
+  · exact congrArg List.length (dedup_replicate_succ dupSquareWitness26 1)
+  · exact congrArg List.length (dedup_replicate_succ dupSquareInner26 3)
+  · exact congrArg List.length (dedup_replicate_succ
+      (BDFormula.lit { var := ⟨0, by decide⟩, sign := true }) 7)
+
+/-- Exact four-round uniform-32 product at count and width one. -/
+theorem dupCubeWitness26_uniform32_product_eq :
+    2 * (32 * 1) ^ 4 * (32 * 1 * 1) = 67108864 := by decide
+
+/-- All synthesized representative levels of the finite witness carry the
+uniform-32 four-round final-tree payload. -/
+theorem dupCubeWitness26_dedup_finalTree_allLevels_rounds4_uniform32 :
+    ∀ level, level ≤ depth dupCubeWitness26 →
+      RepresentativeNormalizedViewClassDepthFinalTreeAtUniform32 dupCubeWitness26
+        (fun _ => 15) (normalizedFrontierWidthSchedule dupCubeWitness26)
+        3 4 ParentKind.and level
+        (dedupRepresentativeFrontier dupCubeWitness26 level) := by
+  refine allDedupFrontiers_geometricCollapse_finalTree_uniform32_normalizedWidth
+    dupCubeWitness26 (fun _ => 15) 3 4 ParentKind.and dupCubeWitness26_nonempty
+      (Nat.le_of_eq dupCubeWitness26_depth) (Nat.le_of_eq dupCubeWitness26_size)
+      ?_
+  intro level hlevel
+  rw [dupCubeWitness26_dedup_length level hlevel,
+    dupCubeWitness26_widthSchedule level hlevel]
+  decide
+
 end FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute
 end PvNP

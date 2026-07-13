@@ -539,6 +539,13 @@ duplicate-stage code has only one recovered row, so the current all-
   The ambient-`2^16` object is one finite duplicated-cube witness, not
   arbitrary-formula synthesis, full B4, PHP switching, Frege/PHP, NP/circuit,
   Gate A, or a P-vs-NP implication.
+- any broad consequence from S2172: exactly two finite uniform-32 packaging
+  instances for the duplicated depth-3 cube, at ambient `2^21` with three
+  rounds and ambient `2^26` with four rounds.  They reuse `geometricSchedule32`,
+  the existing all-level deduplicated-frontier consumer, the unchanged
+  `t(d,s)=S(d)*(s-1)`, and the unchanged final-tree payload.  This is not a
+  threshold redesign below `32`, full B4, PHP switching, Frege/PHP, NP/circuit,
+  Gate A, or a P-vs-NP implication;
 - unsupplied or automatically synthesized product hypotheses for the scheduled
   route: `FrozenProductSchedule` proves only that an explicit
   `FrozenProductHypothesis` over a supplied `B` and `t` yields `ValidFrom` and
@@ -656,6 +663,9 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness16` | none | S2171 finite ambient-`2^16` duplicated-cube witness |
 | `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness16_uniform32_product_eq` / `dupCubeWitness16_s2170_product_fails` | `propext` | S2171 exact uniform product and S2170-product separation |
 | `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness16_dedup_finalTree_allLevels_rounds2_uniform32` | `propext`, `Classical.choice`, `Quot.sound` | S2171 ambient-`2^16` all-level synthesized two-round instance |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness21` / `dupCubeWitness26` | none | S2172 finite ambient-`2^21` and ambient-`2^26` duplicated-cube witnesses |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness21_uniform32_product_eq` / `dupCubeWitness21_uniform32_product_fails_at_ambient16` / `dupCubeWitness26_uniform32_product_eq` | `propext` | S2172 exact finite uniform-32 products and three-round ambient-`2^16` separation |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness21_dedup_finalTree_allLevels_rounds3_uniform32` / `dupCubeWitness26_dedup_finalTree_allLevels_rounds4_uniform32` | `propext`, `Classical.choice`, `Quot.sound` | S2172 finite all-level uniform-32 three- and four-round packaging instances |
 | `PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.widthDNF_syntacticDNF_le_recurrenceWidth` | `propext`, `Quot.sound` | S2164 hypothesis-free structural width bookkeeping |
 | `PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.emptyAndOne` | none | S2164 empty-fanin witness |
 | `PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.emptyAndOne_recurrenceWidth` | `propext`, `Quot.sound` | S2164 empty-fanin recurrence-width pin |
