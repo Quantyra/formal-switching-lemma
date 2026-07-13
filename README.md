@@ -813,6 +813,29 @@ Version `v0.1.0` is archived on Zenodo:
 - DOI: `10.5281/zenodo.20757628`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.1.0`
 
+Version `v0.8.0` publishes the post-`v0.7.0` Gate B 32-route stack S2162-S2172
+under unchanged `t(d,s)=S(d)*(s-1)`.  S2162-S2163 add DNF normalization and
+normalized-view tight-entry consumers.  S2164-S2166 add hypothesis-free
+recurrence width, frontier-local width schedules, and actual
+normalized-frontier DNF width schedules.  S2167-S2169 add representative
+frontier layers and automatic `dedupRepresentativeFrontier` synthesis (module-
+local decidable syntactic equality; consumers synthesize layer lists,
+membership proofs, and count obligations).  S2170 rebalances geometric entry
+stars to `n/(32*m*w)` with product `2*(64*m)^k*(32*m*w)`.  S2171 adds the
+parallel uniform-32 schedule `geometricSchedule32` (stage divisor `32*m`) with
+product `2*(32*m)^k*(32*m*w)`.  S2172 packages zero-hypothesis all-level
+final-tree instances on the uniform-32 synthesized-dedup route at ambients
+`2^16` (rounds 2), `2^21` (rounds 3), and `2^26` (rounds 4).  The audit
+surface has `1704` `#guard_msgs`-pinned `#print axioms` profiles.  Boundary:
+restricted nonempty-fanin normalized-view route and schedule-entry arithmetic
+within the existing ratio coefficient 32 only; single finite concrete
+instances; not switching redesign below 32, full B4, PHP switching, Frege/PHP,
+NP/circuit, arbitrary-class width synthesis, Gate A revival, or P-vs-NP.
+
+- Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.8.0`
+- Zenodo version DOI: pending GitHub/Zenodo archive after tag publication
+  (concept DOI remains `10.5281/zenodo.20757627`)
+
 Version `v0.7.0` publishes the post-`v0.6.0` Gate B increments S2158-S2161.
 S2158 adds the disjoint-support AND-compatibility synthesis class
 (`FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget`):
@@ -1249,7 +1272,7 @@ support-based code space and a single guaranteed free row — so it is not a
 geometric `(8w)^s`-style bound, not a per-stage information-recovery encoding
 argument, and not a PHP switching lemma.
 
-As of `v0.7.0`, the audit surface has `1452` `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
+As of `v0.8.0`, the audit surface has `1704` `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
 
 - DOI: `10.5281/zenodo.21184992`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`
