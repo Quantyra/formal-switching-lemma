@@ -110,12 +110,12 @@ import PvNP.ScheduledCollapseDemo
 /-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness21' does not depend on any axioms -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness21
-/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness21_uniform32_product_eq' depends on axioms: [propext] -/
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness21_uniform32_rounds3_product_eq' depends on axioms: [propext] -/
 #guard_msgs in
-#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness21_uniform32_product_eq
-/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness21_uniform32_product_fails_at_ambient16' depends on axioms: [propext] -/
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness21_uniform32_rounds3_product_eq
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness21_rounds3_fails_at_s2171_ambient' depends on axioms: [propext] -/
 #guard_msgs in
-#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness21_uniform32_product_fails_at_ambient16
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness21_rounds3_fails_at_s2171_ambient
 /-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness21_dedup_finalTree_allLevels_rounds3_uniform32' depends on axioms: [propext,
  Classical.choice,
  Quot.sound] -/

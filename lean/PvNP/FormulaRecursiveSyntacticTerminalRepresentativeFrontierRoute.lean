@@ -1773,11 +1773,11 @@ private theorem dupCubeWitness21_dedup_length :
       (BDFormula.lit { var := ⟨0, by decide⟩, sign := true }) 7)
 
 /-- Exact three-round uniform-32 product at count and width one. -/
-theorem dupCubeWitness21_uniform32_product_eq :
+theorem dupCubeWitness21_uniform32_rounds3_product_eq :
     2 * (32 * 1) ^ 3 * (32 * 1 * 1) = 2097152 := by decide
 
 /-- The three-round uniform-32 product does not fit ambient `2^16`. -/
-theorem dupCubeWitness21_uniform32_product_fails_at_ambient16 :
+theorem dupCubeWitness21_rounds3_fails_at_s2171_ambient :
     ¬ (2 * (32 * 1) ^ 3 * (32 * 1 * 1) ≤ 65536) := by decide
 
 /-- All synthesized representative levels of the finite witness carry the
