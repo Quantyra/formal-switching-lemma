@@ -168,23 +168,24 @@ private theorem le_of_regime {m w l p : Nat} (hm : 1 ≤ m) (hw : 1 ≤ w)
   rw [Nat.one_mul] at h1
   exact Nat.le_trans h1 h
 
-/-- **The ratio-form regime discharges the closed-form stage beat.**  With
-`1 <= m`, `1 <= w`, `1 <= s <= l`, and the space-aware ratio condition
-`32*m*w*l <= p`, the `BeatArith` obligation over `p` holds — proved by the
-symbolic binomial-ratio chain, never by kernel evaluation of binomials. -/
-theorem ratio_beat {m p s l w : Nat}
+/-- The exact affine ratio condition needed by the symbolic ratio chain. -/
+theorem ratio_beat_affine {m p s l w : Nat}
     (hm : 1 ≤ m) (hw : 1 ≤ w) (hs : 1 ≤ s) (hsl : s ≤ l)
-    (hreg : 32 * m * w * l ≤ p) :
+    (hreg : (16 * m * w + 1) * l ≤ p) :
     BeatArith m p s l w := by
   have hM16 : (1 : Nat) ≤ 16 * m * w :=
     Nat.le_trans (by decide : (1 : Nat) ≤ 1 * 1 * 1)
       (Nat.mul_le_mul (Nat.mul_le_mul (by decide : (1 : Nat) ≤ 16) hm) hw)
   have h0M : 0 < 16 * m * w := Nat.lt_of_lt_of_le (by decide) hM16
-  have hlp : l ≤ p := le_of_regime hm hw hreg
-  have h32 : 32 * m * w * l = 16 * m * w * l + 16 * m * w * l := by
-    rw [show (32 : Nat) = 16 + 16 from rfl, Nat.add_mul, Nat.add_mul,
-      Nat.add_mul]
-  have h2 : 16 * m * w * l + 16 * m * w * l ≤ p := h32 ▸ hreg
+  have hlp : l ≤ p := by
+    have hMl : l ≤ 16 * m * w * l := by
+      simpa using Nat.mul_le_mul_right l hM16
+    have : l ≤ (16 * m * w + 1) * l := by
+      rw [Nat.add_mul, Nat.one_mul]
+      exact Nat.le_trans hMl (Nat.le_add_right _ _)
+    exact Nat.le_trans this hreg
+  have hMl : 16 * m * w * l + l ≤ p := by
+    simpa [Nat.add_mul] using hreg
   obtain ⟨s', rfl⟩ : ∃ s', s = s' + 1 := ⟨s - 1, by omega⟩
   unfold BeatArith
   rw [sub_shift hsl hlp, Nat.pow_add]
@@ -205,14 +206,36 @@ theorem ratio_beat {m p s l w : Nat}
     have hj3 : j < l := by omega
     have hb1 : 16 * m * w * (j + 1) ≤ 16 * m * w * l :=
       Nat.mul_le_mul_left _ (by omega)
-    have hb2 : l ≤ 16 * m * w * l := by
-      have h1 : 1 * l ≤ 16 * m * w * l := Nat.mul_le_mul_right l hM16
-      rw [Nat.one_mul] at h1
-      exact h1
-    exact regime_step hb1 hj3 hb2 h2
+    omega
   have hidx : l - (s' + 1) + (s' + 1) = l := by omega
   rw [hidx] at hchain
   exact Nat.lt_of_le_of_lt (Nat.mul_le_mul_right _ hle) hchain
+
+/-- The integer coefficient `17` implies the exact affine ratio condition. -/
+theorem ratio_beat_of_seventeen {m p s l w : Nat}
+    (hm : 1 ≤ m) (hw : 1 ≤ w) (hs : 1 ≤ s) (hsl : s ≤ l)
+    (hreg : 17 * m * w * l ≤ p) : BeatArith m p s l w := by
+  apply ratio_beat_affine hm hw hs hsl
+  have hmw : 1 ≤ m * w := by
+    simpa using Nat.mul_le_mul hm hw
+  have hc : 16 * m * w + 1 ≤ 17 * m * w := by
+    rw [show (17 : Nat) = 16 + 1 from rfl, Nat.add_mul, Nat.one_mul,
+      Nat.add_mul]
+    exact Nat.add_le_add_left hmw (16 * m * w)
+  exact Nat.le_trans (Nat.mul_le_mul_right l hc) hreg
+
+/-- **The ratio-form regime discharges the closed-form stage beat.** -/
+theorem ratio_beat {m p s l w : Nat}
+    (hm : 1 ≤ m) (hw : 1 ≤ w) (hs : 1 ≤ s) (hsl : s ≤ l)
+    (hreg : 32 * m * w * l ≤ p) : BeatArith m p s l w := by
+  apply ratio_beat_affine hm hw hs hsl
+  have hM : 1 ≤ 16 * m * w := by
+    exact Nat.le_trans (by decide : (1 : Nat) ≤ 16)
+      (Nat.mul_le_mul (Nat.mul_le_mul_left 16 hm) hw)
+  have hc : 16 * m * w + 1 ≤ 32 * m * w := by
+    rw [show (32 : Nat) = 16 + 16 from rfl, Nat.add_mul, Nat.add_mul]
+    exact Nat.add_le_add_left hM (16 * m * w)
+  exact Nat.le_trans (Nat.mul_le_mul_right l hc) hreg
 
 /-! ## The ratio-form schedule hypothesis -/
 
@@ -243,6 +266,50 @@ def RegimeFrom (m : Nat) : Nat → Nat → List ScheduleStage → Prop
   | w, p, st :: rest =>
       1 ≤ w ∧ RatioRegime m w p st ∧
         RegimeFrom m (stageS st - 1) (stageStars st) rest
+
+/-- Parallel coefficient-17 stage regime. -/
+def RatioRegime17 (m w p : Nat) (st : ScheduleStage) : Prop :=
+  1 ≤ stageS st ∧ stageS st ≤ stageStars st ∧
+    17 * m * w * stageStars st ≤ p
+
+theorem RatioRegime17.mono {m w p n : Nat} {st : ScheduleStage}
+    (hpn : p ≤ n) (h : RatioRegime17 m w p st) : RatioRegime17 m w n st :=
+  ⟨h.1, h.2.1, Nat.le_trans h.2.2 hpn⟩
+
+theorem ratioRegime17_beat {m w p : Nat} {st : ScheduleStage}
+    (hm : 1 ≤ m) (hw : 1 ≤ w) (h : RatioRegime17 m w p st) :
+    BeatArith m p (stageS st) (stageStars st) w :=
+  ratio_beat_of_seventeen hm hw h.1 h.2.1 h.2.2
+
+/-- Parallel coefficient-17 whole-schedule regime. -/
+def RegimeFrom17 (m : Nat) : Nat → Nat → List ScheduleStage → Prop
+  | _, _, [] => True
+  | w, p, st :: rest =>
+      1 ≤ w ∧ RatioRegime17 m w p st ∧
+        RegimeFrom17 m (stageS st - 1) (stageStars st) rest
+
+/-- Coefficient-17 schedule validity implies the existing beat interface. -/
+theorem regimeFrom17_validFrom {m n : Nat} (hm : 1 ≤ m) :
+    ∀ (sched : List ScheduleStage) (w p : Nat), p ≤ n →
+      RegimeFrom17 m w p sched → ValidFrom m n w p sched
+  | [], _, _, _, _ => trivial
+  | st :: rest, w, p, hpn, h => by
+      obtain ⟨hw, hreg, hrest⟩ := h
+      cases st with
+      | mk s l =>
+          obtain ⟨hs, hsl, hrp⟩ := hreg
+          have hbp : BeatArith m p s l w :=
+            ratio_beat_of_seventeen hm hw hs hsl hrp
+          have hbn : BeatArith m n s l w :=
+            ratio_beat_of_seventeen hm hw hs hsl (Nat.le_trans hrp hpn)
+          have hlp : l ≤ p := by
+            have hc : 1 ≤ 17 * m * w := by
+              exact Nat.le_trans (by decide : (1 : Nat) ≤ 17)
+                (Nat.mul_le_mul (Nat.mul_le_mul_left 17 hm) hw)
+            exact Nat.le_trans (by simpa using Nat.mul_le_mul_right l hc) hrp
+          exact ⟨hbp, hbn,
+            regimeFrom17_validFrom hm rest (s - 1) l
+              (Nat.le_trans hlp hpn) hrest⟩
 
 /-- **Ratio-form schedule hypothesis synthesis.**  A ratio-regime schedule
 hypothesis derives the exact `ValidFrom` obligations consumed by
@@ -438,6 +505,64 @@ theorem geometricSchedule32_treeBudget (m q : Nat) :
       refine ⟨Nat.le_of_eq (Nat.mul_one m),
         geometricSchedule32_treeBudget m q k (l / (32 * q)) (depth - 1)⟩
 
+/-! ## Uniform coefficient-17 geometric schedule (S2175 Gate B Route C1) -/
+
+/-- The parallel coefficient-17 schedule; every stage budget remains `2`. -/
+def geometricSchedule17 (m : Nat) : Nat → Nat → List ScheduleStage
+  | _, 0 => []
+  | l, k + 1 => ScheduleStage.mk 2 l :: geometricSchedule17 m (l / (17 * m)) k
+
+theorem geometricSchedule17_length (m : Nat) :
+    ∀ (k l : Nat), (geometricSchedule17 m l k).length = k
+  | 0, _ => rfl
+  | k + 1, l => by
+      rw [geometricSchedule17, List.length_cons, geometricSchedule17_length m k]
+
+theorem geometricSchedule17_budgets (m : Nat) :
+    ∀ (k l : Nat),
+      (geometricSchedule17 m l k).map stageS = List.replicate k 2
+  | 0, _ => rfl
+  | k + 1, l => by
+      rw [geometricSchedule17, List.map_cons, geometricSchedule17_budgets m k,
+        List.replicate_succ]
+      rfl
+
+private theorem div_step_regime17 {m l : Nat} :
+    17 * m * 1 * (l / (17 * m)) ≤ l := by
+  rw [Nat.mul_one, Nat.mul_comm (17 * m) (l / (17 * m))]
+  exact Nat.div_mul_le_self l (17 * m)
+
+private theorem div_step_lower17 {m l k : Nat} (hq : 0 < 17 * m)
+    (h : 2 * (17 * m) ^ (k + 1) ≤ l) :
+    2 * (17 * m) ^ k ≤ l / (17 * m) := by
+  rw [Nat.le_div_iff_mul_le hq, Nat.mul_assoc, ← Nat.pow_succ]
+  exact h
+
+private theorem two_le_of_pow17 {m l k : Nat} (hq : 0 < 17 * m)
+    (h : 2 * (17 * m) ^ k ≤ l) : 2 ≤ l := by
+  have h1 : 1 ≤ (17 * m) ^ k := Nat.pos_pow_of_pos k hq
+  exact Nat.le_trans (by simpa using Nat.mul_le_mul_left 2 h1) h
+
+theorem geometricSchedule17_regime {m : Nat} (hm : 1 ≤ m) :
+    ∀ (k l p w : Nat), 1 ≤ w → 2 * (17 * m) ^ k ≤ l →
+      17 * m * w * l ≤ p → RegimeFrom17 m w p (geometricSchedule17 m l (k + 1))
+  | 0, l, p, w, hw, hl, hp => by
+      have hq : 0 < 17 * m := Nat.mul_pos (by decide) hm
+      exact ⟨hw, ⟨(by decide : (1 : Nat) ≤ 2), two_le_of_pow17 hq hl, hp⟩, trivial⟩
+  | k + 1, l, p, w, hw, hl, hp => by
+      have hq : 0 < 17 * m := Nat.mul_pos (by decide) hm
+      refine ⟨hw, ⟨(by decide : (1 : Nat) ≤ 2), two_le_of_pow17 hq hl, hp⟩, ?_⟩
+      exact geometricSchedule17_regime hm k (l / (17 * m)) l 1 (Nat.le_refl 1)
+        (div_step_lower17 hq hl) div_step_regime17
+
+theorem geometricSchedule17_treeBudget (m q : Nat) :
+    ∀ (k l depth : Nat),
+      TreeBudgetFrom (fun _ _ => m) m depth (geometricSchedule17 q l k)
+  | 0, _, _ => trivial
+  | k + 1, l, depth => by
+      refine ⟨Nat.le_of_eq (Nat.mul_one m),
+        geometricSchedule17_treeBudget m q k (l / (17 * q)) (depth - 1)⟩
+
 /-! ## The supplied start-layer family (one single-literal width-1 gate) -/
 
 /-- The family's start literal for `n + 1` variables: variable `0`,
@@ -603,6 +728,24 @@ private theorem regime_space_bound_tightEntry {m w n : Nat} :
     32 * m * w * (n / (32 * m * w)) ≤ n := by
   rw [Nat.mul_comm (32 * m * w) (n / (32 * m * w))]
   exact Nat.div_mul_le_self n (32 * m * w)
+
+private theorem regime_space_bound17 {m w n : Nat} :
+    17 * m * w * (n / (17 * m * w)) ≤ n := by
+  rw [Nat.mul_comm (17 * m * w) (n / (17 * m * w))]
+  exact Nat.div_mul_le_self n (17 * m * w)
+
+/-- The exact coefficient-17 entry product validates the coefficient-17
+schedule over the full ambient space. -/
+theorem geometric_regime_of_bound17 {m w n : Nat}
+    (hm : 1 ≤ m) (hw : 1 ≤ w) (k : Nat)
+    (hn : 2 * (17 * m) ^ k * (17 * m * w) ≤ n) :
+    RegimeFrom17 m w n
+      (geometricSchedule17 m (n / (17 * m * w)) (k + 1)) := by
+  have hq : 0 < 17 * m * w := Nat.mul_pos (Nat.mul_pos (by decide) hm) hw
+  refine geometricSchedule17_regime hm k (n / (17 * m * w)) n w hw ?_
+    regime_space_bound17
+  rw [Nat.le_div_iff_mul_le hq]
+  exact hn
 
 /-- One uniform coefficient-32 product bound validates the coefficient-32
 schedule over the full ambient space. -/
