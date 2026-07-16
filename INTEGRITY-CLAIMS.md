@@ -575,6 +575,12 @@ duplicate-stage code has only one recovered row, so the current all-
   Frege/PHP, NOT NP/circuit, NOT arbitrary AC0/bounded-depth collapse, NOT
   Gate A, and NOT a P-vs-NP claim.  The duplicated-cube/dedup witness is
   explicitly NOT switching non-vacuity evidence;
+- any broad consequence from S2179: exactly two finite multi-round uniform-9
+  packaging instances for the duplicated depth-3 cube, at ambient `13122` with
+  three rounds and ambient `118098` with four rounds.  They reuse the S2177
+  divisor-9 schedule and all-level deduplicated-frontier consumer with unchanged
+  `t(d,s)=S(d)*(s-1)`.  These packaging witnesses are NOT switching non-vacuity,
+  full B4, PHP switching, Frege/PHP, Gate A, or a P-vs-NP claim;
 - unsupplied or automatically synthesized product hypotheses for the scheduled
   route: `FrozenProductSchedule` proves only that an explicit
   `FrozenProductHypothesis` over a supplied `B` and `t` yields `ValidFrom` and
@@ -727,6 +733,9 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness11` | none | S2177 finite packaging witness at ambient `1458`; not switching non-vacuity |
 | `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness11_uniform9_product_eq` / `dupCubeWitness11_uniform16_product_fails` | `propext` | S2177 exact `1458` product and coefficient-16 separation |
 | `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness11_dedup_finalTree_allLevels_rounds2_uniform9` | `propext`, `Classical.choice`, `Quot.sound` | S2177 finite all-level divisor-9 packaging instance |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitnessU9R3` / `dupCubeWitnessU9R4` | none | S2179 finite multi-round uniform-9 packaging witnesses at ambients `13122` and `118098`; not switching non-vacuity |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitnessU9R3_uniform9_rounds3_product_eq` / `dupCubeWitnessU9R3_rounds3_fails_at_s2177_ambient` / `dupCubeWitnessU9R4_uniform9_rounds4_product_eq` | `propext` | S2179 exact finite uniform-9 products and three-round ambient-`1458` separation |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitnessU9R3_dedup_finalTree_allLevels_rounds3_uniform9` / `dupCubeWitnessU9R4_dedup_finalTree_allLevels_rounds4_uniform9` | `propext`, `Classical.choice`, `Quot.sound` | S2179 finite all-level uniform-9 three- and four-round packaging instances; not full B4, PHP, Gate A, or P-vs-NP |
 | `PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.widthDNF_syntacticDNF_le_recurrenceWidth` | `propext`, `Quot.sound` | S2164 hypothesis-free structural width bookkeeping |
 | `PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.emptyAndOne` | none | S2164 empty-fanin witness |
 | `PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.emptyAndOne_recurrenceWidth` | `propext`, `Quot.sound` | S2164 empty-fanin recurrence-width pin |

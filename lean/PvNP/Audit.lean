@@ -420,6 +420,34 @@ import PvNP.ScheduledCollapseDemo
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness11_dedup_finalTree_allLevels_rounds2_uniform9
 
+/-! S2179 finite multi-round uniform-9 packaging pins. -/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitnessU9R3' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitnessU9R3
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitnessU9R3_uniform9_rounds3_product_eq' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitnessU9R3_uniform9_rounds3_product_eq
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitnessU9R3_rounds3_fails_at_s2177_ambient' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitnessU9R3_rounds3_fails_at_s2177_ambient
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitnessU9R3_dedup_finalTree_allLevels_rounds3_uniform9' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitnessU9R3_dedup_finalTree_allLevels_rounds3_uniform9
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitnessU9R4' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitnessU9R4
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitnessU9R4_uniform9_rounds4_product_eq' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitnessU9R4_uniform9_rounds4_product_eq
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitnessU9R4_dedup_finalTree_allLevels_rounds4_uniform9' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitnessU9R4_dedup_finalTree_allLevels_rounds4_uniform9
+
 /-! S2172 finite uniform-32 round-extension pins. -/
 
 /-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness21' does not depend on any axioms -/

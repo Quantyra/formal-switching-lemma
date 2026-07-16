@@ -2606,5 +2606,180 @@ theorem dupCubeWitness11_dedup_finalTree_allLevels_rounds2_uniform9 :
     dupCubeWitness11_normalizedFrontierWidthSchedule level hlevel]
   decide
 
+/-! ## Multi-round coefficient-9 finite packaging witnesses (S2179) -/
+
+private def dupSquareInnerU9R3 : BDFormula 13122 :=
+  .and [.lit { var := ⟨0, by decide⟩, sign := true },
+        .lit { var := ⟨0, by decide⟩, sign := true }]
+
+private def dupSquareWitnessU9R3 : BDFormula 13122 :=
+  .and [dupSquareInnerU9R3, dupSquareInnerU9R3]
+
+/-- The depth-3 duplicated cube at exact three-round uniform-9 ambient `13122`. -/
+def dupCubeWitnessU9R3 : BDFormula 13122 :=
+  .and [dupSquareWitnessU9R3, dupSquareWitnessU9R3]
+
+private theorem dupSquareInnerU9R3_nonempty : NonemptyFaninFormula dupSquareInnerU9R3 := by
+  refine .and (List.cons_ne_nil _ _) ?_
+  intro G hG
+  simp [dupSquareInnerU9R3] at hG
+  subst hG
+  exact .lit _
+
+private theorem dupSquareWitnessU9R3_nonempty : NonemptyFaninFormula dupSquareWitnessU9R3 := by
+  refine .and (List.cons_ne_nil _ _) ?_
+  intro G hG
+  simp [dupSquareWitnessU9R3] at hG
+  subst hG
+  exact dupSquareInnerU9R3_nonempty
+
+private theorem dupCubeWitnessU9R3_nonempty : NonemptyFaninFormula dupCubeWitnessU9R3 := by
+  refine .and (List.cons_ne_nil _ _) ?_
+  intro G hG
+  simp [dupCubeWitnessU9R3] at hG
+  subst hG
+  exact dupSquareWitnessU9R3_nonempty
+
+private theorem dupCubeWitnessU9R3_size : formulaSize dupCubeWitnessU9R3 = 15 := by
+  simp [dupCubeWitnessU9R3, dupSquareWitnessU9R3, dupSquareInnerU9R3, formulaSize_and,
+    formulaSize_lit]
+
+private theorem dupCubeWitnessU9R3_depth : depth dupCubeWitnessU9R3 = 3 := by
+  simp [dupCubeWitnessU9R3, dupSquareWitnessU9R3, dupSquareInnerU9R3, depth]
+
+private theorem dupCubeWitnessU9R3_widthSchedule :
+    ∀ level, level ≤ depth dupCubeWitnessU9R3 →
+      normalizedFrontierWidthSchedule dupCubeWitnessU9R3 level = 1 := by
+  intro level hlevel
+  have hcase : level = 0 ∨ level = 1 ∨ level = 2 ∨ level = 3 := by
+    rw [dupCubeWitnessU9R3_depth] at hlevel
+    omega
+  rcases hcase with rfl | rfl | rfl | rfl <;>
+    simp [normalizedFrontierWidthSchedule, frontierMaxNormalizedWidth,
+      normalizedDNFView_D, syntacticDNF, syntacticAndDNF, andDNF,
+      FormulaSyntacticDNF.literalDNF, FormulaSyntacticDNF.trueDNF,
+      formulaDepthFrontier, depthFrontier, topChildren, dupCubeWitnessU9R3,
+      dupSquareWitnessU9R3, dupSquareInnerU9R3] <;> rfl
+
+private theorem dupCubeWitnessU9R3_dedup_length :
+    ∀ level, level ≤ depth dupCubeWitnessU9R3 →
+      (dedupRepresentativeFrontier dupCubeWitnessU9R3 level).length = 1 := by
+  intro level hlevel
+  have hcase : level = 0 ∨ level = 1 ∨ level = 2 ∨ level = 3 := by
+    rw [dupCubeWitnessU9R3_depth] at hlevel
+    omega
+  rcases hcase with rfl | rfl | rfl | rfl
+  · exact congrArg List.length (dedup_replicate_succ dupCubeWitnessU9R3 0)
+  · exact congrArg List.length (dedup_replicate_succ dupSquareWitnessU9R3 1)
+  · exact congrArg List.length (dedup_replicate_succ dupSquareInnerU9R3 3)
+  · exact congrArg List.length (dedup_replicate_succ
+      (BDFormula.lit { var := ⟨0, by decide⟩, sign := true }) 7)
+
+theorem dupCubeWitnessU9R3_uniform9_rounds3_product_eq :
+    2 * (9 * 1) ^ 3 * (9 * 1 * 1) = 13122 := by decide
+
+theorem dupCubeWitnessU9R3_rounds3_fails_at_s2177_ambient :
+    ¬ (2 * (9 * 1) ^ 3 * (9 * 1 * 1) ≤ 1458) := by decide
+
+theorem dupCubeWitnessU9R3_dedup_finalTree_allLevels_rounds3_uniform9 :
+    ∀ level, level ≤ depth dupCubeWitnessU9R3 →
+      RepresentativeNormalizedViewClassDepthFinalTreeAtUniform9 dupCubeWitnessU9R3
+        (fun _ => 15) (normalizedFrontierWidthSchedule dupCubeWitnessU9R3)
+        3 3 ParentKind.and level
+        (dedupRepresentativeFrontier dupCubeWitnessU9R3 level) := by
+  refine allDedupFrontiers_geometricCollapse_finalTree_uniform9_normalizedWidth
+    dupCubeWitnessU9R3 (fun _ => 15) 3 3 ParentKind.and dupCubeWitnessU9R3_nonempty
+      (Nat.le_of_eq dupCubeWitnessU9R3_depth) (Nat.le_of_eq dupCubeWitnessU9R3_size)
+      ?_
+  intro level hlevel
+  rw [dupCubeWitnessU9R3_dedup_length level hlevel,
+    dupCubeWitnessU9R3_widthSchedule level hlevel]
+  decide
+
+private def dupSquareInnerU9R4 : BDFormula 118098 :=
+  .and [.lit { var := ⟨0, by decide⟩, sign := true },
+        .lit { var := ⟨0, by decide⟩, sign := true }]
+
+private def dupSquareWitnessU9R4 : BDFormula 118098 :=
+  .and [dupSquareInnerU9R4, dupSquareInnerU9R4]
+
+/-- The depth-3 duplicated cube at exact four-round uniform-9 ambient `118098`. -/
+def dupCubeWitnessU9R4 : BDFormula 118098 :=
+  .and [dupSquareWitnessU9R4, dupSquareWitnessU9R4]
+
+private theorem dupSquareInnerU9R4_nonempty : NonemptyFaninFormula dupSquareInnerU9R4 := by
+  refine .and (List.cons_ne_nil _ _) ?_
+  intro G hG
+  simp [dupSquareInnerU9R4] at hG
+  subst hG
+  exact .lit _
+
+private theorem dupSquareWitnessU9R4_nonempty : NonemptyFaninFormula dupSquareWitnessU9R4 := by
+  refine .and (List.cons_ne_nil _ _) ?_
+  intro G hG
+  simp [dupSquareWitnessU9R4] at hG
+  subst hG
+  exact dupSquareInnerU9R4_nonempty
+
+private theorem dupCubeWitnessU9R4_nonempty : NonemptyFaninFormula dupCubeWitnessU9R4 := by
+  refine .and (List.cons_ne_nil _ _) ?_
+  intro G hG
+  simp [dupCubeWitnessU9R4] at hG
+  subst hG
+  exact dupSquareWitnessU9R4_nonempty
+
+private theorem dupCubeWitnessU9R4_size : formulaSize dupCubeWitnessU9R4 = 15 := by
+  simp [dupCubeWitnessU9R4, dupSquareWitnessU9R4, dupSquareInnerU9R4, formulaSize_and,
+    formulaSize_lit]
+
+private theorem dupCubeWitnessU9R4_depth : depth dupCubeWitnessU9R4 = 3 := by
+  simp [dupCubeWitnessU9R4, dupSquareWitnessU9R4, dupSquareInnerU9R4, depth]
+
+private theorem dupCubeWitnessU9R4_widthSchedule :
+    ∀ level, level ≤ depth dupCubeWitnessU9R4 →
+      normalizedFrontierWidthSchedule dupCubeWitnessU9R4 level = 1 := by
+  intro level hlevel
+  have hcase : level = 0 ∨ level = 1 ∨ level = 2 ∨ level = 3 := by
+    rw [dupCubeWitnessU9R4_depth] at hlevel
+    omega
+  rcases hcase with rfl | rfl | rfl | rfl <;>
+    simp [normalizedFrontierWidthSchedule, frontierMaxNormalizedWidth,
+      normalizedDNFView_D, syntacticDNF, syntacticAndDNF, andDNF,
+      FormulaSyntacticDNF.literalDNF, FormulaSyntacticDNF.trueDNF,
+      formulaDepthFrontier, depthFrontier, topChildren, dupCubeWitnessU9R4,
+      dupSquareWitnessU9R4, dupSquareInnerU9R4] <;> rfl
+
+private theorem dupCubeWitnessU9R4_dedup_length :
+    ∀ level, level ≤ depth dupCubeWitnessU9R4 →
+      (dedupRepresentativeFrontier dupCubeWitnessU9R4 level).length = 1 := by
+  intro level hlevel
+  have hcase : level = 0 ∨ level = 1 ∨ level = 2 ∨ level = 3 := by
+    rw [dupCubeWitnessU9R4_depth] at hlevel
+    omega
+  rcases hcase with rfl | rfl | rfl | rfl
+  · exact congrArg List.length (dedup_replicate_succ dupCubeWitnessU9R4 0)
+  · exact congrArg List.length (dedup_replicate_succ dupSquareWitnessU9R4 1)
+  · exact congrArg List.length (dedup_replicate_succ dupSquareInnerU9R4 3)
+  · exact congrArg List.length (dedup_replicate_succ
+      (BDFormula.lit { var := ⟨0, by decide⟩, sign := true }) 7)
+
+theorem dupCubeWitnessU9R4_uniform9_rounds4_product_eq :
+    2 * (9 * 1) ^ 4 * (9 * 1 * 1) = 118098 := by decide
+
+theorem dupCubeWitnessU9R4_dedup_finalTree_allLevels_rounds4_uniform9 :
+    ∀ level, level ≤ depth dupCubeWitnessU9R4 →
+      RepresentativeNormalizedViewClassDepthFinalTreeAtUniform9 dupCubeWitnessU9R4
+        (fun _ => 15) (normalizedFrontierWidthSchedule dupCubeWitnessU9R4)
+        3 4 ParentKind.and level
+        (dedupRepresentativeFrontier dupCubeWitnessU9R4 level) := by
+  refine allDedupFrontiers_geometricCollapse_finalTree_uniform9_normalizedWidth
+    dupCubeWitnessU9R4 (fun _ => 15) 3 4 ParentKind.and dupCubeWitnessU9R4_nonempty
+      (Nat.le_of_eq dupCubeWitnessU9R4_depth) (Nat.le_of_eq dupCubeWitnessU9R4_size)
+      ?_
+  intro level hlevel
+  rw [dupCubeWitnessU9R4_dedup_length level hlevel,
+    dupCubeWitnessU9R4_widthSchedule level hlevel]
+  decide
+
 end FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute
 end PvNP
