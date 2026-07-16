@@ -1,5 +1,6 @@
 import Mathlib.Data.List.Dedup
 import PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute
+import PvNP.FormulaRecursiveFrontierCountRecurrence
 
 /-!
 # Representative frontier layers for the normalized-view route
@@ -36,7 +37,8 @@ namespace FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute
 open BoundedDepthCanonicalDT BoundedDepthFrege BoundedDepthIteratedCollapse BoundedDepthLayerView
 open BoundedDepthDecisionTree BoundedDepthRestriction CNFModel
 open FormulaRecursiveClassProfile FormulaRecursiveDecomposition FormulaRecursiveDepth
-open FormulaRecursiveGlobalSchedule FormulaRecursiveLayerProfile FormulaRecursiveNonempty
+open FormulaRecursiveFrontierCountRecurrence FormulaRecursiveGlobalSchedule
+open FormulaRecursiveLayerProfile FormulaRecursiveNonempty
 open FormulaRecursiveSizeBound FormulaRecursiveSyntacticTerminalBoundedShallowTightBudget
 open FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget
 open FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightBudget
@@ -1273,6 +1275,24 @@ theorem dupCubeWitness19_syntacticDNF_not_simple :
 theorem dupCubeWitness19_formulaSize :
     formulaSize dupCubeWitness19 = 15 := by
   simp [dupCubeWitness19, formulaSize_and, dupSquareWitness19_formulaSize]
+
+/-- The max-one count recurrence evaluates to eight on the duplicated cube. -/
+theorem dupCubeWitness19_recurrenceCount :
+    formulaRecurrenceCount dupCubeWitness19 = 8 := by
+  simp [dupCubeWitness19, dupSquareWitness19, dupSquareInner19,
+    formulaRecurrenceCount_and, formulaRecurrenceCount_lit]
+
+/-- The count recurrence strictly improves on raw formula size for the witness. -/
+theorem dupCubeWitness19_recurrenceCount_lt_formulaSize :
+    formulaRecurrenceCount dupCubeWitness19 < formulaSize dupCubeWitness19 := by
+  rw [dupCubeWitness19_recurrenceCount, dupCubeWitness19_formulaSize]
+  decide
+
+/-- Every raw frontier layer of the duplicated cube has at most eight gates. -/
+theorem dupCubeWitness19_frontierGateCount_le_eight (level : Nat) :
+    frontierLayerGateCount dupCubeWitness19 level ≤ 8 := by
+  simpa [dupCubeWitness19_recurrenceCount] using
+    frontierLayerGateCount_le_formulaRecurrenceCount dupCubeWitness19 level
 
 theorem dupCubeWitness19_depth : depth dupCubeWitness19 = 3 := by
   simp [dupCubeWitness19, depth, dupSquareWitness19_depth]

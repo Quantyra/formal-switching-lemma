@@ -64,6 +64,7 @@ import PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightE
 import PvNP.FormulaRecursiveTerminalSchedule
 import PvNP.FormulaRecursiveNonempty
 import PvNP.FormulaRecursiveSizeBound
+import PvNP.FormulaRecursiveFrontierCountRecurrence
 import PvNP.FormulaSyntacticDNF
 import PvNP.FormulaSyntacticDNFNormalization
 import PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute

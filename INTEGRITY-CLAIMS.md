@@ -581,6 +581,16 @@ duplicate-stage code has only one recovered row, so the current all-
   divisor-9 schedule and all-level deduplicated-frontier consumer with unchanged
   `t(d,s)=S(d)*(s-1)`.  These packaging witnesses are NOT switching non-vacuity,
   full B4, PHP switching, Frege/PHP, Gate A, or a P-vs-NP claim;
+- any broad consequence from S2180: `formulaRecurrenceCount` is structural
+  count bookkeeping only.  Leaves count as one and OR/AND nodes use
+  `max 1 (sum of child counts)`, so empty fan-ins retain the level-zero root
+  count.  Lean proves every raw recursive frontier count is at most this
+  recurrence and the recurrence is at most raw `formulaSize`, without a
+  formula-class or nonempty-fanin hypothesis.  On the finite duplicated-cube
+  witness the values are recurrence `8` and size `15`, and every raw layer is
+  at most `8`.  This does not yet thread the recurrence through frozen-form
+  entry products or close S2181/full B4; it is not PHP switching, Frege/PHP,
+  NP/circuit, Gate A, arbitrary AC0 collapse, or P-vs-NP;
 - unsupplied or automatically synthesized product hypotheses for the scheduled
   route: `FrozenProductSchedule` proves only that an explicit
   `FrozenProductHypothesis` over a supplied `B` and `t` yields `ValidFrom` and

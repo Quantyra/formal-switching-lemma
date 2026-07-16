@@ -96,6 +96,7 @@ import PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowDisjointSupportTightE
 import PvNP.FormulaRecursiveTerminalSchedule
 import PvNP.FormulaRecursiveNonempty
 import PvNP.FormulaRecursiveSizeBound
+import PvNP.FormulaRecursiveFrontierCountRecurrence
 import PvNP.FormulaSyntacticDNF
 import PvNP.FormulaSyntacticDNFNormalization
 import PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute
@@ -10593,3 +10594,28 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness19_dedup_finalTree_allLevels_rounds2
+/-! S2180 hypothesis-free structural frontier-count recurrence pins. -/
+
+/-- info: 'PvNP.FormulaRecursiveFrontierCountRecurrence.formulaRecurrenceCount_pos' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveFrontierCountRecurrence.formulaRecurrenceCount_pos
+/-- info: 'PvNP.FormulaRecursiveFrontierCountRecurrence.formulaRecurrenceCount_le_formulaSize' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveFrontierCountRecurrence.formulaRecurrenceCount_le_formulaSize
+/-- info: 'PvNP.FormulaRecursiveFrontierCountRecurrence.frontierLayerGateCount_le_formulaRecurrenceCount' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveFrontierCountRecurrence.frontierLayerGateCount_le_formulaRecurrenceCount
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness19_recurrenceCount' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness19_recurrenceCount
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness19_recurrenceCount_lt_formulaSize' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness19_recurrenceCount_lt_formulaSize
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness19_frontierGateCount_le_eight' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness19_frontierGateCount_le_eight
