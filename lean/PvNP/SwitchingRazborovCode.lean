@@ -766,5 +766,19 @@ theorem switchingLemmaTermSimple_of_rcodeBlockStepVar {n : Nat}
     (h : RCodeBlockStepVar n) : SwitchingLemmaTermSimple n :=
   switchingLemmaTermSimple_of_rcodeRecoverable (rcodeRecoverable_of_rcodeBlockStepVar h)
 
+
+
+
+/-- S2176: sharp RCode injection card bound using exact (4w)^s. -/
+theorem card_le_mul_rcode4_of_injOn {α β : Type*} [DecidableEq β]
+    (S : Finset α) (T : Finset β) (w s : Nat)
+    (f : α → β × RCode s w)
+    (hmem : ∀ a ∈ S, (f a).1 ∈ T)
+    (hinj : Set.InjOn f S) :
+    S.card ≤ T.card * (4 * w) ^ s := by
+  have h := card_le_mul_of_injOn S T f hmem hinj
+  rw [card_rcode] at h
+  exact h
+
 end SwitchingRazborovCode
 end PvNP

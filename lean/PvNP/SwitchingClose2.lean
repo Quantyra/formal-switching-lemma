@@ -47,6 +47,7 @@ INTEGRITY: no `sorry`, no `admit`, no new `axiom`, no `native_decide`.  Imported
 untouched.
 -/
 import PvNP.SwitchingAssemble
+import PvNP.SwitchingRazborovCode
 
 namespace PvNP
 namespace SwitchingClose2
@@ -776,6 +777,66 @@ theorem switchingLemmaTermSimple_proved {n : Nat} : SwitchingLemmaTermSimple n :
         exact congrFun hσ v
     exact card_le_mul_rcode_of_injOn (badSetTerm D s ℓ) (restrictionsWithStars n (ℓ - s))
       w s (encodeOrig D w s hw) hmem hinj
+  · push_neg at hw
+    have hw0 : w = 0 := Nat.le_zero.mp hw
+    subst hw0
+    have hdepth0 : ∀ ρ : Restriction n,
+        dtDepth (termCanonicalDT (dnfRestrict ρ D)) = 0 := by
+      intro ρ
+      apply Nat.le_zero.mp
+      refine le_trans (dtDepth_termCanonicalDT_le _) ?_
+      have hwr : widthDNF (dnfRestrict ρ D) = 0 := by
+        have := widthDNF_dnfRestrict_le ρ D; omega
+      rw [dnfSize_eq_zero_of_width_zero _ hwr]
+    rcases Nat.eq_zero_or_pos s with hs | hs
+    · subst hs
+      simp only [Nat.sub_zero, Nat.pow_zero, Nat.mul_one, Nat.mul_zero]
+      exact Finset.card_le_card (badSetTerm_subset D 0 ℓ)
+    · have hempty : badSetTerm D s ℓ = ∅ := by
+        rw [Finset.eq_empty_iff_forall_not_mem]
+        intro ρ hρ
+        have := ((mem_badSetTerm ρ).mp hρ).2
+        rw [hdepth0 ρ] at this; omega
+      rw [hempty]; simp
+
+/-- Exact factor-4 SimpleDNF term-canonical bound (S2176).  Same encode and
+injectivity as `switchingLemmaTermSimple_proved`; only the card helper is
+sharp, using exact `RCode` cardinality `(4w)^s` instead of the relaxed
+`(8w)^s` packaging. -/
+theorem switchingLemmaTermSimple_proved4 {n : Nat} (D : DNF n)
+    (w s ℓ : Nat) (hD : SimpleDNF D) (hwD : widthDNF D ≤ w) :
+    (badSetTerm D s ℓ).card ≤
+      (restrictionsWithStars n (ℓ - s)).card * (4 * w) ^ s := by
+  classical
+  by_cases hw : 0 < w
+  · have hmem : ∀ ρ ∈ badSetTerm D s ℓ,
+        (encodeOrig D w s hw ρ).1 ∈ restrictionsWithStars n (ℓ - s) := by
+      intro ρ hρ
+      rw [mem_restrictionsWithStars]; exact stars_encodeEnt₁ hD hρ
+    have hinj : Set.InjOn (encodeOrig D w s hw) ↑(badSetTerm D s ℓ) := by
+      intro ρ hρ ρ' hρ' heq
+      have hρmem : ρ ∈ badSetTerm D s ℓ := by simpa using hρ
+      have hρ'mem : ρ' ∈ badSetTerm D s ℓ := by simpa using hρ'
+      have hσ : encodeEnt₁ D s ρ = encodeEnt₁ D s ρ' := congrArg Prod.fst heq
+      have hcode : codeOrig D w s hw ρ = codeOrig D w s hw ρ' :=
+        congrArg Prod.snd heq
+      have ht : (touchedVars D s ρ).toFinset = (touchedVars D s ρ').toFinset := by
+        rw [← origRecovery D w s ℓ hw hwD hD ρ hρmem,
+            ← origRecovery D w s ℓ hw hwD hD ρ' hρ'mem, hσ, hcode]
+      rw [ρ_eq_of_encodeEnt₁ D s ρ, ρ_eq_of_encodeEnt₁ D s ρ']
+      funext v
+      have hmemv : (v ∈ touchedVars D s ρ) = (v ∈ touchedVars D s ρ') := by
+        have := congrArg (fun (F : Finset (Fin n)) => v ∈ F) ht
+        simpa [List.mem_toFinset] using this
+      by_cases hvv : v ∈ touchedVars D s ρ
+      · have hvv' : v ∈ touchedVars D s ρ' := by rw [← hmemv]; exact hvv
+        simp only [if_pos hvv, if_pos hvv']
+      · have hvv' : v ∉ touchedVars D s ρ' := by rw [← hmemv]; exact hvv
+        simp only [if_neg hvv, if_neg hvv']
+        exact congrFun hσ v
+    exact card_le_mul_rcode4_of_injOn
+      (badSetTerm D s ℓ) (restrictionsWithStars n (ℓ - s)) w s
+      (encodeOrig D w s hw) hmem hinj
   · push_neg at hw
     have hw0 : w = 0 := Nat.le_zero.mp hw
     subst hw0

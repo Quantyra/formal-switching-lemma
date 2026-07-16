@@ -155,6 +155,33 @@ theorem jointBadSet_card_le {n : Nat} (gates : List (GateSpec n))
               ((restrictionsWithStars n (ℓ - s)).card * (8 * w) ^ s) := by
             rw [List.length_cons]
 
+/-- Factor-4 joint bad-set union bound (S2176), via exact `RCode` card. -/
+theorem jointBadSet_card_le4 {n : Nat} (gates : List (GateSpec n))
+    (w s ℓ : Nat) (hwidth : ∀ g ∈ gates, widthDNF g.theDNF ≤ w) :
+    (jointBadSet gates s ℓ).card ≤
+      gates.length *
+        ((restrictionsWithStars n (ℓ - s)).card * (4 * w) ^ s) := by
+  induction gates with
+  | nil =>
+      simp [jointBadSet]
+  | cons g gates ih =>
+      have hg := SwitchingClose2.switchingLemmaTermSimple_proved4 (n := n)
+        g.theDNF w s ℓ g.theDNF_simple (hwidth g (List.mem_cons_self g gates))
+      have hrest := ih (fun g' hg' => hwidth g' (List.mem_cons_of_mem g hg'))
+      calc (jointBadSet (g :: gates) s ℓ).card
+          ≤ (badSetTerm g.theDNF s ℓ).card + (jointBadSet gates s ℓ).card :=
+            Finset.card_union_le _ _
+        _ ≤ (restrictionsWithStars n (ℓ - s)).card * (4 * w) ^ s +
+              gates.length *
+                ((restrictionsWithStars n (ℓ - s)).card * (4 * w) ^ s) :=
+            Nat.add_le_add hg hrest
+        _ = (gates.length + 1) *
+              ((restrictionsWithStars n (ℓ - s)).card * (4 * w) ^ s) :=
+            Eq.trans (Nat.add_comm _ _) (Nat.succ_mul gates.length _).symm
+        _ = (g :: gates).length *
+              ((restrictionsWithStars n (ℓ - s)).card * (4 * w) ^ s) := by
+            rw [List.length_cons]
+
 /-! ## Good restrictions exist by counting -/
 
 /-- **Counting produces a restriction (direct form).**  If strictly fewer
@@ -194,6 +221,21 @@ theorem goodRestriction_exists {n : Nat} (gates : List (GateSpec n))
         jointBadSet_card_le gates w s ℓ hwidth
     _ < (restrictionsWithStars n ℓ).card := hbeat
 
+/-- Factor-4 good-restriction existence (S2176). -/
+theorem goodRestriction_exists4 {n : Nat} (gates : List (GateSpec n))
+    (w s ℓ : Nat) (hwidth : ∀ g ∈ gates, widthDNF g.theDNF ≤ w)
+    (hbeat : gates.length *
+        ((restrictionsWithStars n (ℓ - s)).card * (4 * w) ^ s) <
+      (restrictionsWithStars n ℓ).card) :
+    ∃ ρ ∈ restrictionsWithStars n ℓ,
+      ∀ g ∈ gates, ρ ∉ badSetTerm g.theDNF s ℓ := by
+  apply goodRestriction_exists_of_card
+  calc (jointBadSet gates s ℓ).card
+      ≤ gates.length *
+          ((restrictionsWithStars n (ℓ - s)).card * (4 * w) ^ s) :=
+        jointBadSet_card_le4 gates w s ℓ hwidth
+    _ < (restrictionsWithStars n ℓ).card := hbeat
+
 /-! ## Simultaneous collapse under one generated restriction -/
 
 /-- Per-gate collapse for a good restriction, routed through the audited
@@ -227,6 +269,20 @@ theorem simultaneousCollapse_exists {n : Nat} (gates : List (GateSpec n))
         ∀ a : Assignment n, Agree ρ a →
           dtEval a T = eval a (restrict ρ g.formula) := by
   obtain ⟨ρ, hstars, hgood⟩ := goodRestriction_exists gates w s ℓ hwidth hbeat
+  exact ⟨ρ, hstars, fun g hg =>
+    gate_collapse g w s ℓ (hwidth g hg) ρ hstars (hgood g hg)⟩
+
+/-- Factor-4 simultaneous collapse (S2176). -/
+theorem simultaneousCollapse_exists4 {n : Nat} (gates : List (GateSpec n))
+    (w s ℓ : Nat) (hwidth : ∀ g ∈ gates, widthDNF g.theDNF ≤ w)
+    (hbeat : gates.length *
+        ((restrictionsWithStars n (ℓ - s)).card * (4 * w) ^ s) <
+      (restrictionsWithStars n ℓ).card) :
+    ∃ ρ ∈ restrictionsWithStars n ℓ,
+      ∀ g ∈ gates, ∃ T : DTree n, dtDepth T < s ∧
+        ∀ a : Assignment n, Agree ρ a →
+          dtEval a T = eval a (restrict ρ g.formula) := by
+  obtain ⟨ρ, hstars, hgood⟩ := goodRestriction_exists4 gates w s ℓ hwidth hbeat
   exact ⟨ρ, hstars, fun g hg =>
     gate_collapse g w s ℓ (hwidth g hg) ρ hstars (hgood g hg)⟩
 
