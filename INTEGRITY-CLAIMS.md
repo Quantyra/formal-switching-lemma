@@ -563,6 +563,18 @@ duplicate-stage code has only one recovered row, so the current all-
   now `(8*m*w+1)*l <= p` under the factor-4 fold `2*(4*w)=(8*w)`.  This is
   packaging and schedule arithmetic, NOT switching non-vacuity evidence, NOT
   full B4, NOT PHP/Frege, NOT NP/circuit, and NOT a P-vs-NP claim;
+- any broad consequence from S2177 Route A-sharp: this is the multiplicative
+  coefficient-`9` packaging of the S2176 exact affine condition
+  (`8*m*w + 1 <= 9*m*w` since `1 <= m*w`), a parallel divisor-`9` schedule,
+  and SimpleDNF term-canonical finite counting/representative-layer packaging
+  at exact ambient `1458 = 2*(9)^2*9` (unit `m=w=1`, rounds `2`).  The
+  switching factor remains `4`,
+  stage budget remains `s=2`, and `t(d,s)=S(d)*(s-1)` is unchanged.  This is
+  bounded schedule arithmetic only — NOT an unqualified switching-lemma
+  improvement, NOT a sub-affine threshold redesign, NOT full B4, NOT PHP or
+  Frege/PHP, NOT NP/circuit, NOT arbitrary AC0/bounded-depth collapse, NOT
+  Gate A, and NOT a P-vs-NP claim.  The duplicated-cube/dedup witness is
+  explicitly NOT switching non-vacuity evidence;
 - unsupplied or automatically synthesized product hypotheses for the scheduled
   route: `FrozenProductSchedule` proves only that an explicit
   `FrozenProductHypothesis` over a supplied `B` and `t` yields `ValidFrom` and
@@ -706,6 +718,15 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness13` | none | S2176 finite packaging witness at ambient `8192`; not switching non-vacuity |
 | `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness13_uniform16_product_eq` / `dupCubeWitness13_uniform17_product_fails` | `propext` | S2176 exact `8192` product and coefficient-17 separation |
 | `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness13_dedup_finalTree_allLevels_rounds2_uniform16` | `propext`, `Classical.choice`, `Quot.sound` | S2176 finite all-level divisor-16 packaging instance |
+| `PvNP.FrozenProductScheduleRatio.ratio_beat9` | `propext`, `Classical.choice`, `Quot.sound` | S2177 coefficient-9 multiplicative packaging of the factor-4 affine beat |
+| `PvNP.FrozenProductScheduleRatio.RatioRegime9` / `RatioRegime9.mono` / `RegimeFrom9` | none | S2177 parallel coefficient-9 regime predicates |
+| `PvNP.FrozenProductScheduleRatio.ratioRegime9_beat` / `regimeFrom9_validFrom` / `regimeFrom9_validFrom4` | `propext`, `Classical.choice`, `Quot.sound` | S2177 coefficient-9 regime consumers |
+| `PvNP.FrozenProductScheduleRatio.geometricSchedule9` / `geometricSchedule9_length` / `geometricSchedule9_budgets` / `geometricSchedule9_treeBudget` | none | S2177 divisor-9 schedule bookkeeping |
+| `PvNP.FrozenProductScheduleRatio.geometricSchedule9_regime` / `geometric_regime_of_bound9` | `propext` | S2177 divisor-9 regime and ambient-`1458` product bounds |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.RepresentativeNormalizedViewClassDepthFinalTreeAtUniform9` / `representativeFrontier_geometricCollapseWithSuppliedWidth_finalTree_uniform9` / `representativeFrontier_geometricCollapse_finalTree_uniform9_normalizedWidth` / `dedupFrontier_geometricCollapse_finalTree_uniform9_normalizedWidth` / `allDedupFrontiers_geometricCollapse_finalTree_uniform9_normalizedWidth` | `propext`, `Classical.choice`, `Quot.sound` | S2177 uniform-9 representative consumers |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness11` | none | S2177 finite packaging witness at ambient `1458`; not switching non-vacuity |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness11_uniform9_product_eq` / `dupCubeWitness11_uniform16_product_fails` | `propext` | S2177 exact `1458` product and coefficient-16 separation |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness11_dedup_finalTree_allLevels_rounds2_uniform9` | `propext`, `Classical.choice`, `Quot.sound` | S2177 finite all-level divisor-9 packaging instance |
 | `PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.widthDNF_syntacticDNF_le_recurrenceWidth` | `propext`, `Quot.sound` | S2164 hypothesis-free structural width bookkeeping |
 | `PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.emptyAndOne` | none | S2164 empty-fanin witness |
 | `PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.emptyAndOne_recurrenceWidth` | `propext`, `Quot.sound` | S2164 empty-fanin recurrence-width pin |

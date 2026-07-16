@@ -250,6 +250,16 @@ theorem ratio_beat4 {m p s l w : Nat}
     (Nat.mul_le_mul_right l (eight_mw_succ_le_coeff hm hw (by decide : (9 : Nat) ≤ 16)))
     hreg
 
+/-- Coefficient-9 multiplicative packaging of the exact factor-4 affine
+condition (S2177 Route A-sharp): since `1 ≤ m*w`, `8*m*w + 1 ≤ 9*m*w`. -/
+theorem ratio_beat9 {m p s l w : Nat}
+    (hm : 1 ≤ m) (hw : 1 ≤ w) (hs : 1 ≤ s) (hsl : s ≤ l)
+    (hreg : 9 * m * w * l ≤ p) : BeatArith m p s l w := by
+  apply ratio_beat_affine hm hw hs hsl
+  exact Nat.le_trans
+    (Nat.mul_le_mul_right l (eight_mw_succ_le_coeff hm hw (Nat.le_refl 9)))
+    hreg
+
 /-- **The ratio-form regime discharges the closed-form stage beat.** -/
 theorem ratio_beat {m p s l w : Nat}
     (hm : 1 ≤ m) (hw : 1 ≤ w) (hs : 1 ≤ s) (hsl : s ≤ l)
@@ -383,6 +393,57 @@ theorem regimeFrom16_validFrom4 {m n : Nat} (hm : 1 ≤ m) :
     ∀ (sched : List ScheduleStage) (w p : Nat), p ≤ n →
       RegimeFrom16 m w p sched → ValidFrom4 m n w p sched :=
   regimeFrom16_validFrom hm
+
+/-- Parallel coefficient-9 stage regime (S2177 factor-4 + affine packaging). -/
+def RatioRegime9 (m w p : Nat) (st : ScheduleStage) : Prop :=
+  1 ≤ stageS st ∧ stageS st ≤ stageStars st ∧
+    9 * m * w * stageStars st ≤ p
+
+theorem RatioRegime9.mono {m w p n : Nat} {st : ScheduleStage}
+    (hpn : p ≤ n) (h : RatioRegime9 m w p st) : RatioRegime9 m w n st :=
+  ⟨h.1, h.2.1, Nat.le_trans h.2.2 hpn⟩
+
+theorem ratioRegime9_beat {m w p : Nat} {st : ScheduleStage}
+    (hm : 1 ≤ m) (hw : 1 ≤ w) (h : RatioRegime9 m w p st) :
+    BeatArith m p (stageS st) (stageStars st) w :=
+  ratio_beat9 hm hw h.1 h.2.1 h.2.2
+
+/-- Parallel coefficient-9 whole-schedule regime. -/
+def RegimeFrom9 (m : Nat) : Nat → Nat → List ScheduleStage → Prop
+  | _, _, [] => True
+  | w, p, st :: rest =>
+      1 ≤ w ∧ RatioRegime9 m w p st ∧
+        RegimeFrom9 m (stageS st - 1) (stageStars st) rest
+
+/-- Coefficient-9 schedule validity implies the existing beat interface. -/
+theorem regimeFrom9_validFrom {m n : Nat} (hm : 1 ≤ m) :
+    ∀ (sched : List ScheduleStage) (w p : Nat), p ≤ n →
+      RegimeFrom9 m w p sched → ValidFrom m n w p sched
+  | [], _, _, _, _ => trivial
+  | st :: rest, w, p, hpn, h => by
+      obtain ⟨hw, hreg, hrest⟩ := h
+      cases st with
+      | mk s l =>
+          obtain ⟨hs, hsl, hrp⟩ := hreg
+          have hbp : BeatArith m p s l w :=
+            ratio_beat9 hm hw hs hsl hrp
+          have hbn : BeatArith m n s l w :=
+            ratio_beat9 hm hw hs hsl (Nat.le_trans hrp hpn)
+          have hlp : l ≤ p := by
+            have hc : 1 ≤ 9 * m * w := by
+              exact Nat.le_trans (by decide : (1 : Nat) ≤ 9)
+                (Nat.mul_le_mul (Nat.mul_le_mul_left 9 hm) hw)
+            exact Nat.le_trans (by simpa using Nat.mul_le_mul_right l hc) hrp
+          exact ⟨hbp, hbn,
+            regimeFrom9_validFrom hm rest (s - 1) l
+              (Nat.le_trans hlp hpn) hrest⟩
+
+/-- Coefficient-9 validity, explicitly packaged at the factor-4 consumer
+interface. -/
+theorem regimeFrom9_validFrom4 {m n : Nat} (hm : 1 ≤ m) :
+    ∀ (sched : List ScheduleStage) (w p : Nat), p ≤ n →
+      RegimeFrom9 m w p sched → ValidFrom4 m n w p sched :=
+  regimeFrom9_validFrom hm
 
 /-- **Ratio-form schedule hypothesis synthesis.**  A ratio-regime schedule
 hypothesis derives the exact `ValidFrom` obligations consumed by
@@ -694,6 +755,64 @@ theorem geometricSchedule16_treeBudget (m q : Nat) :
       refine ⟨Nat.le_of_eq (Nat.mul_one m),
         geometricSchedule16_treeBudget m q k (l / (16 * q)) (depth - 1)⟩
 
+/-! ## Uniform coefficient-9 geometric schedule (S2177 Route A-sharp) -/
+
+/-- The parallel coefficient-9 schedule; every stage budget remains `2`. -/
+def geometricSchedule9 (m : Nat) : Nat → Nat → List ScheduleStage
+  | _, 0 => []
+  | l, k + 1 => ScheduleStage.mk 2 l :: geometricSchedule9 m (l / (9 * m)) k
+
+theorem geometricSchedule9_length (m : Nat) :
+    ∀ (k l : Nat), (geometricSchedule9 m l k).length = k
+  | 0, _ => rfl
+  | k + 1, l => by
+      rw [geometricSchedule9, List.length_cons, geometricSchedule9_length m k]
+
+theorem geometricSchedule9_budgets (m : Nat) :
+    ∀ (k l : Nat),
+      (geometricSchedule9 m l k).map stageS = List.replicate k 2
+  | 0, _ => rfl
+  | k + 1, l => by
+      rw [geometricSchedule9, List.map_cons, geometricSchedule9_budgets m k,
+        List.replicate_succ]
+      rfl
+
+private theorem div_step_regime9 {m l : Nat} :
+    9 * m * 1 * (l / (9 * m)) ≤ l := by
+  rw [Nat.mul_one, Nat.mul_comm (9 * m) (l / (9 * m))]
+  exact Nat.div_mul_le_self l (9 * m)
+
+private theorem div_step_lower9 {m l k : Nat} (hq : 0 < 9 * m)
+    (h : 2 * (9 * m) ^ (k + 1) ≤ l) :
+    2 * (9 * m) ^ k ≤ l / (9 * m) := by
+  rw [Nat.le_div_iff_mul_le hq, Nat.mul_assoc, ← Nat.pow_succ]
+  exact h
+
+private theorem two_le_of_pow9 {m l k : Nat} (hq : 0 < 9 * m)
+    (h : 2 * (9 * m) ^ k ≤ l) : 2 ≤ l := by
+  have h1 : 1 ≤ (9 * m) ^ k := Nat.pos_pow_of_pos k hq
+  exact Nat.le_trans (by simpa using Nat.mul_le_mul_left 2 h1) h
+
+theorem geometricSchedule9_regime {m : Nat} (hm : 1 ≤ m) :
+    ∀ (k l p w : Nat), 1 ≤ w → 2 * (9 * m) ^ k ≤ l →
+      9 * m * w * l ≤ p → RegimeFrom9 m w p (geometricSchedule9 m l (k + 1))
+  | 0, l, p, w, hw, hl, hp => by
+      have hq : 0 < 9 * m := Nat.mul_pos (by decide) hm
+      exact ⟨hw, ⟨(by decide : (1 : Nat) ≤ 2), two_le_of_pow9 hq hl, hp⟩, trivial⟩
+  | k + 1, l, p, w, hw, hl, hp => by
+      have hq : 0 < 9 * m := Nat.mul_pos (by decide) hm
+      refine ⟨hw, ⟨(by decide : (1 : Nat) ≤ 2), two_le_of_pow9 hq hl, hp⟩, ?_⟩
+      exact geometricSchedule9_regime hm k (l / (9 * m)) l 1 (Nat.le_refl 1)
+        (div_step_lower9 hq hl) div_step_regime9
+
+theorem geometricSchedule9_treeBudget (m q : Nat) :
+    ∀ (k l depth : Nat),
+      TreeBudgetFrom (fun _ _ => m) m depth (geometricSchedule9 q l k)
+  | 0, _, _ => trivial
+  | k + 1, l, depth => by
+      refine ⟨Nat.le_of_eq (Nat.mul_one m),
+        geometricSchedule9_treeBudget m q k (l / (9 * q)) (depth - 1)⟩
+
 /-! ## The supplied start-layer family (one single-literal width-1 gate) -/
 
 /-- The family's start literal for `n + 1` variables: variable `0`,
@@ -894,6 +1013,25 @@ theorem geometric_regime_of_bound16 {m w n : Nat}
   have hq : 0 < 16 * m * w := Nat.mul_pos (Nat.mul_pos (by decide) hm) hw
   refine geometricSchedule16_regime hm k (n / (16 * m * w)) n w hw ?_
     regime_space_bound16
+  rw [Nat.le_div_iff_mul_le hq]
+  exact hn
+
+private theorem regime_space_bound9 {m w n : Nat} :
+    9 * m * w * (n / (9 * m * w)) ≤ n := by
+  rw [Nat.mul_comm (9 * m * w) (n / (9 * m * w))]
+  exact Nat.div_mul_le_self n (9 * m * w)
+
+/-- The exact coefficient-9 entry product validates the coefficient-9
+schedule over the full ambient space (S2177 Route A-sharp).  Unit `m=w=1`,
+rounds `k=2` gives ambient `2*9^2*9 = 1458`. -/
+theorem geometric_regime_of_bound9 {m w n : Nat}
+    (hm : 1 ≤ m) (hw : 1 ≤ w) (k : Nat)
+    (hn : 2 * (9 * m) ^ k * (9 * m * w) ≤ n) :
+    RegimeFrom9 m w n
+      (geometricSchedule9 m (n / (9 * m * w)) (k + 1)) := by
+  have hq : 0 < 9 * m * w := Nat.mul_pos (Nat.mul_pos (by decide) hm) hw
+  refine geometricSchedule9_regime hm k (n / (9 * m * w)) n w hw ?_
+    regime_space_bound9
   rw [Nat.le_div_iff_mul_le hq]
   exact hn
 
