@@ -604,6 +604,117 @@ theorem representativeFrontier_geometricCollapse_finalTree_uniform17_normalizedW
   · exact normalizedFrontierWidthSchedule_pos F level
   · exact hn
 
+/-! ## Uniform coefficient-16 consumers (S2176 factor-4 ambient-8192) -/
+
+/-- Representative payload for the parallel coefficient-16 schedule. -/
+def RepresentativeNormalizedViewClassDepthFinalTreeAtUniform16 {n : Nat}
+    (F : BDFormula n) (S W : Nat → Nat) (d rounds : Nat)
+    (parent : ParentKind) (level : Nat) (gs : List (BDFormula n)) : Prop :=
+  level ≤ d ∧
+  ∃ cert : GeneratedRefinedIteratedCertificate n (freeRestriction n)
+      (representativeMinimalLayer gs parent).originalFormula
+      (geometricSchedule16 gs.length (n / (16 * gs.length * W level))
+        (rounds + 1)).length,
+    cert.stageGateCounts = List.replicate (rounds + 1) gs.length ∧
+    cert.stageBudgets = List.replicate (rounds + 1) 2 ∧
+    cert.stageStarCounts = (geometricSchedule16 gs.length
+      (n / (16 * gs.length * W level)) (rounds + 1)).map stageStars ∧
+    TreeBudgetFrom (formulaClassDepthTreeBudget S d) gs.length (rounds + 1)
+      (geometricSchedule16 gs.length (n / (16 * gs.length * W level))
+        (rounds + 1)) ∧
+    ∃ T : DTree n, ∃ s : Nat,
+      cert.lastStage = some (T, gs.length, s) ∧
+      (∀ a : Assignment n, dtEval a T = eval a cert.finalFormula) ∧
+      dtDepth T ≤ formulaClassDepthTreeBudget S d level s ∧
+      (∀ a : Assignment n, Agree cert.finalComposed a →
+        dtEval a T = eval a (restrict cert.finalComposed
+          (parent.merge (formulaDepthFrontier level F))))
+
+theorem representativeFrontier_geometricCollapseWithSuppliedWidth_finalTree_uniform16
+    {n : Nat} (F : BDFormula n) (S W : Nat → Nat)
+    (d level rounds : Nat) (parent : ParentKind) (gs : List (BDFormula n))
+    (hrep : RepresentativeFrontierLayer F level gs)
+    (hDepth : depth F ≤ d) (_hSize : formulaSize F ≤ S d)
+    (hNE : NonemptyFaninFormula F) (hk : level ≤ depth F)
+    (hcount : gs.length ≤ S d)
+    (hw : ∀ g ∈ (representativeMinimalLayer gs parent).gates,
+      widthDNF g.theDNF ≤ W level) (hw1 : 1 ≤ W level)
+    (hn : 2 * (16 * gs.length) ^ rounds * (16 * gs.length * W level) ≤ n) :
+    RepresentativeNormalizedViewClassDepthFinalTreeAtUniform16 F S W d rounds parent
+      level gs := by
+  refine ⟨frontierLevel_le_classDepth F hDepth hk, ?_⟩
+  let w := W level
+  let sched := geometricSchedule16 gs.length (n / (16 * gs.length * w)) (rounds + 1)
+  let L := representativeMinimalLayer gs parent
+  have hc : L.gates.length = gs.length := by
+    simpa [L] using representativeMinimalLayer_gateCount gs parent
+  have hm : 1 ≤ gs.length := representative_length_pos hNE hk hrep
+  have hmL : 1 ≤ L.gates.length := by simpa [hc] using hm
+  have hwL : ∀ g ∈ L.gates, widthDNF g.theDNF ≤ w := by simpa [L, w] using hw
+  have hreg : RegimeFrom16 L.gates.length w (stars (freeRestriction n)) sched := by
+    rw [hc, stars_freeRestriction]
+    exact geometric_regime_of_bound16 hm (by simpa [w] using hw1) rounds
+      (by simpa [w] using hn)
+  have ht : TreeBudgetFrom (formulaClassDepthTreeBudget S d)
+      L.gates.length sched.length sched := by
+    rw [hc]
+    exact treeBudgetFrom_classDepth_of_le S d hcount sched sched.length
+  obtain ⟨cert, hgc, hb, hsc⟩ := ScheduledAutoCollapse.autoIteratedCollapse
+    sched (freeRestriction n) L w hwL
+      (regimeFrom16_validFrom4 hmL sched w (stars (freeRestriction n))
+        (stars_le (freeRestriction n)) hreg)
+  have hlen : sched.length = rounds + 1 := by
+    simpa [sched, w] using geometricSchedule16_length gs.length (rounds + 1)
+      (n / (16 * gs.length * w))
+  have hbgeom : sched.map stageS = List.replicate (rounds + 1) 2 := by
+    simpa [sched, w] using geometricSchedule16_budgets gs.length (rounds + 1)
+      (n / (16 * gs.length * w))
+  have hsome := lastStage_isSome cert (by rw [hlen]; exact Nat.succ_pos rounds)
+  cases hlast : cert.lastStage with
+  | none => simp [hlast] at hsome
+  | some x =>
+      obtain ⟨T, m, s⟩ := x
+      have hmLast : m = gs.length := by
+        have := lastStage_gateCount_of_stageGateCounts_replicate cert hgc T m s hlast
+        simpa [hc] using this
+      obtain ⟨heval, hdepth⟩ := lastStage_spec cert T m s hlast
+      subst m
+      refine ⟨cert, ?_, ?_, ?_, ?_, T, s, ?_, heval, ?_, ?_⟩
+      · rw [hgc, hc, hlen]
+      · rw [hb]
+        simpa [stageS] using hbgeom
+      · simpa [stageStars, sched, w, hlen] using hsc
+      · simpa [hc, sched, w, hlen] using ht
+      · simpa [hc] using hlast
+      · exact Nat.le_trans hdepth (by
+          simpa [formulaClassDepthTreeBudget] using
+            Nat.mul_le_mul_right (s - 1) hcount)
+      · intro a ha
+        rw [heval a, finalFormula_restrict_eval cert a ha]
+        have horig : L.originalFormula = parent.merge gs :=
+          representativeMinimalLayer_originalFormula gs parent
+        exact (congrArg (fun G => eval a (restrict cert.finalComposed G)) horig).trans
+          (eval_restrict_parentMerge_congr_of_mem_iff cert.finalComposed a parent ha
+            (fun G => ⟨hrep.1 G, hrep.2 G⟩))
+
+theorem representativeFrontier_geometricCollapse_finalTree_uniform16_normalizedWidth
+    {n : Nat} (F : BDFormula n) (S : Nat → Nat) (d level rounds : Nat)
+    (parent : ParentKind) (gs : List (BDFormula n))
+    (hrep : RepresentativeFrontierLayer F level gs) (hNE : NonemptyFaninFormula F)
+    (hDepth : depth F ≤ d) (hSize : formulaSize F ≤ S d)
+    (hk : level ≤ depth F) (hcount : gs.length ≤ S d)
+    (hn : 2 * (16 * gs.length) ^ rounds *
+      (16 * gs.length * normalizedFrontierWidthSchedule F level) ≤ n) :
+    RepresentativeNormalizedViewClassDepthFinalTreeAtUniform16 F S
+      (normalizedFrontierWidthSchedule F) d rounds parent level gs := by
+  apply representativeFrontier_geometricCollapseWithSuppliedWidth_finalTree_uniform16
+    F S (normalizedFrontierWidthSchedule F) d level rounds parent gs hrep
+      hDepth hSize hNE hk hcount
+  · exact fun g hg => representativeMinimalLayer_width_le_normalizedFrontierWidthSchedule
+      F level hrep.1 parent g hg
+  · exact normalizedFrontierWidthSchedule_pos F level
+  · exact hn
+
 /-! ## Coefficient-32 entry-star consumers (S2170) -/
 
 /-- The parallel coefficient-32 entry-star payload.  Its conjunction and
@@ -1551,6 +1662,40 @@ theorem allDedupFrontiers_geometricCollapse_finalTree_uniform17_normalizedWidth
   exact dedupFrontier_geometricCollapse_finalTree_uniform17_normalizedWidth
     F S d level rounds parent hNE hDepth hSize hk (hnAll level hk)
 
+/-- Uniform-16 single-level normalized-width consumer over a synthesized layer. -/
+theorem dedupFrontier_geometricCollapse_finalTree_uniform16_normalizedWidth
+    {n : Nat} (F : BDFormula n) (S : Nat → Nat) (d level rounds : Nat)
+    (parent : ParentKind) (hNE : NonemptyFaninFormula F)
+    (hDepth : depth F ≤ d) (hSize : formulaSize F ≤ S d)
+    (hk : level ≤ depth F)
+    (hn : 2 * (16 * (dedupRepresentativeFrontier F level).length) ^ rounds *
+      (16 * (dedupRepresentativeFrontier F level).length *
+        normalizedFrontierWidthSchedule F level) ≤ n) :
+    RepresentativeNormalizedViewClassDepthFinalTreeAtUniform16 F S
+      (normalizedFrontierWidthSchedule F) d rounds parent level
+      (dedupRepresentativeFrontier F level) :=
+  representativeFrontier_geometricCollapse_finalTree_uniform16_normalizedWidth
+    F S d level rounds parent (dedupRepresentativeFrontier F level)
+    (dedupRepresentativeFrontier_representative F level) hNE hDepth hSize hk
+    (Nat.le_trans (dedupRepresentativeFrontier_length_le_formulaSize F level) hSize) hn
+
+/-- Uniform-16 all-level normalized-width consumer over synthesized layers. -/
+theorem allDedupFrontiers_geometricCollapse_finalTree_uniform16_normalizedWidth
+    {n : Nat} (F : BDFormula n) (S : Nat → Nat) (d rounds : Nat)
+    (parent : ParentKind) (hNE : NonemptyFaninFormula F)
+    (hDepth : depth F ≤ d) (hSize : formulaSize F ≤ S d)
+    (hnAll : ∀ level, level ≤ depth F →
+      2 * (16 * (dedupRepresentativeFrontier F level).length) ^ rounds *
+        (16 * (dedupRepresentativeFrontier F level).length *
+          normalizedFrontierWidthSchedule F level) ≤ n) :
+    ∀ level, level ≤ depth F →
+      RepresentativeNormalizedViewClassDepthFinalTreeAtUniform16 F S
+        (normalizedFrontierWidthSchedule F) d rounds parent level
+        (dedupRepresentativeFrontier F level) := by
+  intro level hk
+  exact dedupFrontier_geometricCollapse_finalTree_uniform16_normalizedWidth
+    F S d level rounds parent hNE hDepth hSize hk (hnAll level hk)
+
 /-! ## The dedup route on the depth-3 cube witness (S2169) -/
 
 private theorem dedup_replicate_succ {α : Type _} [DecidableEq α] (a : α) :
@@ -2125,6 +2270,100 @@ theorem dupCubeWitness14_dedup_finalTree_allLevels_rounds2_uniform17 :
   intro level hlevel
   rw [dupCubeWitness14_dedupFrontier_length level hlevel,
     dupCubeWitness14_normalizedFrontierWidthSchedule level hlevel]
+  decide
+
+/-! ## Coefficient-16 finite packaging witness (S2176)
+
+Pins ambient `8192 = 2*(16*1)^2*(16*1*1)` under factor-4 counting.  The
+17-product `9826` fails at this ambient.  Packaging witness only — not
+switching non-vacuity. -/
+
+private def dupSquareInner13 : BDFormula 8192 :=
+  .and [.lit { var := ⟨0, by decide⟩, sign := true },
+        .lit { var := ⟨0, by decide⟩, sign := true }]
+
+private def dupSquareWitness13 : BDFormula 8192 :=
+  .and [dupSquareInner13, dupSquareInner13]
+
+/-- The duplicated depth-3 cube at exact ambient `8192`. -/
+def dupCubeWitness13 : BDFormula 8192 :=
+  .and [dupSquareWitness13, dupSquareWitness13]
+
+private theorem dupSquareInner13_nonempty : NonemptyFaninFormula dupSquareInner13 := by
+  refine .and (List.cons_ne_nil _ _) ?_
+  intro G hG
+  simp [dupSquareInner13] at hG
+  subst hG
+  exact .lit _
+
+private theorem dupSquareWitness13_nonempty : NonemptyFaninFormula dupSquareWitness13 := by
+  refine .and (List.cons_ne_nil _ _) ?_
+  intro G hG
+  simp [dupSquareWitness13] at hG
+  subst hG
+  exact dupSquareInner13_nonempty
+
+theorem dupCubeWitness13_nonemptyFanin : NonemptyFaninFormula dupCubeWitness13 := by
+  refine .and (List.cons_ne_nil _ _) ?_
+  intro G hG
+  simp [dupCubeWitness13] at hG
+  subst hG
+  exact dupSquareWitness13_nonempty
+
+theorem dupCubeWitness13_formulaSize : formulaSize dupCubeWitness13 = 15 := by
+  simp [dupCubeWitness13, dupSquareWitness13, dupSquareInner13, formulaSize_and,
+    formulaSize_lit]
+
+theorem dupCubeWitness13_depth : depth dupCubeWitness13 = 3 := by
+  simp [dupCubeWitness13, dupSquareWitness13, dupSquareInner13, depth]
+
+theorem dupCubeWitness13_normalizedFrontierWidthSchedule :
+    ∀ level, level ≤ depth dupCubeWitness13 →
+      normalizedFrontierWidthSchedule dupCubeWitness13 level = 1 := by
+  intro level hlevel
+  have hcase : level = 0 ∨ level = 1 ∨ level = 2 ∨ level = 3 := by
+    rw [dupCubeWitness13_depth] at hlevel
+    omega
+  rcases hcase with rfl | rfl | rfl | rfl <;>
+    simp [normalizedFrontierWidthSchedule, frontierMaxNormalizedWidth,
+      normalizedDNFView_D, syntacticDNF, syntacticAndDNF, andDNF,
+      FormulaSyntacticDNF.literalDNF, FormulaSyntacticDNF.trueDNF,
+      formulaDepthFrontier, depthFrontier, topChildren, dupCubeWitness13,
+      dupSquareWitness13, dupSquareInner13] <;> rfl
+
+theorem dupCubeWitness13_dedupFrontier_length :
+    ∀ level, level ≤ depth dupCubeWitness13 →
+      (dedupRepresentativeFrontier dupCubeWitness13 level).length = 1 := by
+  intro level hlevel
+  have hcase : level = 0 ∨ level = 1 ∨ level = 2 ∨ level = 3 := by
+    rw [dupCubeWitness13_depth] at hlevel
+    omega
+  rcases hcase with rfl | rfl | rfl | rfl
+  · exact congrArg List.length (dedup_replicate_succ dupCubeWitness13 0)
+  · exact congrArg List.length (dedup_replicate_succ dupSquareWitness13 1)
+  · exact congrArg List.length (dedup_replicate_succ dupSquareInner13 3)
+  · exact congrArg List.length (dedup_replicate_succ
+      (BDFormula.lit { var := ⟨0, by decide⟩, sign := true }) 7)
+
+theorem dupCubeWitness13_uniform16_product_eq :
+    2 * (16 * 1) ^ 2 * (16 * 1 * 1) = 8192 := by decide
+
+theorem dupCubeWitness13_uniform17_product_fails :
+    ¬ (2 * (17 * 1) ^ 2 * (17 * 1 * 1) ≤ 8192) := by decide
+
+theorem dupCubeWitness13_dedup_finalTree_allLevels_rounds2_uniform16 :
+    ∀ level, level ≤ depth dupCubeWitness13 →
+      RepresentativeNormalizedViewClassDepthFinalTreeAtUniform16 dupCubeWitness13
+        (fun _ => 15) (normalizedFrontierWidthSchedule dupCubeWitness13)
+        3 2 ParentKind.and level
+        (dedupRepresentativeFrontier dupCubeWitness13 level) := by
+  refine allDedupFrontiers_geometricCollapse_finalTree_uniform16_normalizedWidth
+    dupCubeWitness13 (fun _ => 15) 3 2 ParentKind.and
+      dupCubeWitness13_nonemptyFanin (Nat.le_of_eq dupCubeWitness13_depth)
+      (Nat.le_of_eq dupCubeWitness13_formulaSize) ?_
+  intro level hlevel
+  rw [dupCubeWitness13_dedupFrontier_length level hlevel,
+    dupCubeWitness13_normalizedFrontierWidthSchedule level hlevel]
   decide
 
 end FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute

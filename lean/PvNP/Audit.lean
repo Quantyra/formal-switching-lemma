@@ -208,6 +208,115 @@ import PvNP.ScheduledCollapseDemo
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness14_dedup_finalTree_allLevels_rounds2_uniform17
 
+/-! S2176 factor-4 consumer path and ambient-8192 coefficient-16 packaging pins. -/
+
+/-- info: 'PvNP.ScheduledAutoCollapse.BeatArith4' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.ScheduledAutoCollapse.BeatArith4
+/-- info: 'PvNP.ScheduledAutoCollapse.ValidFrom4' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.ScheduledAutoCollapse.ValidFrom4
+/-- info: 'PvNP.FrozenProductScheduleRatio.ratio_beat4' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.ratio_beat4
+/-- info: 'PvNP.FrozenProductScheduleRatio.RatioRegime16' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.RatioRegime16
+/-- info: 'PvNP.FrozenProductScheduleRatio.RatioRegime16.mono' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.RatioRegime16.mono
+/-- info: 'PvNP.FrozenProductScheduleRatio.ratioRegime16_beat' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.ratioRegime16_beat
+/-- info: 'PvNP.FrozenProductScheduleRatio.RegimeFrom16' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.RegimeFrom16
+/-- info: 'PvNP.FrozenProductScheduleRatio.regimeFrom16_validFrom' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.regimeFrom16_validFrom
+/-- info: 'PvNP.FrozenProductScheduleRatio.regimeFrom16_validFrom4' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.regimeFrom16_validFrom4
+/-- info: 'PvNP.FrozenProductScheduleRatio.geometricSchedule16' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.geometricSchedule16
+/-- info: 'PvNP.FrozenProductScheduleRatio.geometricSchedule16_length' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.geometricSchedule16_length
+/-- info: 'PvNP.FrozenProductScheduleRatio.geometricSchedule16_budgets' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.geometricSchedule16_budgets
+/-- info: 'PvNP.FrozenProductScheduleRatio.geometricSchedule16_regime' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.geometricSchedule16_regime
+/-- info: 'PvNP.FrozenProductScheduleRatio.geometricSchedule16_treeBudget' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.geometricSchedule16_treeBudget
+/-- info: 'PvNP.FrozenProductScheduleRatio.geometric_regime_of_bound16' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.geometric_regime_of_bound16
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.RepresentativeNormalizedViewClassDepthFinalTreeAtUniform16' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.RepresentativeNormalizedViewClassDepthFinalTreeAtUniform16
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.representativeFrontier_geometricCollapseWithSuppliedWidth_finalTree_uniform16' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.representativeFrontier_geometricCollapseWithSuppliedWidth_finalTree_uniform16
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.representativeFrontier_geometricCollapse_finalTree_uniform16_normalizedWidth' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.representativeFrontier_geometricCollapse_finalTree_uniform16_normalizedWidth
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dedupFrontier_geometricCollapse_finalTree_uniform16_normalizedWidth' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dedupFrontier_geometricCollapse_finalTree_uniform16_normalizedWidth
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.allDedupFrontiers_geometricCollapse_finalTree_uniform16_normalizedWidth' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.allDedupFrontiers_geometricCollapse_finalTree_uniform16_normalizedWidth
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness13' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness13
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness13_nonemptyFanin' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness13_nonemptyFanin
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness13_formulaSize' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness13_formulaSize
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness13_depth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness13_depth
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness13_normalizedFrontierWidthSchedule' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness13_normalizedFrontierWidthSchedule
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness13_dedupFrontier_length' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness13_dedupFrontier_length
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness13_uniform16_product_eq' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness13_uniform16_product_eq
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness13_uniform17_product_fails' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness13_uniform17_product_fails
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness13_dedup_finalTree_allLevels_rounds2_uniform16' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness13_dedup_finalTree_allLevels_rounds2_uniform16
+
 /-! S2172 finite uniform-32 round-extension pins. -/
 
 /-- info: 'PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness21' does not depend on any axioms -/

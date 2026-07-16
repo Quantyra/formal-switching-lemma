@@ -9,19 +9,19 @@ which BOTH stages carry a nonempty bottom layer with width budget `w = 1` and
 non-degenerate counting beats.
 
 * Stage 1 (free base): one single-literal DNF gate, `s = 2`, `ℓ = 17`.  The
-  renormalized beat reduces to `256 · C(306,15) < C(306,17)`, proved
+  renormalized beat reduces to `64 · C(306,15) < C(306,17)`, proved
   symbolically from `Nat.choose_succ_right_eq` (no big kernel computation).
 * Stage 2 (base = the stage-1 generated restriction, refining the free base,
   hence with EXACTLY 17 free variables): the plan's `next` function re-views
   the stage-1 rewritten formula — an `or` over the generated depth-`≤ 1` tree
   — as one gate with an explicit depth-one DNF view (`depthOneDNFView`), width
-  budget `1`, `s = 1`, `ℓ = 1`.  The renormalized beat is `2^20 < 17 · 2^16`,
+  budget `1`, `s = 1`, `ℓ = 1`.  The renormalized beat is `2^18 < 17 · 2^16`,
   decidably checked.
 
 The realized stage-2 DNF may be EMPTY or constant (the generated stage-1 tree
 may be a leaf); realized width `≥ 1` at stage 2 is NOT certified.
 "Nonempty-gate" means the gate LIST is nonempty (one gate per stage) with
-width BUDGET `1` and the non-degenerate `(8·1)^s` beat factor at both stages;
+width BUDGET `1` and the non-degenerate `(4·1)^s` beat factor at both stages;
 only stage 1's gate is syntactically pinned at realized width 1.
 
 ## HONEST SCOPE STATEMENT (read this)
@@ -179,18 +179,19 @@ private theorem choose306_ratio :
 
 /-- The stage-1 counting beat over the full 306-variable star space. -/
 private theorem stage1_beat :
-    1 * ((restrictionsWithStars 306 (17 - 2)).card * (8 * 1) ^ 2) <
+    1 * ((restrictionsWithStars 306 (17 - 2)).card * (4 * 1) ^ 2) <
       (restrictionsWithStars 306 17).card := by
   rw [restrictionsWithStars_card, restrictionsWithStars_card]
   rw [Nat.one_mul, Nat.mul_assoc]
-  rw [show ((8 : Nat) * 1) ^ 2 = 2 ^ 6 from rfl]
+  rw [show ((4 : Nat) * 1) ^ 2 = 2 ^ 4 from rfl]
   rw [← pow_add]
-  rw [show (306 - (17 - 2) + 6 : Nat) = 8 + (306 - 17) from rfl]
-  rw [pow_add, show (2 : Nat) ^ 8 = 256 from rfl, ← Nat.mul_assoc]
+  rw [show (306 - (17 - 2) + 4 : Nat) = 6 + (306 - 17) from rfl]
+  rw [pow_add, show (2 : Nat) ^ 6 = 64 from rfl, ← Nat.mul_assoc]
   have hp : 0 < (2 : Nat) ^ (306 - 17) := Nat.pos_pow_of_pos _ (by omega)
   apply Nat.mul_lt_mul_of_lt_of_le _ (Nat.le_refl _) hp
   rw [show (17 - 2 : Nat) = 15 from rfl, Nat.mul_comm]
-  exact choose306_ratio
+  exact Nat.lt_of_le_of_lt
+    (Nat.mul_le_mul_right _ (by decide : (64 : Nat) ≤ 256)) choose306_ratio
 
 /-! ## The two-stage plan -/
 
@@ -227,14 +228,14 @@ private theorem stage1_length : stage1Layer.gates.length = 1 := rfl
 private theorem stage1_beatRefined :
     stage1Layer.gates.length *
         ((restrictionsWithStars (stars (freeRestriction 306)) (17 - 2)).card *
-          (8 * 1) ^ 2) <
+          (4 * 1) ^ 2) <
       (refinesSubspace (freeRestriction 306) 17).card := by
   rw [stage1_length, stars_freeRestriction, refinesSubspace_freeRestriction]
   exact stage1_beat
 
 private theorem stage1_beatPlain :
     stage1Layer.gates.length *
-        ((restrictionsWithStars 306 (17 - 2)).card * (8 * 1) ^ 2) <
+        ((restrictionsWithStars 306 (17 - 2)).card * (4 * 1) ^ 2) <
       (restrictionsWithStars 306 17).card := by
   rw [stage1_length]
   exact stage1_beat
@@ -298,7 +299,7 @@ private theorem stage2_beatRefined
     (C : GeneratedOneStepCertificate stage1Input.toPlain) :
     (stage2Layer C).gates.length *
         ((restrictionsWithStars (stars (compose (freeRestriction 306) C.ρ))
-            (1 - 1)).card * (8 * 1) ^ 1) <
+            (1 - 1)).card * (4 * 1) ^ 1) <
       (refinesSubspace (compose (freeRestriction 306) C.ρ) 1).card := by
   rw [stage2_length, stage1_stars C, refinesSubspace_card, stage1_stars C,
     restrictionsWithStars_card]
@@ -308,7 +309,7 @@ private theorem stage2_beatRefined
 private theorem stage2_beatPlain
     (C : GeneratedOneStepCertificate stage1Input.toPlain) :
     (stage2Layer C).gates.length *
-        ((restrictionsWithStars 306 (1 - 1)).card * (8 * 1) ^ 1) <
+        ((restrictionsWithStars 306 (1 - 1)).card * (4 * 1) ^ 1) <
       (restrictionsWithStars 306 1).card := by
   rw [stage2_length, restrictionsWithStars_card, restrictionsWithStars_card]
   simp only [Nat.choose_zero_right, Nat.choose_one_right, Nat.reduceSub]

@@ -220,23 +220,26 @@ private theorem beat_assemble {m A B K x y e c : Nat}
 private theorem demo_beat1 : BeatArith 1 10000 3 561 1 := by
   unfold BeatArith
   rw [show (561 - 3 : Nat) = 558 from rfl]
-  rw [show ((8 : Nat) * 1) ^ 3 = 2 ^ 9 from rfl]
-  exact beat_assemble (c := 12) (K := 4096) (by decide) (by decide)
-    choose10000_ratio_561
+  rw [show ((4 : Nat) * 1) ^ 3 = 2 ^ 6 from rfl]
+  exact beat_assemble (c := 9) (K := 512) (by decide) (by decide)
+    (Nat.lt_of_le_of_lt (Nat.mul_le_mul_right _
+      (by decide : (512 : Nat) ≤ 4096)) choose10000_ratio_561)
 
 private theorem demo_beat2r : BeatArith 1 561 2 17 2 := by
   unfold BeatArith
   rw [show (17 - 2 : Nat) = 15 from rfl]
-  rw [show ((8 : Nat) * 2) ^ 2 = 2 ^ 8 from rfl]
-  exact beat_assemble (c := 10) (K := 1024) (by decide) (by decide)
-    choose561_ratio
+  rw [show ((4 : Nat) * 2) ^ 2 = 2 ^ 6 from rfl]
+  exact beat_assemble (c := 8) (K := 256) (by decide) (by decide)
+    (Nat.lt_of_le_of_lt (Nat.mul_le_mul_right _
+      (by decide : (256 : Nat) ≤ 1024)) choose561_ratio)
 
 private theorem demo_beat2p : BeatArith 1 10000 2 17 2 := by
   unfold BeatArith
   rw [show (17 - 2 : Nat) = 15 from rfl]
-  rw [show ((8 : Nat) * 2) ^ 2 = 2 ^ 8 from rfl]
-  exact beat_assemble (c := 10) (K := 1024) (by decide) (by decide)
-    choose10000_ratio_17
+  rw [show ((4 : Nat) * 2) ^ 2 = 2 ^ 6 from rfl]
+  exact beat_assemble (c := 8) (K := 256) (by decide) (by decide)
+    (Nat.lt_of_le_of_lt (Nat.mul_le_mul_right _
+      (by decide : (256 : Nat) ≤ 1024)) choose10000_ratio_17)
 
 private theorem demo_beat3r : BeatArith 1 17 1 1 1 := by
   unfold BeatArith
@@ -246,13 +249,13 @@ private theorem demo_beat3r : BeatArith 1 17 1 1 1 := by
 private theorem demo_beat3p : BeatArith 1 10000 1 1 1 := by
   unfold BeatArith
   have h : (1 : Nat) * (Nat.choose 10000 (1 - 1) * 2 ^ (10000 - (1 - 1)) *
-      (8 * 1) ^ 1) = 16 * 2 ^ 9999 := by
+      (4 * 1) ^ 1) = 8 * 2 ^ 9999 := by
     simp only [Nat.choose_zero_right, Nat.reduceSub, Nat.one_mul, Nat.mul_one,
       pow_one]
     rw [show (10000 : Nat) = 9999 + 1 from rfl, pow_succ]
     rw [Nat.mul_assoc]
-    rw [show (2 * 8 : Nat) = 16 from rfl]
-    exact Nat.mul_comm (2 ^ 9999) 16
+    rw [show (2 * 4 : Nat) = 8 from rfl]
+    exact Nat.mul_comm (2 ^ 9999) 8
   rw [h, Nat.choose_one_right, show (10000 - 1 : Nat) = 9999 from rfl]
   have hp : 0 < (2 : Nat) ^ 9999 := Nat.pos_pow_of_pos _ (by decide)
   exact Nat.mul_lt_mul_of_lt_of_le (by decide) (Nat.le_refl _) hp

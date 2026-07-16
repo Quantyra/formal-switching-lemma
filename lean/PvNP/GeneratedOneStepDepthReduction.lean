@@ -6,7 +6,7 @@ import PvNP.GeneratedIteratedCollapse
 This module closes only the minimal B3 parent-merge/replacement step for a
 layered formula view whose parent is an explicit `and`/`or` over a list of
 bottom `GateSpec`s.  It consumes the B1/B2 generated shared-restriction theorem
-`GeneratedGoodRestriction.simultaneousCollapse_exists` and proves concrete
+`GeneratedGoodRestriction.simultaneousCollapse_exists4` and proves concrete
 semantics for replacing every bottom gate by the formula associated to its
 generated decision-tree witness.
 
@@ -99,7 +99,7 @@ structure GeneratedOneStepInput (n : Nat) where
   ℓ : Nat
   width : ∀ g ∈ layer.gates, widthDNF g.theDNF ≤ w
   beat : layer.gates.length *
-      ((restrictionsWithStars n (ℓ - s)).card * (8 * w) ^ s) <
+      ((restrictionsWithStars n (ℓ - s)).card * (4 * w) ^ s) <
     (restrictionsWithStars n ℓ).card
 
 namespace GeneratedOneStepInput
@@ -260,7 +260,7 @@ theorem generatedOneStepDepthReduction_exists {n : Nat}
       C.reducedChildren.length = I.layer.gates.length ∧
       depth C.reducedFormula ≤ 1 + (2 * (I.s - 1) + 1) := by
   classical
-  obtain ⟨ρ, hstars, hcollapse⟩ := simultaneousCollapse_exists
+  obtain ⟨ρ, hstars, hcollapse⟩ := simultaneousCollapse_exists4
     I.layer.gates I.w I.s I.ℓ I.width I.beat
   let treeOf : ∀ g ∈ I.layer.gates, DTree n :=
     fun g hg => Classical.choose (hcollapse g hg)

@@ -62,7 +62,7 @@ the target star space. -/
 def rawBadCount (m p w : Nat) (st : ScheduleStage) : Nat :=
   match st with
   | ScheduleStage.mk s ell =>
-      m * (Nat.choose p (ell - s) * 2 ^ (p - (ell - s)) * (8 * w) ^ s)
+      m * (Nat.choose p (ell - s) * 2 ^ (p - (ell - s)) * (4 * w) ^ s)
 
 /-- The closed-form size of the target `ell`-star space. -/
 def starSpace (p : Nat) (st : ScheduleStage) : Nat :=

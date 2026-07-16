@@ -38,7 +38,7 @@ generated automatically —
   budgets (generated trees may be constants); width claims are BUDGET claims.
 * A stage with `sᵢ = 1` threads entering width `0` to its tail: all later
   gates are width-budget-0 (constants) and their beats hold whenever `ℓᵢ`
-  does not exceed the remaining star count (the `(8·0)^s` factor vanishes
+  does not exceed the remaining star count (the `(4·0)^s` factor vanishes
   for `s ≥ 1`).  Such tails are real but degenerate stages.
 * Formula-collapse infrastructure only: NOT a Frege/PHP proof-size lower
   bound, NOT an NP/circuit lower bound, NOT a statement about P vs NP.
@@ -82,11 +82,15 @@ structure ScheduleStage where
 
 /-- The purely arithmetic stage beat for `m` gates of width `≤ w` over a
 `p`-star base: the closed form of
-`m * (|restrictionsWithStars p (ℓ - s)| * (8w)^s) < |refinesSubspace base ℓ|`
+`m * (|restrictionsWithStars p (ℓ - s)| * (4w)^s) < |refinesSubspace base ℓ|`
 (and, with `p := n`, of the plain full-space beat). -/
 def BeatArith (m p s ℓ w : Nat) : Prop :=
-  m * (Nat.choose p (ℓ - s) * 2 ^ (p - (ℓ - s)) * (8 * w) ^ s) <
+  m * (Nat.choose p (ℓ - s) * 2 ^ (p - (ℓ - s)) * (4 * w) ^ s) <
     Nat.choose p ℓ * 2 ^ (p - ℓ)
+
+/-- Explicit S2176 name for the real factor-4 stage beat.  `BeatArith` now
+uses factor 4, so this avoids duplicating the certificate stack. -/
+abbrev BeatArith4 (m p s ℓ w : Nat) : Prop := BeatArith m p s ℓ w
 
 /-- Arithmetic validity of a schedule entered at width `w` and star count `p`
 for `m` gates over `n` ambient variables: every stage's refined beat (over the
@@ -97,6 +101,10 @@ def ValidFrom (m n : Nat) : Nat → Nat → List ScheduleStage → Prop
   | w, p, st :: rest =>
       BeatArith m p st.s st.ℓ w ∧ BeatArith m n st.s st.ℓ w ∧
         ValidFrom m n (st.s - 1) st.ℓ rest
+
+/-- Explicit S2176 name for validity over the real factor-4 beat interface. -/
+abbrev ValidFrom4 (m n : Nat) : Nat → Nat → List ScheduleStage → Prop :=
+  ValidFrom m n
 
 /-! ## From arithmetic beats to a refined step input -/
 

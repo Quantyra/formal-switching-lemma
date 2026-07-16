@@ -60,7 +60,7 @@ theorem rawBadCount_le_of_gateCount_le
   | mk s ell =>
       simp [rawBadCount]
       exact Nat.mul_le_mul_right
-        (Nat.choose p (ell - s) * 2 ^ (p - (ell - s)) * (8 * w) ^ s) hm
+        (Nat.choose p (ell - s) * 2 ^ (p - (ell - s)) * (4 * w) ^ s) hm
 
 /-- A product beat at a max gate count can be reused for any smaller gate
 count after freezing the bound family at the max count. -/

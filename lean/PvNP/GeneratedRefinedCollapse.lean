@@ -11,7 +11,7 @@ REFINEMENT subspace of a base restriction is counted against the base's free
 subcube:
 
 * `badSetTerm_refines_card_le` — the renormalized bad-set bound
-  `|badSetTerm D s ℓ ∩ refinesSubspace base ℓ| ≤ |R(stars base, ℓ-s)| * (8w)^s`,
+  `|badSetTerm D s ℓ ∩ refinesSubspace base ℓ| ≤ |R(stars base, ℓ-s)| * (4w)^s`,
   by transporting along the free-subcube relabeling and instantiating the
   PROVED SimpleDNF switching lemma at dimension `stars base`;
 * `simultaneousCollapse_exists_refined` — counting generates one refinement of
@@ -96,13 +96,13 @@ theorem dtDepth_dnfRestrict_of_stars_zero {n : Nat} (ρ : Restriction n)
 /-! ## The renormalized bad-set bound -/
 
 /-- **The renormalized per-gate bad-set bound.**  Inside the refinement
-subspace of `base`, at most `|R(stars base, ℓ-s)| * (8w)^s` restrictions are
+subspace of `base`, at most `|R(stars base, ℓ-s)| * (4w)^s` restrictions are
 bad for a width-`≤ w` simple DNF: transport along the free subcube and apply
 the PROVED switching lemma at dimension `stars base`. -/
 theorem badSetTerm_refines_card_le {n : Nat} (base : Restriction n)
     {D : DNF n} (hD : SimpleDNF D) (w s ℓ : Nat) (hw : widthDNF D ≤ w) :
     ((badSetTerm D s ℓ) ∩ refinesSubspace base ℓ).card ≤
-      (restrictionsWithStars (stars base) (ℓ - s)).card * (8 * w) ^ s := by
+      (restrictionsWithStars (stars base) (ℓ - s)).card * (4 * w) ^ s := by
   classical
   by_cases hℓm : ℓ ≤ stars base
   · by_cases hm : 0 < stars base
@@ -127,7 +127,7 @@ theorem badSetTerm_refines_card_le {n : Nat} (base : Restriction n)
         rw [widthDNF_mapDNF]
         exact Nat.le_trans
           (SwitchingLemmaStatement.widthDNF_dnfRestrict_le base D) hw
-      have hswitch := SwitchingClose2.switchingLemmaTermSimple_proved
+      have hswitch := SwitchingClose2.switchingLemmaTermSimple_proved4
         (n := stars base) (mapDNF r (dnfRestrict base D)) w s ℓ
         hD'simple hD'width
       have hmap : ∀ ρ ∈ (badSetTerm D s ℓ) ∩ refinesSubspace base ℓ,
@@ -180,7 +180,7 @@ theorem badSetTerm_refines_card_le {n : Nat} (base : Restriction n)
       calc ((badSetTerm D s ℓ) ∩ refinesSubspace base ℓ).card
           ≤ (badSetTerm (mapDNF r (dnfRestrict base D)) s ℓ).card :=
             Finset.card_le_card_of_injOn (downRestriction base) hmap hinjOn
-        _ ≤ (restrictionsWithStars (stars base) (ℓ - s)).card * (8 * w) ^ s :=
+        _ ≤ (restrictionsWithStars (stars base) (ℓ - s)).card * (4 * w) ^ s :=
             hswitch
     · -- Degenerate case: the base has no free variables, so ℓ = 0.
       have hℓ0 : ℓ = 0 := by omega
@@ -195,7 +195,7 @@ theorem badSetTerm_refines_card_le {n : Nat} (base : Restriction n)
           _ = (restrictionsWithStars (stars base) (0 - 0)).card := by
               rw [restrictionsWithStars_card]
           _ = (restrictionsWithStars (stars base) (0 - 0)).card *
-                (8 * w) ^ 0 := by
+                (4 * w) ^ 0 := by
               rw [pow_zero, Nat.mul_one]
       · have hempty : (badSetTerm D s 0) ∩ refinesSubspace base 0 = ∅ := by
           rw [Finset.eq_empty_iff_forall_not_mem]
@@ -212,14 +212,14 @@ theorem badSetTerm_refines_card_le {n : Nat} (base : Restriction n)
     exact Nat.zero_le _
 
 /-- **The renormalized union bound.**  Inside the refinement subspace, at most
-`m * (|R(stars base, ℓ-s)| * (8w)^s)` restrictions are bad for any of `m`
+`m * (|R(stars base, ℓ-s)| * (4w)^s)` restrictions are bad for any of `m`
 width-`≤ w` gates. -/
 theorem jointBadSet_refines_card_le {n : Nat} (base : Restriction n)
     (gates : List (GateSpec n)) (w s ℓ : Nat)
     (hwidth : ∀ g ∈ gates, widthDNF g.theDNF ≤ w) :
     ((jointBadSet gates s ℓ) ∩ refinesSubspace base ℓ).card ≤
       gates.length *
-        ((restrictionsWithStars (stars base) (ℓ - s)).card * (8 * w) ^ s) := by
+        ((restrictionsWithStars (stars base) (ℓ - s)).card * (4 * w) ^ s) := by
   classical
   induction gates with
   | nil =>
@@ -237,14 +237,14 @@ theorem jointBadSet_refines_card_le {n : Nat} (base : Restriction n)
         _ ≤ ((badSetTerm g.theDNF s ℓ) ∩ refinesSubspace base ℓ).card +
               ((jointBadSet gates s ℓ) ∩ refinesSubspace base ℓ).card :=
             Finset.card_union_le _ _
-        _ ≤ (restrictionsWithStars (stars base) (ℓ - s)).card * (8 * w) ^ s +
+        _ ≤ (restrictionsWithStars (stars base) (ℓ - s)).card * (4 * w) ^ s +
               gates.length *
                 ((restrictionsWithStars (stars base) (ℓ - s)).card *
-                  (8 * w) ^ s) :=
+                  (4 * w) ^ s) :=
             Nat.add_le_add hg hrest
         _ = (g :: gates).length *
               ((restrictionsWithStars (stars base) (ℓ - s)).card *
-                (8 * w) ^ s) := by
+                (4 * w) ^ s) := by
             rw [List.length_cons, Nat.add_mul, Nat.one_mul, Nat.add_comm]
 
 /-! ## Counting generates a refining good restriction -/
@@ -257,7 +257,7 @@ theorem simultaneousCollapse_exists_refined {n : Nat} (base : Restriction n)
     (gates : List (GateSpec n)) (w s ℓ : Nat)
     (hwidth : ∀ g ∈ gates, widthDNF g.theDNF ≤ w)
     (hbeat : gates.length *
-        ((restrictionsWithStars (stars base) (ℓ - s)).card * (8 * w) ^ s) <
+        ((restrictionsWithStars (stars base) (ℓ - s)).card * (4 * w) ^ s) <
       (refinesSubspace base ℓ).card) :
     ∃ ρ ∈ restrictionsWithStars n ℓ, RefinesWith base ρ ∧
       ∀ g ∈ gates, ∃ T : DTree n, dtDepth T < s ∧
@@ -303,10 +303,10 @@ structure GeneratedRefinedStepInput (n : Nat) (base : Restriction n) where
   ℓ : Nat
   width : ∀ g ∈ layer.gates, widthDNF g.theDNF ≤ w
   beatRefined : layer.gates.length *
-      ((restrictionsWithStars (stars base) (ℓ - s)).card * (8 * w) ^ s) <
+      ((restrictionsWithStars (stars base) (ℓ - s)).card * (4 * w) ^ s) <
     (refinesSubspace base ℓ).card
   beatPlain : layer.gates.length *
-      ((restrictionsWithStars n (ℓ - s)).card * (8 * w) ^ s) <
+      ((restrictionsWithStars n (ℓ - s)).card * (4 * w) ^ s) <
     (restrictionsWithStars n ℓ).card
 
 namespace GeneratedRefinedStepInput

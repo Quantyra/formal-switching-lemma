@@ -28,7 +28,8 @@ containing `Nat.choose 5193 304` — the choose-literal defeq hazard
 documented in `ScheduledCollapseDemo`.  All three now go through the fully
 symbolic `beat_from_ratio` assembly (every rewrite meets only variables)
 plus closed-pattern numeral pre-normalization, instantiated by `exact`.
-The stated inequalities are unchanged.
+The migrated factor-4 inequalities are weaker than their original factor-8
+forms and are discharged from the same symbolic ratio bounds.
 
 INTEGRITY: no `sorry`, no `admit`, no new `axiom`, no `native_decide`.
 -/
@@ -105,37 +106,40 @@ private theorem beat_from_ratio {A B x y d e K : Nat}
     (Nat.pos_pow_of_pos _ (by decide))
 
 theorem stage1_beat :
-    1 * ((restrictionsWithStars 5193 (306 - 2)).card * (8 * 1) ^ 2) <
+    1 * ((restrictionsWithStars 5193 (306 - 2)).card * (4 * 1) ^ 2) <
       (restrictionsWithStars 5193 306).card := by
   rw [restrictionsWithStars_card, restrictionsWithStars_card]
   rw [show (306 - 2 : Nat) = 304 from rfl]
-  exact beat_from_ratio (d := 2) (K := 256) (by decide) (by decide)
-    choose5193_ratio_306
+  exact beat_from_ratio (d := 2) (K := 64) (by decide) (by decide)
+    (Nat.lt_of_le_of_lt (Nat.mul_le_mul_right _ (by decide : (64 : Nat) ≤ 256))
+      choose5193_ratio_306)
 
 theorem stage2_plain_beat :
-    1 * ((restrictionsWithStars 5193 (17 - 2)).card * (8 * 1) ^ 2) <
+    1 * ((restrictionsWithStars 5193 (17 - 2)).card * (4 * 1) ^ 2) <
       (restrictionsWithStars 5193 17).card := by
   rw [restrictionsWithStars_card, restrictionsWithStars_card]
   rw [show (17 - 2 : Nat) = 15 from rfl]
-  exact beat_from_ratio (d := 2) (K := 256) (by decide) (by decide)
-    choose5193_ratio_17
+  exact beat_from_ratio (d := 2) (K := 64) (by decide) (by decide)
+    (Nat.lt_of_le_of_lt (Nat.mul_le_mul_right _ (by decide : (64 : Nat) ≤ 256))
+      choose5193_ratio_17)
 
 theorem stage2_refined_beat_base306 :
-    1 * ((restrictionsWithStars 306 (17 - 2)).card * (8 * 1) ^ 2) <
+    1 * ((restrictionsWithStars 306 (17 - 2)).card * (4 * 1) ^ 2) <
       (Nat.choose 306 17 * 2 ^ (306 - 17)) := by
   rw [restrictionsWithStars_card]
   rw [show (17 - 2 : Nat) = 15 from rfl]
-  exact beat_from_ratio (d := 2) (K := 256) (by decide) (by decide)
-    choose306_ratio
+  exact beat_from_ratio (d := 2) (K := 64) (by decide) (by decide)
+    (Nat.lt_of_le_of_lt (Nat.mul_le_mul_right _ (by decide : (64 : Nat) ≤ 256))
+      choose306_ratio)
 
 theorem stage3_refined_beat_base17 :
-    1 * ((restrictionsWithStars 17 (1 - 1)).card * (8 * 1) ^ 1) <
+    1 * ((restrictionsWithStars 17 (1 - 1)).card * (4 * 1) ^ 1) <
       (Nat.choose 17 1 * 2 ^ (17 - 1)) := by
   rw [restrictionsWithStars_card]
   decide
 
 theorem stage3_plain_beat :
-    1 * ((restrictionsWithStars 5193 (1 - 1)).card * (8 * 1) ^ 1) <
+    1 * ((restrictionsWithStars 5193 (1 - 1)).card * (4 * 1) ^ 1) <
       (restrictionsWithStars 5193 1).card := by
   rw [restrictionsWithStars_card, restrictionsWithStars_card]
   rw [show (1 - 1 : Nat) = 0 from rfl, Nat.choose_zero_right,

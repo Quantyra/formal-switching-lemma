@@ -101,14 +101,14 @@ private theorem stage1_length : stage1Layer.gates.length = 1 := rfl
 private theorem stage1_beatRefined :
     stage1Layer.gates.length *
         ((restrictionsWithStars (stars (freeRestriction 5193)) (306 - 2)).card *
-          (8 * 1) ^ 2) <
+          (4 * 1) ^ 2) <
       (refinesSubspace (freeRestriction 5193) 306).card := by
   rw [stage1_length, stars_freeRestriction, refinesSubspace_freeRestriction]
   exact stage1_beat
 
 private theorem stage1_beatPlain :
     stage1Layer.gates.length *
-        ((restrictionsWithStars 5193 (306 - 2)).card * (8 * 1) ^ 2) <
+        ((restrictionsWithStars 5193 (306 - 2)).card * (4 * 1) ^ 2) <
       (restrictionsWithStars 5193 306).card := by
   rw [stage1_length]
   exact stage1_beat
@@ -151,7 +151,7 @@ private theorem stage2_beatRefined
     (C : GeneratedOneStepCertificate stage1Input.toPlain) :
     (stage2Layer C).gates.length *
         ((restrictionsWithStars (stars (compose (freeRestriction 5193) C.ρ))
-            (17 - 2)).card * (8 * 1) ^ 2) <
+            (17 - 2)).card * (4 * 1) ^ 2) <
       (refinesSubspace (compose (freeRestriction 5193) C.ρ) 17).card := by
   rw [stage2_length C, refinesSubspace_card, stage1_stars C]
   exact stage2_refined_beat_base306
@@ -159,7 +159,7 @@ private theorem stage2_beatRefined
 private theorem stage2_beatPlain
     (C : GeneratedOneStepCertificate stage1Input.toPlain) :
     (stage2Layer C).gates.length *
-        ((restrictionsWithStars 5193 (17 - 2)).card * (8 * 1) ^ 2) <
+        ((restrictionsWithStars 5193 (17 - 2)).card * (4 * 1) ^ 2) <
       (restrictionsWithStars 5193 17).card := by
   rw [stage2_length C]
   exact stage2_plain_beat
@@ -212,7 +212,7 @@ private theorem stage3_beatRefined
     (stage3Layer C₁ C₂).gates.length *
         ((restrictionsWithStars
             (stars (compose (compose (freeRestriction 5193) C₁.ρ) C₂.ρ))
-            (1 - 1)).card * (8 * 1) ^ 1) <
+            (1 - 1)).card * (4 * 1) ^ 1) <
       (refinesSubspace (compose (compose (freeRestriction 5193) C₁.ρ) C₂.ρ) 1).card := by
   rw [stage3_length C₁ C₂, refinesSubspace_card, stage2_stars C₁ C₂ href₂]
   exact stage3_refined_beat_base17
@@ -221,7 +221,7 @@ private theorem stage3_beatPlain
     (C₁ : GeneratedOneStepCertificate stage1Input.toPlain)
     (C₂ : GeneratedOneStepCertificate (stage2Input C₁).toPlain) :
     (stage3Layer C₁ C₂).gates.length *
-        ((restrictionsWithStars 5193 (1 - 1)).card * (8 * 1) ^ 1) <
+        ((restrictionsWithStars 5193 (1 - 1)).card * (4 * 1) ^ 1) <
       (restrictionsWithStars 5193 1).card := by
   rw [stage3_length C₁ C₂]
   exact stage3_plain_beat

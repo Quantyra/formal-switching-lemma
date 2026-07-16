@@ -371,7 +371,7 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
 - `PvNP.GeneratedRefinedCollapse.badSetTerm_refines_card_le`,
   `simultaneousCollapse_exists_refined`, and
   `generatedRefinedIteratedCollapse`: the free-subcube RENORMALIZED bad-set
-  bound `|badSetTerm D s ℓ ∩ refinesSubspace base ℓ| ≤ |R(stars base, ℓ−s)| · (8w)^s`,
+  bound `|badSetTerm D s ℓ ∩ refinesSubspace base ℓ| ≤ |R(stars base, ℓ−s)| · (4w)^s`,
   proved by transporting along the free-subcube relabeling and instantiating
   the proved SimpleDNF switching lemma at dimension `stars base`, together
   with the refined plan/certificate machinery whose stage restrictions REFINE
@@ -381,9 +381,9 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
 - `PvNP.RefinedTwoStageInstance.refinedTwoStage_nonemptyGates_nonvacuous` with
   `depthOneDNFView`: one concrete depth-2 renormalized plan over `n = 306`
   with a nonempty gate LIST, width BUDGET `1`, and the non-degenerate
-  `(8·1)^s` beat factor at BOTH stages (stage-1 beat
-  `256 · C(306,15) < C(306,17)`, proved symbolically; stage-2 beat
-  `2^20 < 17 · 2^16`).  The stage-2 gate re-views the stage-1 GENERATED
+  `(4·1)^s` beat factor at BOTH stages (stage-1 beat
+  `64 · C(306,15) < C(306,17)`, proved symbolically; stage-2 beat
+  `2^18 < 17 · 2^16`).  The stage-2 gate re-views the stage-1 GENERATED
   depth-`≤ 1` tree, which may be constant, so realized stage-2 width `≥ 1` is
   NOT certified; the instance's re-viewing is the depth-`≤ 1` special case
   only.  One concrete finite instance; no asymptotic family is claimed.

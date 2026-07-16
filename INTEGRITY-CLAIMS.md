@@ -547,15 +547,22 @@ duplicate-stage code has only one recovered row, so the current all-
   threshold redesign below `32`, full B4, PHP switching, Frege/PHP, NP/circuit,
   Gate A, or a P-vs-NP implication;
 - any broad consequence from S2175 Gate B Route C1: this is bounded schedule
-  arithmetic only, deriving the exact affine condition `(16*m*w+1)*l <= p`
-  and its sufficient coefficient-`17` form, plus a parallel divisor-`17`
-  schedule and SimpleDNF term-canonical finite counting/representative-layer
-  packaging at exact ambient `9826`.  The switching factor remains `8`, stage
-  budget remains `s=2`, and `t(d,s)=S(d)*(s-1)` is unchanged.  This is NOT an
-  unqualified switching-lemma improvement, Route A factor-4, full B4, PHP or
+  arithmetic only (historically over factor-8 counting), deriving a sufficient
+  coefficient-`17` form plus a parallel divisor-`17` schedule and SimpleDNF
+  term-canonical finite counting/representative-layer packaging at exact ambient
+  `9826`.  Stage budget remains `s=2`, and `t(d,s)=S(d)*(s-1)` is unchanged.
+  This is NOT an unqualified switching-lemma improvement, full B4, PHP or
   Frege/PHP, NP/circuit, arbitrary AC0/bounded-depth collapse, Gate A, or
   P-vs-NP.  The duplicated-cube/dedup witness is explicitly NOT switching
   non-vacuity evidence;
+- any broad consequence from S2176: this threads factor-4 SimpleDNF
+  term-canonical counting through the real auto-collapse consumer path
+  (`GeneratedRefinedCollapse` / `GeneratedOneStepDepthReduction` /
+  `BeatArith` / product packaging) and pins coefficient-`16` schedule arithmetic
+  with ambient `8192 = 2*(16)^2*16` packaging.  The exact affine condition is
+  now `(8*m*w+1)*l <= p` under the factor-4 fold `2*(4*w)=(8*w)`.  This is
+  packaging and schedule arithmetic, NOT switching non-vacuity evidence, NOT
+  full B4, NOT PHP/Frege, NOT NP/circuit, and NOT a P-vs-NP claim;
 - unsupplied or automatically synthesized product hypotheses for the scheduled
   route: `FrozenProductSchedule` proves only that an explicit
   `FrozenProductHypothesis` over a supplied `B` and `t` yields `ValidFrom` and
@@ -689,6 +696,16 @@ bounded-depth Frege proof system is proved here.
 | `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness14_normalizedFrontierWidthSchedule` / `dupCubeWitness14_dedupFrontier_length` | `propext`, `Classical.choice`, `Quot.sound` | S2175 all-level normalized-width-one and dedup-length-one pins |
 | `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness14_uniform17_product_eq` / `dupCubeWitness14_uniform32_product_fails` | `propext` | S2175 exact `9826` product and coefficient-32 separation |
 | `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness14_dedup_finalTree_allLevels_rounds2_uniform17` | `propext`, `Classical.choice`, `Quot.sound` | S2175 finite all-level divisor-17 packaging instance; not switching non-vacuity evidence |
+| `PvNP.ScheduledAutoCollapse.BeatArith4` / `ValidFrom4` | `propext` | Explicit aliases for the in-place real factor-4 beat and validity interfaces |
+| `PvNP.FrozenProductScheduleRatio.ratio_beat4` | `propext`, `Classical.choice`, `Quot.sound` | S2176 coefficient-16 sufficient form of factor-4 affine beat |
+| `PvNP.FrozenProductScheduleRatio.RatioRegime16` / `RatioRegime16.mono` / `RegimeFrom16` | none | S2176 parallel coefficient-16 regime predicates |
+| `PvNP.FrozenProductScheduleRatio.ratioRegime16_beat` / `regimeFrom16_validFrom` / `regimeFrom16_validFrom4` | `propext`, `Classical.choice`, `Quot.sound` | S2176 coefficient-16 regime consumers |
+| `PvNP.FrozenProductScheduleRatio.geometricSchedule16` / `geometricSchedule16_length` / `geometricSchedule16_budgets` / `geometricSchedule16_treeBudget` | none | S2176 divisor-16 schedule bookkeeping |
+| `PvNP.FrozenProductScheduleRatio.geometricSchedule16_regime` / `geometric_regime_of_bound16` | `propext` | S2176 divisor-16 regime and ambient-`8192` product bounds |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.RepresentativeNormalizedViewClassDepthFinalTreeAtUniform16` / `representativeFrontier_geometricCollapseWithSuppliedWidth_finalTree_uniform16` / `representativeFrontier_geometricCollapse_finalTree_uniform16_normalizedWidth` / `dedupFrontier_geometricCollapse_finalTree_uniform16_normalizedWidth` / `allDedupFrontiers_geometricCollapse_finalTree_uniform16_normalizedWidth` | `propext`, `Classical.choice`, `Quot.sound` | S2176 uniform-16 representative consumers |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness13` | none | S2176 finite packaging witness at ambient `8192`; not switching non-vacuity |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness13_uniform16_product_eq` / `dupCubeWitness13_uniform17_product_fails` | `propext` | S2176 exact `8192` product and coefficient-17 separation |
+| `PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness13_dedup_finalTree_allLevels_rounds2_uniform16` | `propext`, `Classical.choice`, `Quot.sound` | S2176 finite all-level divisor-16 packaging instance |
 | `PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.widthDNF_syntacticDNF_le_recurrenceWidth` | `propext`, `Quot.sound` | S2164 hypothesis-free structural width bookkeeping |
 | `PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.emptyAndOne` | none | S2164 empty-fanin witness |
 | `PvNP.FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget.emptyAndOne_recurrenceWidth` | `propext`, `Quot.sound` | S2164 empty-fanin recurrence-width pin |

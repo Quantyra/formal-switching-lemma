@@ -26,7 +26,7 @@ three-stage/nonempty-gate theorem.
   the existing refined collapse machinery.
 * The realized widths of auto re-viewed gates depend on the generated trees
   (they may be constants); width BUDGETS are `s - 1` per stage and every beat
-  carries the non-degenerate `(8w)^s` factor.
+  carries the non-degenerate `(4w)^s` factor.
 * Frozen-form B4 (single upfront depth-`d` view, product hypothesis
   `B(m, w, s, d)`, `t(d, s)` tree bound) remains OPEN: the plan/beat data are
   still per-stage, not a single product hypothesis.

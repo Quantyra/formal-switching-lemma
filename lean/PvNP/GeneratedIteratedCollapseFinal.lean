@@ -383,8 +383,18 @@ def toPlain {n : Nat} {base : Restriction n}
   s := I.s
   ℓ := I.ℓ
   width := I.width
-  beat := Nat.lt_of_lt_of_le I.beat
-    (Finset.card_le_card (consistentSubspace_subset base I.ℓ))
+  beat := by
+    have hpow : (4 * I.w) ^ I.s ≤ (8 * I.w) ^ I.s :=
+      Nat.pow_le_pow_left (by omega) _
+    have hleft :
+        I.layer.gates.length *
+            ((restrictionsWithStars n (I.ℓ - I.s)).card * (4 * I.w) ^ I.s) ≤
+          I.layer.gates.length *
+            ((restrictionsWithStars n (I.ℓ - I.s)).card * (8 * I.w) ^ I.s) :=
+      Nat.mul_le_mul_left _ (Nat.mul_le_mul_left _ hpow)
+    exact Nat.lt_of_le_of_lt hleft
+      (Nat.lt_of_lt_of_le I.beat
+        (Finset.card_le_card (consistentSubspace_subset base I.ℓ)))
 
 end GeneratedConsistentStepInput
 
