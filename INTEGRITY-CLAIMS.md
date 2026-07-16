@@ -591,6 +591,16 @@ duplicate-stage code has only one recovered row, so the current all-
   at most `8`.  This does not yet thread the recurrence through frozen-form
   entry products or close S2181/full B4; it is not PHP switching, Frege/PHP,
   NP/circuit, Gate A, arbitrary AC0 collapse, or P-vs-NP;
+- any broad consequence from S2181: `frozenFormB4_v1_allLevels_uniform9` is a
+  class-quantified all-level uniform-9 wrapper for every nonempty-fanin raw
+  formula under a single syntax-only coarse Entry
+  `2*(9*size)^r*(9*size*size)`, with width and dedup schedules synthesized
+  and `S`/`d` taken from the formula itself.  Merge parent and rounds remain
+  free parameters of the consumer interface.  This is class-level iterated
+  collapse for the named nonempty-fanin normalized-view/dedup route only —
+  not arbitrary AC⁰, not full frozen-payload B4 beyond that class, not PHP,
+  Frege/PHP, NP/circuit, Gate A, or P-vs-NP.  The width-1 cube packaging
+  instance is not switching non-vacuity and does not claim width≥2/count≥2;
 - unsupplied or automatically synthesized product hypotheses for the scheduled
   route: `FrozenProductSchedule` proves only that an explicit
   `FrozenProductHypothesis` over a supplied `B` and `t` yields `ValidFrom` and

@@ -101,6 +101,7 @@ import PvNP.FormulaSyntacticDNF
 import PvNP.FormulaSyntacticDNFNormalization
 import PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute
 import PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute
+import PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4
 import PvNP.FormulaSyntacticSimpleBridge
 import PvNP.FormulaVarWidthSchedule
 import PvNP.MixedFormulaFamilyCollapse
@@ -10619,3 +10620,34 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute.dupCubeWitness19_frontierGateCount_le_eight
+
+/-! S2181 frozen-form B4 v1 class wrapper pins. -/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4.levelEntryProduct9' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4.levelEntryProduct9
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4.frozenFormEntryProduct9' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4.frozenFormEntryProduct9
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4.normalizedFrontierWidthSchedule_le_formulaSize' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4.normalizedFrontierWidthSchedule_le_formulaSize
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4.levelEntryProduct9_le_frozenFormEntryProduct9' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4.levelEntryProduct9_le_frozenFormEntryProduct9
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4.frozenFormB4_v1_allLevels_uniform9' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4.frozenFormB4_v1_allLevels_uniform9
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4.dupCubeWitness11_frozenFormB4_v1_rounds2' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4.dupCubeWitness11_frozenFormB4_v1_rounds2
