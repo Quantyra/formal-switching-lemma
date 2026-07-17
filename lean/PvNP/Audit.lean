@@ -212,6 +212,22 @@ import PvNP.ScheduledCollapseDemo
 
 /-! S2176 factor-4 consumer path and ambient-8192 coefficient-16 packaging pins. -/
 
+/-- info: 'PvNP.SwitchingRazborovCode.card_le_mul_rcode4_of_injOn' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.SwitchingRazborovCode.card_le_mul_rcode4_of_injOn
+
+/-- info: 'PvNP.SwitchingClose2.switchingLemmaTermSimple_proved4' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.SwitchingClose2.switchingLemmaTermSimple_proved4
+
+/-- info: 'PvNP.GeneratedGoodRestriction.jointBadSet_card_le4' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GeneratedGoodRestriction.jointBadSet_card_le4
+
+/-- info: 'PvNP.GeneratedGoodRestriction.simultaneousCollapse_exists4' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.GeneratedGoodRestriction.simultaneousCollapse_exists4
+
 /-- info: 'PvNP.ScheduledAutoCollapse.BeatArith4' depends on axioms: [propext] -/
 #guard_msgs in
 #print axioms PvNP.ScheduledAutoCollapse.BeatArith4
@@ -10651,3 +10667,4 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4.dupCubeWitness11_frozenFormB4_v1_rounds2
+
