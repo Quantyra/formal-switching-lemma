@@ -102,6 +102,7 @@ import PvNP.FormulaSyntacticDNFNormalization
 import PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute
 import PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute
 import PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4
+import PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness
 import PvNP.FormulaSyntacticSimpleBridge
 import PvNP.FormulaVarWidthSchedule
 import PvNP.MixedFormulaFamilyCollapse
@@ -10668,3 +10669,65 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4.dupCubeWitness11_frozenFormB4_v1_rounds2
 
+/-! S2182 frozen-form B4 strong non-vacuity witness pins. -/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness.twinCubeWitness9_formulaSize' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness.twinCubeWitness9_formulaSize
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness.twinCubeWitness9_dedupLength_two' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness.twinCubeWitness9_dedupLength_two
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness.twinCubeWitness9_width_two' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness.twinCubeWitness9_width_two
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness.twinCubeWitness9_strong_nonvacuity_at_binding_level' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness.twinCubeWitness9_strong_nonvacuity_at_binding_level
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness.dupCubeWitness11_no_strong_level' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness.dupCubeWitness11_no_strong_level
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness.twinCubeWitness9_uniform9_product_level2_eq' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness.twinCubeWitness9_uniform9_product_level2_eq
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness.twinCubeWitness9_levelEntryProduct9_level2_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness.twinCubeWitness9_levelEntryProduct9_level2_eq
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness.twinCubeWitness9_levelEntryProduct9_level2_fails_below' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness.twinCubeWitness9_levelEntryProduct9_level2_fails_below
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness.twinCubeWitness9_exists_strong_level' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness.twinCubeWitness9_exists_strong_level
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness.twinCubeWitnessEntry9_depth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness.twinCubeWitnessEntry9_depth
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness.twinCubeWitness9_frozenFormB4_v1_rounds2' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness.twinCubeWitness9_frozenFormB4_v1_rounds2
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness.twinCubeWitnessEntry9_entryProduct_eq' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness.twinCubeWitnessEntry9_entryProduct_eq
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness.twinCubeWitnessEntry9_frozenFormB4_v1_via_entry' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness.twinCubeWitnessEntry9_frozenFormB4_v1_via_entry
