@@ -102,6 +102,7 @@ import PvNP.FormulaSyntacticDNFNormalization
 import PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute
 import PvNP.FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute
 import PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4
+import PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry
 import PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness
 import PvNP.FormulaSyntacticSimpleBridge
 import PvNP.FormulaVarWidthSchedule
@@ -10731,3 +10732,66 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4StrongWitness.twinCubeWitnessEntry9_frozenFormB4_v1_via_entry
+
+/-! S2183 frozen-form B4 recurrence Entry pins. -/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.frozenFormEntryProduct9Rec' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.frozenFormEntryProduct9Rec
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.dedupRepresentativeFrontier_length_le_formulaRecurrenceCount' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.dedupRepresentativeFrontier_length_le_formulaRecurrenceCount
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.levelEntryProduct9_le_frozenFormEntryProduct9Rec' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.levelEntryProduct9_le_frozenFormEntryProduct9Rec
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.frozenFormEntryProduct9Rec_le_frozenFormEntryProduct9' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.frozenFormEntryProduct9Rec_le_frozenFormEntryProduct9
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.frozenFormB4_v1_allLevels_uniform9_recEntry' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.frozenFormB4_v1_allLevels_uniform9_recEntry
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_formulaSize' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_formulaSize
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_depth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_depth
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_recurrenceCount' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_recurrenceCount
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_recurrenceCount_lt_formulaSize' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_recurrenceCount_lt_formulaSize
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_recEntry_eq' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_recEntry_eq
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_sizeEntry_fails' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_sizeEntry_fails
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_frozenFormB4_v1_via_recEntry' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_frozenFormB4_v1_via_recEntry
