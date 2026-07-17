@@ -813,6 +813,45 @@ Version `v0.1.0` is archived on Zenodo:
 - DOI: `10.5281/zenodo.20757628`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.1.0`
 
+Version `v0.9.0` publishes the post-`v0.8.0` Gate B coefficient-lane and
+frozen-form stack S2175-S2183 under unchanged `t(d,s)=S(d)*(s-1)`.  S2175 adds
+the affine headroom beat (`ratio_beat_affine`, `(16*m*w+1)*l <= p`,
+coefficient-17 packaging, ambient `9826`).  S2176 threads the exact factor-4
+`(4*w)^s` `RCode` cardinality through the real consumer path (`ratio_beat4`,
+`geometricSchedule16`, ambient `8192`).  S2177 adds Route A-sharp coefficient
+9 (`ratio_beat9` packaging the exact affine fold `(8*m*w+1)*l <= p`;
+`geometricSchedule9`; ambient `1458 = 2*9^2*9`, the exact minimum for the
+three-stage schedule; 9 is the floor of the multiplicative packaging family).
+S2179 adds multi-round uniform-9 packages at ambients `13122` (rounds 3) and
+`118098` (rounds 4) and closes the free multiplicative coefficient lane
+(Route B factor-2 parked behind new encode mathematics).  S2180 adds the
+hypothesis-free frontier count recurrence (`formulaRecurrenceCount`; raw <=
+recurrence <= size for every raw formula).  S2181 adds the frozen-form B4 v1
+class wrapper `frozenFormB4_v1_allLevels_uniform9` (class-level only; full
+frozen-payload B4 remains open): for every nonempty-fanin
+raw formula, under a single syntax-only coarse Entry product, every depth
+level carries the synthesized-dedup uniform-9 final-tree payload (width and
+count schedules, `S`, and `d` synthesized; only merge parent, round count,
+and ambient remain free).  S2182 adds the strong structural non-vacuity
+witness `twinCubeWitness9 : BDFormula 23328` (synthesized dedup count 2 and
+normalized width 2 at the unique binding level, welded to
+`levelEntryProduct9 = 23328`; `dupCubeWitness11` kernel-checked to admit no
+such level) and the first through-the-hypothesis wrapper instantiation at
+ambient `73811250`.  S2183 threads the count recurrence into the Entry
+(`frozenFormEntryProduct9Rec`, never exceeding the size-coarse Entry, with a
+same-witness strict separation at ambient `11197440`; the recurrence charges
+leaf mass only and is not sharing-aware).  The audit surface has `1810`
+`#guard_msgs`-pinned `#print axioms` profiles.  Boundary: class-level
+iterated collapse for the restricted nonempty-fanin normalized-view/dedup
+route and bounded schedule-entry arithmetic only; packaging witnesses are
+structural schedule non-degeneracy, **not** switching non-vacuity; not full
+frozen-payload B4 beyond the named class, not a PHP switching lemma, not
+Frege/PHP, NP/circuit, arbitrary AC0 collapse, Gate A revival, or P-vs-NP.
+
+- Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.9.0`
+- Zenodo version DOI: pending GitHub/Zenodo archive after tag publication
+  (concept DOI remains `10.5281/zenodo.20757627`)
+
 Version `v0.8.0` publishes the post-`v0.7.0` Gate B 32-route stack S2162-S2172
 under unchanged `t(d,s)=S(d)*(s-1)`.  S2162-S2163 add DNF normalization and
 normalized-view tight-entry consumers.  S2164-S2166 add hypothesis-free
@@ -1272,7 +1311,7 @@ support-based code space and a single guaranteed free row — so it is not a
 geometric `(8w)^s`-style bound, not a per-stage information-recovery encoding
 argument, and not a PHP switching lemma.
 
-As of `v0.8.0`, the audit surface has `1704` `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. Frozen-form B4 and Gate A rung 4 (a PHP switching lemma) remain open.
+As of `v0.9.0`, the audit surface has `1810` `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. The v0.9.0 class wrapper is class-level only: full frozen-payload B4 beyond the nonempty-fanin normalized-view/dedup class and Gate A rung 4 (a PHP switching lemma) remain open.
 
 - DOI: `10.5281/zenodo.21184992`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`
