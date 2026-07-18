@@ -19,6 +19,7 @@ import PvNP.RefinedThreeStageInstance
 import PvNP.PHPMatchingDistribution
 import PvNP.PHPFullMatchingDistribution
 import PvNP.PHPFullMatchingProbability
+import PvNP.PHPMatchingComposition
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
@@ -10795,3 +10796,125 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_frozenFormB4_v1_via_recEntry
+
+/-! S2185 GA-1 matching composition algebra pins. -/
+
+/-- info: 'PvNP.PHPMatchingComposition.compose_assoc' depends on axioms: [Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.compose_assoc
+
+/-- info: 'PvNP.PHPMatchingComposition.compose_empty_left' depends on axioms: [Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.compose_empty_left
+
+/-- info: 'PvNP.PHPMatchingComposition.compose_empty_right' depends on axioms: [Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.compose_empty_right
+
+/-- info: 'PvNP.PHPMatchingComposition.isMatching_compose' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.isMatching_compose
+
+/-- info: 'PvNP.PHPMatchingComposition.disjointExtension_crossConsistent' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.disjointExtension_crossConsistent
+
+/-- info: 'PvNP.PHPMatchingComposition.matchingConsistentWith_empty' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.matchingConsistentWith_empty
+/-- info: 'PvNP.PHPMatchingComposition.matchingConsistentWith_compose_right' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.matchingConsistentWith_compose_right
+/-- info: 'PvNP.PHPMatchingComposition.disjointExtension_matchingConsistentWith' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.disjointExtension_matchingConsistentWith
+/-- info: 'PvNP.PHPMatchingComposition.sq_star_drop_via_lemma' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.sq_star_drop_via_lemma
+/-- info: 'PvNP.PHPMatchingComposition.freePigeons_compose' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.freePigeons_compose
+
+/-- info: 'PvNP.PHPMatchingComposition.freePigeons_compose_card' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.freePigeons_compose_card
+
+/-- info: 'PvNP.PHPMatchingComposition.toRestriction_phpVar' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.toRestriction_phpVar
+
+/-- info: 'PvNP.PHPMatchingComposition.holeUsed_compose' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.holeUsed_compose
+
+/-- info: 'PvNP.PHPMatchingComposition.toRestriction_compose' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.toRestriction_compose
+
+/-- info: 'PvNP.PHPMatchingComposition.restrict_toRestriction_compose' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.restrict_toRestriction_compose
+/-- info: 'PvNP.PHPMatchingComposition.sq_genuinely_partial' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.sq_genuinely_partial
+/-- info: 'PvNP.PHPMatchingComposition.rect_genuinely_partial' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.rect_genuinely_partial
+/-- info: 'PvNP.PHPMatchingComposition.ceHole_not_disjointExtension' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.ceHole_not_disjointExtension
+/-- info: 'PvNP.PHPMatchingComposition.ceDom_not_disjointExtension' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.ceDom_not_disjointExtension
+/-- info: 'PvNP.PHPMatchingComposition.not_isMatching_compose_of_not_crossConsistent' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.not_isMatching_compose_of_not_crossConsistent
+/-- info: 'PvNP.PHPMatchingComposition.ceHole_silent_on_fixed' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.ceHole_silent_on_fixed
+/-- info: 'PvNP.PHPMatchingComposition.ceDom_holeDisjoint' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.ceDom_holeDisjoint
+/-- info: 'PvNP.PHPMatchingComposition.ceHole_homomorphism_fails' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.ceHole_homomorphism_fails
+
+/-- info: 'PvNP.PHPMatchingComposition.ceDom_crossConsistent' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.ceDom_crossConsistent
+
+/-- info: 'PvNP.PHPMatchingComposition.ceDom_homomorphism_fails' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.ceDom_homomorphism_fails
+
+/-- info: 'PvNP.PHPMatchingComposition.sq_disjointExtension' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.sq_disjointExtension
+
+/-- info: 'PvNP.PHPMatchingComposition.sq_isMatching_compose' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.sq_isMatching_compose
+
+/-- info: 'PvNP.PHPMatchingComposition.sq_star_drop' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.sq_star_drop
+
+/-- info: 'PvNP.PHPMatchingComposition.sq_homomorphism' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.sq_homomorphism
+
+/-- info: 'PvNP.PHPMatchingComposition.rect_disjointExtension' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.rect_disjointExtension
+
+/-- info: 'PvNP.PHPMatchingComposition.rect_isMatching_compose' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.rect_isMatching_compose
+
+/-- info: 'PvNP.PHPMatchingComposition.rect_star_drop' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.rect_star_drop
+
+/-- info: 'PvNP.PHPMatchingComposition.rect_homomorphism' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingComposition.rect_homomorphism
