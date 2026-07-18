@@ -11137,3 +11137,23 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 /-- info: 'PvNP.PHPMatchingCanonicalMDT.honest_lit_probability_eq' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingCanonicalMDT.honest_lit_probability_eq
+
+/-! S2186 GA-2 review-amendment pins: divergence record, generic transfers, free-hole cap. -/
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.mdtDepth_canonicalMDT_le_freeHoles_sq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.mdtDepth_canonicalMDT_le_freeHoles_sq
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.honest_eventProbEq_of_full' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.honest_eventProbEq_of_full
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.honest_eventProbLe_of_full' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.honest_eventProbLe_of_full
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.walk_boolean_depth1_divergence' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.walk_boolean_depth1_divergence

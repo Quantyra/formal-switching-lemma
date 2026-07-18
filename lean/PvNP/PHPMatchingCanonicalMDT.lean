@@ -3,38 +3,46 @@ import PvNP.PHPFullMatchingDistribution
 import PvNP.PHPFullMatchingCollapseExact
 
 /-!
-# GA-2 Stage A: matching decision trees, evaluation, and agreement (S2186)
+# GA-2: canonical matching decision trees, deep-path bad set, and the
+S2080 bridge with depth-1 recovery (S2186)
 
 Second formal rung of the Gate A rung-4 reopening arc (S2184 packet, GA-2),
-Stage A of the pre-registered staged plan: the tree object the canonical
-matching walk (Stage B) will build and the extension encode (GA-3) will
-count.
+built in the pre-registered stages recorded in the S2186 story:
 
-* `MDTree p h` — matching decision trees: leaves carry Booleans; a query
-  node names a **pigeon** and carries one subtree per hole. Queries are
-  pigeon-only (the packet-disclosed deviation from classical vertex-query
-  MDTs); the type is total over holes — the canonical walk of Stage B never
-  enters used holes, which the Stage B depth-cap and soundness lemmas make
-  precise.
-* `mdtEval` — evaluation against a GA-1 `MatchingMap`: partial (returns
-  `none` exactly when the tree queries a free pigeon), total on any map
-  defined on every queried pigeon.
-* `MAgree` — the matching-side mirror of the boolean `Agree`: every
-  assignment of the first map survives into the second.
-* Evaluation is `MAgree`-monotone (`mdtEval_mono_of_mAgree`) — the Stage A
-  seed of the packet's evaluation-soundness pin (2.3) — and connects to the
-  GA-1 composition algebra: a base matching always `MAgree`s into a
-  first-wins composite, and an extension does under pigeon-level
-  consistency.
-* `mdtDepth` and the query-count view `mdtQueries` with
-  `mdtDepth_le_mdtQueries`.
+* **Stage A** — `MDTree p h`: matching decision trees (leaves carry
+  Booleans; a query node names a **pigeon** and carries one subtree per
+  hole — the packet-disclosed pigeon-only deviation from classical
+  vertex-query MDTs); partial `mdtEval` against GA-1 `MatchingMap`s; the
+  `MAgree` mirror of the boolean `Agree` with the GA-1 compose connectors;
+  `MAgree`-monotone evaluation; depth and query-count measures.
+* **Stage B** — the canonical walk `mwalk` (term-local over PHP-shaped
+  matching DNFs, fuel = free-pigeon count) with its equation-lemma family;
+  the dedup-tolerant self-collision gate with the walk-level skip law
+  (pin 2.5); the hole-side falsification channel through GA-1's `holeUsed`
+  with no hole queries (pin 2.4); every query step a kernel-checked
+  `DisjointExtension`; depth caps in fuel and canonical free-pigeon forms
+  (pin 2.6, free-pigeon form — equal to the free-hole count on the
+  hole-injective square instances exercised here; the rectangular
+  free-hole tightening is a named later obligation).
+* **Stage C** — `honestMatchingSpace` and the deep-path `badMatchings`
+  with a concrete kernel-checked member (pin 2.2); the semantic honesty of
+  the skip convention (`illegal_term_unsat`); evaluation soundness in both
+  directions packaged as `canonicalMDT_sound` (pin 2.3).
+* **Stage D** — the square pushforward `pushSq` from the S2080
+  subset-permutation space with the complement identification `ℓ = h − k`;
+  the S2080 restriction factors through the pushforward; exactly `(h − k)!`
+  permutation extensions per honest point; the pushforward counting
+  identity; and the depth-1 recovery `honest_lit_probability_eq` (pin 2.1,
+  the packet's go/no-go gate).
 
-Deterministic matching-DT infrastructure only. This is not a PHP switching
-lemma (no collapse-probability bound is stated or proved), not the
-canonical walk (Stage B), not the deep-path bad set (Stage C), not the
-S2080 bridge or depth-1 recovery (Stage D), not the extension encode
-(GA-3), not Gate A closure, not a Frege/PHP or NP/circuit lower bound, and
-not P-versus-NP.
+Deterministic matching-DT infrastructure and finite counting bridges only.
+This is not a PHP switching lemma (no collapse-probability upper bound for
+the canonical matching walk is stated or proved; the module's only
+probability statement, `honest_lit_probability_eq`, is a verbatim recovery
+of the already-proved S2116 depth-1 single-literal probability through the
+bridge — validation, not new collapse progress), not the extension encode
+(GA-3), not a bad-set cardinality bound (GA-5), not Gate A closure, not a
+Frege/PHP or NP/circuit lower bound, and not P-versus-NP.
 
 INTEGRITY: no `sorry`, no `admit`, no new `axiom`, no `native_decide`.
 -/
@@ -822,18 +830,18 @@ theorem mAgree_compose_single {p h : Nat} {mu nu : MatchingMap p h}
 that the extending matching satisfies some term of the MDNF. -/
 theorem mwalk_sound_true {p h : Nat} :
     ∀ (fuel : Nat) (mu : MatchingMap p h) (D : MDNF p h)
-      (nu : MatchingMap p h), IsMatching nu → MAgree mu nu →
+      (nu : MatchingMap p h), MAgree mu nu →
       mdtEval nu (mwalk fuel mu D) = some true →
       D.any (termSatisfiedB nu) = true
-  | fuel, mu, [], nu, _, _, hev => by
+  | fuel, mu, [], nu, _, hev => by
       rw [mwalk_nil] at hev
       rw [mdtEval_leaf] at hev
       cases hev
-  | fuel, mu, t :: rest, nu, hnu, hag, hev => by
+  | fuel, mu, t :: rest, nu, hag, hev => by
       by_cases hleg : termMatchingLegalB t = true
       · by_cases hfals : termFalsifiedB mu t = true
         · rw [mwalk_skip_falsified fuel mu t rest hleg hfals] at hev
-          have hrest := mwalk_sound_true fuel mu rest nu hnu hag hev
+          have hrest := mwalk_sound_true fuel mu rest nu hag hev
           rw [List.any_cons]
           rw [hrest]
           simp
@@ -874,11 +882,11 @@ theorem mwalk_sound_true {p h : Nat} :
                         · rw [if_neg hha] at hev
                           exact mwalk_sound_true fuel'
                             (compose mu (singleMatching e.1 a)) (t :: rest)
-                            nu hnu (mAgree_compose_single hag e.1 a hnue) hev
+                            nu (mAgree_compose_single hag e.1 a hnue) hev
       · have hleg' : termMatchingLegalB t = false :=
           Bool.eq_false_iff.mpr hleg
         rw [mwalk_skip_illegal fuel mu t rest hleg'] at hev
-        have hrest := mwalk_sound_true fuel mu rest nu hnu hag hev
+        have hrest := mwalk_sound_true fuel mu rest nu hag hev
         rw [List.any_cons, hrest]
         simp
   termination_by fuel _ D _ => (fuel, D.length)
@@ -1009,7 +1017,7 @@ theorem canonicalMDT_sound {p h : Nat} (D : MDNF p h)
     D.any (termSatisfiedB nu) = b := by
   cases b with
   | true =>
-      exact mwalk_sound_true (freePigeons mu).card mu D nu hnu hag hev
+      exact mwalk_sound_true (freePigeons mu).card mu D nu hag hev
   | false =>
       have hall := mwalk_sound_false (freePigeons mu).card mu D nu rfl
         hnu hag hev
@@ -1425,7 +1433,9 @@ theorem card_permsExtending {h : Nat} (mu : MatchingMap h h)
 /-! ## Stage D.3: pushforward counting and the depth-1 recovery (pin 2.1) -/
 
 /-- The S2115 collapse-bad event stated over the honest space (through the
-honest restriction). -/
+honest restriction). This is the **boolean-DT** event on the `phpVar`
+rectangle — distinct from the `mwalk`/`canonicalMDT` depth event; see
+`walk_boolean_depth1_divergence`. -/
 def honestCollapseBad {h : Nat} (F : BDFormula (Nat.succ (h * h))) (t : Nat)
     (mu : MatchingMap h h) : Prop :=
   ∀ T : DTree (Nat.succ (h * h)),
@@ -1556,12 +1566,20 @@ theorem card_fullMatchingSpace_eq_factorial_mul {h ell : Nat}
   simpa using hpush
 
 open Classical in
-/-- **Pin 2.1, the depth-1 recovery**: the S2116 exact single-literal
-collapse probability `(h − s)/h` over the S2080 space transfers verbatim
-through the pushforward/multiplicity bridge to the honest space as `ℓ/h`
-(same cross-multiplied form, `ℓ = h − s`) — the proved S2115–S2117 depth-1
-bounds are recovered over the honest space, validating the bad-set
-definitions against the existing artifact. -/
+/-- **Pin 2.1, the depth-1 recovery, discharged at the SPACE level**: the
+S2116 exact single-literal collapse probability `(h − s)/h` over the S2080
+space transfers verbatim through the pushforward/multiplicity bridge to
+the honest space as `ℓ/h` (same cross-multiplied form, `ℓ = h − s`),
+validating the honest-space and bridge conventions (space, complement
+identification, multiplicity). This statement is about the boolean-DT
+event `honestCollapseBad` and is **walk-independent**: the canonical
+walk's own depth-1 event provably diverges from the boolean event
+(`walk_boolean_depth1_divergence` below), which is the packet's
+documented-re-scope branch, not an event identity. The S2115 term and
+S2117 DNF bounds transfer through the same
+`matchingCollapseBad_factors` route via the generic
+`honest_eventProbEq_of_full`/`honest_eventProbLe_of_full` principles but
+are not instantiated here (named mechanical follow-on). -/
 theorem honest_lit_probability_eq {h ell : Nat} (hell : ell ≤ h)
     (i j : Fin h) (sign : Bool) :
     EventProbEq (honestMatchingSpace h h ell)
@@ -1597,6 +1615,116 @@ theorem honest_lit_probability_eq {h ell : Nat} (hell : ell ≤ h)
         hfull
     _ = Nat.factorial ell * (ell * (honestMatchingSpace h h ell).card) := by
         rw [Nat.mul_left_comm]
+
+/-- Pin 2.6, square-honest free-hole form: on hole-injective square points
+the free-pigeon cap IS the free-hole cap (`card_usedHoles`). The
+rectangular free-hole tightening is a named later obligation (packet
+GA-6 boundary work). -/
+theorem mdtDepth_canonicalMDT_le_freeHoles_sq {h : Nat} (D : MDNF h h)
+    (mu : MatchingMap h h) (hmu : IsMatching mu) :
+    mdtDepth (canonicalMDT D mu) ≤ h - (usedHoles mu).card := by
+  have hcap := mdtDepth_canonicalMDT_le_freePigeons D mu
+  have heq : (freePigeons mu).card = h - (usedHoles mu).card := by
+    rw [card_usedHoles mu hmu, fixedPigeons_eq_compl_freePigeons,
+      Finset.card_compl, Fintype.card_fin]
+    have hle : (freePigeons mu).card ≤ h := by
+      have hcu := Finset.card_le_univ (freePigeons mu)
+      simpa using hcu
+    omega
+  rw [← heq]
+  exact hcap
+
+open Classical in
+/-- Generic bridge transfer, exact form: any cross-multiplied probability
+equality over the S2080 space for a pushforward-factored event descends to
+the honest space. -/
+theorem honest_eventProbEq_of_full {h ell : Nat} (hell : ell ≤ h)
+    (Q : MatchingMap h h → Prop) {num den : Nat}
+    (hfull : EventProbEq (fullMatchingSpace h (h - ell))
+      (fun P => Q (pushSq P)) num den) :
+    EventProbEq (honestMatchingSpace h h ell) Q num den := by
+  unfold EventProbEq at hfull ⊢
+  rw [pushforward_count hell Q,
+    card_fullMatchingSpace_eq_factorial_mul hell] at hfull
+  apply Nat.eq_of_mul_eq_mul_left (Nat.factorial_pos ell)
+  calc Nat.factorial ell *
+        (den * eventCount (honestMatchingSpace h h ell) Q)
+      = den * (Nat.factorial ell *
+          eventCount (honestMatchingSpace h h ell) Q) := by
+        rw [Nat.mul_left_comm]
+    _ = num * (Nat.factorial ell * (honestMatchingSpace h h ell).card) :=
+        hfull
+    _ = Nat.factorial ell *
+          (num * (honestMatchingSpace h h ell).card) := by
+        rw [Nat.mul_left_comm]
+
+open Classical in
+/-- Generic bridge transfer, inequality form (the shape the S2115 term and
+S2117 DNF bounds will instantiate). -/
+theorem honest_eventProbLe_of_full {h ell : Nat} (hell : ell ≤ h)
+    (Q : MatchingMap h h → Prop) {num den : Nat}
+    (hfull : EventProbLe (fullMatchingSpace h (h - ell))
+      (fun P => Q (pushSq P)) num den) :
+    EventProbLe (honestMatchingSpace h h ell) Q num den := by
+  unfold EventProbLe at hfull ⊢
+  rw [pushforward_count hell Q,
+    card_fullMatchingSpace_eq_factorial_mul hell] at hfull
+  apply Nat.le_of_mul_le_mul_left ?_ (Nat.factorial_pos ell)
+  calc Nat.factorial ell *
+        (den * eventCount (honestMatchingSpace h h ell) Q)
+      = den * (Nat.factorial ell *
+          eventCount (honestMatchingSpace h h ell) Q) := by
+        rw [Nat.mul_left_comm]
+    _ ≤ num * (Nat.factorial ell * (honestMatchingSpace h h ell).card) :=
+        hfull
+    _ = Nat.factorial ell *
+          (num * (honestMatchingSpace h h ell).card) := by
+        rw [Nat.mul_left_comm]
+
+open Classical in
+/-- **The kernel-pinned walk/boolean depth-1 divergence** (the go/no-go
+record): a concrete honest square point that is boolean-depth-1 bad
+(`honestCollapseBad`) while its canonical matching-DT has depth `0` — the
+hole-side falsification channel (pin 2.4) kills the point at depth zero
+before any query. The walk's depth-1 bad event is therefore a **strict
+subset** of the boolean event at this instance; the general
+walk-vs-boolean relationship is the packet's named M6 floors-model
+reconciliation obligation, not an event identity. -/
+theorem walk_boolean_depth1_divergence :
+    ∃ mu : MatchingMap 2 2, IsMatching mu ∧ (freePigeons mu).card = 1 ∧
+      honestCollapseBad
+        (phpLitFormula 2 ⟨0, by decide⟩ ⟨0, by decide⟩ true) 1 mu ∧
+      mdtDepth (canonicalMDT
+        [[((⟨0, by decide⟩ : Fin 2), (⟨0, by decide⟩ : Fin 2))]] mu) = 0 := by
+  refine ⟨fun i => if i = (⟨1, by decide⟩ : Fin 2)
+    then some (⟨0, by decide⟩ : Fin 2) else none, ?_, ?_, ?_, ?_⟩
+  · intro i j a hi hj
+    revert hi hj
+    revert i j a
+    decide
+  · decide
+  · have hP : pushSq ({(⟨1, by decide⟩ : Fin 2)},
+        Equiv.swap (⟨0, by decide⟩ : Fin 2) (⟨1, by decide⟩ : Fin 2)) =
+        (fun i => if i = (⟨1, by decide⟩ : Fin 2)
+          then some (⟨0, by decide⟩ : Fin 2) else none) := by
+      funext i
+      revert i
+      decide
+    rw [← hP, ← matchingCollapseBad_factors]
+    rw [matchingCollapseBad_lit_iff_fullStarEvent]
+    unfold fullStarEvent
+    rw [fullRestrictionOf_phpVar_eq_none_iff]
+    decide
+  · have hcard : (freePigeons (fun i =>
+        if i = (⟨1, by decide⟩ : Fin 2)
+        then some (⟨0, by decide⟩ : Fin 2) else none : MatchingMap 2 2)).card
+        = 1 := by
+      decide
+    unfold canonicalMDT
+    rw [hcard]
+    rw [mwalk_skip_falsified 1 _ _ [] (by decide) (by decide)]
+    rw [mwalk_nil]
+    rfl
 
 end PHPMatchingCanonicalMDT
 end PvNP
