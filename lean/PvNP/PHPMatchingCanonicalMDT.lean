@@ -1,5 +1,6 @@
 import PvNP.PHPMatchingComposition
 import PvNP.PHPFullMatchingDistribution
+import PvNP.PHPFullMatchingCollapseExact
 
 /-!
 # GA-2 Stage A: matching decision trees, evaluation, and agreement (S2186)
@@ -47,6 +48,12 @@ open PHPMatchingDistribution
 open PHPFullMatchingDistribution
 open PHPRestrictedDepthFloor
 open PHPSearchFloor
+open BoundedDepthFrege
+open BoundedDepthDecisionTree
+open CNFModel
+open PHPFullMatchingProbability
+open PHPFullMatchingCollapseBound
+open PHPFullMatchingCollapseExact
 
 /-! ## The tree type -/
 
@@ -1414,6 +1421,182 @@ theorem card_permsExtending {h : Nat} (mu : MatchingMap h h)
     (permsExtending mu).card =
       Nat.factorial (h - (fixedPigeons mu).card) := by
   rw [card_permsExtending_eq_fixing mu hmu, card_permsFixing]
+
+/-! ## Stage D.3: pushforward counting and the depth-1 recovery (pin 2.1) -/
+
+/-- The S2115 collapse-bad event stated over the honest space (through the
+honest restriction). -/
+def honestCollapseBad {h : Nat} (F : BDFormula (Nat.succ (h * h))) (t : Nat)
+    (mu : MatchingMap h h) : Prop :=
+  ∀ T : DTree (Nat.succ (h * h)),
+    (∀ a : Assignment (Nat.succ (h * h)),
+      Agree (honestRestrictionOf mu) a →
+      dtEval a T = eval a (restrict (honestRestrictionOf mu) F)) →
+    t ≤ dtDepth T
+
+/-- The S2080 bad event is a function of the pushforward alone. -/
+theorem matchingCollapseBad_factors {h : Nat}
+    (F : BDFormula (Nat.succ (h * h))) (t : Nat)
+    (P : Finset (Fin h) × Equiv.Perm (Fin h)) :
+    matchingCollapseBad F t P ↔ honestCollapseBad F t (pushSq P) := by
+  unfold matchingCollapseBad honestCollapseBad
+  rw [fullRestrictionOf_factors]
+
+theorem ell_le_of_mem_honest {h ell : Nat} (mu : MatchingMap h h)
+    (hmu : mu ∈ honestMatchingSpace h h ell) : ell ≤ h := by
+  rw [mem_honestMatchingSpace] at hmu
+  rw [← hmu.2]
+  have hcu := Finset.card_le_univ (freePigeons mu)
+  simpa using hcu
+
+open Classical in
+/-- Every honest point's fiber in the S2080 space has exactly `ℓ!`
+points. -/
+theorem fiber_card {h ell : Nat} (mu : MatchingMap h h)
+    (hmu : mu ∈ honestMatchingSpace h h ell) :
+    ((fullMatchingSpace h (h - ell)).filter
+      (fun P => pushSq P = mu)).card = Nat.factorial ell := by
+  have hell : ell ≤ h := ell_le_of_mem_honest mu hmu
+  rw [mem_honestMatchingSpace] at hmu
+  have hfix_card : (fixedPigeons mu).card = h - ell := by
+    rw [fixedPigeons_eq_compl_freePigeons, Finset.card_compl, hmu.2,
+      Fintype.card_fin]
+  have hext := card_permsExtending mu hmu.1
+  rw [hfix_card, Nat.sub_sub_self hell] at hext
+  rw [← hext]
+  apply Finset.card_bij (i := fun P _ => P.2)
+  · intro P hP
+    rw [Finset.mem_filter] at hP
+    rw [mem_permsExtending]
+    intro i a hia
+    have hpush := (pushSq_eq_iff P mu).mp hP.2
+    have hiP1 : i ∈ P.1 := by
+      rw [hpush.1, mem_fixedPigeons, hia]
+      rfl
+    have hval := hpush.2 i hiP1
+    rw [hia] at hval
+    exact (Option.some.inj hval).symm
+  · intro P hP Q hQ hpq
+    rw [Finset.mem_filter] at hP hQ
+    have h1 : P.1 = fixedPigeons mu := ((pushSq_eq_iff P mu).mp hP.2).1
+    have h2 : Q.1 = fixedPigeons mu := ((pushSq_eq_iff Q mu).mp hQ.2).1
+    exact Prod.ext (h1.trans h2.symm) hpq
+  · intro piP hpiP
+    refine ⟨(fixedPigeons mu, piP), ?_, rfl⟩
+    rw [Finset.mem_filter]
+    refine ⟨?_, ?_⟩
+    · unfold fullMatchingSpace
+      apply Finset.mem_product.mpr
+      refine ⟨?_, ?_⟩
+      · unfold subsetSpace
+        rw [Finset.mem_powersetCard]
+        exact ⟨Finset.subset_univ _, hfix_card⟩
+      · unfold permSpace
+        exact Finset.mem_univ _
+    · rw [pushSq_eq_iff]
+      refine ⟨rfl, ?_⟩
+      intro i hi
+      have hi' := hi
+      rw [mem_fixedPigeons, Option.isSome_iff_exists] at hi'
+      rcases hi' with ⟨a, ha⟩
+      rw [mem_permsExtending] at hpiP
+      show mu i = some ((fixedPigeons mu, piP).2 i)
+      rw [ha]
+      rw [hpiP i a ha]
+
+open Classical in
+/-- The pushforward counting identity: full-space event counts are exactly
+`ℓ!` times the honest-space counts. -/
+theorem pushforward_count {h ell : Nat} (hell : ell ≤ h)
+    (Q : MatchingMap h h → Prop) :
+    eventCount (fullMatchingSpace h (h - ell)) (fun P => Q (pushSq P)) =
+      Nat.factorial ell * eventCount (honestMatchingSpace h h ell) Q := by
+  unfold eventCount
+  have hmaps : ∀ P ∈ (fullMatchingSpace h (h - ell)).filter
+      (fun P => Q (pushSq P)),
+      pushSq P ∈ (honestMatchingSpace h h ell).filter Q := by
+    intro P hP
+    rw [Finset.mem_filter] at hP ⊢
+    refine ⟨?_, hP.2⟩
+    have hmem := pushSq_mem_honest P hP.1
+    rw [Nat.sub_sub_self hell] at hmem
+    exact hmem
+  rw [Finset.card_eq_sum_card_fiberwise hmaps]
+  have heach : ∀ mu ∈ (honestMatchingSpace h h ell).filter Q,
+      (((fullMatchingSpace h (h - ell)).filter
+        (fun P => Q (pushSq P))).filter (fun P => pushSq P = mu)).card =
+      Nat.factorial ell := by
+    intro mu hmu
+    rw [Finset.mem_filter] at hmu
+    have hfeq : ((fullMatchingSpace h (h - ell)).filter
+        (fun P => Q (pushSq P))).filter (fun P => pushSq P = mu) =
+        (fullMatchingSpace h (h - ell)).filter (fun P => pushSq P = mu) := by
+      ext P
+      simp only [Finset.mem_filter]
+      constructor
+      · rintro ⟨⟨hf, _⟩, hp⟩
+        exact ⟨hf, hp⟩
+      · rintro ⟨hf, hp⟩
+        refine ⟨⟨hf, ?_⟩, hp⟩
+        rw [hp]
+        exact hmu.2
+    rw [hfeq]
+    exact fiber_card mu hmu.1
+  have hsum := Finset.sum_congr rfl heach
+  rw [hsum, Finset.sum_const, smul_eq_mul, Nat.mul_comm]
+
+open Classical in
+/-- The space-size identity: the S2080 space is `ℓ!` honest copies. -/
+theorem card_fullMatchingSpace_eq_factorial_mul {h ell : Nat}
+    (hell : ell ≤ h) :
+    (fullMatchingSpace h (h - ell)).card =
+      Nat.factorial ell * (honestMatchingSpace h h ell).card := by
+  have hpush := pushforward_count hell (fun _ => True)
+  unfold eventCount at hpush
+  simpa using hpush
+
+open Classical in
+/-- **Pin 2.1, the depth-1 recovery**: the S2116 exact single-literal
+collapse probability `(h − s)/h` over the S2080 space transfers verbatim
+through the pushforward/multiplicity bridge to the honest space as `ℓ/h`
+(same cross-multiplied form, `ℓ = h − s`) — the proved S2115–S2117 depth-1
+bounds are recovered over the honest space, validating the bad-set
+definitions against the existing artifact. -/
+theorem honest_lit_probability_eq {h ell : Nat} (hell : ell ≤ h)
+    (i j : Fin h) (sign : Bool) :
+    EventProbEq (honestMatchingSpace h h ell)
+      (honestCollapseBad (phpLitFormula h i j sign) 1) ell h := by
+  have hfull := matchingCollapseBad_lit_probability_eq
+    (h := h) (s := h - ell) i j sign
+  unfold EventProbEq at hfull ⊢
+  have hev : eventCount (fullMatchingSpace h (h - ell))
+      (matchingCollapseBad (phpLitFormula h i j sign) 1) =
+      eventCount (fullMatchingSpace h (h - ell))
+        (fun P => honestCollapseBad (phpLitFormula h i j sign) 1
+          (pushSq P)) := by
+    refine Eq.trans (eventCount_congr_iff _ _ _
+      (fun P _ => matchingCollapseBad_factors _ 1 P)) ?_
+    exact eventCount_inst_irrel _ _ _ _
+  have hpush := pushforward_count hell
+    (honestCollapseBad (phpLitFormula h i j sign) 1)
+  have hcard := card_fullMatchingSpace_eq_factorial_mul (h := h) hell
+  rw [hev] at hfull
+  have hpush' : eventCount (fullMatchingSpace h (h - ell))
+      (fun P => honestCollapseBad (phpLitFormula h i j sign) 1 (pushSq P)) =
+      Nat.factorial ell * eventCount (honestMatchingSpace h h ell)
+        (honestCollapseBad (phpLitFormula h i j sign) 1) := by
+    refine Eq.trans (eventCount_inst_irrel _ _ _ _) hpush
+  rw [hpush', hcard, Nat.sub_sub_self hell] at hfull
+  apply Nat.eq_of_mul_eq_mul_left (Nat.factorial_pos ell)
+  calc Nat.factorial ell * (h * eventCount (honestMatchingSpace h h ell)
+        (honestCollapseBad (phpLitFormula h i j sign) 1))
+      = h * (Nat.factorial ell * eventCount (honestMatchingSpace h h ell)
+        (honestCollapseBad (phpLitFormula h i j sign) 1)) := by
+        rw [Nat.mul_left_comm]
+    _ = ell * (Nat.factorial ell * (honestMatchingSpace h h ell).card) :=
+        hfull
+    _ = Nat.factorial ell * (ell * (honestMatchingSpace h h ell).card) := by
+        rw [Nat.mul_left_comm]
 
 end PHPMatchingCanonicalMDT
 end PvNP

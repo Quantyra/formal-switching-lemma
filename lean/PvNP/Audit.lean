@@ -11113,3 +11113,27 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 /-- info: 'PvNP.PHPMatchingCanonicalMDT.card_permsExtending' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingCanonicalMDT.card_permsExtending
+
+/-! S2186 GA-2 Stage D.3 pushforward-counting and depth-1 recovery pins. -/
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.matchingCollapseBad_factors' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.matchingCollapseBad_factors
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.fiber_card' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.fiber_card
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.pushforward_count' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.pushforward_count
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.card_fullMatchingSpace_eq_factorial_mul' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.card_fullMatchingSpace_eq_factorial_mul
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.honest_lit_probability_eq' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.honest_lit_probability_eq
