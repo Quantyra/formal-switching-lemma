@@ -11089,3 +11089,17 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 /-- info: 'PvNP.PHPMatchingCanonicalMDT.fullRestrictionOf_factors' depends on axioms: [propext, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingCanonicalMDT.fullRestrictionOf_factors
+
+/-! S2186 GA-2 Stage D.2a extension-existence pins. -/
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.card_usedHoles' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.card_usedHoles
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.exists_perm_extending' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.exists_perm_extending

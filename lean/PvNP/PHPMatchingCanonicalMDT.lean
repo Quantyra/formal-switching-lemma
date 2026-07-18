@@ -1151,5 +1151,146 @@ theorem fullRestrictionOf_factors {h : Nat}
     · simp [hpig]
   · rw [dif_neg hw, dif_neg hw]
 
+/-! ## Stage D.2: counting the permutations extending an honest point -/
+
+/-- The permutations extending a matching map (agreeing with every fixed
+assignment). -/
+def permsExtending {h : Nat} (mu : MatchingMap h h) :
+    Finset (Equiv.Perm (Fin h)) :=
+  Finset.univ.filter (fun piP => ∀ i a, mu i = some a → piP i = a)
+
+theorem mem_permsExtending {h : Nat} (mu : MatchingMap h h)
+    (piP : Equiv.Perm (Fin h)) :
+    piP ∈ permsExtending mu ↔ ∀ i a, mu i = some a → piP i = a := by
+  unfold permsExtending
+  simp
+
+/-- The used-hole image of a matching map. -/
+def usedHoles {h : Nat} (mu : MatchingMap h h) : Finset (Fin h) :=
+  Finset.univ.filter (fun a => holeUsed mu a = true)
+
+theorem mem_usedHoles {h : Nat} (mu : MatchingMap h h) (a : Fin h) :
+    a ∈ usedHoles mu ↔ ∃ i, mu i = some a := by
+  unfold usedHoles
+  rw [Finset.mem_filter]
+  constructor
+  · intro hmem
+    exact (holeUsed_eq_true_iff mu a).mp hmem.2
+  · intro hex
+    exact ⟨Finset.mem_univ a, (holeUsed_eq_true_iff mu a).mpr hex⟩
+
+/-- Hole-injective maps use exactly as many holes as they fix pigeons. -/
+theorem card_usedHoles {h : Nat} (mu : MatchingMap h h)
+    (hmu : IsMatching mu) :
+    (usedHoles mu).card = (fixedPigeons mu).card := by
+  symm
+  apply Finset.card_bij
+    (i := fun i hi => Option.get (mu i) ((mem_fixedPigeons mu i).mp hi))
+  · intro i hi
+    rw [mem_usedHoles]
+    refine ⟨i, ?_⟩
+    exact (Option.some_get ((mem_fixedPigeons mu i).mp hi)).symm
+  · intro i hi j hj hij
+    have hsi : mu i = some (Option.get (mu i) ((mem_fixedPigeons mu i).mp hi)) :=
+      (Option.some_get ((mem_fixedPigeons mu i).mp hi)).symm
+    have hsj : mu j = some (Option.get (mu j) ((mem_fixedPigeons mu j).mp hj)) :=
+      (Option.some_get ((mem_fixedPigeons mu j).mp hj)).symm
+    rw [hij] at hsi
+    exact hmu i j _ hsi hsj
+  · intro a ha
+    rcases (mem_usedHoles mu a).mp ha with ⟨i, hi⟩
+    have hfix : i ∈ fixedPigeons mu := by
+      rw [mem_fixedPigeons, hi]
+      rfl
+    refine ⟨i, hfix, ?_⟩
+    exact Option.some.inj
+      ((Option.some_get ((mem_fixedPigeons mu i).mp hfix)).trans hi)
+
+/-- Every hole-injective map extends to a full permutation: glue the fixed
+assignment with any bijection between the free pigeons and the unused
+holes (equal cardinalities via `card_usedHoles`). -/
+theorem exists_perm_extending {h : Nat} (mu : MatchingMap h h)
+    (hmu : IsMatching mu) : ∃ piP : Equiv.Perm (Fin h),
+      piP ∈ permsExtending mu := by
+  have hcards : Fintype.card {i // i ∈ freePigeons mu} =
+      Fintype.card {a // a ∈ (usedHoles mu)ᶜ} := by
+    rw [Fintype.card_coe, Fintype.card_coe, Finset.card_compl,
+      Fintype.card_fin, card_usedHoles mu hmu,
+      fixedPigeons_eq_compl_freePigeons, Finset.card_compl,
+      Fintype.card_fin]
+    have hle : (freePigeons mu).card ≤ h := by
+      have hcu := Finset.card_le_univ (freePigeons mu)
+      simpa using hcu
+    omega
+  rcases Fintype.card_eq.mp hcards with ⟨g⟩
+  classical
+  have hfreeOf : ∀ i, ¬(mu i).isSome = true → i ∈ freePigeons mu := by
+    intro i hfix
+    rw [mem_freePigeons]
+    cases hmui : mu i with
+    | none => rfl
+    | some a =>
+        exfalso
+        apply hfix
+        rw [hmui]
+        rfl
+  let F : Fin h → Fin h := fun i =>
+    if hfix : (mu i).isSome = true then Option.get (mu i) hfix
+    else (g ⟨i, hfreeOf i hfix⟩).val
+  have hFdef : ∀ i, F i =
+      if hfix : (mu i).isSome = true then Option.get (mu i) hfix
+      else (g ⟨i, hfreeOf i hfix⟩).val := fun i => rfl
+  have hFfix : ∀ i a, mu i = some a → F i = a := by
+    intro i a hia
+    have hfix : (mu i).isSome = true := by
+      rw [hia]
+      rfl
+    rw [hFdef i, dif_pos hfix]
+    exact Option.some.inj ((Option.some_get hfix).trans hia)
+  have hFfree : ∀ i (hfix : ¬(mu i).isSome = true),
+      F i = (g ⟨i, hfreeOf i hfix⟩).val := by
+    intro i hfix
+    rw [hFdef i, dif_neg hfix]
+  have hFinj : Function.Injective F := by
+    intro i j hij
+    by_cases hfi : (mu i).isSome = true
+    · by_cases hfj : (mu j).isSome = true
+      · rw [Option.isSome_iff_exists] at hfi hfj
+        rcases hfi with ⟨a, ha⟩
+        rcases hfj with ⟨b, hb⟩
+        rw [hFfix i a ha, hFfix j b hb] at hij
+        rw [hij] at ha
+        exact hmu i j b ha hb
+      · exfalso
+        rw [Option.isSome_iff_exists] at hfi
+        rcases hfi with ⟨a, ha⟩
+        have hFi : F i = a := hFfix i a ha
+        have hFj : F j ∈ (usedHoles mu)ᶜ := by
+          rw [hFfree j hfj]
+          exact (g ⟨j, hfreeOf j hfj⟩).property
+        rw [← hij, hFi, Finset.mem_compl, mem_usedHoles] at hFj
+        exact hFj ⟨i, ha⟩
+    · by_cases hfj : (mu j).isSome = true
+      · exfalso
+        rw [Option.isSome_iff_exists] at hfj
+        rcases hfj with ⟨b, hb⟩
+        have hFj : F j = b := hFfix j b hb
+        have hFi : F i ∈ (usedHoles mu)ᶜ := by
+          rw [hFfree i hfi]
+          exact (g ⟨i, hfreeOf i hfi⟩).property
+        rw [hij, hFj, Finset.mem_compl, mem_usedHoles] at hFi
+        exact hFi ⟨j, hb⟩
+      · rw [hFfree i hfi, hFfree j hfj] at hij
+        have hsub : g ⟨i, hfreeOf i hfi⟩ = g ⟨j, hfreeOf j hfj⟩ :=
+          Subtype.ext hij
+        have hval := g.injective hsub
+        exact congrArg Subtype.val hval
+  have hFbij : Function.Bijective F :=
+    (Finite.injective_iff_bijective).mp hFinj
+  refine ⟨Equiv.ofBijective F hFbij, ?_⟩
+  rw [mem_permsExtending]
+  intro i a hia
+  exact hFfix i a hia
+
 end PHPMatchingCanonicalMDT
 end PvNP
