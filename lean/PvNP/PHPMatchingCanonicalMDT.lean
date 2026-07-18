@@ -1292,5 +1292,128 @@ theorem exists_perm_extending {h : Nat} (mu : MatchingMap h h)
   intro i a hia
   exact hFfix i a hia
 
+/-! ## Stage D.2b: the factorial count of extensions -/
+
+/-- The permutations fixing a pigeon set pointwise. -/
+def permsFixing {h : Nat} (K : Finset (Fin h)) :
+    Finset (Equiv.Perm (Fin h)) :=
+  Finset.univ.filter (fun sigma => ∀ i ∈ K, sigma i = i)
+
+theorem mem_permsFixing {h : Nat} (K : Finset (Fin h))
+    (sigma : Equiv.Perm (Fin h)) :
+    sigma ∈ permsFixing K ↔ ∀ i ∈ K, sigma i = i := by
+  unfold permsFixing
+  simp
+
+/-- A pointwise-fixing permutation preserves membership both ways. -/
+theorem permsFixing_mem_iff {h : Nat} {K : Finset (Fin h)}
+    {sigma : Equiv.Perm (Fin h)} (hs : ∀ i ∈ K, sigma i = i) (x : Fin h) :
+    x ∈ K ↔ sigma x ∈ K := by
+  constructor
+  · intro hx
+    rw [hs x hx]
+    exact hx
+  · intro hsx
+    have hfix := hs (sigma x) hsx
+    have := sigma.injective hfix
+    rw [← this]
+    exact hsx
+
+/-- The pointwise stabilizer of `K` has exactly `(h − |K|)!` elements: it
+is in bijection with the permutations of the complement subtype. -/
+theorem card_permsFixing {h : Nat} (K : Finset (Fin h)) :
+    (permsFixing K).card = Nat.factorial (h - K.card) := by
+  classical
+  have hbij : (permsFixing K).card =
+      Fintype.card (Equiv.Perm {x // x ∈ Kᶜ}) := by
+    rw [← Fintype.card_coe]
+    apply Fintype.card_congr
+    refine
+      { toFun := fun sp =>
+          Equiv.Perm.subtypePerm sp.val (by
+            intro x
+            have hs := (mem_permsFixing K sp.val).mp sp.property
+            have hiff := permsFixing_mem_iff hs x
+            rw [Finset.mem_compl, Finset.mem_compl]
+            constructor
+            · intro hx hsx
+              exact hx (hiff.mpr hsx)
+            · intro hsx hx
+              exact hsx (hiff.mp hx))
+        invFun := fun tau =>
+          ⟨Equiv.Perm.ofSubtype tau, by
+            rw [mem_permsFixing]
+            intro i hi
+            apply Equiv.Perm.ofSubtype_apply_of_not_mem
+            rw [Finset.mem_compl]
+            intro hcontra
+            exact hcontra hi⟩
+        left_inv := by
+          intro sp
+          apply Subtype.ext
+          apply Equiv.ext
+          intro x
+          by_cases hx : x ∈ Kᶜ
+          · rw [Equiv.Perm.ofSubtype_apply_of_mem _ hx]
+            rfl
+          · rw [Equiv.Perm.ofSubtype_apply_of_not_mem _ hx]
+            have hs := (mem_permsFixing K sp.val).mp sp.property
+            rw [Finset.mem_compl, not_not] at hx
+            exact (hs x hx).symm
+        right_inv := by
+          intro tau
+          apply Equiv.ext
+          intro x
+          apply Subtype.ext
+          show (Equiv.Perm.ofSubtype tau) x.val = (tau x).val
+          rw [Equiv.Perm.ofSubtype_apply_of_mem tau x.property] }
+  rw [hbij, Fintype.card_perm]
+  congr 1
+  rw [Fintype.card_coe, Finset.card_compl, Fintype.card_fin]
+
+/-- Group translation: the extensions of an honest point are equinumerous
+with the pointwise stabilizer of its fixed set. -/
+theorem card_permsExtending_eq_fixing {h : Nat} (mu : MatchingMap h h)
+    (hmu : IsMatching mu) :
+    (permsExtending mu).card = (permsFixing (fixedPigeons mu)).card := by
+  rcases exists_perm_extending mu hmu with ⟨pi0, hpi0⟩
+  rw [mem_permsExtending] at hpi0
+  apply Finset.card_bij (i := fun piP _ => pi0⁻¹ * piP)
+  · intro piP hpiP
+    rw [mem_permsExtending] at hpiP
+    rw [mem_permsFixing]
+    intro i hi
+    rw [mem_fixedPigeons, Option.isSome_iff_exists] at hi
+    rcases hi with ⟨a, ha⟩
+    show pi0⁻¹ (piP i) = i
+    rw [hpiP i a ha, ← hpi0 i a ha]
+    exact pi0.symm_apply_apply i
+  · intro piP hpiP piQ hpiQ hpq
+    have := congrArg (fun sigma => pi0 * sigma) hpq
+    simpa [← mul_assoc] using this
+  · intro sigma hsigma
+    rw [mem_permsFixing] at hsigma
+    refine ⟨pi0 * sigma, ?_, ?_⟩
+    · rw [mem_permsExtending]
+      intro i a ha
+      have hifix : i ∈ fixedPigeons mu := by
+        rw [mem_fixedPigeons, ha]
+        rfl
+      show pi0 (sigma i) = a
+      rw [hsigma i hifix]
+      exact hpi0 i a ha
+    · rw [← mul_assoc]
+      simp
+
+/-- **The Stage D.2 headline**: an honest point at fixed-set size `k` has
+exactly `(h − k)!` extensions — the multiplicity of the S2080
+representation over the honest space (square case), exactly as the packet
+pins. -/
+theorem card_permsExtending {h : Nat} (mu : MatchingMap h h)
+    (hmu : IsMatching mu) :
+    (permsExtending mu).card =
+      Nat.factorial (h - (fixedPigeons mu).card) := by
+  rw [card_permsExtending_eq_fixing mu hmu, card_permsFixing]
+
 end PHPMatchingCanonicalMDT
 end PvNP

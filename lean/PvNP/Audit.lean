@@ -11099,3 +11099,17 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 /-- info: 'PvNP.PHPMatchingCanonicalMDT.exists_perm_extending' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingCanonicalMDT.exists_perm_extending
+
+/-! S2186 GA-2 Stage D.2b factorial-multiplicity pins. -/
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.card_permsFixing' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.card_permsFixing
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.card_permsExtending_eq_fixing' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.card_permsExtending_eq_fixing
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.card_permsExtending' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.card_permsExtending
