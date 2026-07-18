@@ -11035,3 +11035,29 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 /-- info: 'PvNP.PHPMatchingCanonicalMDT.illegal_term_unsat' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingCanonicalMDT.illegal_term_unsat
+
+/-! S2186 GA-2 Stage C.2b evaluation-soundness pins. -/
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.termSat_stable_mAgree' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.termSat_stable_mAgree
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.no_used_hole_answer' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.no_used_hole_answer
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.mAgree_compose_single' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.mAgree_compose_single
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.mwalk_sound_true' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.mwalk_sound_true
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.mwalk_sound_false' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.mwalk_sound_false
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.canonicalMDT_sound' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.canonicalMDT_sound

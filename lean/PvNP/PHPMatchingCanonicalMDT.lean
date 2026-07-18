@@ -755,5 +755,259 @@ theorem termFals_stable {p h : Nat} {mu nu : MatchingMap p h}
   rw [List.all_eq_false]
   exact ⟨e, he, by rw [pairFals_stable hag hnu e hef]; simp⟩
 
+/-! ## Stage C.2b: evaluation soundness of the canonical walk (pin 2.3) -/
+
+/-- Satisfaction is stable under `MAgree` (the trivial direction). -/
+theorem termSat_stable_mAgree {p h : Nat} {mu nu : MatchingMap p h}
+    (hag : MAgree mu nu) (t : MTerm p h)
+    (hsat : termSatisfiedB mu t = true) : termSatisfiedB nu t = true := by
+  unfold termSatisfiedB at hsat ⊢
+  rw [List.all_eq_true] at hsat ⊢
+  intro e he
+  have hp := hsat e he
+  unfold pairSatB at hp ⊢
+  have hmu : mu e.1 = some e.2 := by simpa using hp
+  have hnu : nu e.1 = some e.2 := hag e.1 e.2 hmu
+  simp [hnu]
+
+/-- The used-hole dead arm is unreachable for hole-injective extensions:
+an extending matching cannot send a fresh pigeon into a used hole. -/
+theorem no_used_hole_answer {p h : Nat} {mu nu : MatchingMap p h}
+    (hag : MAgree mu nu) (hnu : IsMatching nu) (i : Fin p) (a : Fin h)
+    (hfree : mu i = none) (hused : holeUsed mu a = true) :
+    nu i ≠ some a := by
+  intro hia
+  rcases (holeUsed_eq_true_iff mu a).mp hused with ⟨j, hj⟩
+  have hja : nu j = some a := hag j a hj
+  have hij : i = j := hnu i j a hia hja
+  rw [hij, hj] at hfree
+  cases hfree
+
+/-- `MAgree` transfers across a queried single extension the evaluator
+actually took. -/
+theorem mAgree_compose_single {p h : Nat} {mu nu : MatchingMap p h}
+    (hag : MAgree mu nu) (i : Fin p) (a : Fin h) (hia : nu i = some a) :
+    MAgree (compose mu (singleMatching i a)) nu := by
+  intro j b hj
+  cases hmuj : mu j with
+  | some c =>
+      rw [compose_fixed_left mu (singleMatching i a) j c hmuj] at hj
+      cases hj
+      exact hag j b hmuj
+  | none =>
+      rw [compose_free_left mu (singleMatching i a) j hmuj] at hj
+      unfold singleMatching at hj
+      by_cases hji : j = i
+      · rw [if_pos hji] at hj
+        cases hj
+        rw [hji]
+        exact hia
+      · rw [if_neg hji] at hj
+        cases hj
+
+/-- Soundness, `true` direction: a `true`-evaluation of the walk certifies
+that the extending matching satisfies some term of the MDNF. -/
+theorem mwalk_sound_true {p h : Nat} :
+    ∀ (fuel : Nat) (mu : MatchingMap p h) (D : MDNF p h)
+      (nu : MatchingMap p h), IsMatching nu → MAgree mu nu →
+      mdtEval nu (mwalk fuel mu D) = some true →
+      D.any (termSatisfiedB nu) = true
+  | fuel, mu, [], nu, _, _, hev => by
+      rw [mwalk_nil] at hev
+      rw [mdtEval_leaf] at hev
+      cases hev
+  | fuel, mu, t :: rest, nu, hnu, hag, hev => by
+      by_cases hleg : termMatchingLegalB t = true
+      · by_cases hfals : termFalsifiedB mu t = true
+        · rw [mwalk_skip_falsified fuel mu t rest hleg hfals] at hev
+          have hrest := mwalk_sound_true fuel mu rest nu hnu hag hev
+          rw [List.any_cons]
+          rw [hrest]
+          simp
+        · have hfals' : termFalsifiedB mu t = false :=
+            Bool.eq_false_iff.mpr hfals
+          by_cases hsat : termSatisfiedB mu t = true
+          · rw [List.any_cons]
+            rw [termSat_stable_mAgree hag t hsat]
+            simp
+          · have hsat' : termSatisfiedB mu t = false :=
+              Bool.eq_false_iff.mpr hsat
+            cases fuel with
+            | zero =>
+                rw [mwalk_zero_undetermined mu t rest hleg hfals' hsat']
+                  at hev
+                rw [mdtEval_leaf] at hev
+                cases hev
+            | succ fuel' =>
+                cases hfu : firstUnresolvedPair mu t with
+                | none =>
+                    rw [mwalk_query_none fuel' mu t rest hleg hfals' hsat'
+                      hfu] at hev
+                    rw [mdtEval_leaf] at hev
+                    cases hev
+                | some e =>
+                    rw [mwalk_query_step fuel' mu t rest e hleg hfals' hsat'
+                      hfu] at hev
+                    cases hnue : nu e.1 with
+                    | none =>
+                        rw [mdtEval_query_free nu e.1 _ hnue] at hev
+                        cases hev
+                    | some a =>
+                        rw [mdtEval_query_fixed nu e.1 _ a hnue] at hev
+                        by_cases hha : holeUsed mu a = true
+                        · rw [if_pos hha] at hev
+                          rw [mdtEval_leaf] at hev
+                          cases hev
+                        · rw [if_neg hha] at hev
+                          exact mwalk_sound_true fuel'
+                            (compose mu (singleMatching e.1 a)) (t :: rest)
+                            nu hnu (mAgree_compose_single hag e.1 a hnue) hev
+      · have hleg' : termMatchingLegalB t = false :=
+          Bool.eq_false_iff.mpr hleg
+        rw [mwalk_skip_illegal fuel mu t rest hleg'] at hev
+        have hrest := mwalk_sound_true fuel mu rest nu hnu hag hev
+        rw [List.any_cons, hrest]
+        simp
+  termination_by fuel _ D _ => (fuel, D.length)
+
+/-- Soundness, `false` direction, under the canonical fuel invariant: a
+`false`-evaluation certifies that the extending matching satisfies **no
+legal term** of the MDNF. (Illegal terms are unsatisfiable outright by
+`illegal_term_unsat`.) -/
+theorem mwalk_sound_false {p h : Nat} :
+    ∀ (fuel : Nat) (mu : MatchingMap p h) (D : MDNF p h)
+      (nu : MatchingMap p h), (freePigeons mu).card = fuel →
+      IsMatching nu → MAgree mu nu →
+      mdtEval nu (mwalk fuel mu D) = some false →
+      ∀ t ∈ D, termSatisfiedB nu t = false
+  | fuel, mu, [], nu, _, _, _, _ => by
+      intro t ht
+      cases ht
+  | fuel, mu, t :: rest, nu, hinv, hnu, hag, hev => by
+      by_cases hleg : termMatchingLegalB t = true
+      · by_cases hfals : termFalsifiedB mu t = true
+        · rw [mwalk_skip_falsified fuel mu t rest hleg hfals] at hev
+          intro u hu
+          cases hu with
+          | head => exact termFals_stable hag hnu t hfals
+          | tail _ hurest =>
+              exact mwalk_sound_false fuel mu rest nu hinv hnu hag hev
+                u hurest
+        · have hfals' : termFalsifiedB mu t = false :=
+            Bool.eq_false_iff.mpr hfals
+          by_cases hsat : termSatisfiedB mu t = true
+          · rw [mwalk_stop_satisfied fuel mu t rest hleg hfals' hsat] at hev
+            rw [mdtEval_leaf] at hev
+            cases hev
+          · have hsat' : termSatisfiedB mu t = false :=
+              Bool.eq_false_iff.mpr hsat
+            cases fuel with
+            | zero =>
+                exfalso
+                have hsome := firstUnresolvedPair_isSome_of_undetermined
+                  mu t hsat' hfals'
+                rw [Option.isSome_iff_exists] at hsome
+                rcases hsome with ⟨e, he⟩
+                unfold firstUnresolvedPair at he
+                have hpe := List.find?_some he
+                unfold pairUnresolvedB at hpe
+                rw [Bool.and_eq_true] at hpe
+                have hfree : mu e.1 = none := by
+                  have hb := hpe.1
+                  simpa using hb
+                have hmem : e.1 ∈ freePigeons mu :=
+                  (mem_freePigeons mu e.1).mpr hfree
+                have hpos : 0 < (freePigeons mu).card :=
+                  Finset.card_pos.mpr ⟨e.1, hmem⟩
+                rw [hinv] at hpos
+                cases hpos
+            | succ fuel' =>
+                cases hfu : firstUnresolvedPair mu t with
+                | none =>
+                    exfalso
+                    have hsome := firstUnresolvedPair_isSome_of_undetermined
+                      mu t hsat' hfals'
+                    rw [hfu] at hsome
+                    cases hsome
+                | some e =>
+                    rw [mwalk_query_step fuel' mu t rest e hleg hfals' hsat'
+                      hfu] at hev
+                    have hpe := List.find?_some hfu
+                    unfold pairUnresolvedB at hpe
+                    rw [Bool.and_eq_true] at hpe
+                    have hfree : mu e.1 = none := by
+                      have hb := hpe.1
+                      simpa using hb
+                    have hehole : holeUsed mu e.2 = false := by
+                      have hb := hpe.2
+                      simpa using hb
+                    cases hnue : nu e.1 with
+                    | none =>
+                        rw [mdtEval_query_free nu e.1 _ hnue] at hev
+                        cases hev
+                    | some a =>
+                        rw [mdtEval_query_fixed nu e.1 _ a hnue] at hev
+                        by_cases hha : holeUsed mu a = true
+                        · exfalso
+                          exact no_used_hole_answer hag hnu e.1 a hfree hha
+                            hnue
+                        · rw [if_neg hha] at hev
+                          have hha' : holeUsed mu a = false :=
+                            Bool.eq_false_iff.mpr hha
+                          have hinv' :
+                              (freePigeons
+                                (compose mu (singleMatching e.1 a))).card =
+                                fuel' := by
+                            have hdrop := freePigeons_compose_card mu
+                              (singleMatching e.1 a) {e.1}
+                              (by
+                                intro j
+                                unfold singleMatching
+                                by_cases hji : j = e.1
+                                · simp [hji]
+                                · simp [hji])
+                              (by
+                                intro j hj
+                                rw [Finset.mem_singleton] at hj
+                                rw [hj]
+                                exact (mem_freePigeons mu e.1).mpr hfree)
+                            rw [hdrop, Finset.card_singleton, hinv]
+                            rfl
+                          exact mwalk_sound_false fuel'
+                            (compose mu (singleMatching e.1 a)) (t :: rest)
+                            nu hinv' hnu
+                            (mAgree_compose_single hag e.1 a hnue) hev
+      · have hleg' : termMatchingLegalB t = false :=
+          Bool.eq_false_iff.mpr hleg
+        rw [mwalk_skip_illegal fuel mu t rest hleg'] at hev
+        intro u hu
+        cases hu with
+        | head => exact illegal_term_unsat hnu t hleg'
+        | tail _ hurest =>
+            exact mwalk_sound_false fuel mu rest nu hinv hnu hag hev u hurest
+  termination_by fuel _ D _ => (fuel, D.length)
+
+/-- Pin 2.3, canonical packaging: for hole-injective extensions of the
+base matching, a determined evaluation of the canonical matching-DT is
+exactly the MDNF's satisfaction value. -/
+theorem canonicalMDT_sound {p h : Nat} (D : MDNF p h)
+    (mu nu : MatchingMap p h) (hnu : IsMatching nu) (hag : MAgree mu nu)
+    (b : Bool) (hev : mdtEval nu (canonicalMDT D mu) = some b) :
+    D.any (termSatisfiedB nu) = b := by
+  cases b with
+  | true =>
+      exact mwalk_sound_true (freePigeons mu).card mu D nu hnu hag hev
+  | false =>
+      have hall := mwalk_sound_false (freePigeons mu).card mu D nu rfl
+        hnu hag hev
+      cases hany : D.any (termSatisfiedB nu) with
+      | false => rfl
+      | true =>
+          exfalso
+          rw [List.any_eq_true] at hany
+          rcases hany with ⟨t, ht, htt⟩
+          rw [hall t ht] at htt
+          cases htt
+
 end PHPMatchingCanonicalMDT
 end PvNP
