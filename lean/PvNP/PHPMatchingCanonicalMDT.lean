@@ -228,11 +228,16 @@ def hasDupB {alpha : Type} [BEq alpha] : List alpha → Bool
   | [] => false
   | x :: xs => xs.contains x || hasDupB xs
 
-/-- The self-collision gate (pin 2.5): a term is matching-legal when no
-pigeon repeats and no hole repeats — i.e. the term literally is a partial
-matching. Illegal terms are never entered by the walk. -/
+/-- The self-collision gate (pin 2.5): a term is matching-legal when, after
+removing duplicate entries, no pigeon repeats and no hole repeats — i.e.
+the term's pair **set** is a partial matching. Duplicate copies of one pair
+are tolerated (they mirror the boolean duplicate-literal case and are
+semantically inert); genuinely colliding terms (one pigeon demanding two
+holes, or two pigeons demanding one hole) are never entered by the walk,
+and `illegal_term_unsat` below proves the convention semantically honest:
+such terms are unsatisfiable by any hole-injective matching. -/
 def termMatchingLegalB {p h : Nat} (t : MTerm p h) : Bool :=
-  !hasDupB (t.map Prod.fst) && !hasDupB (t.map Prod.snd)
+  !hasDupB (t.dedup.map Prod.fst) && !hasDupB (t.dedup.map Prod.snd)
 
 /-- The pair is satisfied: the pigeon sits in the demanded hole. -/
 def pairSatB {p h : Nat} (mu : MatchingMap p h) (e : Fin p × Fin h) : Bool :=
@@ -299,6 +304,91 @@ theorem termFalsified_of_stolen_hole {p h : Nat} (mu : MatchingMap p h)
   unfold pairFalsB
   rw [hfree]
   exact hstolen
+
+/-- Duplicate under a map on a duplicate-free list yields two distinct
+elements with equal images. -/
+theorem exists_distinct_of_hasDupB_map {alpha beta : Type} [BEq beta]
+    [LawfulBEq beta] (f : alpha → beta) :
+    ∀ (l : List alpha), l.Nodup → hasDupB (l.map f) = true →
+      ∃ x ∈ l, ∃ y ∈ l, x ≠ y ∧ f x = f y
+  | [], _, hdup => by
+      cases hdup
+  | x :: xs, hnd, hdup => by
+      unfold hasDupB at hdup
+      rw [List.map_cons] at hdup
+      have hnd' : xs.Nodup := (List.nodup_cons.mp hnd).2
+      have hx : x ∉ xs := (List.nodup_cons.mp hnd).1
+      rw [Bool.or_eq_true] at hdup
+      cases hdup with
+      | inl hcont =>
+          have hmem : f x ∈ xs.map f := by
+            simpa using hcont
+          rcases List.mem_map.mp hmem with ⟨y, hy, hfy⟩
+          refine ⟨x, List.mem_cons_self x xs, y, List.mem_cons_of_mem x hy,
+            ?_, hfy.symm⟩
+          intro hxy
+          rw [hxy] at hx
+          exact hx hy
+      | inr hrec =>
+          rcases exists_distinct_of_hasDupB_map f xs hnd' hrec with
+            ⟨a, ha, b, hb, hab, hfab⟩
+          exact ⟨a, List.mem_cons_of_mem x ha, b, List.mem_cons_of_mem x hb,
+            hab, hfab⟩
+
+/-- Pin 2.5, semantic justification: a matching-illegal term is
+unsatisfiable by **any** hole-injective matching — the walk's skip
+convention never hides a satisfiable term. -/
+theorem illegal_term_unsat {p h : Nat} {nu : MatchingMap p h}
+    (hnu : IsMatching nu) (t : MTerm p h)
+    (hbad : termMatchingLegalB t = false) :
+    termSatisfiedB nu t = false := by
+  unfold termMatchingLegalB at hbad
+  rw [Bool.and_eq_false_iff] at hbad
+  cases hsat : termSatisfiedB nu t with
+  | false => rfl
+  | true =>
+      exfalso
+      unfold termSatisfiedB at hsat
+      rw [List.all_eq_true] at hsat
+      have hsat' : ∀ e ∈ t, nu e.1 = some e.2 := by
+        intro e he
+        have hp := hsat e he
+        unfold pairSatB at hp
+        simpa using hp
+      have hndd : t.dedup.Nodup := List.nodup_dedup t
+      cases hbad with
+      | inl hfst =>
+          have hfst' : hasDupB (t.dedup.map Prod.fst) = true := by
+            cases hf : hasDupB (t.dedup.map Prod.fst) with
+            | true => rfl
+            | false =>
+                rw [hf] at hfst
+                simp at hfst
+          rcases exists_distinct_of_hasDupB_map Prod.fst t.dedup hndd hfst'
+            with ⟨x, hx, y, hy, hxy, hfxy⟩
+          have hxs : nu x.1 = some x.2 := hsat' x (List.mem_dedup.mp hx)
+          have hys : nu y.1 = some y.2 := hsat' y (List.mem_dedup.mp hy)
+          rw [hfxy] at hxs
+          rw [hys] at hxs
+          have hsnd : y.2 = x.2 := by
+            simpa using hxs
+          apply hxy
+          exact Prod.ext hfxy hsnd.symm
+      | inr hsnd =>
+          have hsnd' : hasDupB (t.dedup.map Prod.snd) = true := by
+            cases hf : hasDupB (t.dedup.map Prod.snd) with
+            | true => rfl
+            | false =>
+                rw [hf] at hsnd
+                simp at hsnd
+          rcases exists_distinct_of_hasDupB_map Prod.snd t.dedup hndd hsnd'
+            with ⟨x, hx, y, hy, hxy, hfxy⟩
+          have hxs : nu x.1 = some x.2 := hsat' x (List.mem_dedup.mp hx)
+          have hys : nu y.1 = some y.2 := hsat' y (List.mem_dedup.mp hy)
+          rw [hfxy] at hxs
+          have hfst : x.1 = y.1 := hnu x.1 y.1 y.2 hxs hys
+          apply hxy
+          exact Prod.ext hfst hfxy
 
 /-- A term neither satisfied nor falsified has an unresolved pair, so the
 walk never reaches its dead query arm. -/

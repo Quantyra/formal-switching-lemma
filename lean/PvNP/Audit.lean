@@ -11025,3 +11025,13 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 /-- info: 'PvNP.PHPMatchingCanonicalMDT.termFals_stable' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingCanonicalMDT.termFals_stable
+
+/-! S2186 GA-2 Stage C legality-gate semantic justification pins. -/
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.exists_distinct_of_hasDupB_map' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.exists_distinct_of_hasDupB_map
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.illegal_term_unsat' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.illegal_term_unsat
