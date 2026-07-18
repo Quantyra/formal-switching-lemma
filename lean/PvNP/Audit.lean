@@ -20,6 +20,7 @@ import PvNP.PHPMatchingDistribution
 import PvNP.PHPFullMatchingDistribution
 import PvNP.PHPFullMatchingProbability
 import PvNP.PHPMatchingComposition
+import PvNP.PHPMatchingCanonicalMDT
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
@@ -10918,3 +10919,45 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 /-- info: 'PvNP.PHPMatchingComposition.rect_homomorphism' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingComposition.rect_homomorphism
+
+/-! S2186 GA-2 Stage A matching decision tree pins. -/
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.mdtEval_query_fixed' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.mdtEval_query_fixed
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.mdtDepth_le_mdtQueries' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.mdtDepth_le_mdtQueries
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.mAgree_compose_left' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.mAgree_compose_left
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.mAgree_compose_right' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.mAgree_compose_right
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.mdtEval_mono_of_mAgree' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.mdtEval_mono_of_mAgree
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.mdtEval_compose_of_base' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.mdtEval_compose_of_base
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.mdtWitnessSq_depth' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.mdtWitnessSq_depth
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.mdtWitnessSq_eval' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.mdtWitnessSq_eval
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.mdtWitnessSq_eval_base_stuck' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.mdtWitnessSq_eval_base_stuck
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.mdtWitnessRect_eval' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.mdtWitnessRect_eval
