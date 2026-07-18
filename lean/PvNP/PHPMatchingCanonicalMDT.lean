@@ -213,5 +213,318 @@ theorem mdtWitnessRect_eval :
     mdtEval (compose rectFst rectSnd) mdtWitnessRect = some true := by
   decide
 
+/-! ## Stage B: PHP-shaped terms and pair status -/
+
+/-- A matching term: positive pigeon-to-hole demands. -/
+abbrev MTerm (p h : Nat) : Type :=
+  List (Fin p × Fin h)
+
+/-- A matching DNF: a list of matching terms, walked in list order. -/
+abbrev MDNF (p h : Nat) : Type :=
+  List (MTerm p h)
+
+/-- Boolean duplicate detector (component of the legality gate). -/
+def hasDupB {alpha : Type} [BEq alpha] : List alpha → Bool
+  | [] => false
+  | x :: xs => xs.contains x || hasDupB xs
+
+/-- The self-collision gate (pin 2.5): a term is matching-legal when no
+pigeon repeats and no hole repeats — i.e. the term literally is a partial
+matching. Illegal terms are never entered by the walk. -/
+def termMatchingLegalB {p h : Nat} (t : MTerm p h) : Bool :=
+  !hasDupB (t.map Prod.fst) && !hasDupB (t.map Prod.snd)
+
+/-- The pair is satisfied: the pigeon sits in the demanded hole. -/
+def pairSatB {p h : Nat} (mu : MatchingMap p h) (e : Fin p × Fin h) : Bool :=
+  mu e.1 == some e.2
+
+/-- The pair is falsified: the pigeon sits elsewhere, or the pigeon is free
+while the demanded hole is already used — the latter is the **hole-side
+falsification channel** (pin 2.4): hole-stealing is detected through GA-1's
+`holeUsed`, with no hole queries. -/
+def pairFalsB {p h : Nat} (mu : MatchingMap p h) (e : Fin p × Fin h) : Bool :=
+  match mu e.1 with
+  | some b => b != e.2
+  | none => holeUsed mu e.2
+
+/-- The pair is unresolved: pigeon free and demanded hole free. -/
+def pairUnresolvedB {p h : Nat} (mu : MatchingMap p h)
+    (e : Fin p × Fin h) : Bool :=
+  (mu e.1 == none) && !holeUsed mu e.2
+
+/-- Pair trichotomy: every pair is satisfied, falsified, or unresolved. -/
+theorem pair_status_trichotomy {p h : Nat} (mu : MatchingMap p h)
+    (e : Fin p × Fin h) :
+    (pairSatB mu e || pairFalsB mu e || pairUnresolvedB mu e) = true := by
+  unfold pairSatB pairFalsB pairUnresolvedB
+  cases hmu : mu e.1 with
+  | some b =>
+      simp only [hmu]
+      cases hbe : b == e.2 with
+      | true =>
+          have hsome : (some b == some e.2) = true := by
+            simpa using hbe
+          simp [hsome]
+      | false =>
+          have hne : (b != e.2) = true := by
+            simp [bne, hbe]
+          simp [hne]
+  | none =>
+      simp only [hmu]
+      cases hu : holeUsed mu e.2 <;> simp [hu]
+
+/-- Term falsified: some pair is falsified. -/
+def termFalsifiedB {p h : Nat} (mu : MatchingMap p h) (t : MTerm p h) : Bool :=
+  t.any (pairFalsB mu)
+
+/-- Term satisfied: every pair is satisfied. -/
+def termSatisfiedB {p h : Nat} (mu : MatchingMap p h) (t : MTerm p h) : Bool :=
+  t.all (pairSatB mu)
+
+/-- The first unresolved pair — the pigeon the canonical walk queries. -/
+def firstUnresolvedPair {p h : Nat} (mu : MatchingMap p h) (t : MTerm p h) :
+    Option (Fin p × Fin h) :=
+  t.find? (pairUnresolvedB mu)
+
+/-- The hole-side falsification statement (pin 2.4), term level: a term
+containing a free-pigeon pair whose demanded hole is stolen is falsified —
+no hole query occurs anywhere in the walk. -/
+theorem termFalsified_of_stolen_hole {p h : Nat} (mu : MatchingMap p h)
+    (t : MTerm p h) (e : Fin p × Fin h) (he : e ∈ t)
+    (hfree : mu e.1 = none) (hstolen : holeUsed mu e.2 = true) :
+    termFalsifiedB mu t = true := by
+  unfold termFalsifiedB
+  rw [List.any_eq_true]
+  refine ⟨e, he, ?_⟩
+  unfold pairFalsB
+  rw [hfree]
+  exact hstolen
+
+/-- A term neither satisfied nor falsified has an unresolved pair, so the
+walk never reaches its dead query arm. -/
+theorem firstUnresolvedPair_isSome_of_undetermined {p h : Nat}
+    (mu : MatchingMap p h) (t : MTerm p h)
+    (hsat : termSatisfiedB mu t = false)
+    (hfals : termFalsifiedB mu t = false) :
+    (firstUnresolvedPair mu t).isSome = true := by
+  unfold termSatisfiedB at hsat
+  unfold termFalsifiedB at hfals
+  rw [List.all_eq_false] at hsat
+  rcases hsat with ⟨e, he, hesat⟩
+  have hefals : pairFalsB mu e = false := by
+    cases hef : pairFalsB mu e with
+    | false => rfl
+    | true =>
+        have hany : t.any (pairFalsB mu) = true :=
+          List.any_eq_true.mpr ⟨e, he, hef⟩
+        rw [hfals] at hany
+        cases hany
+  have heunres : pairUnresolvedB mu e = true := by
+    have htri := pair_status_trichotomy mu e
+    have hns : pairSatB mu e = false := by
+      cases hps : pairSatB mu e with
+      | false => rfl
+      | true => exact absurd hps (by simpa using hesat)
+    rw [hns, hefals] at htri
+    simpa using htri
+  unfold firstUnresolvedPair
+  rw [List.find?_isSome]
+  exact ⟨e, he, heunres⟩
+
+/-! ## Stage B: the canonical walk -/
+
+/-- The one-pigeon extension the walk composes at a query. -/
+def singleMatching {p h : Nat} (i : Fin p) (a : Fin h) : MatchingMap p h :=
+  fun j => if j = i then some a else none
+
+theorem singleMatching_self {p h : Nat} (i : Fin p) (a : Fin h) :
+    singleMatching i a i = some a := by
+  unfold singleMatching
+  simp
+
+/-- Querying an unresolved pair is a disjoint extension: the queried pigeon
+is free and the answered hole is free, so the GA-1 composition laws apply
+verbatim (`IsMatching` transfer, star drop, restriction homomorphism). -/
+theorem disjointExtension_singleMatching {p h : Nat} (mu : MatchingMap p h)
+    (i : Fin p) (a : Fin h) (hfree : mu i = none)
+    (hhole : holeUsed mu a = false) :
+    DisjointExtension mu (singleMatching i a) := by
+  constructor
+  · intro j b hj
+    unfold singleMatching
+    by_cases hji : j = i
+    · rw [hji] at hj
+      rw [hj] at hfree
+      cases hfree
+    · simp [hji]
+  · intro j k b hj hk
+    unfold singleMatching at hk
+    by_cases hki : k = i
+    · simp [hki] at hk
+      rw [← hk] at hj
+      have hused : holeUsed mu a = true :=
+        (holeUsed_eq_true_iff mu a).mpr ⟨j, hj⟩
+      rw [hhole] at hused
+      cases hused
+    · simp [hki] at hk
+
+/-- The canonical matching walk. Terms are processed in list order:
+matching-illegal terms are skipped unentered (pin 2.5); falsified terms are
+skipped; a satisfied legal term stops with `true`; otherwise the first
+unresolved pair's **pigeon** is queried, used-hole branches are dead
+leaves, and each free-hole branch re-examines the same term under the
+disjointly extended matching. Fuel bounds the query budget; the canonical
+entry supplies the free-pigeon count. -/
+def mwalk {p h : Nat} : Nat → MatchingMap p h → MDNF p h → MDTree p h
+  | _, _, [] => .leaf false
+  | fuel, mu, t :: rest =>
+      if termMatchingLegalB t = false then mwalk fuel mu rest
+      else if termFalsifiedB mu t = true then mwalk fuel mu rest
+      else if termSatisfiedB mu t = true then .leaf true
+      else
+        match fuel with
+        | 0 => .leaf false
+        | fuel' + 1 =>
+            match firstUnresolvedPair mu t with
+            | none => .leaf false
+            | some e =>
+                .query e.1 (fun a =>
+                  if holeUsed mu a = true then .leaf false
+                  else mwalk fuel' (compose mu (singleMatching e.1 a))
+                    (t :: rest))
+  termination_by fuel _ D => (fuel, D.length)
+
+/-- The canonical entry: fuel is the free-pigeon count of the base
+matching. -/
+def canonicalMDT {p h : Nat} (D : MDNF p h) (mu : MatchingMap p h) :
+    MDTree p h :=
+  mwalk (freePigeons mu).card mu D
+
+/-! ## Stage B: pinned walk laws -/
+
+/-- The empty DNF walks to the `false` leaf. -/
+theorem mwalk_nil {p h : Nat} (fuel : Nat) (mu : MatchingMap p h) :
+    mwalk fuel mu ([] : MDNF p h) = .leaf false := by
+  simp [mwalk]
+
+/-- Pin 2.5, walk level: a matching-illegal term is skipped unentered. -/
+theorem mwalk_skip_illegal {p h : Nat} (fuel : Nat) (mu : MatchingMap p h)
+    (t : MTerm p h) (rest : MDNF p h)
+    (hbad : termMatchingLegalB t = false) :
+    mwalk fuel mu (t :: rest) = mwalk fuel mu rest := by
+  rw [mwalk.eq_def]
+  simp [hbad]
+
+/-- A falsified legal term is skipped. -/
+theorem mwalk_skip_falsified {p h : Nat} (fuel : Nat) (mu : MatchingMap p h)
+    (t : MTerm p h) (rest : MDNF p h)
+    (hleg : termMatchingLegalB t = true)
+    (hfals : termFalsifiedB mu t = true) :
+    mwalk fuel mu (t :: rest) = mwalk fuel mu rest := by
+  rw [mwalk.eq_def]
+  simp [hleg, hfals]
+
+/-- A satisfied legal term stops the walk with `true`. -/
+theorem mwalk_stop_satisfied {p h : Nat} (fuel : Nat) (mu : MatchingMap p h)
+    (t : MTerm p h) (rest : MDNF p h)
+    (hleg : termMatchingLegalB t = true)
+    (hfals : termFalsifiedB mu t = false)
+    (hsat : termSatisfiedB mu t = true) :
+    mwalk fuel mu (t :: rest) = .leaf true := by
+  rw [mwalk.eq_def]
+  simp [hleg, hfals, hsat]
+
+/-- With zero fuel an undetermined head term dead-ends. -/
+theorem mwalk_zero_undetermined {p h : Nat} (mu : MatchingMap p h)
+    (t : MTerm p h) (rest : MDNF p h)
+    (hleg : termMatchingLegalB t = true)
+    (hfals : termFalsifiedB mu t = false)
+    (hsat : termSatisfiedB mu t = false) :
+    mwalk 0 mu (t :: rest) = .leaf false := by
+  rw [mwalk.eq_def]
+  simp [hleg, hfals, hsat]
+
+/-- The query step: on an undetermined legal head term with fuel, the walk
+queries the first unresolved pair's pigeon; used-hole branches are dead
+leaves; free-hole branches re-examine the same term under the disjointly
+extended matching. -/
+theorem mwalk_query_step {p h : Nat} (fuel' : Nat) (mu : MatchingMap p h)
+    (t : MTerm p h) (rest : MDNF p h) (e : Fin p × Fin h)
+    (hleg : termMatchingLegalB t = true)
+    (hfals : termFalsifiedB mu t = false)
+    (hsat : termSatisfiedB mu t = false)
+    (hfu : firstUnresolvedPair mu t = some e) :
+    mwalk (fuel' + 1) mu (t :: rest) =
+      .query e.1 (fun a =>
+        if holeUsed mu a = true then .leaf false
+        else mwalk fuel' (compose mu (singleMatching e.1 a)) (t :: rest)) := by
+  rw [mwalk.eq_def]
+  simp [hleg, hfals, hsat, hfu]
+
+/-- The dead query arm (no unresolved pair) — provably unreachable for
+undetermined terms by `firstUnresolvedPair_isSome_of_undetermined`. -/
+theorem mwalk_query_none {p h : Nat} (fuel' : Nat) (mu : MatchingMap p h)
+    (t : MTerm p h) (rest : MDNF p h)
+    (hleg : termMatchingLegalB t = true)
+    (hfals : termFalsifiedB mu t = false)
+    (hsat : termSatisfiedB mu t = false)
+    (hfu : firstUnresolvedPair mu t = none) :
+    mwalk (fuel' + 1) mu (t :: rest) = .leaf false := by
+  rw [mwalk.eq_def]
+  simp [hleg, hfals, hsat, hfu]
+
+/-- Pin 2.6, fuel form: the walk's depth never exceeds its fuel. -/
+theorem mdtDepth_mwalk_le_fuel {p h : Nat} :
+    ∀ (fuel : Nat) (mu : MatchingMap p h) (D : MDNF p h),
+      mdtDepth (mwalk fuel mu D) ≤ fuel
+  | fuel, mu, [] => by
+      rw [mwalk_nil]
+      exact Nat.zero_le fuel
+  | fuel, mu, t :: rest => by
+      by_cases hleg : termMatchingLegalB t = true
+      · by_cases hfals : termFalsifiedB mu t = true
+        · rw [mwalk_skip_falsified fuel mu t rest hleg hfals]
+          exact mdtDepth_mwalk_le_fuel fuel mu rest
+        · have hfals' : termFalsifiedB mu t = false :=
+            Bool.eq_false_iff.mpr hfals
+          by_cases hsat : termSatisfiedB mu t = true
+          · rw [mwalk_stop_satisfied fuel mu t rest hleg hfals' hsat]
+            exact Nat.zero_le fuel
+          · have hsat' : termSatisfiedB mu t = false :=
+              Bool.eq_false_iff.mpr hsat
+            cases fuel with
+            | zero =>
+                rw [mwalk_zero_undetermined mu t rest hleg hfals' hsat']
+                exact Nat.le_refl 0
+            | succ fuel' =>
+                cases hfu : firstUnresolvedPair mu t with
+                | none =>
+                    rw [mwalk_query_none fuel' mu t rest hleg hfals' hsat' hfu]
+                    exact Nat.zero_le _
+                | some e =>
+                    rw [mwalk_query_step fuel' mu t rest e hleg hfals' hsat' hfu]
+                    rw [mdtDepth_query, Nat.add_comm]
+                    apply Nat.add_le_add_right
+                    apply Finset.sup_le
+                    intro a _
+                    by_cases hha : holeUsed mu a = true
+                    · rw [if_pos hha]
+                      exact Nat.zero_le fuel'
+                    · rw [if_neg hha]
+                      exact mdtDepth_mwalk_le_fuel fuel'
+                        (compose mu (singleMatching e.1 a)) (t :: rest)
+      · have hleg' : termMatchingLegalB t = false :=
+          Bool.eq_false_iff.mpr hleg
+        rw [mwalk_skip_illegal fuel mu t rest hleg']
+        exact mdtDepth_mwalk_le_fuel fuel mu rest
+  termination_by fuel _ D => (fuel, D.length)
+
+/-- Pin 2.6, canonical form: the canonical matching-DT's depth is at most
+the base matching's free-pigeon count. -/
+theorem mdtDepth_canonicalMDT_le_freePigeons {p h : Nat} (D : MDNF p h)
+    (mu : MatchingMap p h) :
+    mdtDepth (canonicalMDT D mu) ≤ (freePigeons mu).card :=
+  mdtDepth_mwalk_le_fuel (freePigeons mu).card mu D
+
 end PHPMatchingCanonicalMDT
 end PvNP

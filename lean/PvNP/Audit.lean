@@ -10961,3 +10961,45 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 /-- info: 'PvNP.PHPMatchingCanonicalMDT.mdtWitnessRect_eval' does not depend on any axioms -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingCanonicalMDT.mdtWitnessRect_eval
+
+/-! S2186 GA-2 Stage B canonical walk pins. -/
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.pair_status_trichotomy' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.pair_status_trichotomy
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.termFalsified_of_stolen_hole' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.termFalsified_of_stolen_hole
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.firstUnresolvedPair_isSome_of_undetermined' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.firstUnresolvedPair_isSome_of_undetermined
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.disjointExtension_singleMatching' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.disjointExtension_singleMatching
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.mwalk_skip_illegal' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.mwalk_skip_illegal
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.mwalk_stop_satisfied' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.mwalk_stop_satisfied
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.mwalk_query_step' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.mwalk_query_step
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.mdtDepth_mwalk_le_fuel' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.mdtDepth_mwalk_le_fuel
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.mdtDepth_canonicalMDT_le_freePigeons' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.mdtDepth_canonicalMDT_le_freePigeons
