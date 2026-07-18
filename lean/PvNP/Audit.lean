@@ -11003,3 +11003,25 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingCanonicalMDT.mdtDepth_canonicalMDT_le_freePigeons
+
+/-! S2186 GA-2 Stage C bad-set and stability pins. -/
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.mem_badMatchings' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.mem_badMatchings
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.badMatchings_nonvacuity' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.badMatchings_nonvacuity
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.badMatchings_nonempty' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.badMatchings_nonempty
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.pairFals_stable' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.pairFals_stable
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.termFals_stable' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.termFals_stable

@@ -526,5 +526,144 @@ theorem mdtDepth_canonicalMDT_le_freePigeons {p h : Nat} (D : MDNF p h)
     mdtDepth (canonicalMDT D mu) ≤ (freePigeons mu).card :=
   mdtDepth_mwalk_le_fuel (freePigeons mu).card mu D
 
+/-! ## Stage C: the honest space and the deep-path bad set -/
+
+instance instFintypeMatchingMap (p h : Nat) : Fintype (MatchingMap p h) :=
+  inferInstanceAs (Fintype (Fin p → Option (Fin h)))
+
+instance instDecidableEqMatchingMap (p h : Nat) :
+    DecidableEq (MatchingMap p h) :=
+  inferInstanceAs (DecidableEq (Fin p → Option (Fin h)))
+
+instance instDecidableIsMatching {p h : Nat} (mu : MatchingMap p h) :
+    Decidable (IsMatching mu) :=
+  inferInstanceAs (Decidable (∀ i j a, mu i = some a → mu j = some a → i = j))
+
+/-- The honest partial-matching space `M_ℓ`: hole-injective maps with
+exactly `ℓ` free pigeons. Rectangular signature. -/
+def honestMatchingSpace (p h ell : Nat) : Finset (MatchingMap p h) :=
+  Finset.univ.filter
+    (fun mu => IsMatching mu ∧ (freePigeons mu).card = ell)
+
+theorem mem_honestMatchingSpace {p h ell : Nat} (mu : MatchingMap p h) :
+    mu ∈ honestMatchingSpace p h ell ↔
+      IsMatching mu ∧ (freePigeons mu).card = ell := by
+  unfold honestMatchingSpace
+  simp
+
+/-- The deep-path bad set: honest matchings with `ℓ` free pigeons whose
+canonical matching-DT for `D` is deeper than `s`. -/
+def badMatchings {p h : Nat} (D : MDNF p h) (s ell : Nat) :
+    Finset (MatchingMap p h) :=
+  (honestMatchingSpace p h ell).filter
+    (fun mu => s < mdtDepth (canonicalMDT D mu))
+
+theorem mem_badMatchings {p h : Nat} (D : MDNF p h) (s ell : Nat)
+    (mu : MatchingMap p h) :
+    mu ∈ badMatchings D s ell ↔
+      (IsMatching mu ∧ (freePigeons mu).card = ell) ∧
+        s < mdtDepth (canonicalMDT D mu) := by
+  unfold badMatchings
+  rw [Finset.mem_filter, mem_honestMatchingSpace]
+
+/-! ## Stage C: definitional non-vacuity (pin 2.2)
+
+The walk is WF-compiled, so kernel evaluation cannot unfold it; the member
+is computed through the Stage B equation lemmas instead — exactly the
+discipline the equation-lemma family exists for. -/
+
+/-- The pin 2.2 concrete instance: one pigeon, one hole, the single-pair
+term, the empty base matching (one free pigeon). -/
+def nvD : MDNF 1 1 :=
+  [[(⟨0, by decide⟩, ⟨0, by decide⟩)]]
+
+theorem nv_freePigeons_card :
+    (freePigeons (emptyMatching 1 1)).card = 1 := by
+  decide
+
+theorem nv_canonicalMDT_depth_pos :
+    0 < mdtDepth (canonicalMDT nvD (emptyMatching 1 1)) := by
+  have hstep := mwalk_query_step (p := 1) (h := 1) 0 (emptyMatching 1 1)
+    [(⟨0, by decide⟩, ⟨0, by decide⟩)] [] (⟨0, by decide⟩, ⟨0, by decide⟩)
+    (by decide) (by decide) (by decide) (by decide)
+  have hcan : canonicalMDT nvD (emptyMatching 1 1) =
+      mwalk (0 + 1) (emptyMatching 1 1)
+        [[((⟨0, by decide⟩ : Fin 1), (⟨0, by decide⟩ : Fin 1))]] := by
+    unfold canonicalMDT
+    rw [nv_freePigeons_card]
+    rfl
+  rw [hcan, hstep, mdtDepth_query]
+  exact Nat.lt_of_lt_of_le Nat.zero_lt_one (Nat.le_add_right 1 _)
+
+/-- Pin 2.2: the deep-path bad set is definitionally non-vacuous — a
+concrete `D`, `ℓ` with a concrete member. -/
+theorem badMatchings_nonvacuity :
+    emptyMatching 1 1 ∈ badMatchings nvD 0 1 := by
+  rw [mem_badMatchings]
+  exact ⟨⟨isMatching_empty 1 1, nv_freePigeons_card⟩,
+    nv_canonicalMDT_depth_pos⟩
+
+theorem badMatchings_nonempty :
+    (badMatchings nvD 0 1).Nonempty :=
+  ⟨emptyMatching 1 1, badMatchings_nonvacuity⟩
+
+/-! ## Stage C: falsification stability (the pin 2.3 seed)
+
+The hole-side falsification channel is stable under matching-respecting
+extensions: once a pair is falsified relative to `mu`, no hole-injective
+extension of `mu` can satisfy it. This is the load-bearing ingredient of
+the evaluation-soundness induction. -/
+
+/-- A falsified pair is never satisfied by a hole-injective extension. -/
+theorem pairFals_stable {p h : Nat} {mu nu : MatchingMap p h}
+    (hag : MAgree mu nu) (hnu : IsMatching nu)
+    (e : Fin p × Fin h) (hfals : pairFalsB mu e = true) :
+    pairSatB nu e = false := by
+  unfold pairFalsB at hfals
+  unfold pairSatB
+  cases hmu : mu e.1 with
+  | some b =>
+      rw [hmu] at hfals
+      have hnub : nu e.1 = some b := hag e.1 b hmu
+      rw [hnub]
+      have hbne : (b == e.2) = false := by
+        cases hbe : b == e.2 with
+        | false => rfl
+        | true =>
+            exfalso
+            have hnot : (!(b == e.2)) = true := hfals
+            rw [hbe] at hnot
+            simp at hnot
+      simp [hbne]
+  | none =>
+      rw [hmu] at hfals
+      rcases (holeUsed_eq_true_iff mu e.2).mp hfals with ⟨j, hj⟩
+      have hnuj : nu j = some e.2 := hag j e.2 hj
+      cases hnue : nu e.1 with
+      | none => simp
+      | some c =>
+          cases hce : c == e.2 with
+          | false => simp [hnue, hce]
+          | true =>
+              exfalso
+              have hc : c = e.2 := by simpa using hce
+              rw [hc] at hnue
+              have hij : e.1 = j := hnu e.1 j e.2 hnue hnuj
+              rw [hij] at hmu
+              rw [hj] at hmu
+              cases hmu
+
+/-- A falsified term is never satisfied by a hole-injective extension. -/
+theorem termFals_stable {p h : Nat} {mu nu : MatchingMap p h}
+    (hag : MAgree mu nu) (hnu : IsMatching nu)
+    (t : MTerm p h) (hfals : termFalsifiedB mu t = true) :
+    termSatisfiedB nu t = false := by
+  unfold termFalsifiedB at hfals
+  unfold termSatisfiedB
+  rw [List.any_eq_true] at hfals
+  rcases hfals with ⟨e, he, hef⟩
+  rw [List.all_eq_false]
+  exact ⟨e, he, by rw [pairFals_stable hag hnu e hef]; simp⟩
+
 end PHPMatchingCanonicalMDT
 end PvNP
