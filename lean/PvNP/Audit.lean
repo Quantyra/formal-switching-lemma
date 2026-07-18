@@ -11061,3 +11061,31 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 /-- info: 'PvNP.PHPMatchingCanonicalMDT.canonicalMDT_sound' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingCanonicalMDT.canonicalMDT_sound
+
+/-! S2186 GA-2 Stage D.1 pushforward-bridge pins. -/
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.pushSq_isMatching' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.pushSq_isMatching
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.freePigeons_pushSq' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.freePigeons_pushSq
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.pushSq_mem_honest' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.pushSq_mem_honest
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.fixedPigeons_eq_compl_freePigeons' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.fixedPigeons_eq_compl_freePigeons
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.pushSq_eq_iff' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.pushSq_eq_iff
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.fullRestrictionOf_factors' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.fullRestrictionOf_factors

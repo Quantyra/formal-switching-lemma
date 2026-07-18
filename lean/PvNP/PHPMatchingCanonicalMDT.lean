@@ -1,4 +1,5 @@
 import PvNP.PHPMatchingComposition
+import PvNP.PHPFullMatchingDistribution
 
 /-!
 # GA-2 Stage A: matching decision trees, evaluation, and agreement (S2186)
@@ -41,6 +42,11 @@ namespace PvNP
 namespace PHPMatchingCanonicalMDT
 
 open PHPMatchingComposition
+open BoundedDepthRestriction
+open PHPMatchingDistribution
+open PHPFullMatchingDistribution
+open PHPRestrictedDepthFloor
+open PHPSearchFloor
 
 /-! ## The tree type -/
 
@@ -1008,6 +1014,142 @@ theorem canonicalMDT_sound {p h : Nat} (D : MDNF p h)
           rcases hany with ⟨t, ht, htt⟩
           rw [hall t ht] at htt
           cases htt
+
+/-! ## Stage D.1: the square pushforward and the complement identification
+
+The S2080 representation is `(S, pi) : Finset (Fin h) x Equiv.Perm (Fin h)`
+(fix the pigeons of `S` along `pi`). The pushforward reads off the honest
+partial matching; the S2080 point over-represents each honest point by the
+permutation's behaviour off `S`, which Stage D.2 counts. -/
+
+/-- The square pushforward: fix the pigeons of `P.1` along `P.2`. -/
+def pushSq {h : Nat} (P : Finset (Fin h) × Equiv.Perm (Fin h)) :
+    MatchingMap h h :=
+  fun i => if i ∈ P.1 then some (P.2 i) else none
+
+theorem pushSq_isMatching {h : Nat}
+    (P : Finset (Fin h) × Equiv.Perm (Fin h)) : IsMatching (pushSq P) := by
+  intro i j a hi hj
+  unfold pushSq at hi hj
+  by_cases hiS : i ∈ P.1
+  · by_cases hjS : j ∈ P.1
+    · rw [if_pos hiS] at hi
+      rw [if_pos hjS] at hj
+      have hia : P.2 i = a := by
+        have := hi
+        simpa using this
+      have hja : P.2 j = a := by
+        have := hj
+        simpa using this
+      apply P.2.injective
+      rw [hia, hja]
+    · rw [if_neg hjS] at hj
+      cases hj
+  · rw [if_neg hiS] at hi
+    cases hi
+
+/-- The pushforward's free pigeons are exactly the unfixed ones. -/
+theorem freePigeons_pushSq {h : Nat}
+    (P : Finset (Fin h) × Equiv.Perm (Fin h)) :
+    freePigeons (pushSq P) = P.1ᶜ := by
+  ext i
+  rw [mem_freePigeons, Finset.mem_compl]
+  unfold pushSq
+  by_cases hiS : i ∈ P.1
+  · simp [hiS]
+  · simp [hiS]
+
+/-- The complement-convention identification: a point of the S2080 space at
+fixed-set size `k` pushes forward into the honest space at `ℓ = h − k`
+free pigeons. -/
+theorem pushSq_mem_honest {h k : Nat}
+    (P : Finset (Fin h) × Equiv.Perm (Fin h))
+    (hP : P ∈ fullMatchingSpace h k) :
+    pushSq P ∈ honestMatchingSpace h h (h - k) := by
+  rw [mem_honestMatchingSpace]
+  refine ⟨pushSq_isMatching P, ?_⟩
+  rw [freePigeons_pushSq, Finset.card_compl]
+  have hcard : P.1.card = k := by
+    have hmem := hP
+    unfold fullMatchingSpace at hmem
+    have h1 : P.1 ∈ subsetSpace h k := (Finset.mem_product.mp hmem).1
+    unfold subsetSpace at h1
+    rw [Finset.mem_powersetCard] at h1
+    exact h1.2
+  rw [hcard, Fintype.card_fin]
+
+/-- The fixed-pigeon set of a matching map. -/
+def fixedPigeons {p h : Nat} (mu : MatchingMap p h) : Finset (Fin p) :=
+  Finset.univ.filter (fun i => (mu i).isSome)
+
+theorem mem_fixedPigeons {p h : Nat} (mu : MatchingMap p h) (i : Fin p) :
+    i ∈ fixedPigeons mu ↔ (mu i).isSome := by
+  unfold fixedPigeons
+  simp
+
+theorem fixedPigeons_eq_compl_freePigeons {p h : Nat}
+    (mu : MatchingMap p h) : fixedPigeons mu = (freePigeons mu)ᶜ := by
+  ext i
+  rw [mem_fixedPigeons, Finset.mem_compl, mem_freePigeons]
+  cases hmu : mu i <;> simp [hmu]
+
+/-- Fiber characterization: a S2080 point pushes to `mu` exactly when its
+fixed set is `mu`'s fixed set and its permutation extends `mu` there. -/
+theorem pushSq_eq_iff {h : Nat}
+    (P : Finset (Fin h) × Equiv.Perm (Fin h)) (mu : MatchingMap h h) :
+    pushSq P = mu ↔
+      P.1 = fixedPigeons mu ∧ ∀ i ∈ P.1, mu i = some (P.2 i) := by
+  constructor
+  · intro hpush
+    constructor
+    · ext i
+      rw [mem_fixedPigeons, ← hpush]
+      unfold pushSq
+      by_cases hiS : i ∈ P.1
+      · simp [hiS]
+      · simp [hiS]
+    · intro i hiS
+      rw [← hpush]
+      unfold pushSq
+      rw [if_pos hiS]
+  · rintro ⟨hset, hext⟩
+    funext i
+    unfold pushSq
+    by_cases hiS : i ∈ P.1
+    · rw [if_pos hiS]
+      exact (hext i hiS).symm
+    · rw [if_neg hiS]
+      rw [hset, mem_fixedPigeons] at hiS
+      cases hmu : mu i with
+      | none => rfl
+      | some a =>
+          exfalso
+          apply hiS
+          rw [hmu]
+          rfl
+
+/-! ## Stage D.1: the S2080 restriction factors through the pushforward -/
+
+/-- The boolean restriction of an honest matching map on the square PHP
+variable rectangle, in the S2080 `matchingRestriction` form. -/
+def honestRestrictionOf {h : Nat} (mu : MatchingMap h h) :
+    Restriction (Nat.succ (h * h)) :=
+  matchingRestriction (fun i => (mu i).isSome) (fun i => (mu i).getD i)
+
+/-- The S2080 point restriction is a function of its pushforward alone:
+`matchingRestriction` reads hole values only at fixed pigeons, where the
+pushforward retains them verbatim. -/
+theorem fullRestrictionOf_factors {h : Nat}
+    (P : Finset (Fin h) × Equiv.Perm (Fin h)) :
+    fullRestrictionOf P = honestRestrictionOf (pushSq P) := by
+  funext w
+  unfold fullRestrictionOf honestRestrictionOf matchingRestriction pushSq
+  by_cases hw : w.val < h * h
+  · rw [dif_pos hw, dif_pos hw]
+    by_cases hpig : pigeonOf w hw ∈ P.1
+    · simp [hpig]
+    · simp [hpig]
+  · rw [dif_neg hw, dif_neg hw]
 
 end PHPMatchingCanonicalMDT
 end PvNP
