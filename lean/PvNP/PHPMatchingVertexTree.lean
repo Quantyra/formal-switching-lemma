@@ -35,6 +35,12 @@ module builds that consumed tree and its GA-2-analogue validation surface:
   asserted), the vertex-tree deep-path bad set `vbadMatchings` with a
   kernel-checked concrete member (pin 2.2 analogue), and the dead entry
   arm's unreachability (`termVertices_ne_nil_of_undetermined`).
+* Evaluation soundness (pin 2.3 analogue): `vwalk_sound_true` (general)
+  and `vwalk_sound_false`/`canonicalVMDT_sound` (**square signature**
+  `p = h`: the zero-fuel uncovered-hole arm is unreachable there via
+  `holeUsed_of_no_free_pigeons`; the rectangular tightening — free-vertex
+  fuel or a pending-provenance invariant — is a named later obligation,
+  mirroring GA-2's pin 2.6 free-pigeon-form disclosure).
 * The **kernel-pinned walk-vs-vertex divergence** (memo L5, companion to
   `walk_boolean_depth1_divergence`): on the memo's pinned instance
   (square 3×3, width 1, three terms demanding one hole, empty base
@@ -979,6 +985,507 @@ theorem walk_vertex_depth_divergence :
   refine ⟨?_, div_walk_depth, div_vertex_depth⟩
   rw [div_walk_depth, div_vertex_depth]
   exact Nat.lt_succ_self 2
+
+/-! ## Stage 0b: evaluation soundness of the vertex walk (pin 2.3 analogue)
+
+The `true` direction is fully general. The `false` direction is proved on
+the **square** signature `p = h`: the vertex walk's zero-fuel dead arm on
+an uncovered pending *hole* is unreachable there (no free pigeons forces
+every hole used, `holeUsed_of_no_free_pigeons`), while on rectangular
+signatures with `p < h` fuel = free-pigeon count can exhaust with free
+holes outstanding — the rectangular tightening (free-vertex fuel or a
+pending-provenance invariant) is a named later obligation, exactly the
+disclosure discipline of GA-2's pin 2.6 free-pigeon form. The program's
+GA-3+ counting spine is square. -/
+
+/-- The head pigeon of a nonempty frozen vertex list is free (it is the
+pigeon of the first unresolved pair). -/
+theorem termVertices_head_pigeon_free {p h : Nat} (mu : MatchingMap p h)
+    (t : MTerm p h) (i : Fin p) (vs : List (Vertex p h))
+    (htv : termVertices mu t = Sum.inl i :: vs) : mu i = none := by
+  unfold termVertices at htv
+  cases hf : t.filter (pairUnresolvedB mu) with
+  | nil =>
+      rw [hf] at htv
+      cases htv
+  | cons e es =>
+      rw [hf, List.bind_cons] at htv
+      have hhead : Sum.inl (α := Fin p) (β := Fin h) e.1 = Sum.inl i := by
+        have hq := congrArg List.head? htv
+        simpa using hq
+      have hei : e.1 = i := by
+        injection hhead
+      have he : e ∈ t.filter (pairUnresolvedB mu) := by
+        rw [hf]
+        exact List.mem_cons_self e es
+      have hpe : pairUnresolvedB mu e = true := (List.mem_filter.mp he).2
+      unfold pairUnresolvedB at hpe
+      rw [Bool.and_eq_true] at hpe
+      have hfree : mu e.1 = none := by
+        have hb := hpe.1
+        simpa using hb
+      rw [← hei]
+      exact hfree
+
+/-- A frozen vertex list never heads with a hole (each pair contributes
+its pigeon first). -/
+theorem termVertices_head_not_hole {p h : Nat} (mu : MatchingMap p h)
+    (t : MTerm p h) (b : Fin h) (vs : List (Vertex p h)) :
+    termVertices mu t ≠ Sum.inr b :: vs := by
+  unfold termVertices
+  cases t.filter (pairUnresolvedB mu) with
+  | nil => simp
+  | cons e es =>
+      rw [List.bind_cons]
+      intro hcontra
+      have hq := congrArg List.head? hcontra
+      simp at hq
+
+/-- Hole-injectivity survives a free-pigeon/free-hole single-pair query
+step — the walk-side `IsMatching` transfer, through GA-1's
+cross-consistency route. -/
+theorem isMatching_compose_single {p h : Nat} {mu : MatchingMap p h}
+    (hmu : IsMatching mu) (i : Fin p) (a : Fin h) (hfree : mu i = none)
+    (hhole : holeUsed mu a = false) :
+    IsMatching (compose mu (singleMatching i a)) := by
+  apply isMatching_compose hmu
+  · intro j k c hj hk
+    unfold singleMatching at hj hk
+    by_cases hji : j = i
+    · by_cases hki : k = i
+      · rw [hji, hki]
+      · rw [if_neg hki] at hk
+        cases hk
+    · rw [if_neg hji] at hj
+      cases hj
+  · exact disjointExtension_crossConsistent
+      (disjointExtension_singleMatching mu i a hfree hhole)
+
+/-- On the square signature, a hole-injective map with no free pigeons
+uses every hole: total hole-injective self-maps of `Fin h` are
+surjective. This is what makes the zero-fuel uncovered-hole arm
+unreachable in the square soundness induction. -/
+theorem holeUsed_of_no_free_pigeons {p h : Nat} (hsq : p = h)
+    {mu : MatchingMap p h} (hmu : IsMatching mu)
+    (hcard : (freePigeons mu).card = 0) (b : Fin h) :
+    holeUsed mu b = true := by
+  subst hsq
+  have hall : ∀ i : Fin p, (mu i).isSome = true := by
+    intro i
+    cases hmi : mu i with
+    | none =>
+        exfalso
+        have hmem : i ∈ freePigeons mu := (mem_freePigeons mu i).mpr hmi
+        rw [Finset.card_eq_zero] at hcard
+        rw [hcard] at hmem
+        cases hmem
+    | some _ => rfl
+  let f : Fin p → Fin p := fun i => (mu i).get (hall i)
+  have hf : ∀ i, mu i = some (f i) := by
+    intro i
+    exact (Option.some_get (hall i)).symm
+  have hinj : Function.Injective f := by
+    intro i j hij
+    apply hmu i j (f i)
+    · exact hf i
+    · rw [hij]
+      exact hf j
+  have hsurj : Function.Surjective f :=
+    Finite.injective_iff_surjective.mp hinj
+  rcases hsurj b with ⟨i, hi⟩
+  apply (holeUsed_eq_true_iff mu b).mpr
+  exact ⟨i, by rw [hf i, hi]⟩
+
+/-- Soundness, `true` direction (fully general): a `true`-evaluation of
+the vertex walk by a hole-injective extension certifies that it satisfies
+some term of the MDNF. -/
+theorem vwalk_sound_true {p h : Nat} :
+    ∀ (fuel : Nat) (mu : MatchingMap p h) (pending : List (Vertex p h))
+      (D : MDNF p h) (nu : MatchingMap p h),
+      MAgree mu nu → IsMatching nu →
+      vmdtEval nu (vwalkAux fuel mu pending D) = some true →
+      D.any (termSatisfiedB nu) = true
+  | _, _, [], [], _, _, _, hev => by
+      rw [vwalk_nil] at hev
+      rw [vmdtEval_leaf] at hev
+      cases hev
+  | fuel, mu, [], t :: rest, nu, hag, hnu, hev => by
+      by_cases hleg : termMatchingLegalB t = true
+      · by_cases hfals : termFalsifiedB mu t = true
+        · rw [vwalk_skip_falsified fuel mu t rest hleg hfals] at hev
+          have hrest := vwalk_sound_true fuel mu [] rest nu hag hnu hev
+          rw [List.any_cons, hrest]
+          simp
+        · have hfals' : termFalsifiedB mu t = false :=
+            Bool.eq_false_iff.mpr hfals
+          by_cases hsat : termSatisfiedB mu t = true
+          · rw [List.any_cons, termSat_stable_mAgree hag t hsat]
+            simp
+          · have hsat' : termSatisfiedB mu t = false :=
+              Bool.eq_false_iff.mpr hsat
+            cases fuel with
+            | zero =>
+                rw [vwalk_entry_zero mu t rest hleg hfals' hsat'] at hev
+                rw [vmdtEval_leaf] at hev
+                cases hev
+            | succ fuel' =>
+                cases htv : termVertices mu t with
+                | nil =>
+                    rw [vwalk_entry_none fuel' mu t rest hleg hfals' hsat'
+                      htv] at hev
+                    rw [vmdtEval_leaf] at hev
+                    cases hev
+                | cons v vs =>
+                    cases v with
+                    | inl i =>
+                        rw [vwalk_entry_pigeon fuel' mu t rest i vs hleg
+                          hfals' hsat' htv] at hev
+                        cases hnue : nu i with
+                        | none =>
+                            rw [vmdtEval_pquery_free nu i _ hnue] at hev
+                            cases hev
+                        | some a =>
+                            rw [vmdtEval_pquery_matched nu i _ a hnue]
+                              at hev
+                            by_cases hha : holeUsed mu a = true
+                            · rw [if_pos hha] at hev
+                              rw [vmdtEval_leaf] at hev
+                              cases hev
+                            · rw [if_neg hha] at hev
+                              exact vwalk_sound_true fuel'
+                                (compose mu (singleMatching i a)) vs
+                                (t :: rest) nu
+                                (mAgree_compose_single hag i a hnue) hnu hev
+                    | inr b =>
+                        exact absurd htv
+                          (termVertices_head_not_hole mu t b vs)
+      · have hleg' : termMatchingLegalB t = false :=
+          Bool.eq_false_iff.mpr hleg
+        rw [vwalk_skip_illegal fuel mu t rest hleg'] at hev
+        have hrest := vwalk_sound_true fuel mu [] rest nu hag hnu hev
+        rw [List.any_cons, hrest]
+        simp
+  | fuel, mu, v :: vs, D, nu, hag, hnu, hev => by
+      by_cases hcov : vertexCoveredB mu v = true
+      · rw [vblock_skip_covered fuel mu v vs D hcov] at hev
+        exact vwalk_sound_true fuel mu vs D nu hag hnu hev
+      · have hcov' : vertexCoveredB mu v = false :=
+          Bool.eq_false_iff.mpr hcov
+        cases fuel with
+        | zero =>
+            rw [vblock_zero mu v vs D hcov'] at hev
+            rw [vmdtEval_leaf] at hev
+            cases hev
+        | succ fuel' =>
+            cases v with
+            | inl i =>
+                rw [vblock_query_pigeon fuel' mu i vs D hcov'] at hev
+                cases hnue : nu i with
+                | none =>
+                    rw [vmdtEval_pquery_free nu i _ hnue] at hev
+                    cases hev
+                | some a =>
+                    rw [vmdtEval_pquery_matched nu i _ a hnue] at hev
+                    by_cases hha : holeUsed mu a = true
+                    · rw [if_pos hha] at hev
+                      rw [vmdtEval_leaf] at hev
+                      cases hev
+                    · rw [if_neg hha] at hev
+                      exact vwalk_sound_true fuel'
+                        (compose mu (singleMatching i a)) vs D nu
+                        (mAgree_compose_single hag i a hnue) hnu hev
+            | inr b =>
+                rw [vblock_query_hole fuel' mu b vs D hcov'] at hev
+                cases hocc : holeOccupant nu b with
+                | none =>
+                    rw [vmdtEval_hquery_empty nu b _ hocc] at hev
+                    cases hev
+                | some q =>
+                    rw [vmdtEval_hquery_occupied nu b _ q hocc] at hev
+                    by_cases hqm : (mu q).isSome = true
+                    · rw [if_pos hqm] at hev
+                      rw [vmdtEval_leaf] at hev
+                      cases hev
+                    · rw [if_neg hqm] at hev
+                      exact vwalk_sound_true fuel'
+                        (compose mu (singleMatching q b)) vs D nu
+                        (mAgree_compose_single hag q b
+                          (holeOccupant_spec hocc)) hnu hev
+  termination_by fuel _ pending D _ _ _ _ =>
+    (fuel, pending.length + D.length)
+
+/-- Soundness, `false` direction, square signature, under the canonical
+fuel invariant: a `false`-evaluation by a hole-injective extension
+certifies that it satisfies no term of the MDNF. The square hypothesis
+makes the zero-fuel uncovered-hole arm unreachable
+(`holeUsed_of_no_free_pigeons`); the rectangular tightening is a named
+later obligation. -/
+theorem vwalk_sound_false {p h : Nat} (hsq : p = h) :
+    ∀ (fuel : Nat) (mu : MatchingMap p h) (pending : List (Vertex p h))
+      (D : MDNF p h) (nu : MatchingMap p h),
+      (freePigeons mu).card = fuel → IsMatching mu → IsMatching nu →
+      MAgree mu nu →
+      vmdtEval nu (vwalkAux fuel mu pending D) = some false →
+      ∀ t ∈ D, termSatisfiedB nu t = false
+  | _, _, [], [], _, _, _, _, _, _ => by
+      intro t ht
+      cases ht
+  | fuel, mu, [], t :: rest, nu, hinv, hmu, hnu, hag, hev => by
+      by_cases hleg : termMatchingLegalB t = true
+      · by_cases hfals : termFalsifiedB mu t = true
+        · rw [vwalk_skip_falsified fuel mu t rest hleg hfals] at hev
+          intro u hu
+          cases hu with
+          | head => exact termFals_stable hag hnu t hfals
+          | tail _ hurest =>
+              exact vwalk_sound_false hsq fuel mu [] rest nu hinv hmu hnu
+                hag hev u hurest
+        · have hfals' : termFalsifiedB mu t = false :=
+            Bool.eq_false_iff.mpr hfals
+          by_cases hsat : termSatisfiedB mu t = true
+          · rw [vwalk_stop_satisfied fuel mu t rest hleg hfals' hsat] at hev
+            rw [vmdtEval_leaf] at hev
+            cases hev
+          · have hsat' : termSatisfiedB mu t = false :=
+              Bool.eq_false_iff.mpr hsat
+            cases fuel with
+            | zero =>
+                exfalso
+                have hsome := firstUnresolvedPair_isSome_of_undetermined
+                  mu t hsat' hfals'
+                rw [Option.isSome_iff_exists] at hsome
+                rcases hsome with ⟨e, he⟩
+                unfold firstUnresolvedPair at he
+                have hpe := List.find?_some he
+                unfold pairUnresolvedB at hpe
+                rw [Bool.and_eq_true] at hpe
+                have hfree : mu e.1 = none := by
+                  have hb := hpe.1
+                  simpa using hb
+                have hmem : e.1 ∈ freePigeons mu :=
+                  (mem_freePigeons mu e.1).mpr hfree
+                have hpos : 0 < (freePigeons mu).card :=
+                  Finset.card_pos.mpr ⟨e.1, hmem⟩
+                rw [hinv] at hpos
+                cases hpos
+            | succ fuel' =>
+                cases htv : termVertices mu t with
+                | nil =>
+                    exact absurd htv
+                      (termVertices_ne_nil_of_undetermined mu t hsat'
+                        hfals')
+                | cons v vs =>
+                    cases v with
+                    | inl i =>
+                        rw [vwalk_entry_pigeon fuel' mu t rest i vs hleg
+                          hfals' hsat' htv] at hev
+                        have hfree : mu i = none :=
+                          termVertices_head_pigeon_free mu t i vs htv
+                        cases hnue : nu i with
+                        | none =>
+                            rw [vmdtEval_pquery_free nu i _ hnue] at hev
+                            cases hev
+                        | some a =>
+                            rw [vmdtEval_pquery_matched nu i _ a hnue]
+                              at hev
+                            by_cases hha : holeUsed mu a = true
+                            · exact absurd hnue
+                                (no_used_hole_answer hag hnu i a hfree hha)
+                            · rw [if_neg hha] at hev
+                              have hha' : holeUsed mu a = false :=
+                                Bool.eq_false_iff.mpr hha
+                              have hinv' : (freePigeons
+                                  (compose mu (singleMatching i a))).card =
+                                    fuel' := by
+                                have hdrop := freePigeons_compose_card mu
+                                  (singleMatching i a) {i}
+                                  (by
+                                    intro j
+                                    unfold singleMatching
+                                    by_cases hji : j = i
+                                    · simp [hji]
+                                    · simp [hji])
+                                  (by
+                                    intro j hj
+                                    rw [Finset.mem_singleton] at hj
+                                    rw [hj]
+                                    exact (mem_freePigeons mu i).mpr hfree)
+                                rw [hdrop, Finset.card_singleton, hinv]
+                                rfl
+                              exact vwalk_sound_false hsq fuel'
+                                (compose mu (singleMatching i a)) vs
+                                (t :: rest) nu hinv'
+                                (isMatching_compose_single hmu i a hfree
+                                  hha')
+                                hnu
+                                (mAgree_compose_single hag i a hnue) hev
+                    | inr b =>
+                        exact absurd htv
+                          (termVertices_head_not_hole mu t b vs)
+      · have hleg' : termMatchingLegalB t = false :=
+          Bool.eq_false_iff.mpr hleg
+        rw [vwalk_skip_illegal fuel mu t rest hleg'] at hev
+        intro u hu
+        cases hu with
+        | head => exact illegal_term_unsat hnu t hleg'
+        | tail _ hurest =>
+            exact vwalk_sound_false hsq fuel mu [] rest nu hinv hmu hnu hag
+              hev u hurest
+  | fuel, mu, v :: vs, D, nu, hinv, hmu, hnu, hag, hev => by
+      by_cases hcov : vertexCoveredB mu v = true
+      · rw [vblock_skip_covered fuel mu v vs D hcov] at hev
+        exact vwalk_sound_false hsq fuel mu vs D nu hinv hmu hnu hag hev
+      · have hcov' : vertexCoveredB mu v = false :=
+          Bool.eq_false_iff.mpr hcov
+        cases fuel with
+        | zero =>
+            exfalso
+            cases v with
+            | inl i =>
+                have hfree : mu i = none := by
+                  simp only [vertexCoveredB] at hcov'
+                  cases hmi : mu i with
+                  | none => rfl
+                  | some c =>
+                      rw [hmi] at hcov'
+                      simp at hcov'
+                have hmem : i ∈ freePigeons mu :=
+                  (mem_freePigeons mu i).mpr hfree
+                have hpos : 0 < (freePigeons mu).card :=
+                  Finset.card_pos.mpr ⟨i, hmem⟩
+                rw [hinv] at hpos
+                cases hpos
+            | inr b =>
+                have hb : holeUsed mu b = false := by
+                  simpa only [vertexCoveredB] using hcov'
+                have hused := holeUsed_of_no_free_pigeons hsq hmu hinv b
+                rw [hb] at hused
+                cases hused
+        | succ fuel' =>
+            cases v with
+            | inl i =>
+                have hfree : mu i = none := by
+                  simp only [vertexCoveredB] at hcov'
+                  cases hmi : mu i with
+                  | none => rfl
+                  | some c =>
+                      rw [hmi] at hcov'
+                      simp at hcov'
+                rw [vblock_query_pigeon fuel' mu i vs D hcov'] at hev
+                cases hnue : nu i with
+                | none =>
+                    rw [vmdtEval_pquery_free nu i _ hnue] at hev
+                    cases hev
+                | some a =>
+                    rw [vmdtEval_pquery_matched nu i _ a hnue] at hev
+                    by_cases hha : holeUsed mu a = true
+                    · exact absurd hnue
+                        (no_used_hole_answer hag hnu i a hfree hha)
+                    · rw [if_neg hha] at hev
+                      have hha' : holeUsed mu a = false :=
+                        Bool.eq_false_iff.mpr hha
+                      have hinv' : (freePigeons
+                          (compose mu (singleMatching i a))).card =
+                            fuel' := by
+                        have hdrop := freePigeons_compose_card mu
+                          (singleMatching i a) {i}
+                          (by
+                            intro j
+                            unfold singleMatching
+                            by_cases hji : j = i
+                            · simp [hji]
+                            · simp [hji])
+                          (by
+                            intro j hj
+                            rw [Finset.mem_singleton] at hj
+                            rw [hj]
+                            exact (mem_freePigeons mu i).mpr hfree)
+                        rw [hdrop, Finset.card_singleton, hinv]
+                        rfl
+                      exact vwalk_sound_false hsq fuel'
+                        (compose mu (singleMatching i a)) vs D nu hinv'
+                        (isMatching_compose_single hmu i a hfree hha') hnu
+                        (mAgree_compose_single hag i a hnue) hev
+            | inr b =>
+                have hb : holeUsed mu b = false := by
+                  simpa only [vertexCoveredB] using hcov'
+                rw [vblock_query_hole fuel' mu b vs D hcov'] at hev
+                cases hocc : holeOccupant nu b with
+                | none =>
+                    rw [vmdtEval_hquery_empty nu b _ hocc] at hev
+                    cases hev
+                | some q =>
+                    rw [vmdtEval_hquery_occupied nu b _ q hocc] at hev
+                    have hnq : nu q = some b := holeOccupant_spec hocc
+                    by_cases hqm : (mu q).isSome = true
+                    · exfalso
+                      rcases Option.isSome_iff_exists.mp hqm with ⟨c, hc⟩
+                      have hnc : nu q = some c := hag q c hc
+                      rw [hnq] at hnc
+                      have hcb : c = b := by
+                        cases hnc
+                        rfl
+                      rw [hcb] at hc
+                      have : holeUsed mu b = true :=
+                        (holeUsed_eq_true_iff mu b).mpr ⟨q, hc⟩
+                      rw [hb] at this
+                      cases this
+                    · rw [if_neg hqm] at hev
+                      have hfreeq : mu q = none := by
+                        cases hmq : mu q with
+                        | none => rfl
+                        | some c =>
+                            exfalso
+                            rw [hmq] at hqm
+                            simp at hqm
+                      have hinv' : (freePigeons
+                          (compose mu (singleMatching q b))).card =
+                            fuel' := by
+                        have hdrop := freePigeons_compose_card mu
+                          (singleMatching q b) {q}
+                          (by
+                            intro j
+                            unfold singleMatching
+                            by_cases hjq : j = q
+                            · simp [hjq]
+                            · simp [hjq])
+                          (by
+                            intro j hj
+                            rw [Finset.mem_singleton] at hj
+                            rw [hj]
+                            exact (mem_freePigeons mu q).mpr hfreeq)
+                        rw [hdrop, Finset.card_singleton, hinv]
+                        rfl
+                      exact vwalk_sound_false hsq fuel'
+                        (compose mu (singleMatching q b)) vs D nu hinv'
+                        (isMatching_compose_single hmu q b hfreeq hb) hnu
+                        (mAgree_compose_single hag q b hnq) hev
+  termination_by fuel _ pending D _ _ _ _ _ _ =>
+    (fuel, pending.length + D.length)
+
+/-- Pin 2.3 analogue, canonical packaging (square signature): for
+hole-injective extensions of a hole-injective base matching, a determined
+evaluation of the canonical vertex tree is exactly the MDNF's
+satisfaction value. -/
+theorem canonicalVMDT_sound {p h : Nat} (hsq : p = h) (D : MDNF p h)
+    (mu nu : MatchingMap p h) (hmu : IsMatching mu) (hnu : IsMatching nu)
+    (hag : MAgree mu nu) (b : Bool)
+    (hev : vmdtEval nu (canonicalVMDT D mu) = some b) :
+    D.any (termSatisfiedB nu) = b := by
+  cases b with
+  | true =>
+      exact vwalk_sound_true (freePigeons mu).card mu [] D nu hag hnu hev
+  | false =>
+      have hall := vwalk_sound_false hsq (freePigeons mu).card mu [] D nu
+        rfl hmu hnu hag hev
+      cases hany : D.any (termSatisfiedB nu) with
+      | false => rfl
+      | true =>
+          exfalso
+          rw [List.any_eq_true] at hany
+          rcases hany with ⟨t, ht, htt⟩
+          rw [hall t ht] at htt
+          cases htt
 
 end PHPMatchingVertexTree
 end PvNP

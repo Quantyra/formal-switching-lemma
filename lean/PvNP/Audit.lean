@@ -11252,3 +11252,33 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 /-- info: 'PvNP.PHPMatchingVertexTree.walk_vertex_depth_divergence' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingVertexTree.walk_vertex_depth_divergence
+
+/-! S2187 stage-0b vertex-walk evaluation-soundness pins. -/
+
+/-- info: 'PvNP.PHPMatchingVertexTree.termVertices_head_pigeon_free' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingVertexTree.termVertices_head_pigeon_free
+
+/-- info: 'PvNP.PHPMatchingVertexTree.termVertices_head_not_hole' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingVertexTree.termVertices_head_not_hole
+
+/-- info: 'PvNP.PHPMatchingVertexTree.isMatching_compose_single' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingVertexTree.isMatching_compose_single
+
+/-- info: 'PvNP.PHPMatchingVertexTree.holeUsed_of_no_free_pigeons' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingVertexTree.holeUsed_of_no_free_pigeons
+
+/-- info: 'PvNP.PHPMatchingVertexTree.vwalk_sound_true' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingVertexTree.vwalk_sound_true
+
+/-- info: 'PvNP.PHPMatchingVertexTree.vwalk_sound_false' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingVertexTree.vwalk_sound_false
+
+/-- info: 'PvNP.PHPMatchingVertexTree.canonicalVMDT_sound' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingVertexTree.canonicalVMDT_sound
