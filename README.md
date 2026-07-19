@@ -849,7 +849,7 @@ frozen-payload B4 beyond the named class, not a PHP switching lemma, not
 Frege/PHP, NP/circuit, arbitrary AC0 collapse, Gate A revival, or P-vs-NP.
 
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.9.0`
-- Zenodo version DOI: pending GitHub/Zenodo archive after tag publication
+- Zenodo version DOI: `10.5281/zenodo.21408241`
   (concept DOI remains `10.5281/zenodo.20757627`)
 
 Version `v0.8.0` publishes the post-`v0.7.0` Gate B 32-route stack S2162-S2172
