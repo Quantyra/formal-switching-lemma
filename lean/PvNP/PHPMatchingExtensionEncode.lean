@@ -1658,5 +1658,178 @@ theorem blocksOf_sigma_cross {p h : Nat} :
                             (compose mu (singleMatching q b)) vs D fs
   termination_by fuel _ pending D _ => (fuel, pending.length + D.length)
 
+/-! ## Stage 1b.3: the σ-join and the extension's well-definedness -/
+
+/-- `PairDisjoint` is symmetric. -/
+theorem pairDisjoint_symm {p h : Nat} :
+    Symmetric (PairDisjoint (p := p) (h := h)) := by
+  intro e f hef
+  exact ⟨Ne.symm hef.1, Ne.symm hef.2⟩
+
+/-- Every σ-list of the encode is the full or truncated σ′ of a member
+block. -/
+theorem mem_blockSigmas {p h : Nat} :
+    ∀ (Bs : List (VBlock p h)) (l : List (Fin p × Fin h)),
+      l ∈ blockSigmas Bs →
+      ∃ B, B ∈ Bs ∧ (l = sigmaFull B ∨ l = sigmaTrunc B)
+  | [], _, hl => by cases hl
+  | [B], l, hl => by
+      rw [show blockSigmas [B] = [sigmaTrunc B] from rfl] at hl
+      cases hl with
+      | head => exact ⟨B, List.mem_cons_self _ _, Or.inr rfl⟩
+      | tail _ h' => cases h'
+  | B :: B' :: Bs, l, hl => by
+      rw [show blockSigmas (B :: B' :: Bs) =
+        sigmaFull B :: blockSigmas (B' :: Bs) from rfl] at hl
+      cases hl with
+      | head => exact ⟨B, List.mem_cons_self _ _, Or.inl rfl⟩
+      | tail _ h' =>
+          rcases mem_blockSigmas (B' :: Bs) l h' with ⟨B'', hB'', hf⟩
+          exact ⟨B'', List.mem_cons_of_mem _ hB'', hf⟩
+
+/-- Elements of a σ-list lie in the σ′ of its block. -/
+theorem mem_of_mem_blockSigmas {p h : Nat} (Bs : List (VBlock p h))
+    (l : List (Fin p × Fin h)) (hl : l ∈ blockSigmas Bs)
+    (e : Fin p × Fin h) (he : e ∈ l) :
+    ∃ B, B ∈ Bs ∧ e ∈ sigmaFull B := by
+  rcases mem_blockSigmas Bs l hl with ⟨B, hB, hf⟩
+  refine ⟨B, hB, ?_⟩
+  cases hf with
+  | inl hfull =>
+      rw [hfull] at he
+      exact he
+  | inr htrunc =>
+      rw [htrunc] at he
+      exact sigmaTrunc_subset_sigmaFull B e he
+
+/-- The block-level cross relation transports to the σ-lists. -/
+theorem blockSigmas_pairwise_transport {p h : Nat} :
+    ∀ (Bs : List (VBlock p h)),
+      List.Pairwise (fun Bi Bj => ∀ e ∈ sigmaFull Bi,
+        ∀ f ∈ sigmaFull Bj, PairDisjoint e f) Bs →
+      List.Pairwise (fun l1 l2 => ∀ x ∈ l1, ∀ y ∈ l2, PairDisjoint x y)
+        (blockSigmas Bs)
+  | [], _ => List.Pairwise.nil
+  | [B], _ => by
+      rw [show blockSigmas [B] = [sigmaTrunc B] from rfl]
+      exact List.pairwise_singleton _ _
+  | B :: B' :: Bs, hp => by
+      rw [show blockSigmas (B :: B' :: Bs) =
+        sigmaFull B :: blockSigmas (B' :: Bs) from rfl]
+      rw [List.pairwise_cons] at hp ⊢
+      constructor
+      · intro l2 hl2 x hx y hy
+        rcases mem_of_mem_blockSigmas (B' :: Bs) l2 hl2 y hy with
+          ⟨B'', hB'', hy'⟩
+        exact hp.1 B'' hB'' x hx y hy'
+      · exact blockSigmas_pairwise_transport (B' :: Bs) hp.2
+
+/-- **The σ-join is pairwise vertex-disjoint** (pin 3.1): in-block
+disjointness from the legality gate, cross-block disjointness from the
+coverage invariant. -/
+theorem blockSigmas_join_pairwise {p h : Nat} (fuel : Nat)
+    (mu : MatchingMap p h) (pending : List (Vertex p h)) (D : MDNF p h)
+    (feed : List (Vertex p h)) :
+    List.Pairwise PairDisjoint
+      (blockSigmas (blocksOf (vevents fuel mu pending D feed))).join := by
+  rw [List.pairwise_join]
+  constructor
+  · intro l hl
+    rcases mem_blockSigmas _ l hl with ⟨B, hB, hf⟩
+    have hleg := (blocksOf_entry_spec fuel mu pending D feed B hB).2.1
+    have hfull := sigmaFull_pairwise B hleg
+    cases hf with
+    | inl hfl =>
+        rw [hfl]
+        exact hfull
+    | inr htr =>
+        rw [htr]
+        exact hfull.filter _
+  · exact blockSigmas_pairwise_transport _
+      (blocksOf_sigma_cross fuel mu pending D feed)
+
+/-- The σ-join is fresh over the base matching. -/
+theorem blockSigmas_join_fresh {p h : Nat} (fuel : Nat)
+    (mu : MatchingMap p h) (pending : List (Vertex p h)) (D : MDNF p h)
+    (feed : List (Vertex p h)) (e : Fin p × Fin h)
+    (he : e ∈ (blockSigmas (blocksOf
+      (vevents fuel mu pending D feed))).join) :
+    mu e.1 = none ∧ holeUsed mu e.2 = false := by
+  rcases List.mem_join.mp he with ⟨l, hl, hel⟩
+  rcases mem_of_mem_blockSigmas _ l hl e hel with ⟨B, hB, he'⟩
+  exact sigmaFull_fresh_over_base fuel mu pending D feed B hB e he'
+
+/-- The pairs a pair-list overlay actually assigns are its members. -/
+theorem pairsToMatching_eq_some {p h : Nat} :
+    ∀ (l : List (Fin p × Fin h)) (j : Fin p) (b : Fin h),
+      pairsToMatching l j = some b → (j, b) ∈ l
+  | [], _, _, hj => by cases hj
+  | e :: es, j, b, hj => by
+      rw [show pairsToMatching (e :: es) =
+        compose (singleMatching e.1 e.2) (pairsToMatching es) from rfl]
+        at hj
+      by_cases hje : j = e.1
+      · have hsome : singleMatching e.1 e.2 j = some e.2 := by
+          unfold singleMatching
+          rw [if_pos hje]
+        rw [compose_fixed_left _ _ j e.2 hsome] at hj
+        have hbe : b = e.2 := by
+          cases hj
+          rfl
+        have : (j, b) = e := by
+          rw [hje, hbe]
+        rw [this]
+        exact List.mem_cons_self _ _
+      · have hnone : singleMatching e.1 e.2 j = none := by
+          unfold singleMatching
+          rw [if_neg hje]
+        rw [compose_free_left _ _ j hnone] at hj
+        exact List.mem_cons_of_mem _ (pairsToMatching_eq_some es j b hj)
+
+/-- A pairwise vertex-disjoint pair list overlays to a hole-injective
+map. -/
+theorem isMatching_pairsToMatching {p h : Nat}
+    (l : List (Fin p × Fin h)) (hl : List.Pairwise PairDisjoint l) :
+    IsMatching (pairsToMatching l) := by
+  intro i j b hi hj
+  have hmi : (i, b) ∈ l := pairsToMatching_eq_some l i b hi
+  have hmj : (j, b) ∈ l := pairsToMatching_eq_some l j b hj
+  by_contra hij
+  have hne : (i, b) ≠ (j, b) := by
+    intro hcontra
+    apply hij
+    exact congrArg Prod.fst hcontra
+  have hd := hl.forall pairDisjoint_symm hmi hmj hne
+  exact hd.2 rfl
+
+/-- Freshness gives cross-consistency: the overlay never sends a fresh
+pigeon into a hole the base already uses. -/
+theorem crossConsistent_of_fresh {p h : Nat} (mu : MatchingMap p h)
+    (l : List (Fin p × Fin h))
+    (hfresh : ∀ e ∈ l, mu e.1 = none ∧ holeUsed mu e.2 = false) :
+    CrossConsistent mu (pairsToMatching l) := by
+  intro i j a hi _ hj1
+  have hm : (j, a) ∈ l := pairsToMatching_eq_some l j a hj1
+  have hfr := (hfresh (j, a) hm).2
+  have hused : holeUsed mu a = true :=
+    (holeUsed_eq_true_iff mu a).mpr ⟨i, hi⟩
+  rw [hfr] at hused
+  cases hused
+
+/-- **Pin 3.1, well-definedness**: the extension `ρσ` is a partial
+matching — `encodeExt` lands in `M`. σ's internal disjointness comes
+from the legality gate, its cross-block disjointness from the coverage
+invariant, and its ρ-compatibility from entry freshness; the walked
+pairs never enter the overlay at all. -/
+theorem encodeExt_isMatching {p h : Nat} (rho : MatchingMap p h)
+    (D : MDNF p h) (feed : List (Vertex p h))
+    (hrho : IsMatching rho) : IsMatching (encodeExt rho D feed) := by
+  unfold encodeExt vtrace
+  apply isMatching_compose hrho
+  · exact isMatching_pairsToMatching _
+      (blockSigmas_join_pairwise (freePigeons rho).card rho [] D feed)
+  · exact crossConsistent_of_fresh rho _
+      (blockSigmas_join_fresh (freePigeons rho).card rho [] D feed)
+
 end PHPMatchingExtensionEncode
 end PvNP

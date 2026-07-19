@@ -11389,3 +11389,33 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 /-- info: 'PvNP.PHPMatchingExtensionEncode.vevents_block_feed_nil' depends on axioms: [propext, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingExtensionEncode.vevents_block_feed_nil
+
+/-! S2187 stage-1b.3 sigma-join / extension well-definedness pins. -/
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.mem_blockSigmas' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.mem_blockSigmas
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.blockSigmas_join_pairwise' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.blockSigmas_join_pairwise
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.blockSigmas_join_fresh' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.blockSigmas_join_fresh
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.pairsToMatching_eq_some' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.pairsToMatching_eq_some
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.isMatching_pairsToMatching' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.isMatching_pairsToMatching
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.crossConsistent_of_fresh' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.crossConsistent_of_fresh
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.encodeExt_isMatching' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.encodeExt_isMatching
