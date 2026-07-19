@@ -22,6 +22,7 @@ import PvNP.PHPFullMatchingProbability
 import PvNP.PHPMatchingComposition
 import PvNP.PHPMatchingCanonicalMDT
 import PvNP.PHPMatchingVertexTree
+import PvNP.PHPMatchingExtensionEncode
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
@@ -11282,3 +11283,49 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 /-- info: 'PvNP.PHPMatchingVertexTree.canonicalVMDT_sound' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingVertexTree.canonicalVMDT_sound
+
+/-! S2187 stage-1a extension-encode trace/block/sigma pins. -/
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.vevents_entry_pigeon_live' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.vevents_entry_pigeon_live
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.vevents_block_hole_live' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.vevents_block_hole_live
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.vevents_pairs_fresh' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.vevents_pairs_fresh
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.vevents_pairs_pairwise' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.vevents_pairs_pairwise
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.pairDisjoint_of_fresh_over_extension' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.pairDisjoint_of_fresh_over_extension
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.mem_sigmaFull' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.mem_sigmaFull
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.sigmaFull_nodup' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.sigmaFull_nodup
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.mem_sigmaTrunc' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.mem_sigmaTrunc
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.hasDupB_map_of_mem_eq' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.hasDupB_map_of_mem_eq
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.sigmaFull_pairwise' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.sigmaFull_pairwise
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.blocksOf_enter' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.blocksOf_enter
