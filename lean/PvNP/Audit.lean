@@ -11359,3 +11359,33 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 /-- info: 'PvNP.PHPMatchingExtensionEncode.sigmaFull_fresh_over_base' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingExtensionEncode.sigmaFull_fresh_over_base
+
+/-! S2187 stage-1b.2 pending-coverage / cross-block sigma pins. -/
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.vertexCoveredB_mono_mAgree' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.vertexCoveredB_mono_mAgree
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.vevents_pending_covered' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.vevents_pending_covered
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.sigma_vertices_mem_termVertices' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.sigma_vertices_mem_termVertices
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.pairDisjoint_of_covered_at_entry' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.pairDisjoint_of_covered_at_entry
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.blocksOf_sigma_cross' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.blocksOf_sigma_cross
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.vevents_block_feed_nil' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.vevents_block_feed_nil

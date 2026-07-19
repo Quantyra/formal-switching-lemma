@@ -265,6 +265,85 @@ theorem vevents_block_hole_live {p h : Nat} (fuel' : Nat)
   rw [vevents.eq_def]
   simp [hcov, hq]
 
+/-! Dead-arm equation lemmas: every truncation of the trace, pinned. -/
+
+theorem vevents_entry_novertices {p h : Nat} (fuel' : Nat)
+    (mu : MatchingMap p h) (t : MTerm p h) (rest : MDNF p h)
+    (feed : List (Vertex p h)) (hleg : termMatchingLegalB t = true)
+    (hfals : termFalsifiedB mu t = false)
+    (hsat : termSatisfiedB mu t = false)
+    (htv : termVertices mu t = []) :
+    vevents (fuel' + 1) mu [] (t :: rest) feed = [] := by
+  rw [vevents.eq_def]
+  simp [hleg, hfals, hsat, htv]
+
+theorem vevents_entry_feed_nil {p h : Nat} (fuel' : Nat)
+    (mu : MatchingMap p h) (t : MTerm p h) (rest : MDNF p h) (i : Fin p)
+    (vs : List (Vertex p h)) (hleg : termMatchingLegalB t = true)
+    (hfals : termFalsifiedB mu t = false)
+    (hsat : termSatisfiedB mu t = false)
+    (htv : termVertices mu t = .inl i :: vs) :
+    vevents (fuel' + 1) mu [] (t :: rest) [] = [] := by
+  rw [vevents.eq_def]
+  simp [hleg, hfals, hsat, htv]
+
+theorem vevents_entry_feed_illkind {p h : Nat} (fuel' : Nat)
+    (mu : MatchingMap p h) (t : MTerm p h) (rest : MDNF p h) (i : Fin p)
+    (vs : List (Vertex p h)) (q : Fin p) (fs : List (Vertex p h))
+    (hleg : termMatchingLegalB t = true)
+    (hfals : termFalsifiedB mu t = false)
+    (hsat : termSatisfiedB mu t = false)
+    (htv : termVertices mu t = .inl i :: vs) :
+    vevents (fuel' + 1) mu [] (t :: rest) (Sum.inl q :: fs) = [] := by
+  rw [vevents.eq_def]
+  simp [hleg, hfals, hsat, htv]
+
+theorem vevents_block_feed_nil {p h : Nat} (fuel' : Nat)
+    (mu : MatchingMap p h) (v : Vertex p h) (vs : List (Vertex p h))
+    (D : MDNF p h) (hcov : vertexCoveredB mu v = false) :
+    vevents (fuel' + 1) mu (v :: vs) D [] = [] := by
+  cases v with
+  | inl i =>
+      rw [vevents.eq_def]
+      simp [hcov]
+  | inr b =>
+      rw [vevents.eq_def]
+      simp [hcov]
+
+theorem vevents_block_pigeon_illkind {p h : Nat} (fuel' : Nat)
+    (mu : MatchingMap p h) (i : Fin p) (vs : List (Vertex p h))
+    (D : MDNF p h) (q : Fin p) (fs : List (Vertex p h))
+    (hcov : vertexCoveredB mu (.inl i) = false) :
+    vevents (fuel' + 1) mu (.inl i :: vs) D (Sum.inl q :: fs) = [] := by
+  rw [vevents.eq_def]
+  simp [hcov]
+
+theorem vevents_block_pigeon_dead {p h : Nat} (fuel' : Nat)
+    (mu : MatchingMap p h) (i : Fin p) (vs : List (Vertex p h))
+    (D : MDNF p h) (a : Fin h) (fs : List (Vertex p h))
+    (hcov : vertexCoveredB mu (.inl i) = false)
+    (hha : holeUsed mu a = true) :
+    vevents (fuel' + 1) mu (.inl i :: vs) D (Sum.inr a :: fs) = [] := by
+  rw [vevents.eq_def]
+  simp [hcov, hha]
+
+theorem vevents_block_hole_illkind {p h : Nat} (fuel' : Nat)
+    (mu : MatchingMap p h) (b : Fin h) (vs : List (Vertex p h))
+    (D : MDNF p h) (a : Fin h) (fs : List (Vertex p h))
+    (hcov : vertexCoveredB mu (.inr b) = false) :
+    vevents (fuel' + 1) mu (.inr b :: vs) D (Sum.inr a :: fs) = [] := by
+  rw [vevents.eq_def]
+  simp [hcov]
+
+theorem vevents_block_hole_dead {p h : Nat} (fuel' : Nat)
+    (mu : MatchingMap p h) (b : Fin h) (vs : List (Vertex p h))
+    (D : MDNF p h) (q : Fin p) (fs : List (Vertex p h))
+    (hcov : vertexCoveredB mu (.inr b) = false)
+    (hq : (mu q).isSome = true) :
+    vevents (fuel' + 1) mu (.inr b :: vs) D (Sum.inl q :: fs) = [] := by
+  rw [vevents.eq_def]
+  simp [hcov, hq]
+
 /-! ## Walked pairs -/
 
 /-- The walked pairs of a trace, in walk order — the path matching π as a
@@ -1165,6 +1244,419 @@ theorem sigmaFull_fresh_over_base {p h : Nat} (fuel : Nat)
     simpa using hb
   exact ⟨free_of_mAgree_free hspec.1 e.1 hfree,
     holeUnused_of_mAgree_unused hspec.1 e.2 hhole⟩
+
+/-! ## Stage 1b.2: pending coverage and cross-block σ-compatibility -/
+
+/-- Vertex coverage is monotone under `MAgree`. -/
+theorem vertexCoveredB_mono_mAgree {p h : Nat} {mu nu : MatchingMap p h}
+    (hag : MAgree mu nu) (v : Vertex p h)
+    (hv : vertexCoveredB mu v = true) : vertexCoveredB nu v = true := by
+  cases v with
+  | inl i =>
+      simp only [vertexCoveredB] at hv ⊢
+      cases hmi : mu i with
+      | none =>
+          rw [hmi] at hv
+          simp at hv
+      | some c =>
+          rw [hag i c hmi]
+          rfl
+  | inr b =>
+      simp only [vertexCoveredB] at hv ⊢
+      exact holeUsed_mono_mAgree hag b hv
+
+/-- **Pending coverage**: every vertex still pending in an open block is
+covered by the entry matching of every later block of the trace — the
+walk drains its frozen list (query or covered-skip) before it ever opens
+another block. -/
+theorem vevents_pending_covered {p h : Nat} :
+    ∀ (fuel : Nat) (mu : MatchingMap p h) (pending : List (Vertex p h))
+      (D : MDNF p h) (feed : List (Vertex p h)) (v : Vertex p h),
+      v ∈ pending →
+      ∀ B ∈ blocksOf (vevents fuel mu pending D feed),
+        vertexCoveredB B.entry v = true
+  | _, _, [], [], _, v, hv => by cases hv
+  | _, _, [], _ :: _, _, v, hv => by cases hv
+  | fuel, mu, v' :: vs, D, feed, v, hv => by
+      by_cases hcov : vertexCoveredB mu v' = true
+      · rw [vevents_block_skip_covered fuel mu v' vs D feed hcov]
+        cases hv with
+        | head =>
+            intro B hB
+            exact vertexCoveredB_mono_mAgree
+              (blocksOf_entry_spec fuel mu vs D feed B hB).1 v' hcov
+        | tail _ hv' =>
+            exact vevents_pending_covered fuel mu vs D feed v hv'
+      · have hcov' : vertexCoveredB mu v' = false :=
+          Bool.eq_false_iff.mpr hcov
+        cases fuel with
+        | zero =>
+            rw [vevents_block_zero mu v' vs D feed hcov']
+            intro B hB
+            rw [blocksOf_nil] at hB
+            cases hB
+        | succ fuel' =>
+            cases v' with
+            | inl i =>
+                have hfree : mu i = none := by
+                  simp only [vertexCoveredB] at hcov'
+                  cases hmi : mu i with
+                  | none => rfl
+                  | some c =>
+                      rw [hmi] at hcov'
+                      simp at hcov'
+                cases feed with
+                | nil =>
+                    rw [vevents.eq_def]
+                    simp only [hcov']
+                    intro B hB
+                    simp [blocksOf_nil] at hB
+                | cons av fs =>
+                    cases av with
+                    | inl q =>
+                        rw [vevents.eq_def]
+                        simp only [hcov']
+                        intro B hB
+                        simp [blocksOf_nil] at hB
+                    | inr a =>
+                        by_cases hha : holeUsed mu a = true
+                        · rw [vevents.eq_def]
+                          simp only [hcov', hha]
+                          intro B hB
+                          simp [blocksOf_nil] at hB
+                        · have hha' : holeUsed mu a = false :=
+                            Bool.eq_false_iff.mpr hha
+                          rw [vevents_block_pigeon_live fuel' mu i vs D a
+                            fs hcov' hha']
+                          intro B hB
+                          rw [blocksOf_qstep] at hB
+                          cases hv with
+                          | head =>
+                              have hcv : vertexCoveredB
+                                  (compose mu (singleMatching i a))
+                                  (Sum.inl i) = true := by
+                                simp only [vertexCoveredB]
+                                rw [compose_single_self mu i a hfree]
+                                rfl
+                              exact vertexCoveredB_mono_mAgree
+                                (blocksOf_entry_spec fuel' _ vs D fs B
+                                  hB).1 _ hcv
+                          | tail _ hv' =>
+                              exact vevents_pending_covered fuel'
+                                (compose mu (singleMatching i a)) vs D fs
+                                v hv' B hB
+            | inr b =>
+                cases feed with
+                | nil =>
+                    rw [vevents.eq_def]
+                    simp only [hcov']
+                    intro B hB
+                    simp [blocksOf_nil] at hB
+                | cons av fs =>
+                    cases av with
+                    | inr a =>
+                        rw [vevents.eq_def]
+                        simp only [hcov']
+                        intro B hB
+                        simp [blocksOf_nil] at hB
+                    | inl q =>
+                        by_cases hq : (mu q).isSome = true
+                        · rw [vevents.eq_def]
+                          simp only [hcov', hq]
+                          intro B hB
+                          simp [blocksOf_nil] at hB
+                        · have hq' : (mu q).isSome = false :=
+                            Bool.eq_false_iff.mpr hq
+                          have hfreeq : mu q = none := by
+                            cases hmq : mu q with
+                            | none => rfl
+                            | some c =>
+                                rw [hmq] at hq'
+                                simp at hq'
+                          rw [vevents_block_hole_live fuel' mu b vs D q fs
+                            hcov' hq']
+                          intro B hB
+                          rw [blocksOf_qstep] at hB
+                          cases hv with
+                          | head =>
+                              have hcv : vertexCoveredB
+                                  (compose mu (singleMatching q b))
+                                  (Sum.inr b) = true := by
+                                simp only [vertexCoveredB]
+                                exact holeUsed_compose_single mu q b
+                                  hfreeq
+                              exact vertexCoveredB_mono_mAgree
+                                (blocksOf_entry_spec fuel' _ vs D fs B
+                                  hB).1 _ hcv
+                          | tail _ hv' =>
+                              exact vevents_pending_covered fuel'
+                                (compose mu (singleMatching q b)) vs D fs
+                                v hv' B hB
+  termination_by fuel _ pending D _ _ _ =>
+    (fuel, pending.length + D.length)
+
+/-- The endpoints of a σ′-pair sit in the block's frozen vertex list. -/
+theorem sigma_vertices_mem_termVertices {p h : Nat} (B : VBlock p h)
+    (e : Fin p × Fin h) (he : e ∈ sigmaFull B) :
+    Sum.inl e.1 ∈ termVertices B.entry B.term ∧
+      Sum.inr e.2 ∈ termVertices B.entry B.term := by
+  rcases (mem_sigmaFull B e).mp he with ⟨hmem, hunres⟩
+  have hf : e ∈ B.term.filter (pairUnresolvedB B.entry) :=
+    List.mem_filter.mpr ⟨hmem, hunres⟩
+  unfold termVertices
+  constructor
+  · exact List.mem_bind.mpr ⟨e, hf, List.mem_cons_self _ _⟩
+  · refine List.mem_bind.mpr ⟨e, hf, ?_⟩
+    exact List.mem_cons_of_mem _ (List.mem_cons_self _ _)
+
+/-- Coverage against an entry beats unresolvedness: a pair covered at a
+block's entry is vertex-disjoint from every σ′-pair of that block. -/
+theorem pairDisjoint_of_covered_at_entry {p h : Nat} (B : VBlock p h)
+    (e f : Fin p × Fin h)
+    (he1 : vertexCoveredB B.entry (Sum.inl e.1) = true)
+    (he2 : vertexCoveredB B.entry (Sum.inr e.2) = true)
+    (hf : f ∈ sigmaFull B) : PairDisjoint e f := by
+  have hunres := ((mem_sigmaFull B f).mp hf).2
+  unfold pairUnresolvedB at hunres
+  rw [Bool.and_eq_true] at hunres
+  have hffree : B.entry f.1 = none := by
+    have hb := hunres.1
+    simpa using hb
+  have hfhole : holeUsed B.entry f.2 = false := by
+    have hb := hunres.2
+    simpa using hb
+  constructor
+  · intro hef
+    simp only [vertexCoveredB] at he1
+    rw [hef, hffree] at he1
+    simp at he1
+  · intro hef
+    simp only [vertexCoveredB] at he2
+    rw [hef, hfhole] at he2
+    cases he2
+
+/-- **Cross-block σ-compatibility** (pin 3.1, the counterexample-killing
+invariant): the σ′-families of distinct blocks are pairwise
+vertex-disjoint — an earlier block's still-unset satisfying pairs have
+both endpoints in its frozen list, the frozen list is drained (covered)
+before any later block opens, and coverage beats the later block's
+unresolvedness. This is exactly what vertex queries buy: no later term
+can re-demand a hole the entered block owed. -/
+theorem blocksOf_sigma_cross {p h : Nat} :
+    ∀ (fuel : Nat) (mu : MatchingMap p h) (pending : List (Vertex p h))
+      (D : MDNF p h) (feed : List (Vertex p h)),
+      List.Pairwise
+        (fun Bi Bj => ∀ e ∈ sigmaFull Bi, ∀ f ∈ sigmaFull Bj,
+          PairDisjoint e f)
+        (blocksOf (vevents fuel mu pending D feed))
+  | _, _, [], [], feed => by
+      rw [vevents_nil, blocksOf_nil]
+      exact List.Pairwise.nil
+  | fuel, mu, [], t :: rest, feed => by
+      by_cases hleg : termMatchingLegalB t = true
+      · by_cases hfals : termFalsifiedB mu t = true
+        · rw [vevents_skip_falsified fuel mu t rest feed hleg hfals]
+          exact blocksOf_sigma_cross fuel mu [] rest feed
+        · have hfals' : termFalsifiedB mu t = false :=
+            Bool.eq_false_iff.mpr hfals
+          by_cases hsat : termSatisfiedB mu t = true
+          · rw [vevents_stop_satisfied fuel mu t rest feed hleg hfals'
+              hsat, blocksOf_nil]
+            exact List.Pairwise.nil
+          · have hsat' : termSatisfiedB mu t = false :=
+              Bool.eq_false_iff.mpr hsat
+            cases fuel with
+            | zero =>
+                rw [vevents_entry_zero mu t rest feed hleg hfals' hsat',
+                  blocksOf_nil]
+                exact List.Pairwise.nil
+            | succ fuel' =>
+                cases htv : termVertices mu t with
+                | nil =>
+                    rw [vevents_entry_novertices fuel' mu t rest feed hleg
+                      hfals' hsat' htv, blocksOf_nil]
+                    exact List.Pairwise.nil
+                | cons v vs =>
+                    cases v with
+                    | inl i =>
+                        have hfree : mu i = none :=
+                          termVertices_head_pigeon_free mu t i vs htv
+                        cases feed with
+                        | nil =>
+                            rw [vevents_entry_feed_nil fuel' mu t rest i
+                              vs hleg hfals' hsat' htv, blocksOf_nil]
+                            exact List.Pairwise.nil
+                        | cons av fs =>
+                            cases av with
+                            | inl q =>
+                                rw [vevents_entry_feed_illkind fuel' mu t
+                                  rest i vs q fs hleg hfals' hsat' htv,
+                                  blocksOf_nil]
+                                exact List.Pairwise.nil
+                            | inr a =>
+                                by_cases hha : holeUsed mu a = true
+                                · rw [vevents_entry_pigeon_dead fuel' mu t
+                                    rest i vs a fs hleg hfals' hsat' htv
+                                    hha, blocksOf_nil]
+                                  exact List.Pairwise.nil
+                                · have hha' : holeUsed mu a = false :=
+                                    Bool.eq_false_iff.mpr hha
+                                  rw [vevents_entry_pigeon_live fuel' mu t
+                                    rest i vs a fs hleg hfals' hsat' htv
+                                    hha']
+                                  rw [blocksOf_enter]
+                                  rw [List.pairwise_cons]
+                                  constructor
+                                  · intro Bj hBj e he f hf
+                                    have hBj' : Bj ∈ blocksOf
+                                        (vevents fuel'
+                                          (compose mu
+                                            (singleMatching i a)) vs
+                                          (t :: rest) fs) := by
+                                      have h1 := hBj
+                                      rw [show afterSteps
+                                          (VEvent.qstep
+                                            ⟨Sum.inl i, (i, a)⟩ ::
+                                            vevents fuel'
+                                              (compose mu
+                                                (singleMatching i a)) vs
+                                              (t :: rest) fs) =
+                                          afterSteps (vevents fuel'
+                                            (compose mu
+                                              (singleMatching i a)) vs
+                                            (t :: rest) fs) from rfl]
+                                        at h1
+                                      rw [blocksOf_afterSteps] at h1
+                                      exact h1
+                                    have hverts :=
+                                      sigma_vertices_mem_termVertices
+                                        ⟨t, mu, stepsPrefix
+                                          (VEvent.qstep
+                                            ⟨Sum.inl i, (i, a)⟩ ::
+                                            vevents fuel'
+                                              (compose mu
+                                                (singleMatching i a)) vs
+                                              (t :: rest) fs)⟩ e he
+                                    have hcov1 : vertexCoveredB Bj.entry
+                                        (Sum.inl e.1) = true := by
+                                      have hv1 := hverts.1
+                                      rw [htv] at hv1
+                                      cases hv1 with
+                                      | head =>
+                                          have hcv : vertexCoveredB
+                                              (compose mu
+                                                (singleMatching e.1 a))
+                                              (Sum.inl e.1) = true := by
+                                            simp only [vertexCoveredB]
+                                            rw [compose_single_self mu
+                                              e.1 a hfree]
+                                            rfl
+                                          exact vertexCoveredB_mono_mAgree
+                                            (blocksOf_entry_spec fuel' _
+                                              vs (t :: rest) fs Bj
+                                              hBj').1 _ hcv
+                                      | tail _ hv' =>
+                                          exact vevents_pending_covered
+                                            fuel'
+                                            (compose mu
+                                              (singleMatching i a)) vs
+                                            (t :: rest) fs _ hv' Bj hBj'
+                                    have hcov2 : vertexCoveredB Bj.entry
+                                        (Sum.inr e.2) = true := by
+                                      have hv2 := hverts.2
+                                      rw [htv] at hv2
+                                      cases hv2 with
+                                      | tail _ hv' =>
+                                          exact vevents_pending_covered
+                                            fuel'
+                                            (compose mu
+                                              (singleMatching i a)) vs
+                                            (t :: rest) fs _ hv' Bj hBj'
+                                    exact pairDisjoint_of_covered_at_entry
+                                      Bj e f hcov1 hcov2 hf
+                                  · have hrec := blocksOf_sigma_cross
+                                      fuel'
+                                      (compose mu (singleMatching i a))
+                                      vs (t :: rest) fs
+                                    rw [show afterSteps
+                                        (VEvent.qstep
+                                          ⟨Sum.inl i, (i, a)⟩ ::
+                                          vevents fuel'
+                                            (compose mu
+                                              (singleMatching i a)) vs
+                                            (t :: rest) fs) =
+                                        afterSteps (vevents fuel'
+                                          (compose mu
+                                            (singleMatching i a)) vs
+                                          (t :: rest) fs) from rfl]
+                                    rw [blocksOf_afterSteps]
+                                    exact hrec
+                    | inr b =>
+                        exact absurd htv
+                          (termVertices_head_not_hole mu t b vs)
+      · have hleg' : termMatchingLegalB t = false :=
+          Bool.eq_false_iff.mpr hleg
+        rw [vevents_skip_illegal fuel mu t rest feed hleg']
+        exact blocksOf_sigma_cross fuel mu [] rest feed
+  | fuel, mu, v :: vs, D, feed => by
+      by_cases hcov : vertexCoveredB mu v = true
+      · rw [vevents_block_skip_covered fuel mu v vs D feed hcov]
+        exact blocksOf_sigma_cross fuel mu vs D feed
+      · have hcov' : vertexCoveredB mu v = false :=
+          Bool.eq_false_iff.mpr hcov
+        cases fuel with
+        | zero =>
+            rw [vevents_block_zero mu v vs D feed hcov', blocksOf_nil]
+            exact List.Pairwise.nil
+        | succ fuel' =>
+            cases v with
+            | inl i =>
+                cases feed with
+                | nil =>
+                    rw [vevents_block_feed_nil fuel' mu _ vs D hcov',
+                      blocksOf_nil]
+                    exact List.Pairwise.nil
+                | cons av fs =>
+                    cases av with
+                    | inl q =>
+                        rw [vevents_block_pigeon_illkind fuel' mu i vs D q
+                          fs hcov', blocksOf_nil]
+                        exact List.Pairwise.nil
+                    | inr a =>
+                        by_cases hha : holeUsed mu a = true
+                        · rw [vevents_block_pigeon_dead fuel' mu i vs D a
+                            fs hcov' hha, blocksOf_nil]
+                          exact List.Pairwise.nil
+                        · have hha' : holeUsed mu a = false :=
+                            Bool.eq_false_iff.mpr hha
+                          rw [vevents_block_pigeon_live fuel' mu i vs D a
+                            fs hcov' hha', blocksOf_qstep]
+                          exact blocksOf_sigma_cross fuel'
+                            (compose mu (singleMatching i a)) vs D fs
+            | inr b =>
+                cases feed with
+                | nil =>
+                    rw [vevents_block_feed_nil fuel' mu _ vs D hcov',
+                      blocksOf_nil]
+                    exact List.Pairwise.nil
+                | cons av fs =>
+                    cases av with
+                    | inr a =>
+                        rw [vevents_block_hole_illkind fuel' mu b vs D a
+                          fs hcov', blocksOf_nil]
+                        exact List.Pairwise.nil
+                    | inl q =>
+                        by_cases hq : (mu q).isSome = true
+                        · rw [vevents_block_hole_dead fuel' mu b vs D q fs
+                            hcov' hq, blocksOf_nil]
+                          exact List.Pairwise.nil
+                        · have hq' : (mu q).isSome = false :=
+                            Bool.eq_false_iff.mpr hq
+                          rw [vevents_block_hole_live fuel' mu b vs D q fs
+                            hcov' hq', blocksOf_qstep]
+                          exact blocksOf_sigma_cross fuel'
+                            (compose mu (singleMatching q b)) vs D fs
+  termination_by fuel _ pending D _ => (fuel, pending.length + D.length)
 
 end PHPMatchingExtensionEncode
 end PvNP
