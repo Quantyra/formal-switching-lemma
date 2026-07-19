@@ -11329,3 +11329,33 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 /-- info: 'PvNP.PHPMatchingExtensionEncode.blocksOf_enter' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingExtensionEncode.blocksOf_enter
+
+/-! S2187 stage-1b.1 trace-invariant pins. -/
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.mem_of_mem_afterSteps' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.mem_of_mem_afterSteps
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.blocksOf_afterSteps' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.blocksOf_afterSteps
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.enter_mem_of_mem_blocksOf' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.enter_mem_of_mem_blocksOf
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.holeUsed_mono_mAgree' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.holeUsed_mono_mAgree
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.vevents_enter_spec' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.vevents_enter_spec
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.blocksOf_entry_spec' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.blocksOf_entry_spec
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.sigmaFull_fresh_over_base' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.sigmaFull_fresh_over_base

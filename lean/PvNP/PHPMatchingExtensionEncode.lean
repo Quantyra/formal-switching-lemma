@@ -896,5 +896,275 @@ theorem sigmaFull_pairwise {p h : Nat} (B : VBlock p h)
     rw [hdup] at hno
     simp at hno
 
+/-! ## Stage 1b: trace invariants (entry spec, block membership, σ freshness) -/
+
+/-- `afterSteps` is a suffix: its members are members. -/
+theorem mem_of_mem_afterSteps {p h : Nat} :
+    ∀ (es : List (VEvent p h)) (e : VEvent p h),
+      e ∈ afterSteps es → e ∈ es
+  | [], _, hm => hm
+  | .enter _ _ :: _, _, hm => hm
+  | .qstep _ :: es, e, hm =>
+      List.mem_cons_of_mem _ (mem_of_mem_afterSteps es e hm)
+
+/-- Chunking ignores leading steps, so it commutes with dropping them. -/
+theorem blocksOf_afterSteps {p h : Nat} :
+    ∀ es : List (VEvent p h), blocksOf (afterSteps es) = blocksOf es
+  | [] => rfl
+  | .enter _ _ :: _ => rfl
+  | .qstep st :: es => by
+      show blocksOf (afterSteps es) = blocksOf (.qstep st :: es)
+      rw [blocksOf_qstep]
+      exact blocksOf_afterSteps es
+
+/-- Every chunked block's boundary node is an `enter` event of the
+underlying event list. -/
+theorem enter_mem_of_mem_blocksOf {p h : Nat} :
+    ∀ (es : List (VEvent p h)) (B : VBlock p h), B ∈ blocksOf es →
+      VEvent.enter B.term B.entry ∈ es
+  | [], B, hm => by
+      rw [blocksOf_nil] at hm
+      cases hm
+  | .qstep st :: es, B, hm => by
+      rw [blocksOf_qstep] at hm
+      exact List.mem_cons_of_mem _ (enter_mem_of_mem_blocksOf es B hm)
+  | .enter t ent :: es, B, hm => by
+      rw [blocksOf_enter] at hm
+      cases hm with
+      | head => exact List.mem_cons_self _ _
+      | tail _ hm' =>
+          have hrec := enter_mem_of_mem_blocksOf (afterSteps es) B hm'
+          exact List.mem_cons_of_mem _ (mem_of_mem_afterSteps es _ hrec)
+  termination_by es _ => es.length
+  decreasing_by
+    all_goals
+      first
+        | (simp_wf; omega)
+        | (simp_wf
+           have := afterSteps_length_le (p := p) (h := h) es
+           omega)
+        | simp_wf
+
+/-- Hole usage is monotone under `MAgree`. -/
+theorem holeUsed_mono_mAgree {p h : Nat} {mu nu : MatchingMap p h}
+    (hag : MAgree mu nu) (b : Fin h) (hb : holeUsed mu b = true) :
+    holeUsed nu b = true := by
+  rcases (holeUsed_eq_true_iff mu b).mp hb with ⟨j, hj⟩
+  exact (holeUsed_eq_true_iff nu b).mpr ⟨j, hag j b hj⟩
+
+/-- Pigeon freeness pulls back along `MAgree`. -/
+theorem free_of_mAgree_free {p h : Nat} {mu nu : MatchingMap p h}
+    (hag : MAgree mu nu) (i : Fin p) (hi : nu i = none) : mu i = none := by
+  cases hmi : mu i with
+  | none => rfl
+  | some c =>
+      have := hag i c hmi
+      rw [hi] at this
+      cases this
+
+/-- Hole non-usage pulls back along `MAgree`. -/
+theorem holeUnused_of_mAgree_unused {p h : Nat} {mu nu : MatchingMap p h}
+    (hag : MAgree mu nu) (b : Fin h) (hb : holeUsed nu b = false) :
+    holeUsed mu b = false := by
+  cases hub : holeUsed mu b with
+  | false => rfl
+  | true =>
+      have := holeUsed_mono_mAgree hag b hub
+      rw [hb] at this
+      cases this
+
+/-- **Entry specification** (one induction, all boundary-node facts):
+every `enter` event of a trace records an entry matching extending the
+trace's base, and its entered term passed the walk's gates — legal,
+not falsified, and not satisfied at entry. -/
+theorem vevents_enter_spec {p h : Nat} :
+    ∀ (fuel : Nat) (mu : MatchingMap p h) (pending : List (Vertex p h))
+      (D : MDNF p h) (feed : List (Vertex p h)) (t' : MTerm p h)
+      (ent' : MatchingMap p h),
+      VEvent.enter t' ent' ∈ vevents fuel mu pending D feed →
+      MAgree mu ent' ∧ termMatchingLegalB t' = true ∧
+        termFalsifiedB ent' t' = false ∧ termSatisfiedB ent' t' = false
+  | _, _, [], [], feed, t', ent', hm => by
+      rw [vevents_nil] at hm
+      cases hm
+  | fuel, mu, [], t :: rest, feed, t', ent', hm => by
+      by_cases hleg : termMatchingLegalB t = true
+      · by_cases hfals : termFalsifiedB mu t = true
+        · rw [vevents_skip_falsified fuel mu t rest feed hleg hfals] at hm
+          exact vevents_enter_spec fuel mu [] rest feed t' ent' hm
+        · have hfals' : termFalsifiedB mu t = false :=
+            Bool.eq_false_iff.mpr hfals
+          by_cases hsat : termSatisfiedB mu t = true
+          · rw [vevents_stop_satisfied fuel mu t rest feed hleg hfals'
+              hsat] at hm
+            cases hm
+          · have hsat' : termSatisfiedB mu t = false :=
+              Bool.eq_false_iff.mpr hsat
+            cases fuel with
+            | zero =>
+                rw [vevents_entry_zero mu t rest feed hleg hfals' hsat']
+                  at hm
+                cases hm
+            | succ fuel' =>
+                cases htv : termVertices mu t with
+                | nil =>
+                    rw [vevents.eq_def] at hm
+                    simp only [hleg, hfals', hsat', htv] at hm
+                    simp at hm
+                | cons v vs =>
+                    cases v with
+                    | inl i =>
+                        cases feed with
+                        | nil =>
+                            rw [vevents.eq_def] at hm
+                            simp only [hleg, hfals', hsat', htv] at hm
+                            simp at hm
+                        | cons av fs =>
+                            cases av with
+                            | inl q =>
+                                rw [vevents.eq_def] at hm
+                                simp only [hleg, hfals', hsat', htv] at hm
+                                simp at hm
+                            | inr a =>
+                                by_cases hha : holeUsed mu a = true
+                                · rw [vevents_entry_pigeon_dead fuel' mu t
+                                    rest i vs a fs hleg hfals' hsat' htv
+                                    hha] at hm
+                                  cases hm
+                                · have hha' : holeUsed mu a = false :=
+                                    Bool.eq_false_iff.mpr hha
+                                  rw [vevents_entry_pigeon_live fuel' mu t
+                                    rest i vs a fs hleg hfals' hsat' htv
+                                    hha'] at hm
+                                  cases hm with
+                                  | head =>
+                                      exact ⟨mAgree_refl mu, hleg, hfals',
+                                        hsat'⟩
+                                  | tail _ hm' =>
+                                      cases hm' with
+                                      | tail _ hm'' =>
+                                          have hrec := vevents_enter_spec
+                                            fuel'
+                                            (compose mu
+                                              (singleMatching i a)) vs
+                                            (t :: rest) fs t' ent' hm''
+                                          exact ⟨mAgree_trans
+                                            (mAgree_compose_left mu _)
+                                            hrec.1, hrec.2⟩
+                    | inr b =>
+                        exact absurd htv
+                          (termVertices_head_not_hole mu t b vs)
+      · have hleg' : termMatchingLegalB t = false :=
+          Bool.eq_false_iff.mpr hleg
+        rw [vevents_skip_illegal fuel mu t rest feed hleg'] at hm
+        exact vevents_enter_spec fuel mu [] rest feed t' ent' hm
+  | fuel, mu, v :: vs, D, feed, t', ent', hm => by
+      by_cases hcov : vertexCoveredB mu v = true
+      · rw [vevents_block_skip_covered fuel mu v vs D feed hcov] at hm
+        exact vevents_enter_spec fuel mu vs D feed t' ent' hm
+      · have hcov' : vertexCoveredB mu v = false :=
+          Bool.eq_false_iff.mpr hcov
+        cases fuel with
+        | zero =>
+            rw [vevents_block_zero mu v vs D feed hcov'] at hm
+            cases hm
+        | succ fuel' =>
+            cases v with
+            | inl i =>
+                cases feed with
+                | nil =>
+                    rw [vevents.eq_def] at hm
+                    simp only [hcov'] at hm
+                    simp at hm
+                | cons av fs =>
+                    cases av with
+                    | inl q =>
+                        rw [vevents.eq_def] at hm
+                        simp only [hcov'] at hm
+                        simp at hm
+                    | inr a =>
+                        by_cases hha : holeUsed mu a = true
+                        · rw [vevents.eq_def] at hm
+                          simp only [hcov', hha] at hm
+                          simp at hm
+                        · have hha' : holeUsed mu a = false :=
+                            Bool.eq_false_iff.mpr hha
+                          rw [vevents_block_pigeon_live fuel' mu i vs D a
+                            fs hcov' hha'] at hm
+                          cases hm with
+                          | tail _ hm' =>
+                              have hrec := vevents_enter_spec fuel'
+                                (compose mu (singleMatching i a)) vs D fs
+                                t' ent' hm'
+                              exact ⟨mAgree_trans
+                                (mAgree_compose_left mu _) hrec.1,
+                                hrec.2⟩
+            | inr b =>
+                cases feed with
+                | nil =>
+                    rw [vevents.eq_def] at hm
+                    simp only [hcov'] at hm
+                    simp at hm
+                | cons av fs =>
+                    cases av with
+                    | inr a =>
+                        rw [vevents.eq_def] at hm
+                        simp only [hcov'] at hm
+                        simp at hm
+                    | inl q =>
+                        by_cases hq : (mu q).isSome = true
+                        · rw [vevents.eq_def] at hm
+                          simp only [hcov', hq] at hm
+                          simp at hm
+                        · have hq' : (mu q).isSome = false :=
+                            Bool.eq_false_iff.mpr hq
+                          rw [vevents_block_hole_live fuel' mu b vs D q fs
+                            hcov' hq'] at hm
+                          cases hm with
+                          | tail _ hm' =>
+                              have hrec := vevents_enter_spec fuel'
+                                (compose mu (singleMatching q b)) vs D fs
+                                t' ent' hm'
+                              exact ⟨mAgree_trans
+                                (mAgree_compose_left mu _) hrec.1,
+                                hrec.2⟩
+  termination_by fuel _ pending D _ _ _ _ =>
+    (fuel, pending.length + D.length)
+
+/-- **Block entry specification**: every block of a trace has an entry
+matching extending the base and an entered term that passed the walk's
+gates. -/
+theorem blocksOf_entry_spec {p h : Nat} (fuel : Nat)
+    (mu : MatchingMap p h) (pending : List (Vertex p h)) (D : MDNF p h)
+    (feed : List (Vertex p h)) (B : VBlock p h)
+    (hB : B ∈ blocksOf (vevents fuel mu pending D feed)) :
+    MAgree mu B.entry ∧ termMatchingLegalB B.term = true ∧
+      termFalsifiedB B.entry B.term = false ∧
+      termSatisfiedB B.entry B.term = false :=
+  vevents_enter_spec fuel mu pending D feed B.term B.entry
+    (enter_mem_of_mem_blocksOf _ B hB)
+
+/-- **σ freshness over the base** (pin 3.1 seed): every still-unset
+satisfying pair of every block is fresh over the trace's base matching —
+σ never collides with ρ. -/
+theorem sigmaFull_fresh_over_base {p h : Nat} (fuel : Nat)
+    (mu : MatchingMap p h) (pending : List (Vertex p h)) (D : MDNF p h)
+    (feed : List (Vertex p h)) (B : VBlock p h)
+    (hB : B ∈ blocksOf (vevents fuel mu pending D feed))
+    (e : Fin p × Fin h) (he : e ∈ sigmaFull B) :
+    mu e.1 = none ∧ holeUsed mu e.2 = false := by
+  have hspec := blocksOf_entry_spec fuel mu pending D feed B hB
+  have hunres := ((mem_sigmaFull B e).mp he).2
+  unfold pairUnresolvedB at hunres
+  rw [Bool.and_eq_true] at hunres
+  have hfree : B.entry e.1 = none := by
+    have hb := hunres.1
+    simpa using hb
+  have hhole : holeUsed B.entry e.2 = false := by
+    have hb := hunres.2
+    simpa using hb
+  exact ⟨free_of_mAgree_free hspec.1 e.1 hfree,
+    holeUnused_of_mAgree_unused hspec.1 e.2 hhole⟩
+
 end PHPMatchingExtensionEncode
 end PvNP
