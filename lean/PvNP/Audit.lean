@@ -21,6 +21,7 @@ import PvNP.PHPFullMatchingDistribution
 import PvNP.PHPFullMatchingProbability
 import PvNP.PHPMatchingComposition
 import PvNP.PHPMatchingCanonicalMDT
+import PvNP.PHPMatchingVertexTree
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
@@ -11173,3 +11174,81 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 /-- info: 'PvNP.PHPMatchingCanonicalMDT.honest_dnf_probability_le' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingCanonicalMDT.honest_dnf_probability_le
+
+/-! S2187 stage-0 vertex-query canonical matching DT pins. -/
+
+/-- info: 'PvNP.PHPMatchingVertexTree.holeOccupant_eq_some_of_isMatching' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingVertexTree.holeOccupant_eq_some_of_isMatching
+
+/-- info: 'PvNP.PHPMatchingVertexTree.vmdtEval_mono_of_isMatching' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingVertexTree.vmdtEval_mono_of_isMatching
+
+/-- info: 'PvNP.PHPMatchingVertexTree.vmdtDepth_pquery_ge_child' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingVertexTree.vmdtDepth_pquery_ge_child
+
+/-- info: 'PvNP.PHPMatchingVertexTree.mdtDepth_query_ge_child' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingVertexTree.mdtDepth_query_ge_child
+
+/-- info: 'PvNP.PHPMatchingVertexTree.termVertices_ne_nil_of_undetermined' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingVertexTree.termVertices_ne_nil_of_undetermined
+
+/-- info: 'PvNP.PHPMatchingVertexTree.vwalk_skip_illegal' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingVertexTree.vwalk_skip_illegal
+
+/-- info: 'PvNP.PHPMatchingVertexTree.vwalk_entry_pigeon' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingVertexTree.vwalk_entry_pigeon
+
+/-- info: 'PvNP.PHPMatchingVertexTree.vblock_query_pigeon' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingVertexTree.vblock_query_pigeon
+
+/-- info: 'PvNP.PHPMatchingVertexTree.vblock_query_hole' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingVertexTree.vblock_query_hole
+
+/-- info: 'PvNP.PHPMatchingVertexTree.vwalk_query_disjointExtension' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingVertexTree.vwalk_query_disjointExtension
+
+/-- info: 'PvNP.PHPMatchingVertexTree.vmdtDepth_vwalkAux_le_fuel' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingVertexTree.vmdtDepth_vwalkAux_le_fuel
+
+/-- info: 'PvNP.PHPMatchingVertexTree.vmdtDepth_canonicalVMDT_le_freePigeons' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingVertexTree.vmdtDepth_canonicalVMDT_le_freePigeons
+
+/-- info: 'PvNP.PHPMatchingVertexTree.mem_vbadMatchings' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingVertexTree.mem_vbadMatchings
+
+/-- info: 'PvNP.PHPMatchingVertexTree.vbadMatchings_nonvacuity' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingVertexTree.vbadMatchings_nonvacuity
+
+/-- info: 'PvNP.PHPMatchingVertexTree.vbadMatchings_nonempty' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingVertexTree.vbadMatchings_nonempty
+
+/-- info: 'PvNP.PHPMatchingVertexTree.div_walk_depth' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingVertexTree.div_walk_depth
+
+/-- info: 'PvNP.PHPMatchingVertexTree.div_vertex_depth' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingVertexTree.div_vertex_depth
+
+/-- info: 'PvNP.PHPMatchingVertexTree.walk_vertex_depth_divergence' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingVertexTree.walk_vertex_depth_divergence
