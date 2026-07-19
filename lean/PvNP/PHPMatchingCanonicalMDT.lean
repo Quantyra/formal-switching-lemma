@@ -1,6 +1,7 @@
 import PvNP.PHPMatchingComposition
 import PvNP.PHPFullMatchingDistribution
 import PvNP.PHPFullMatchingCollapseExact
+import PvNP.PHPFullMatchingDNFBound
 
 /-!
 # GA-2: canonical matching decision trees, deep-path bad set, and the
@@ -37,10 +38,11 @@ built in the pre-registered stages recorded in the S2186 story:
 
 Deterministic matching-DT infrastructure and finite counting bridges only.
 This is not a PHP switching lemma (no collapse-probability upper bound for
-the canonical matching walk is stated or proved; the module's only
-probability statement, `honest_lit_probability_eq`, is a verbatim recovery
-of the already-proved S2116 depth-1 single-literal probability through the
-bridge — validation, not new collapse progress), not the extension encode
+the canonical matching walk is stated or proved; the module's probability
+statements — `honest_lit_probability_eq` and the S2194 honest-space
+term/DNF transfers — are verbatim recoveries of already-proved
+S2115/S2116/S2117 depth-1 content through the bridge — validation, not new
+collapse progress), not the extension encode
 (GA-3), not a bad-set cardinality bound (GA-5), not Gate A closure, not a
 Frege/PHP or NP/circuit lower bound, and not P-versus-NP.
 
@@ -62,6 +64,7 @@ open CNFModel
 open PHPFullMatchingProbability
 open PHPFullMatchingCollapseBound
 open PHPFullMatchingCollapseExact
+open PHPFullMatchingDNFBound
 
 /-! ## The tree type -/
 
@@ -1578,8 +1581,8 @@ walk's own depth-1 event provably diverges from the boolean event
 documented-re-scope branch, not an event identity. The S2115 term and
 S2117 DNF bounds transfer through the same
 `matchingCollapseBad_factors` route via the generic
-`honest_eventProbEq_of_full`/`honest_eventProbLe_of_full` principles but
-are not instantiated here (named mechanical follow-on). -/
+`honest_eventProbEq_of_full`/`honest_eventProbLe_of_full` principles and
+are instantiated at the end of this module (S2194). -/
 theorem honest_lit_probability_eq {h ell : Nat} (hell : ell ≤ h)
     (i j : Fin h) (sign : Bool) :
     EventProbEq (honestMatchingSpace h h ell)
@@ -1725,6 +1728,59 @@ theorem walk_boolean_depth1_divergence :
     rw [mwalk_skip_falsified 1 _ _ [] (by decide) (by decide)]
     rw [mwalk_nil]
     rfl
+
+/-! ## S2194: the S2115 term and S2117 DNF bounds over the honest space
+
+The "named mechanical follow-on" of the S2186 close: pure instantiations of
+the reviewed bridge machinery. Boolean-DT events only; the kernel-pinned
+walk/boolean divergence stands. -/
+
+open Classical in
+/-- Generic descent of any `matchingCollapseBad`-shaped `EventProbLe` from
+the S2080 space to the honest space (factors + the generic transfer). -/
+theorem honest_collapseBad_probLe_of_full {h ell : Nat} (hell : ell ≤ h)
+    (F : BDFormula (Nat.succ (h * h))) (t : Nat) {num den : Nat}
+    (hfull : EventProbLe (fullMatchingSpace h (h - ell))
+      (matchingCollapseBad F t) num den) :
+    EventProbLe (honestMatchingSpace h h ell) (honestCollapseBad F t)
+      num den := by
+  apply honest_eventProbLe_of_full hell
+  unfold EventProbLe at hfull ⊢
+  have hev : eventCount (fullMatchingSpace h (h - ell))
+      (fun P => honestCollapseBad F t (pushSq P)) =
+      eventCount (fullMatchingSpace h (h - ell))
+        (matchingCollapseBad F t) := by
+    refine Eq.trans (eventCount_congr_iff _ _ _
+      (fun P _ => (matchingCollapseBad_factors F t P).symm)) ?_
+    exact eventCount_inst_irrel _ _ _ _
+  rw [hev]
+  exact hfull
+
+open Classical in
+/-- The S2115 width-`w` term collapse bound over the honest space:
+probability at most `tv.length · ℓ / h`. -/
+theorem honest_term_probability_le {h ell : Nat} (hell : ell ≤ h)
+    (tv : List (Fin h × Fin h × Bool)) :
+    EventProbLe (honestMatchingSpace h h ell)
+      (honestCollapseBad (phpTermFormula h tv) 1) (tv.length * ell) h := by
+  have hfull := matchingCollapseBad_term_probability_le
+    (h := h) (s := h - ell) tv
+  rw [Nat.sub_sub_self hell] at hfull
+  exact honest_collapseBad_probLe_of_full hell _ 1 hfull
+
+open Classical in
+/-- The S2117 DNF union bound over the honest space: probability at most
+`tvs.join.length · ℓ / h` (total-size union-bound regime, not the
+switching-lemma regime; see `matchingCollapseBad_dnf_probability_le`). -/
+theorem honest_dnf_probability_le {h ell : Nat} (hell : ell ≤ h)
+    (tvs : List (List (Fin h × Fin h × Bool))) :
+    EventProbLe (honestMatchingSpace h h ell)
+      (honestCollapseBad (phpDNFFormula h tvs) 1)
+      (tvs.join.length * ell) h := by
+  have hfull := matchingCollapseBad_dnf_probability_le
+    (h := h) (s := h - ell) tvs
+  rw [Nat.sub_sub_self hell] at hfull
+  exact honest_collapseBad_probLe_of_full hell _ 1 hfull
 
 end PHPMatchingCanonicalMDT
 end PvNP

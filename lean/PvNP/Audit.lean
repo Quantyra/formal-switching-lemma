@@ -11157,3 +11157,19 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 /-- info: 'PvNP.PHPMatchingCanonicalMDT.walk_boolean_depth1_divergence' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingCanonicalMDT.walk_boolean_depth1_divergence
+
+/-! S2194 honest-space term/DNF transfer pins. -/
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.honest_collapseBad_probLe_of_full' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.honest_collapseBad_probLe_of_full
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.honest_term_probability_le' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.honest_term_probability_le
+
+/-- info: 'PvNP.PHPMatchingCanonicalMDT.honest_dnf_probability_le' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCanonicalMDT.honest_dnf_probability_le
