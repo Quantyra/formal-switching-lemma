@@ -11857,11 +11857,43 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 
 /-! S2189 GA-4 Stage B: encodeMatch image recovery + conditional injectivity shell. -/
 
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.decodeSigmaOverlay' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.decodeSigmaOverlay
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.encodeMatch_decodeSigmaOverlay' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.encodeMatch_decodeSigmaOverlay
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.decodeMatchFromTerms' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.decodeMatchFromTerms
+
 /-- info: 'PvNP.PHPMatchingEncodeInjectivity.encodeMatch_decodeBasePoint' depends on axioms: [propext,
  Classical.choice,
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeInjectivity.encodeMatch_decodeBasePoint
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.encodeMatch_decodeBasePoint_from_terms' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.encodeMatch_decodeBasePoint_from_terms
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.decodeMatchFromTerms_encodeMatch' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.decodeMatchFromTerms_encodeMatch
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.encodeMatch_eq_of_code_eq_of_entered_terms_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.encodeMatch_eq_of_code_eq_of_entered_terms_eq
 
 /-- info: 'PvNP.PHPMatchingEncodeInjectivity.encodeMatch_eq_of_code_eq_of_sigma_eq' depends on axioms: [propext,
  Classical.choice,

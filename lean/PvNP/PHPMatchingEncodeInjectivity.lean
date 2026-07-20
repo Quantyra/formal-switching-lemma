@@ -11,9 +11,17 @@ known the corrected `(G1,sigma)` answer namespace decodes all of `G3` back to
 the exact answer stream.
 
 Stage B adds **conditional injectivity**: equal `encodeMatch` packets plus
-equal entered-term sequences force equal bases (G1+G2 recovery).  Full
-`Function.InjOn encodeMatch` still requires recovering entered terms from
-`(G1,G2,G3)` alone — the residual GA-4 core.
+equal entered-term sequences force equal bases (G1+G2 recovery).  The
+module now performs the G2 side as a pure decoder: entered terms and G2
+determine the sigma-overlay matching used by G1, independently of the
+original rho, and `decodeMatchFromTerms` roundtrips to rho on every encode
+image.  Full `Function.InjOn encodeMatch` is still blocked at the entered
+term replay step: after the first block, the walk state needs the path
+matching `ρ * π`, while G1 deliberately omits π and the G3 answer namespace
+is decoded only after the sigma overlay is known.  The missing theorem is
+therefore a pure packet replay lemma proving that `(G1,G2,G3)` determines
+the entered-term sequence; once supplied,
+`encodeMatch_eq_of_code_eq_of_entered_terms_eq` closes base injectivity.
 
 This is encode/decode bookkeeping only.  It proves no bad-set cardinality or
 switching statement.
@@ -202,6 +210,179 @@ theorem encodeMatch_decodeSigmaBlocks {p h w t ell : Nat} (hsq : p = h)
   intro B hB
   exact hw B.term (block_term_mem_D rho D feed hrho B hB)
 
+/-! ## Decode the sigma overlay from entered terms and G2 -/
+
+private theorem pairsToMatching_mem {p h : Nat} :
+    ∀ {l : List (Fin p × Fin h)}, List.Pairwise PairDisjoint l →
+      ∀ {i : Fin p} {a : Fin h}, (i, a) ∈ l →
+        pairsToMatching l i = some a
+  | [], _, _, _, hm => by cases hm
+  | (j, b) :: es, hpd, i, a, hm => by
+      rw [show pairsToMatching ((j, b) :: es) =
+        compose (singleMatching j b) (pairsToMatching es) from rfl]
+      rw [List.pairwise_cons] at hpd
+      cases hm with
+      | head =>
+          simp [compose, singleMatching]
+      | tail _ hm' =>
+          have hne : j ≠ i := (hpd.1 (i, a) hm').1
+          have hsingle : singleMatching j b i = none := by
+            unfold singleMatching
+            rw [if_neg (Ne.symm hne)]
+          rw [compose_free_left _ _ i hsingle]
+          exact pairsToMatching_mem hpd.2 hm'
+
+private theorem pairsToMatching_eq_some_iff_of_pairwise {p h : Nat}
+    {l : List (Fin p × Fin h)} (hpd : List.Pairwise PairDisjoint l)
+    (i : Fin p) (a : Fin h) :
+    pairsToMatching l i = some a ↔ (i, a) ∈ l := by
+  constructor
+  · exact pairsToMatching_eq_some l i a
+  · exact pairsToMatching_mem hpd
+
+private theorem pair_unique_of_pairwise_toFinset {p h : Nat}
+    {l : List (Fin p × Fin h)} (hpd : List.Pairwise PairDisjoint l)
+    {i : Fin p} {a b : Fin h}
+    (ha : (i, a) ∈ l.toFinset) (hb : (i, b) ∈ l.toFinset) :
+    a = b := by
+  have hla : (i, a) ∈ l := List.mem_toFinset.mp ha
+  have hlb : (i, b) ∈ l := List.mem_toFinset.mp hb
+  by_cases hab : (i, a) = (i, b)
+  · exact congrArg Prod.snd hab
+  · have hdis := hpd.forall pairDisjoint_symm hla hlb hab
+    exact False.elim (hdis.1 rfl)
+
+private noncomputable def pairFinsetToMatching_aux {p h : Nat}
+    (S : Finset (Fin p × Fin h)) (i : Fin p) :
+    Option (Fin h) :=
+  if h : ∃ a, (i, a) ∈ S then some (Classical.choose h) else none
+
+/-- Interpret an orderless finite set of pair names as a matching.  The
+roundtrip theorem below applies only when the set came from a pairwise
+vertex-disjoint sigma list, so the chosen hole is unique. -/
+noncomputable def pairFinsetToMatching {p h : Nat}
+    (S : Finset (Fin p × Fin h)) : MatchingMap p h :=
+  fun i => pairFinsetToMatching_aux S i
+
+private theorem pairFinsetToMatching_eq_some_iff {p h : Nat}
+    {S : Finset (Fin p × Fin h)}
+    (huniq : ∀ {i : Fin p} {a b : Fin h},
+      (i, a) ∈ S → (i, b) ∈ S → a = b)
+    (i : Fin p) (a : Fin h) :
+    pairFinsetToMatching S i = some a ↔ (i, a) ∈ S := by
+  unfold pairFinsetToMatching pairFinsetToMatching_aux
+  by_cases h : ∃ b, (i, b) ∈ S
+  · rw [dif_pos h]
+    constructor
+    · intro hs
+      have hca : Classical.choose h = a := by
+        exact Option.some.inj hs
+      simpa [hca] using Classical.choose_spec h
+    · intro ha
+      have hca : Classical.choose h = a :=
+        huniq (Classical.choose_spec h) ha
+      simp [hca]
+  · rw [dif_neg h]
+    constructor
+    · intro hs
+      cases hs
+    · intro ha
+      exact False.elim (h ⟨a, ha⟩)
+
+private theorem pairFinsetToMatching_toFinset_eq_pairsToMatching {p h : Nat}
+    {l : List (Fin p × Fin h)} (hpd : List.Pairwise PairDisjoint l) :
+    pairFinsetToMatching l.toFinset = pairsToMatching l := by
+  funext i
+  cases hpi : pairsToMatching l i with
+  | none =>
+      by_cases hex : ∃ a, (i, a) ∈ l.toFinset
+      · rcases hex with ⟨a, ha⟩
+        have hsome : pairsToMatching l i = some a :=
+          (pairsToMatching_eq_some_iff_of_pairwise hpd i a).mpr
+            (List.mem_toFinset.mp ha)
+        rw [hpi] at hsome
+        cases hsome
+      · unfold pairFinsetToMatching pairFinsetToMatching_aux
+        rw [dif_neg hex]
+  | some a =>
+      have ha : (i, a) ∈ l.toFinset := by
+        rw [List.mem_toFinset]
+        exact (pairsToMatching_eq_some_iff_of_pairwise hpd i a).mp hpi
+      have huniq : ∀ {i : Fin p} {a b : Fin h},
+          (i, a) ∈ l.toFinset → (i, b) ∈ l.toFinset → a = b := by
+        intro i a b ha hb
+        exact pair_unique_of_pairwise_toFinset hpd ha hb
+      exact (pairFinsetToMatching_eq_some_iff huniq i a).mpr ha
+
+/-- Union a decoded block sequence into the orderless sigma-pair set. -/
+def sigmaFinsetUnion {α : Type} [DecidableEq α] :
+    List (Finset α) → Finset α
+  | [] => ∅
+  | S :: Ss => S ∪ sigmaFinsetUnion Ss
+
+private theorem mem_sigmaFinsetUnion {α : Type} [DecidableEq α]
+    (Ss : List (Finset α)) (x : α) :
+    x ∈ sigmaFinsetUnion Ss ↔ ∃ S ∈ Ss, x ∈ S := by
+  induction Ss with
+  | nil =>
+      simp [sigmaFinsetUnion]
+  | cons S Ss ih =>
+      simp [sigmaFinsetUnion, ih]
+
+private theorem sigmaFinsetUnion_map_toFinset {α : Type} [DecidableEq α]
+    (ls : List (List α)) :
+    sigmaFinsetUnion (ls.map List.toFinset) = ls.join.toFinset := by
+  ext x
+  rw [mem_sigmaFinsetUnion]
+  constructor
+  · rintro ⟨S, hS, hx⟩
+    rcases List.mem_map.mp hS with ⟨l, hl, hSl⟩
+    rw [← hSl] at hx
+    rw [List.mem_toFinset, List.mem_join]
+    exact ⟨l, hl, List.mem_toFinset.mp hx⟩
+  · intro hx
+    rw [List.mem_toFinset, List.mem_join] at hx
+    rcases hx with ⟨l, hl, hx⟩
+    exact ⟨l.toFinset, List.mem_map.mpr ⟨l, hl, rfl⟩,
+      List.mem_toFinset.mpr hx⟩
+
+/-- Decode the orderless sigma-pair set from replayed entered terms and
+the packet's G2 component. -/
+def decodeSigmaSet {p h w : Nat} (terms : List (MTerm p h))
+    (G2 : List (Finset (Fin w))) : Finset (Fin p × Fin h) :=
+  sigmaFinsetUnion (decodeSigmaBlocks terms G2)
+
+/-- Decode the sigma-overlay matching from replayed entered terms and G2.
+This is independent of the original base matching; the only side input is
+the entered-term list recovered by replay. -/
+noncomputable def decodeSigmaOverlay {p h w : Nat} (terms : List (MTerm p h))
+    (G2 : List (Finset (Fin w))) : MatchingMap p h :=
+  pairFinsetToMatching (decodeSigmaSet terms G2)
+
+/-- On an `encodeMatch` image, entered terms plus G2 reconstruct the exact
+sigma-overlay matching consumed by G1. -/
+theorem encodeMatch_decodeSigmaOverlay {p h w t ell : Nat} (hsq : p = h)
+    (rho : MatchingMap p h) (D : MDNF p h) (hrho : IsMatching rho)
+    (hell : (freePigeons rho).card = ell)
+    (ht : t ≤ vmdtDepth (canonicalVMDT D rho))
+    (hw : ∀ term ∈ D, term.length ≤ w) :
+    let feed := leftmostLiveDeepFeed rho D t
+    let blocks := blocksOf (vtrace rho D feed)
+    let code := encodeMatch hsq rho D hrho hell ht hw
+    decodeSigmaOverlay (blocks.map fun B => B.term) code.G2 =
+      pairsToMatching (blockSigmas blocks).join := by
+  intro feed blocks code
+  unfold decodeSigmaOverlay decodeSigmaSet
+  have hdec :=
+    encodeMatch_decodeSigmaBlocks hsq rho D hrho hell ht hw
+  simp only at hdec
+  rw [hdec, sigmaFinsetUnion_map_toFinset]
+  have hpd :
+      List.Pairwise PairDisjoint (blockSigmas blocks).join := by
+    simpa [blocks, feed, vtrace] using
+      blockSigmas_join_pairwise (freePigeons rho).card rho [] D feed
+  exact pairFinsetToMatching_toFinset_eq_pairsToMatching hpd
+
 /-! ## Decode G3 in the corrected replay namespace -/
 
 /-- Decode a fixed-length G3 function after replay has recovered the sigma
@@ -261,6 +442,15 @@ def decodeBasePoint {p h : Nat} (G1 sigma : MatchingMap p h) (i : Fin p) :
     Option (Fin h) :=
   if sigma i = none then G1 i else none
 
+/-- Decode a base matching from a packet after replay has supplied the
+entered-term list.  This is the pure G1/G2 base decoder for the closed
+prefix: `decodeSigmaOverlay` reconstructs sigma from G2 and the terms,
+then `decodeBasePoint` strips that sigma overlay out of G1. -/
+noncomputable def decodeMatchFromTerms {p h w t ell : Nat}
+    (terms : List (MTerm p h)) (code : MatchEncode p h w t ell) :
+    MatchingMap p h :=
+  fun i => decodeBasePoint code.G1 (decodeSigmaOverlay terms code.G2) i
+
 /-- The base-decoder interface agrees with the existing G1 recovery theorem
 on every deterministic trace image. -/
 theorem decodeBasePoint_encodeExt {p h : Nat} (rho : MatchingMap p h)
@@ -286,13 +476,122 @@ theorem encodeMatch_decodeBasePoint {p h w t ell : Nat} (hsq : p = h)
     decodeBasePoint code.G1
         (pairsToMatching
           (blockSigmas (blocksOf (vtrace rho D feed))).join) i = rho i := by
-  intro feed code
+  intro feed _code
   simpa [encodeMatch] using decodeBasePoint_encodeExt rho D feed i
 
+/-- Base recovery through the pure G2 sigma decoder, assuming the entered
+blocks have already been replayed.  The decoder consumes only packet data
+(`G1`, `G2`) plus the entered-term list; it does not take `rho` or the
+trace sigma list as an input. -/
+theorem encodeMatch_decodeBasePoint_from_terms {p h w t ell : Nat}
+    (hsq : p = h) (rho : MatchingMap p h) (D : MDNF p h)
+    (hrho : IsMatching rho) (hell : (freePigeons rho).card = ell)
+    (ht : t ≤ vmdtDepth (canonicalVMDT D rho))
+    (hw : ∀ term ∈ D, term.length ≤ w) (i : Fin p) :
+    let feed := leftmostLiveDeepFeed rho D t
+    let blocks := blocksOf (vtrace rho D feed)
+    let code := encodeMatch hsq rho D hrho hell ht hw
+    decodeBasePoint code.G1
+        (decodeSigmaOverlay (blocks.map fun B => B.term) code.G2) i =
+      rho i := by
+  intro feed blocks code
+  have hoverlay :
+      decodeSigmaOverlay (blocks.map fun B => B.term) code.G2 =
+        pairsToMatching (blockSigmas blocks).join := by
+    simpa [feed, blocks, code] using
+      encodeMatch_decodeSigmaOverlay hsq rho D hrho hell ht hw
+  have hbase :
+      decodeBasePoint code.G1
+          (pairsToMatching (blockSigmas blocks).join) i = rho i := by
+    simpa [feed, blocks, code] using
+      encodeMatch_decodeBasePoint hsq rho D hrho hell ht hw i
+  rw [hoverlay]
+  exact hbase
+
+/-- `decodeMatchFromTerms` roundtrips on every encode image once replay has
+identified the entered-term list. -/
+theorem decodeMatchFromTerms_encodeMatch {p h w t ell : Nat} (hsq : p = h)
+    (rho : MatchingMap p h) (D : MDNF p h) (hrho : IsMatching rho)
+    (hell : (freePigeons rho).card = ell)
+    (ht : t ≤ vmdtDepth (canonicalVMDT D rho))
+    (hw : ∀ term ∈ D, term.length ≤ w) :
+    let feed := leftmostLiveDeepFeed rho D t
+    let blocks := blocksOf (vtrace rho D feed)
+    let code := encodeMatch hsq rho D hrho hell ht hw
+    decodeMatchFromTerms (blocks.map fun B => B.term) code = rho := by
+  intro feed blocks code
+  funext i
+  simpa [decodeMatchFromTerms, feed, blocks, code] using
+    encodeMatch_decodeBasePoint_from_terms hsq rho D hrho hell ht hw i
+
+/-- **Entered-term conditional injectivity.**  Equal `encodeMatch` packets
+and equal replayed entered-term sequences force equal bases.  All sigma
+information used here is decoded from the common packet G2; the remaining
+gap to full `InjOn encodeMatch` is exactly proving the entered-term
+sequence is itself recoverable from `(G1,G2,G3)`. -/
+theorem encodeMatch_eq_of_code_eq_of_entered_terms_eq
+    {p h w t ell : Nat} (hsq : p = h)
+    (rho₁ rho₂ : MatchingMap p h) (D : MDNF p h)
+    (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+    (hell₁ : (freePigeons rho₁).card = ell)
+    (hell₂ : (freePigeons rho₂).card = ell)
+    (ht₁ : t ≤ vmdtDepth (canonicalVMDT D rho₁))
+    (ht₂ : t ≤ vmdtDepth (canonicalVMDT D rho₂))
+    (hw : ∀ term ∈ D, term.length ≤ w)
+    (hcode : encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw =
+      encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw)
+    (hterms :
+      (blocksOf (vtrace rho₁ D (leftmostLiveDeepFeed rho₁ D t))).map
+          (fun B => B.term) =
+        (blocksOf (vtrace rho₂ D (leftmostLiveDeepFeed rho₂ D t))).map
+          (fun B => B.term)) :
+    rho₁ = rho₂ := by
+  funext i
+  let feed₁ := leftmostLiveDeepFeed rho₁ D t
+  let feed₂ := leftmostLiveDeepFeed rho₂ D t
+  let blocks₁ := blocksOf (vtrace rho₁ D feed₁)
+  let blocks₂ := blocksOf (vtrace rho₂ D feed₂)
+  let code₁ := encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw
+  let code₂ := encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw
+  have hG1 : code₁.G1 = code₂.G1 := by
+    exact congrArg MatchEncode.G1 hcode
+  have hG2 : code₁.G2 = code₂.G2 := by
+    exact congrArg MatchEncode.G2 hcode
+  have hterms' :
+      (blocks₁.map fun B => B.term) = (blocks₂.map fun B => B.term) := by
+    simpa [blocks₁, blocks₂, feed₁, feed₂] using hterms
+  have hoverlay :
+      decodeSigmaOverlay (blocks₁.map fun B => B.term) code₁.G2 =
+        decodeSigmaOverlay (blocks₂.map fun B => B.term) code₂.G2 := by
+    rw [hterms', hG2]
+  have hr₁ :
+      decodeBasePoint code₁.G1
+          (decodeSigmaOverlay (blocks₁.map fun B => B.term) code₁.G2) i =
+        rho₁ i := by
+    simpa [feed₁, blocks₁, code₁] using
+      encodeMatch_decodeBasePoint_from_terms hsq rho₁ D hrho₁ hell₁ ht₁ hw i
+  have hr₂ :
+      decodeBasePoint code₂.G1
+          (decodeSigmaOverlay (blocks₂.map fun B => B.term) code₂.G2) i =
+        rho₂ i := by
+    simpa [feed₂, blocks₂, code₂] using
+      encodeMatch_decodeBasePoint_from_terms hsq rho₂ D hrho₂ hell₂ ht₂ hw i
+  calc
+    rho₁ i =
+        decodeBasePoint code₁.G1
+          (decodeSigmaOverlay (blocks₁.map fun B => B.term) code₁.G2) i :=
+      hr₁.symm
+    _ =
+        decodeBasePoint code₂.G1
+          (decodeSigmaOverlay (blocks₂.map fun B => B.term) code₂.G2) i := by
+      simp only [hG1, hoverlay]
+    _ = rho₂ i := hr₂
+
 /-- **Conditional injectivity shell.** Equal codes and equal sigma-overlay
-matchings force equal bases.  Full `InjOn encodeMatch` reduces to proving
-that equal codes imply equal sigma overlays (via entered-term replay from
-G2/G3) — the residual GA-4 core. -/
+matchings force equal bases.  The stronger theorem
+`encodeMatch_eq_of_code_eq_of_entered_terms_eq` discharges this side
+condition from common entered terms plus G2; the residual GA-4 core is
+pure recovery of those entered terms from `(G1,G2,G3)`. -/
 theorem encodeMatch_eq_of_code_eq_of_sigma_eq
     {p h w t ell : Nat} (hsq : p = h)
     (rho₁ rho₂ : MatchingMap p h) (D : MDNF p h)
