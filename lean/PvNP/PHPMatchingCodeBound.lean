@@ -31,6 +31,9 @@ variables occur.
   tier-3 no-go does not fire (no standalone `h`-power, no support
   variables — syntactically visible in the statement).
 
+**State bounds are abstract code-space cardinalities; no theorem yet
+places the realized matching-encode image inside the family.**
+
 Term identification is replay-derived, never code content (pin 3.3's
 rider): nothing in this namespace mentions the DNF, and the decoder
 consumes positions and block bits only. Pure counting infrastructure:

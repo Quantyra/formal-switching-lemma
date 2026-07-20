@@ -8,11 +8,10 @@ Option A of record). The located encode (UF Lemma 6.2 / Beame §5 Lemma 4)
 operates on the **path and block structure** of the canonical vertex walk
 — data the tree object does not carry — so this stage builds the walk's
 **event trace**: a deterministic, choice-free replay of `vwalkAux` against
-an explicit answer feed (one partner vertex per query; the feed length
-realizes UF's "leftmost path trimmed to `s` pairs" without any
-path-selection choice), recording block entries (`enter`: the entered term
-and the path matching at entry) and query steps (`qstep`: the query label
-and the walked answer pair). On top of the trace:
+an **externally supplied answer feed** (one partner vertex per query).
+The feed is not extracted from a bad matching: invalid, dead, ill-kinded,
+or short feeds need not realize UF's leftmost length-`s` path. Canonical
+bad-set → feed extraction is residual GA-3b work. On top of the trace:
 
 * `blocksOf` — pure chunking of an event trace into blocks
   (entered term, entry matching, steps).

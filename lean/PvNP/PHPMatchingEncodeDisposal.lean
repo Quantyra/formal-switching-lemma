@@ -30,9 +30,8 @@ walk/vertex-tree divergence is already kernel-pinned):
   L1 convention that marks are σ-positions) star-codes to `[(0, true)]`.
   The answer stream G3 is the feed itself; its `[2ℓ]`-index packaging
   is Stage 4's transport pin (3.0) — recorded, not evaporated.
-* **(iii) Decode returns μ, in general form** (`encodeExt_recover_base`):
-  for any trace, the base is recovered pointwise from G1 and σ — on
-  σ-free pigeons G1 *is* the base, and on σ-pigeons the base was free.
+* **(iii) Recovery of μ, in general form** (`encodeExt_recover_base`):
+  for any trace, the base is recovered pointwise from G1 plus the σ-overlay (side information), not pure decode from the encoded tuple alone — σ-free pigeons G1 *is* the base, and on σ-pigeons the base was free.
   Instantiated on the pinned instance (`disposal_decode`).
 * **Pin 3.6, the badness off-by-one** (`mem_vbadMatchings_succ_le`):
   the packet's `depth > s` bad-set convention is identified with UF's
@@ -41,10 +40,12 @@ walk/vertex-tree divergence is already kernel-pinned):
   binding — the test runs at the memo's s = 2 with the identification
   stated, not silently absorbed.
 
-Deterministic trace/encode computations and one generic recovery lemma.
-No injectivity claim (GA-4), no cardinality-vs-space bound (GA-5), no
-probability statement, not a switching lemma, not Gate A closure, not
-Frege/PHP, NP/circuit, or P-versus-NP.
+Feed-parametric / concrete-path validation and one generic recovery lemma
+(G1 + σ side information), not a general encoder from bad matchings and
+not pure decode from an encoded tuple alone. No injectivity claim (GA-4),
+no cardinality-vs-space bound (GA-5), no probability statement, not a
+switching lemma, not Gate A closure, not Frege/PHP, NP/circuit, or
+P-versus-NP.
 
 INTEGRITY: no `sorry`, no `admit`, no new `axiom`, no `native_decide`.
 -/
