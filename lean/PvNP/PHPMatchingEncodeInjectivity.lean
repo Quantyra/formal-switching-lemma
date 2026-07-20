@@ -2,7 +2,7 @@ import PvNP.PHPMatchingDeterministicEncode
 import PvNP.PHPMatchingEncodeDisposal
 
 /-!
-# GA-4 Stage A/B: decode scaffolding + conditional injectivity (S2189)
+# GA-4 Stage A/B/C: decode scaffolding + conditional injectivity (S2189)
 
 This module begins the pure replay/decode side of the deterministic matching
 encode.  It proves that once the entered terms have been recovered, `G2`
@@ -15,15 +15,19 @@ equal entered-term sequences force equal bases (G1+G2 recovery).  The
 module now performs the G2 side as a pure decoder: entered terms and G2
 determine the sigma-overlay matching used by G1, independently of the
 original rho, and `decodeMatchFromTerms` roundtrips to rho on every encode
-image.  Full `Function.InjOn encodeMatch` is still blocked at the entered
-term replay step.  The true entered-term sequence is now proved to be a
-fixed point of the pure `(G1,G2,G3)` operator `replayTermsFromTerms`; the
-exact residual is `PacketReplayTermsUnique`, asserting that this fixed point
-is unique.  After the first block, proving uniqueness must reconcile the
-path matching `ρ * π` with G1 (which omits π) and the G3 answer namespace
-(which is decoded only after the sigma overlay is known).  Once uniqueness
-is supplied, `encodeMatch_subtype_injective_of_packetReplayTermsUnique`
-closes injectivity on the graded bad-set subtype.
+image.  The true entered-term sequence is a fixed point of the pure
+`(G1,G2,G3)` operator `replayTermsFromTerms`; the residual
+`PacketReplayTermsUnique` asserts uniqueness of that fixed point.  Once
+uniqueness is supplied,
+`encodeMatch_subtype_injective_of_packetReplayTermsUnique` closes injectivity
+on the graded bad-set subtype.
+
+Stage C adds dual sigma recovery (`decodeSigmaFromBase`), unconditional
+empty-G2 injectivity (`encodeMatch_eq_of_code_eq_of_G2_nil`), the UF
+`firstNotFalsifiedTerm` scan stub, and residual packaging
+(`EncodeMatchReplayUniqueResidual`).  Full multi-block
+`Function.InjOn encodeMatch` remains open at unique pure replay of entered
+terms (equivalently: UF prefix replay across all blocks).
 
 This is encode/decode bookkeeping only.  It proves no bad-set cardinality or
 switching statement.
@@ -965,6 +969,199 @@ theorem encodeMatch_eq_of_code_eq_of_sigma_eq
             (vtrace rho₂ D (leftmostLiveDeepFeed rho₂ D t)))).join) i := by
           simp only [hG1', hsigma]
     _ = rho₂ i := hr₂'
+
+/-! ## Stage C: dual recovery, empty-G2 injectivity, residual packaging -/
+
+/-- Dual of `decodeBasePoint`: recover the sigma overlay from G1 and a
+candidate base (the G1-assignments on free pigeons of the base). -/
+def decodeSigmaFromBase {p h : Nat} (G1 rho : MatchingMap p h) :
+    MatchingMap p h :=
+  fun i => if rho i = none then G1 i else none
+
+/-- On every encode image, the path sigma overlay is exactly G1 restricted
+to the free pigeons of the base. -/
+theorem decodeSigmaFromBase_encodeExt {p h : Nat} (rho : MatchingMap p h)
+    (D : MDNF p h) (feed : List (Vertex p h)) :
+    decodeSigmaFromBase (encodeExt rho D feed) rho =
+      pairsToMatching
+        (blockSigmas (blocksOf (vtrace rho D feed))).join := by
+  funext i
+  unfold decodeSigmaFromBase encodeExt
+  by_cases hri : rho i = none
+  · rw [if_pos hri, compose_free_left _ _ i hri]
+  · have hri' : rho i ≠ none := hri
+    rw [if_neg hri]
+    cases hros : rho i with
+    | none => exact absurd hros hri'
+    | some a =>
+        -- freshness: path sigma never lands on a rho-matched pigeon
+        have hnone :
+            pairsToMatching
+                (blockSigmas (blocksOf (vtrace rho D feed))).join i =
+              none := by
+          cases hsm : pairsToMatching
+              (blockSigmas (blocksOf (vtrace rho D feed))).join i with
+          | none => rfl
+          | some b =>
+              have hm := pairsToMatching_eq_some _ i b hsm
+              have hfr :=
+                blockSigmas_join_fresh (freePigeons rho).card rho [] D feed
+                  (i, b) (by simpa [vtrace] using hm)
+              rw [hros] at hfr
+              cases hfr.1
+        exact hnone.symm
+
+/-- On an encode image the dual recovers the path sigma, so base recovery
+through the dual is the identity. -/
+theorem decodeBasePoint_decodeSigmaFromBase_encodeExt {p h : Nat}
+    (rho : MatchingMap p h) (D : MDNF p h) (feed : List (Vertex p h))
+    (i : Fin p) :
+    decodeBasePoint (encodeExt rho D feed)
+        (decodeSigmaFromBase (encodeExt rho D feed) rho) i = rho i := by
+  have hsig := decodeSigmaFromBase_encodeExt rho D feed
+  rw [hsig]
+  exact decodeBasePoint_encodeExt rho D feed i
+
+/-- Packaged dual recovery on the `encodeMatch` image. -/
+theorem encodeMatch_decodeSigmaFromBase {p h w t ell : Nat} (hsq : p = h)
+    (rho : MatchingMap p h) (D : MDNF p h) (hrho : IsMatching rho)
+    (hell : (freePigeons rho).card = ell)
+    (ht : t ≤ vmdtDepth (canonicalVMDT D rho))
+    (hw : ∀ term ∈ D, term.length ≤ w) :
+    let feed := leftmostLiveDeepFeed rho D t
+    let code := encodeMatch hsq rho D hrho hell ht hw
+    decodeSigmaFromBase code.G1 rho =
+      pairsToMatching
+        (blockSigmas (blocksOf (vtrace rho D feed))).join := by
+  intro feed _code
+  simpa [encodeMatch] using decodeSigmaFromBase_encodeExt rho D feed
+
+private theorem blockSigmasBeta_eq_nil_iff {p h w : Nat} :
+    ∀ Bs : List (VBlock p h),
+      blockSigmasBeta (w := w) Bs = [] ↔ Bs = []
+  | [] => by simp [blockSigmasBeta]
+  | [B] => by simp [blockSigmasBeta]
+  | B :: B' :: Bs => by simp [blockSigmasBeta]
+
+/-- Empty G2 means empty path sigma, so G1 is already the base. -/
+theorem encodeMatch_eq_of_code_eq_of_G2_nil
+    {p h w t ell : Nat} (hsq : p = h)
+    (rho₁ rho₂ : MatchingMap p h) (D : MDNF p h)
+    (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+    (hell₁ : (freePigeons rho₁).card = ell)
+    (hell₂ : (freePigeons rho₂).card = ell)
+    (ht₁ : t ≤ vmdtDepth (canonicalVMDT D rho₁))
+    (ht₂ : t ≤ vmdtDepth (canonicalVMDT D rho₂))
+    (hw : ∀ term ∈ D, term.length ≤ w)
+    (hcode : encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw =
+      encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw)
+    (hG2 :
+      (encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw).G2 = []) :
+    rho₁ = rho₂ := by
+  have hG1 :
+      (encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw).G1 =
+        (encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw).G1 :=
+    congrArg MatchEncode.G1 hcode
+  have hG2₂ :
+      (encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw).G2 = [] := by
+    have := congrArg MatchEncode.G2 hcode
+    simpa [hG2] using this.symm
+  have hblocks₁ :
+      blocksOf (vtrace rho₁ D (leftmostLiveDeepFeed rho₁ D t)) = [] := by
+    have hβ :
+        (encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw).G2 =
+          blockSigmasBeta (w := w)
+            (blocksOf (vtrace rho₁ D (leftmostLiveDeepFeed rho₁ D t))) := by
+      simp [encodeMatch, traceBetaDeep, traceBeta]
+    exact (blockSigmasBeta_eq_nil_iff _).mp (hβ.symm.trans hG2)
+  have hblocks₂ :
+      blocksOf (vtrace rho₂ D (leftmostLiveDeepFeed rho₂ D t)) = [] := by
+    have hβ :
+        (encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw).G2 =
+          blockSigmasBeta (w := w)
+            (blocksOf (vtrace rho₂ D (leftmostLiveDeepFeed rho₂ D t))) := by
+      simp [encodeMatch, traceBetaDeep, traceBeta]
+    exact (blockSigmasBeta_eq_nil_iff _).mp (hβ.symm.trans hG2₂)
+  have hsig₁ :
+      pairsToMatching
+          (blockSigmas (blocksOf
+            (vtrace rho₁ D (leftmostLiveDeepFeed rho₁ D t)))).join =
+        (emptyMatching p h) := by
+    simp [hblocks₁, blockSigmas, pairsToMatching]
+  have hsig₂ :
+      pairsToMatching
+          (blockSigmas (blocksOf
+            (vtrace rho₂ D (leftmostLiveDeepFeed rho₂ D t)))).join =
+        (emptyMatching p h) := by
+    simp [hblocks₂, blockSigmas, pairsToMatching]
+  have hr₁ :
+      rho₁ = encodeExt rho₁ D (leftmostLiveDeepFeed rho₁ D t) := by
+    funext i
+    simpa [hsig₁, encodeExt, compose_empty_right] using
+      (encodeExt_recover_base rho₁ D (leftmostLiveDeepFeed rho₁ D t) i).symm
+  have hr₂ :
+      rho₂ = encodeExt rho₂ D (leftmostLiveDeepFeed rho₂ D t) := by
+    funext i
+    simpa [hsig₂, encodeExt, compose_empty_right] using
+      (encodeExt_recover_base rho₂ D (leftmostLiveDeepFeed rho₂ D t) i).symm
+  calc
+    rho₁ = encodeExt rho₁ D (leftmostLiveDeepFeed rho₁ D t) := hr₁
+    _ = (encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw).G1 := by
+      simp [encodeMatch]
+    _ = (encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw).G1 := hG1
+    _ = encodeExt rho₂ D (leftmostLiveDeepFeed rho₂ D t) := by
+      simp [encodeMatch]
+    _ = rho₂ := hr₂.symm
+
+/-- Razborov/UF first-not-falsified scan: skip illegal and falsified terms.
+Used by the multi-block prefix-replay residual (entered-term identification
+under the satisfying overlay G1 = ρσ). -/
+def firstNotFalsifiedTerm {p h : Nat} (mu : MatchingMap p h) :
+    MDNF p h → Option (MTerm p h)
+  | [] => none
+  | t :: rest =>
+      if termMatchingLegalB t = false then firstNotFalsifiedTerm mu rest
+      else if termFalsifiedB mu t = true then firstNotFalsifiedTerm mu rest
+      else some t
+
+/-- **Residual (S2189 Stage C).**  Full `PacketReplayTermsUnique` on every
+`encodeMatch` image — equivalently, uniqueness of pure `(G1,G2,G3)` entered-
+term replay fixed points.  The true entered-term sequence is a fixed point
+(`packetReplayTermsFixed_encodeMatch`); discharging uniqueness yields
+`encodeMatch_subtype_injective` on the graded bad set via
+`encodeMatch_subtype_injective_of_packetReplayTermsUnique`.
+
+Empty-G2 injectivity is unconditional (`encodeMatch_eq_of_code_eq_of_G2_nil`).
+The multi-block residual is reconciling path-π with G1 (which stores σ, not π)
+while decoding G3 in the free-vertex namespace of the still-unknown base, or
+equivalently completing UF first-not-falsified prefix replay
+(`firstNotFalsifiedTerm`) across all blocks. -/
+def EncodeMatchReplayUniqueResidual {p h w t ell : Nat} (hsq : p = h)
+    (D : MDNF p h) (hw : ∀ term ∈ D, term.length ≤ w) : Prop :=
+  ∀ (rho : MatchingMap p h) (hrho : IsMatching rho)
+    (hell : (freePigeons rho).card = ell)
+    (ht : t ≤ vmdtDepth (canonicalVMDT D rho)),
+    PacketReplayTermsUnique D (encodeMatch hsq rho D hrho hell ht hw)
+
+/-- Unconditional injectivity on the graded bad-set subtype, assuming the
+encode-image replay-uniqueness residual. -/
+theorem encodeMatch_subtype_injective_of_residual
+    {p h w t ell : Nat} (hsq : p = h) (D : MDNF p h)
+    (hw : ∀ term ∈ D, term.length ≤ w)
+    (hres : EncodeMatchReplayUniqueResidual (t := t) (ell := ell) (w := w)
+      hsq D hw) :
+    Function.Injective
+      (fun rho : {rho : MatchingMap p h // rho ∈ vbadMatchings D (t - 1) ell} =>
+        let hmem := (mem_vbadMatchings D (t - 1) ell rho.1).mp rho.2
+        let ht : t ≤ vmdtDepth (canonicalVMDT D rho.1) :=
+          Nat.le_of_pred_lt hmem.2
+        encodeMatch hsq rho.1 D hmem.1.1 hmem.1.2 ht hw) :=
+  encodeMatch_subtype_injective_of_packetReplayTermsUnique hsq D hw
+    (fun rho => by
+      let hmem := (mem_vbadMatchings D (t - 1) ell rho.1).mp rho.2
+      let ht : t ≤ vmdtDepth (canonicalVMDT D rho.1) :=
+        Nat.le_of_pred_lt hmem.2
+      simpa [hmem, ht] using hres rho.1 hmem.1.1 hmem.1.2 ht)
 
 end PHPMatchingEncodeInjectivity
 end PvNP

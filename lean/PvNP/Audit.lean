@@ -11962,3 +11962,49 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeInjectivity.encodeMatch_eq_of_code_eq_of_sigma_eq
+
+/-! S2189 GA-4 Stage C: dual recovery, empty-G2 injectivity, residual packaging. -/
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.decodeSigmaFromBase' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.decodeSigmaFromBase
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.decodeSigmaFromBase_encodeExt' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.decodeSigmaFromBase_encodeExt
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.decodeBasePoint_decodeSigmaFromBase_encodeExt' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.decodeBasePoint_decodeSigmaFromBase_encodeExt
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.encodeMatch_decodeSigmaFromBase' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.encodeMatch_decodeSigmaFromBase
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.encodeMatch_eq_of_code_eq_of_G2_nil' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.encodeMatch_eq_of_code_eq_of_G2_nil
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.firstNotFalsifiedTerm' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.firstNotFalsifiedTerm
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.EncodeMatchReplayUniqueResidual' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.EncodeMatchReplayUniqueResidual
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.encodeMatch_subtype_injective_of_residual' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.encodeMatch_subtype_injective_of_residual
