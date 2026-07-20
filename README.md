@@ -635,6 +635,34 @@ surface is narrow, reproducible, and easy to cite by release/DOI.
   realized widths of the auto re-viewed stage-2/3 gates are BUDGET claims —
   only the start gate is syntactically pinned at realized width 1.
 
+## GA-3 matching extension encode infrastructure (v0.10.0)
+
+Post-`v0.9.0` work packages deterministic matching extension-encode
+infrastructure on the Gate A route (S2187/S2188). This is bookkeeping and
+packaging only — not a counting or hardness theorem.
+
+- **S2187 (feed-parametric GA-3 components).** Vertex-query canonical matching
+  decision trees (`PHPMatchingVertexTree`), walk traces / blocks / σ surfaces
+  and the extension-encode surface (`PHPMatchingExtensionEncode`), star-code
+  graded per-stage bounds (`PHPMatchingCodeBound`), mandatory
+  counterexample-disposal pins (`PHPMatchingEncodeDisposal`), and path-answer
+  transport (`PHPMatchingAnswerTransport`). Trace replay is against an
+  **externally supplied** answer feed; components are feed-parametric rather
+  than extracted from a bad matching in this story.
+- **S2188 (deterministic `encodeMatch` assembly).** Leftmost live
+  depth-preserving feed selection, exact tree-trace synchronization for square
+  hole-injective base matchings, and the packaged graded encode
+  `PHPMatchingDeterministicEncode.encodeMatch` (G1 free-pigeon drop via
+  `encodeExt`, G2 β-marks from `blockSigmas`, G3 free-vertex answer codes)
+  whose G2/G3 side matches the predicates consumed by
+  `mcode_answers_family_card_le`.
+
+**Explicit non-claims for this surface:** no injectivity of the encode, no
+bad-set cardinality bound, no PHP switching lemma, and no Frege/PHP, NP/circuit,
+or P-vs-NP statement. Gate A rung 4 remains open. Cite only the Lean-checked
+declarations above; do not read this packaging as a first-of-kind claim without
+independent literature search.
+
 ## Non-Claims Boundary
 
 This artifact does **not** prove or imply:
@@ -812,6 +840,21 @@ Version `v0.1.0` is archived on Zenodo:
 
 - DOI: `10.5281/zenodo.20757628`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.1.0`
+
+Version `v0.10.0` packages the GA-3 matching extension encode infrastructure
+S2187/S2188: feed-parametric vertex-walk / block / σ / graded-code / disposal /
+answer-transport components, plus deterministic `encodeMatch` assembly
+(leftmost live depth-preserving feed, tree-trace synchronization, packaged
+G1/G2/G3).  This is deterministic trace/encode bookkeeping only.  Boundary:
+**no** encode injectivity, **no** bad-set cardinality, **no** PHP switching
+lemma, **no** Frege/PHP, NP/circuit, or P-vs-NP claim; Gate A rung 4 remains
+open.  Prior Gate B coefficient-lane / frozen-form and Gate A obstruction
+surfaces from `v0.9.0` and earlier are retained unchanged in claim strength.
+The audit surface has `2034` `#guard_msgs`-pinned `#print axioms` profiles.
+
+- Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.10.0`
+- Zenodo version DOI: pending GitHub/Zenodo archive after tag publication
+  (concept DOI remains `10.5281/zenodo.20757627`)
 
 Version `v0.9.0` publishes the post-`v0.8.0` Gate B coefficient-lane and
 frozen-form stack S2175-S2183 under unchanged `t(d,s)=S(d)*(s-1)`.  S2175 adds
@@ -1311,7 +1354,7 @@ support-based code space and a single guaranteed free row — so it is not a
 geometric `(8w)^s`-style bound, not a per-stage information-recovery encoding
 argument, and not a PHP switching lemma.
 
-As of `v0.9.0`, the audit surface has `1810` `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. The v0.9.0 class wrapper is class-level only: full frozen-payload B4 beyond the nonempty-fanin normalized-view/dedup class and Gate A rung 4 (a PHP switching lemma) remain open.
+As of `v0.10.0`, the audit surface has `2034` `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. The v0.9.0 class wrapper remains class-level only; the v0.10.0 GA-3 encode surface is packaging/bookkeeping only (no injectivity, no bad-set cardinality). Full frozen-payload B4 beyond the nonempty-fanin normalized-view/dedup class and Gate A rung 4 (a PHP switching lemma) remain open.
 
 - DOI: `10.5281/zenodo.21184992`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`
