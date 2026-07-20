@@ -278,6 +278,14 @@ noncomputable def pairFinsetToMatching {p h : Nat}
     (S : Finset (Fin p × Fin h)) : MatchingMap p h :=
   fun i => pairFinsetToMatching_aux S i
 
+/-- Public unfolding form of the choice-based pair-set decoder (used by the
+S2190 replay-uniqueness counterexample module). -/
+theorem pairFinsetToMatching_eq_dite {p h : Nat}
+    (S : Finset (Fin p × Fin h)) (i : Fin p) :
+    pairFinsetToMatching S i =
+      if h : ∃ a, (i, a) ∈ S then some (Classical.choose h) else none :=
+  rfl
+
 private theorem pairFinsetToMatching_eq_some_iff {p h : Nat}
     {S : Finset (Fin p × Fin h)}
     (huniq : ∀ {i : Fin p} {a b : Fin h},

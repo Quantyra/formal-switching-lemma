@@ -28,6 +28,7 @@ import PvNP.PHPMatchingEncodeDisposal
 import PvNP.PHPMatchingAnswerTransport
 import PvNP.PHPMatchingDeterministicEncode
 import PvNP.PHPMatchingEncodeInjectivity
+import PvNP.PHPMatchingReplayCounterexample
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
@@ -12008,3 +12009,17 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeInjectivity.encodeMatch_subtype_injective_of_residual
+
+/-! S2190: kernel-checked refutation of packet replay fixed-point uniqueness. -/
+
+/-- info: 'PvNP.PHPMatchingReplayCounterexample.packetReplayTermsUnique_refuted' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingReplayCounterexample.packetReplayTermsUnique_refuted
+
+/-- info: 'PvNP.PHPMatchingReplayCounterexample.encodeMatchReplayUniqueResidual_refuted' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingReplayCounterexample.encodeMatchReplayUniqueResidual_refuted
