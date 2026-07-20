@@ -24,6 +24,7 @@ import PvNP.PHPMatchingCanonicalMDT
 import PvNP.PHPMatchingVertexTree
 import PvNP.PHPMatchingExtensionEncode
 import PvNP.PHPMatchingCodeBound
+import PvNP.PHPMatchingEncodeDisposal
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
@@ -11596,3 +11597,49 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 /-- info: 'PvNP.PHPMatchingCodeBound.starData_roundtrip_instance' depends on axioms: [propext] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingCodeBound.starData_roundtrip_instance
+
+/-! S2187 stage-3 mandatory counterexample-disposal pins. -/
+
+/-- info: 'PvNP.PHPMatchingEncodeDisposal.encodeExt_recover_base' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeDisposal.encodeExt_recover_base
+
+/-- info: 'PvNP.PHPMatchingEncodeDisposal.mem_vbadMatchings_succ_le' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeDisposal.mem_vbadMatchings_succ_le
+
+/-- info: 'PvNP.PHPMatchingEncodeDisposal.singleton_sigmaFull' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeDisposal.singleton_sigmaFull
+
+/-- info: 'PvNP.PHPMatchingEncodeDisposal.divD_at_most_one_block' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeDisposal.divD_at_most_one_block
+
+/-- info: 'PvNP.PHPMatchingEncodeDisposal.disposal_trace' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeDisposal.disposal_trace
+
+/-- info: 'PvNP.PHPMatchingEncodeDisposal.disposal_blocks' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeDisposal.disposal_blocks
+
+/-- info: 'PvNP.PHPMatchingEncodeDisposal.disposal_sigma' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeDisposal.disposal_sigma
+
+/-- info: 'PvNP.PHPMatchingEncodeDisposal.disposal_encodeExt' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeDisposal.disposal_encodeExt
+
+/-- info: 'PvNP.PHPMatchingEncodeDisposal.disposal_decode' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeDisposal.disposal_decode
+
+/-- info: 'PvNP.PHPMatchingEncodeDisposal.disposal_beta_starData' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeDisposal.disposal_beta_starData
+
+/-- info: 'PvNP.PHPMatchingEncodeDisposal.disposal_bad_at_one' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeDisposal.disposal_bad_at_one
