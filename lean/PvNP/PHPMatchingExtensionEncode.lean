@@ -1986,5 +1986,400 @@ theorem vevents_pending_drained {p h : Nat} :
   termination_by fuel _ pending D _ _ _ _ =>
     (fuel, pending.length + D.length)
 
+/-! ## Stage 1b.4b: step-vertex freshness and distinctness
+
+Each query label was uncovered when queried and is covered immediately
+after — so a trace's query labels are pairwise distinct. This feeds both
+halves of the drop range: the truncated block's `|σ_k| ≤ |π_k|`
+injection and the `s ≤ 2j` fiber bound. -/
+
+/-- All query steps of an event list (not only the leading ones). -/
+def eventsSteps {p h : Nat} : List (VEvent p h) → List (VStep p h)
+  | [] => []
+  | .enter _ _ :: es => eventsSteps es
+  | .qstep st :: es => st :: eventsSteps es
+
+theorem eventsSteps_nil {p h : Nat} :
+    eventsSteps ([] : List (VEvent p h)) = [] := rfl
+
+theorem eventsSteps_enter {p h : Nat} (t : MTerm p h)
+    (ent : MatchingMap p h) (es : List (VEvent p h)) :
+    eventsSteps (.enter t ent :: es) = eventsSteps es := rfl
+
+theorem eventsSteps_qstep {p h : Nat} (st : VStep p h)
+    (es : List (VEvent p h)) :
+    eventsSteps (.qstep st :: es) = st :: eventsSteps es := rfl
+
+/-- Uncoveredness pulls back along composition. -/
+theorem vertexUncovered_of_compose_uncovered {p h : Nat}
+    (mu m1 : MatchingMap p h) (v : Vertex p h)
+    (hv : vertexCoveredB (compose mu m1) v = false) :
+    vertexCoveredB mu v = false := by
+  cases hcv : vertexCoveredB mu v with
+  | false => rfl
+  | true =>
+      have := vertexCoveredB_mono_mAgree (mAgree_compose_left mu m1) v hcv
+      rw [hv] at this
+      cases this
+
+/-- Every query label of a trace was uncovered at the trace's base. -/
+theorem vevents_steps_vertex_fresh {p h : Nat} :
+    ∀ (fuel : Nat) (mu : MatchingMap p h) (pending : List (Vertex p h))
+      (D : MDNF p h) (feed : List (Vertex p h)),
+      ∀ st ∈ eventsSteps (vevents fuel mu pending D feed),
+        vertexCoveredB mu st.vertex = false
+  | _, _, [], [], _ => by
+      rw [vevents_nil]
+      intro st hst
+      cases hst
+  | fuel, mu, [], t :: rest, feed => by
+      by_cases hleg : termMatchingLegalB t = true
+      · by_cases hfals : termFalsifiedB mu t = true
+        · rw [vevents_skip_falsified fuel mu t rest feed hleg hfals]
+          exact vevents_steps_vertex_fresh fuel mu [] rest feed
+        · have hfals' : termFalsifiedB mu t = false :=
+            Bool.eq_false_iff.mpr hfals
+          by_cases hsat : termSatisfiedB mu t = true
+          · rw [vevents_stop_satisfied fuel mu t rest feed hleg hfals'
+              hsat]
+            intro st hst
+            cases hst
+          · have hsat' : termSatisfiedB mu t = false :=
+              Bool.eq_false_iff.mpr hsat
+            cases fuel with
+            | zero =>
+                rw [vevents_entry_zero mu t rest feed hleg hfals' hsat']
+                intro st hst
+                cases hst
+            | succ fuel' =>
+                cases htv : termVertices mu t with
+                | nil =>
+                    rw [vevents_entry_novertices fuel' mu t rest feed hleg
+                      hfals' hsat' htv]
+                    intro st hst
+                    cases hst
+                | cons v vs =>
+                    cases v with
+                    | inl i =>
+                        have hfree : mu i = none :=
+                          termVertices_head_pigeon_free mu t i vs htv
+                        cases feed with
+                        | nil =>
+                            rw [vevents_entry_feed_nil fuel' mu t rest i
+                              vs hleg hfals' hsat' htv]
+                            intro st hst
+                            cases hst
+                        | cons av fs =>
+                            cases av with
+                            | inl q =>
+                                rw [vevents_entry_feed_illkind fuel' mu t
+                                  rest i vs q fs hleg hfals' hsat' htv]
+                                intro st hst
+                                cases hst
+                            | inr a =>
+                                by_cases hha : holeUsed mu a = true
+                                · rw [vevents_entry_pigeon_dead fuel' mu t
+                                    rest i vs a fs hleg hfals' hsat' htv
+                                    hha]
+                                  intro st hst
+                                  cases hst
+                                · have hha' : holeUsed mu a = false :=
+                                    Bool.eq_false_iff.mpr hha
+                                  rw [vevents_entry_pigeon_live fuel' mu t
+                                    rest i vs a fs hleg hfals' hsat' htv
+                                    hha']
+                                  rw [eventsSteps_enter,
+                                    eventsSteps_qstep]
+                                  intro st hst
+                                  cases hst with
+                                  | head =>
+                                      simp only [vertexCoveredB]
+                                      rw [hfree]
+                                      rfl
+                                  | tail _ hst' =>
+                                      exact vertexUncovered_of_compose_uncovered
+                                        mu _ _
+                                        (vevents_steps_vertex_fresh fuel'
+                                          (compose mu
+                                            (singleMatching i a)) vs
+                                          (t :: rest) fs st hst')
+                    | inr b =>
+                        exact absurd htv
+                          (termVertices_head_not_hole mu t b vs)
+      · have hleg' : termMatchingLegalB t = false :=
+          Bool.eq_false_iff.mpr hleg
+        rw [vevents_skip_illegal fuel mu t rest feed hleg']
+        exact vevents_steps_vertex_fresh fuel mu [] rest feed
+  | fuel, mu, v :: vs, D, feed => by
+      by_cases hcov : vertexCoveredB mu v = true
+      · rw [vevents_block_skip_covered fuel mu v vs D feed hcov]
+        exact vevents_steps_vertex_fresh fuel mu vs D feed
+      · have hcov' : vertexCoveredB mu v = false :=
+          Bool.eq_false_iff.mpr hcov
+        cases fuel with
+        | zero =>
+            rw [vevents_block_zero mu v vs D feed hcov']
+            intro st hst
+            cases hst
+        | succ fuel' =>
+            cases v with
+            | inl i =>
+                cases feed with
+                | nil =>
+                    rw [vevents_block_feed_nil fuel' mu _ vs D hcov']
+                    intro st hst
+                    cases hst
+                | cons av fs =>
+                    cases av with
+                    | inl q =>
+                        rw [vevents_block_pigeon_illkind fuel' mu i vs D q
+                          fs hcov']
+                        intro st hst
+                        cases hst
+                    | inr a =>
+                        by_cases hha : holeUsed mu a = true
+                        · rw [vevents_block_pigeon_dead fuel' mu i vs D a
+                            fs hcov' hha]
+                          intro st hst
+                          cases hst
+                        · have hha' : holeUsed mu a = false :=
+                            Bool.eq_false_iff.mpr hha
+                          rw [vevents_block_pigeon_live fuel' mu i vs D a
+                            fs hcov' hha', eventsSteps_qstep]
+                          intro st hst
+                          cases hst with
+                          | head => exact hcov'
+                          | tail _ hst' =>
+                              exact vertexUncovered_of_compose_uncovered
+                                mu _ _
+                                (vevents_steps_vertex_fresh fuel'
+                                  (compose mu (singleMatching i a)) vs D
+                                  fs st hst')
+            | inr b =>
+                cases feed with
+                | nil =>
+                    rw [vevents_block_feed_nil fuel' mu _ vs D hcov']
+                    intro st hst
+                    cases hst
+                | cons av fs =>
+                    cases av with
+                    | inr a =>
+                        rw [vevents_block_hole_illkind fuel' mu b vs D a
+                          fs hcov']
+                        intro st hst
+                        cases hst
+                    | inl q =>
+                        by_cases hq : (mu q).isSome = true
+                        · rw [vevents_block_hole_dead fuel' mu b vs D q fs
+                            hcov' hq]
+                          intro st hst
+                          cases hst
+                        · have hq' : (mu q).isSome = false :=
+                            Bool.eq_false_iff.mpr hq
+                          rw [vevents_block_hole_live fuel' mu b vs D q fs
+                            hcov' hq', eventsSteps_qstep]
+                          intro st hst
+                          cases hst with
+                          | head => exact hcov'
+                          | tail _ hst' =>
+                              exact vertexUncovered_of_compose_uncovered
+                                mu _ _
+                                (vevents_steps_vertex_fresh fuel'
+                                  (compose mu (singleMatching q b)) vs D
+                                  fs st hst')
+  termination_by fuel _ pending D _ =>
+    (fuel, pending.length + D.length)
+
+/-- **Query labels are pairwise distinct**: each label is covered right
+after its query, and later labels are uncovered at their query time. -/
+theorem vevents_steps_vertex_pairwise {p h : Nat} :
+    ∀ (fuel : Nat) (mu : MatchingMap p h) (pending : List (Vertex p h))
+      (D : MDNF p h) (feed : List (Vertex p h)),
+      List.Pairwise (fun s1 s2 => s1.vertex ≠ s2.vertex)
+        (eventsSteps (vevents fuel mu pending D feed))
+  | _, _, [], [], _ => by
+      rw [vevents_nil]
+      exact List.Pairwise.nil
+  | fuel, mu, [], t :: rest, feed => by
+      by_cases hleg : termMatchingLegalB t = true
+      · by_cases hfals : termFalsifiedB mu t = true
+        · rw [vevents_skip_falsified fuel mu t rest feed hleg hfals]
+          exact vevents_steps_vertex_pairwise fuel mu [] rest feed
+        · have hfals' : termFalsifiedB mu t = false :=
+            Bool.eq_false_iff.mpr hfals
+          by_cases hsat : termSatisfiedB mu t = true
+          · rw [vevents_stop_satisfied fuel mu t rest feed hleg hfals'
+              hsat]
+            exact List.Pairwise.nil
+          · have hsat' : termSatisfiedB mu t = false :=
+              Bool.eq_false_iff.mpr hsat
+            cases fuel with
+            | zero =>
+                rw [vevents_entry_zero mu t rest feed hleg hfals' hsat']
+                exact List.Pairwise.nil
+            | succ fuel' =>
+                cases htv : termVertices mu t with
+                | nil =>
+                    rw [vevents_entry_novertices fuel' mu t rest feed hleg
+                      hfals' hsat' htv]
+                    exact List.Pairwise.nil
+                | cons v vs =>
+                    cases v with
+                    | inl i =>
+                        have hfree : mu i = none :=
+                          termVertices_head_pigeon_free mu t i vs htv
+                        cases feed with
+                        | nil =>
+                            rw [vevents_entry_feed_nil fuel' mu t rest i
+                              vs hleg hfals' hsat' htv]
+                            exact List.Pairwise.nil
+                        | cons av fs =>
+                            cases av with
+                            | inl q =>
+                                rw [vevents_entry_feed_illkind fuel' mu t
+                                  rest i vs q fs hleg hfals' hsat' htv]
+                                exact List.Pairwise.nil
+                            | inr a =>
+                                by_cases hha : holeUsed mu a = true
+                                · rw [vevents_entry_pigeon_dead fuel' mu t
+                                    rest i vs a fs hleg hfals' hsat' htv
+                                    hha]
+                                  exact List.Pairwise.nil
+                                · have hha' : holeUsed mu a = false :=
+                                    Bool.eq_false_iff.mpr hha
+                                  rw [vevents_entry_pigeon_live fuel' mu t
+                                    rest i vs a fs hleg hfals' hsat' htv
+                                    hha']
+                                  rw [eventsSteps_enter,
+                                    eventsSteps_qstep,
+                                    List.pairwise_cons]
+                                  constructor
+                                  · intro st hst heq
+                                    have hfr := vevents_steps_vertex_fresh
+                                      fuel'
+                                      (compose mu (singleMatching i a))
+                                      vs (t :: rest) fs st hst
+                                    rw [← heq] at hfr
+                                    have hcv : vertexCoveredB
+                                        (compose mu (singleMatching i a))
+                                        (Sum.inl i) = true := by
+                                      simp only [vertexCoveredB]
+                                      rw [compose_single_self mu i a
+                                        hfree]
+                                      rfl
+                                    rw [hfr] at hcv
+                                    cases hcv
+                                  · exact vevents_steps_vertex_pairwise
+                                      fuel'
+                                      (compose mu (singleMatching i a))
+                                      vs (t :: rest) fs
+                    | inr b =>
+                        exact absurd htv
+                          (termVertices_head_not_hole mu t b vs)
+      · have hleg' : termMatchingLegalB t = false :=
+          Bool.eq_false_iff.mpr hleg
+        rw [vevents_skip_illegal fuel mu t rest feed hleg']
+        exact vevents_steps_vertex_pairwise fuel mu [] rest feed
+  | fuel, mu, v :: vs, D, feed => by
+      by_cases hcov : vertexCoveredB mu v = true
+      · rw [vevents_block_skip_covered fuel mu v vs D feed hcov]
+        exact vevents_steps_vertex_pairwise fuel mu vs D feed
+      · have hcov' : vertexCoveredB mu v = false :=
+          Bool.eq_false_iff.mpr hcov
+        cases fuel with
+        | zero =>
+            rw [vevents_block_zero mu v vs D feed hcov']
+            exact List.Pairwise.nil
+        | succ fuel' =>
+            cases v with
+            | inl i =>
+                have hfree : mu i = none := by
+                  simp only [vertexCoveredB] at hcov'
+                  cases hmi : mu i with
+                  | none => rfl
+                  | some c =>
+                      rw [hmi] at hcov'
+                      simp at hcov'
+                cases feed with
+                | nil =>
+                    rw [vevents_block_feed_nil fuel' mu _ vs D hcov']
+                    exact List.Pairwise.nil
+                | cons av fs =>
+                    cases av with
+                    | inl q =>
+                        rw [vevents_block_pigeon_illkind fuel' mu i vs D q
+                          fs hcov']
+                        exact List.Pairwise.nil
+                    | inr a =>
+                        by_cases hha : holeUsed mu a = true
+                        · rw [vevents_block_pigeon_dead fuel' mu i vs D a
+                            fs hcov' hha]
+                          exact List.Pairwise.nil
+                        · have hha' : holeUsed mu a = false :=
+                            Bool.eq_false_iff.mpr hha
+                          rw [vevents_block_pigeon_live fuel' mu i vs D a
+                            fs hcov' hha', eventsSteps_qstep,
+                            List.pairwise_cons]
+                          constructor
+                          · intro st hst heq
+                            have hfr := vevents_steps_vertex_fresh fuel'
+                              (compose mu (singleMatching i a)) vs D fs
+                              st hst
+                            rw [← heq] at hfr
+                            have hcv : vertexCoveredB
+                                (compose mu (singleMatching i a))
+                                (Sum.inl i) = true := by
+                              simp only [vertexCoveredB]
+                              rw [compose_single_self mu i a hfree]
+                              rfl
+                            rw [hfr] at hcv
+                            cases hcv
+                          · exact vevents_steps_vertex_pairwise fuel'
+                              (compose mu (singleMatching i a)) vs D fs
+            | inr b =>
+                cases feed with
+                | nil =>
+                    rw [vevents_block_feed_nil fuel' mu _ vs D hcov']
+                    exact List.Pairwise.nil
+                | cons av fs =>
+                    cases av with
+                    | inr a =>
+                        rw [vevents_block_hole_illkind fuel' mu b vs D a
+                          fs hcov']
+                        exact List.Pairwise.nil
+                    | inl q =>
+                        by_cases hq : (mu q).isSome = true
+                        · rw [vevents_block_hole_dead fuel' mu b vs D q fs
+                            hcov' hq]
+                          exact List.Pairwise.nil
+                        · have hq' : (mu q).isSome = false :=
+                            Bool.eq_false_iff.mpr hq
+                          have hfreeq : mu q = none := by
+                            cases hmq : mu q with
+                            | none => rfl
+                            | some c =>
+                                rw [hmq] at hq'
+                                simp at hq'
+                          rw [vevents_block_hole_live fuel' mu b vs D q fs
+                            hcov' hq', eventsSteps_qstep,
+                            List.pairwise_cons]
+                          constructor
+                          · intro st hst heq
+                            have hfr := vevents_steps_vertex_fresh fuel'
+                              (compose mu (singleMatching q b)) vs D fs
+                              st hst
+                            rw [← heq] at hfr
+                            have hcv : vertexCoveredB
+                                (compose mu (singleMatching q b))
+                                (Sum.inr b) = true := by
+                              simp only [vertexCoveredB]
+                              exact holeUsed_compose_single mu q b hfreeq
+                            rw [hfr] at hcv
+                            cases hcv
+                          · exact vevents_steps_vertex_pairwise fuel'
+                              (compose mu (singleMatching q b)) vs D fs
+  termination_by fuel _ pending D _ =>
+    (fuel, pending.length + D.length)
+
 end PHPMatchingExtensionEncode
 end PvNP
