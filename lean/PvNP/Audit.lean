@@ -26,6 +26,7 @@ import PvNP.PHPMatchingExtensionEncode
 import PvNP.PHPMatchingCodeBound
 import PvNP.PHPMatchingEncodeDisposal
 import PvNP.PHPMatchingAnswerTransport
+import PvNP.PHPMatchingDeterministicEncode
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
@@ -11680,3 +11681,41 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 /-- info: 'PvNP.PHPMatchingAnswerTransport.freeVertices_card_square' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingAnswerTransport.freeVertices_card_square
+
+/-! S2188 deterministic feed / exact tree-trace synchronization pins. -/
+
+/-- info: 'PvNP.PHPMatchingDeterministicEncode.leftmostLiveDepthHole?_eq_some' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDeterministicEncode.leftmostLiveDepthHole?_eq_some
+
+/-- info: 'PvNP.PHPMatchingDeterministicEncode.leftmostLiveDepthPigeon?_eq_some' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDeterministicEncode.leftmostLiveDepthPigeon?_eq_some
+
+/-- info: 'PvNP.PHPMatchingDeterministicEncode.eventsSteps_vevents_nil_feed' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDeterministicEncode.eventsSteps_vevents_nil_feed
+
+/-- info: 'PvNP.PHPMatchingDeterministicEncode.leftmostLiveFeedAux_sync' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDeterministicEncode.leftmostLiveFeedAux_sync
+
+/-- info: 'PvNP.PHPMatchingDeterministicEncode.leftmostLiveFeed_length' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDeterministicEncode.leftmostLiveFeed_length
+
+/-- info: 'PvNP.PHPMatchingDeterministicEncode.leftmostLiveFeed_vtrace_eventsSteps_length' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDeterministicEncode.leftmostLiveFeed_vtrace_eventsSteps_length
+
+/-- info: 'PvNP.PHPMatchingDeterministicEncode.leftmostLiveFeed_sync' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDeterministicEncode.leftmostLiveFeed_sync
