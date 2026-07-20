@@ -2,7 +2,7 @@ import PvNP.PHPMatchingDeterministicEncode
 import PvNP.PHPMatchingEncodeDisposal
 
 /-!
-# GA-4 Stage A: positional decode scaffolding (S2189)
+# GA-4 Stage A/B: decode scaffolding + conditional injectivity (S2189)
 
 This module begins the pure replay/decode side of the deterministic matching
 encode.  It proves that once the entered terms have been recovered, `G2`
@@ -10,10 +10,10 @@ recovers the exact blockwise sigma sets, and that once this sigma overlay is
 known the corrected `(G1,sigma)` answer namespace decodes all of `G3` back to
 the exact answer stream.
 
-The remaining GA-4 work is explicit: break the remaining entered-term/sigma
-replay dependency and recover the entered terms and walked pi segments from
-`(G1,G2,G3)` alone.  Consequently this module still does not claim
-`Function.InjOn` for `encodeMatch`.
+Stage B adds **conditional injectivity**: equal `encodeMatch` packets plus
+equal entered-term sequences force equal bases (G1+G2 recovery).  Full
+`Function.InjOn encodeMatch` still requires recovering entered terms from
+`(G1,G2,G3)` alone — the residual GA-4 core.
 
 This is encode/decode bookkeeping only.  It proves no bad-set cardinality or
 switching statement.
@@ -270,6 +270,94 @@ theorem decodeBasePoint_encodeExt {p h : Nat} (rho : MatchingMap p h)
           (blockSigmas (blocksOf (vtrace rho D feed))).join) i = rho i := by
   unfold decodeBasePoint
   exact (encodeExt_recover_base rho D feed i).symm
+
+/-! ## Stage B: encodeMatch image recovery and conditional injectivity shell -/
+
+/-- Base recovery packaged on the `encodeMatch` image: `G1` plus the
+trace-side sigma overlay recovers `rho` pointwise.  Pure decode still needs
+to reconstruct that overlay from `(G1,G2,G3)` alone. -/
+theorem encodeMatch_decodeBasePoint {p h w t ell : Nat} (hsq : p = h)
+    (rho : MatchingMap p h) (D : MDNF p h) (hrho : IsMatching rho)
+    (hell : (freePigeons rho).card = ell)
+    (ht : t ≤ vmdtDepth (canonicalVMDT D rho))
+    (hw : ∀ term ∈ D, term.length ≤ w) (i : Fin p) :
+    let feed := leftmostLiveDeepFeed rho D t
+    let code := encodeMatch hsq rho D hrho hell ht hw
+    decodeBasePoint code.G1
+        (pairsToMatching
+          (blockSigmas (blocksOf (vtrace rho D feed))).join) i = rho i := by
+  intro feed code
+  simpa [encodeMatch] using decodeBasePoint_encodeExt rho D feed i
+
+/-- **Conditional injectivity shell.** Equal codes and equal sigma-overlay
+matchings force equal bases.  Full `InjOn encodeMatch` reduces to proving
+that equal codes imply equal sigma overlays (via entered-term replay from
+G2/G3) — the residual GA-4 core. -/
+theorem encodeMatch_eq_of_code_eq_of_sigma_eq
+    {p h w t ell : Nat} (hsq : p = h)
+    (rho₁ rho₂ : MatchingMap p h) (D : MDNF p h)
+    (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+    (hell₁ : (freePigeons rho₁).card = ell)
+    (hell₂ : (freePigeons rho₂).card = ell)
+    (ht₁ : t ≤ vmdtDepth (canonicalVMDT D rho₁))
+    (ht₂ : t ≤ vmdtDepth (canonicalVMDT D rho₂))
+    (hw : ∀ term ∈ D, term.length ≤ w)
+    (hcode : encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw =
+      encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw)
+    (hsigma :
+      pairsToMatching
+          (blockSigmas (blocksOf
+            (vtrace rho₁ D (leftmostLiveDeepFeed rho₁ D t)))).join =
+        pairsToMatching
+          (blockSigmas (blocksOf
+            (vtrace rho₂ D (leftmostLiveDeepFeed rho₂ D t)))).join) :
+    rho₁ = rho₂ := by
+  funext i
+  have hG1 :
+      (encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw).G1 =
+        (encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw).G1 :=
+    congrArg MatchEncode.G1 hcode
+  have hr₁ :=
+    encodeMatch_decodeBasePoint hsq rho₁ D hrho₁ hell₁ ht₁ hw i
+  have hr₂ :=
+    encodeMatch_decodeBasePoint hsq rho₂ D hrho₂ hell₂ ht₂ hw i
+  -- rewrite both recoveries through equal G1 and equal sigma matchings
+  simp only at hr₁ hr₂
+  -- hr₁/hr₂ are let-bound; unfold by simp on encodeMatch
+  have hr₁' :
+      decodeBasePoint (encodeExt rho₁ D (leftmostLiveDeepFeed rho₁ D t))
+          (pairsToMatching
+            (blockSigmas (blocksOf
+              (vtrace rho₁ D (leftmostLiveDeepFeed rho₁ D t)))).join) i =
+        rho₁ i := by
+    simpa [encodeMatch] using
+      decodeBasePoint_encodeExt rho₁ D (leftmostLiveDeepFeed rho₁ D t) i
+  have hr₂' :
+      decodeBasePoint (encodeExt rho₂ D (leftmostLiveDeepFeed rho₂ D t))
+          (pairsToMatching
+            (blockSigmas (blocksOf
+              (vtrace rho₂ D (leftmostLiveDeepFeed rho₂ D t)))).join) i =
+        rho₂ i := by
+    simpa [encodeMatch] using
+      decodeBasePoint_encodeExt rho₂ D (leftmostLiveDeepFeed rho₂ D t) i
+  have hG1' :
+      encodeExt rho₁ D (leftmostLiveDeepFeed rho₁ D t) =
+        encodeExt rho₂ D (leftmostLiveDeepFeed rho₂ D t) := by
+    simpa [encodeMatch] using hG1
+  calc
+    rho₁ i = decodeBasePoint
+        (encodeExt rho₁ D (leftmostLiveDeepFeed rho₁ D t))
+        (pairsToMatching
+          (blockSigmas (blocksOf
+            (vtrace rho₁ D (leftmostLiveDeepFeed rho₁ D t)))).join) i :=
+      hr₁'.symm
+    _ = decodeBasePoint
+        (encodeExt rho₂ D (leftmostLiveDeepFeed rho₂ D t))
+        (pairsToMatching
+          (blockSigmas (blocksOf
+            (vtrace rho₂ D (leftmostLiveDeepFeed rho₂ D t)))).join) i := by
+          simp only [hG1', hsigma]
+    _ = rho₂ i := hr₂'
 
 end PHPMatchingEncodeInjectivity
 end PvNP

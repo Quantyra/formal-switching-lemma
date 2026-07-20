@@ -11854,3 +11854,17 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 /-- info: 'PvNP.PHPMatchingEncodeInjectivity.decodeBasePoint_encodeExt' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeInjectivity.decodeBasePoint_encodeExt
+
+/-! S2189 GA-4 Stage B: encodeMatch image recovery + conditional injectivity shell. -/
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.encodeMatch_decodeBasePoint' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.encodeMatch_decodeBasePoint
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.encodeMatch_eq_of_code_eq_of_sigma_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.encodeMatch_eq_of_code_eq_of_sigma_eq
