@@ -11741,3 +11741,69 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingDeterministicEncode.leftmostLiveDeepFeed_treeTrace_sync
+
+/-! S2188 Stages 3-6 deterministic bad-set encode assembly pins. -/
+
+/-- info: 'PvNP.PHPMatchingDeterministicEncode.traceBeta' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDeterministicEncode.traceBeta
+
+/-- info: 'PvNP.PHPMatchingDeterministicEncode.traceBetaDeep' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDeterministicEncode.traceBetaDeep
+
+/-- info: 'PvNP.PHPMatchingDeterministicEncode.traceBeta_wellFormed_codeSize' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDeterministicEncode.traceBeta_wellFormed_codeSize
+
+/-- info: 'PvNP.PHPMatchingDeterministicEncode.traceBetaDeep_wellFormed_codeSize' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDeterministicEncode.traceBetaDeep_wellFormed_codeSize
+
+/-- info: 'PvNP.PHPMatchingDeterministicEncode.freeVertexList' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDeterministicEncode.freeVertexList
+
+/-- info: 'PvNP.PHPMatchingDeterministicEncode.freeVertexList_length_square' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDeterministicEncode.freeVertexList_length_square
+
+/-- info: 'PvNP.PHPMatchingDeterministicEncode.traceAnswerCode' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDeterministicEncode.traceAnswerCode
+
+/-- info: 'PvNP.PHPMatchingDeterministicEncode.traceAnswerCodeDeep' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDeterministicEncode.traceAnswerCodeDeep
+
+/-- info: 'PvNP.PHPMatchingDeterministicEncode.encodeExt_freePigeons_card' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDeterministicEncode.encodeExt_freePigeons_card
+
+/-- info: 'PvNP.PHPMatchingDeterministicEncode.encodeMatch' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDeterministicEncode.encodeMatch
+
+/-- info: 'PvNP.PHPMatchingDeterministicEncode.encodeMatch_mem_gradedCode' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDeterministicEncode.encodeMatch_mem_gradedCode
+
+/-- info: 'PvNP.PHPMatchingDeterministicEncode.encodeMatch_freePigeons_card' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDeterministicEncode.encodeMatch_freePigeons_card
+
+/-- info: 'PvNP.PHPMatchingDeterministicEncode.encodeMatch_of_vbad' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDeterministicEncode.encodeMatch_of_vbad
