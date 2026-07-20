@@ -611,5 +611,36 @@ theorem leftmostLiveFeed_sync {p h : Nat} (hsq : p = h)
   ⟨leftmostLiveFeed_length hsq rho D hrho ht,
     leftmostLiveFeed_vtrace_eventsSteps_length hsq rho D hrho ht⟩
 
+/-! ## S2188 acceptance-name wrappers -/
+
+/-- Public acceptance alias: the deterministic leftmost live deep-path feed. -/
+def leftmostLiveDeepFeed {p h : Nat} (rho : MatchingMap p h)
+    (D : MDNF p h) (t : Nat) : List (Vertex p h) :=
+  leftmostLiveFeed rho D t
+
+theorem leftmostLiveDeepFeed_length {p h : Nat} (hsq : p = h)
+    (rho : MatchingMap p h) (D : MDNF p h) (hrho : IsMatching rho)
+    {t : Nat} (ht : t ≤ vmdtDepth (canonicalVMDT D rho)) :
+    (leftmostLiveDeepFeed rho D t).length = t :=
+  leftmostLiveFeed_length hsq rho D hrho ht
+
+/-- Tree-trace synchronization under the acceptance-name feed. -/
+theorem leftmostLiveDeepFeed_vtrace_eventsSteps_length {p h : Nat}
+    (hsq : p = h) (rho : MatchingMap p h) (D : MDNF p h)
+    (hrho : IsMatching rho)
+    {t : Nat} (ht : t ≤ vmdtDepth (canonicalVMDT D rho)) :
+    (eventsSteps (vtrace rho D (leftmostLiveDeepFeed rho D t))).length = t :=
+  leftmostLiveFeed_vtrace_eventsSteps_length hsq rho D hrho ht
+
+/-- Packaged tree-trace synchronization under the acceptance-name feed. -/
+theorem leftmostLiveDeepFeed_treeTrace_sync {p h : Nat} (hsq : p = h)
+    (rho : MatchingMap p h) (D : MDNF p h) (hrho : IsMatching rho)
+    {t : Nat} (ht : t ≤ vmdtDepth (canonicalVMDT D rho)) :
+    (leftmostLiveDeepFeed rho D t).length = t ∧
+      (eventsSteps (vtrace rho D (leftmostLiveDeepFeed rho D t))).length =
+        t :=
+  ⟨leftmostLiveDeepFeed_length hsq rho D hrho ht,
+    leftmostLiveDeepFeed_vtrace_eventsSteps_length hsq rho D hrho ht⟩
+
 end PHPMatchingDeterministicEncode
 end PvNP

@@ -11719,3 +11719,25 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 /-- info: 'PvNP.PHPMatchingDeterministicEncode.leftmostLiveFeed_sync' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingDeterministicEncode.leftmostLiveFeed_sync
+
+/-- info: 'PvNP.PHPMatchingDeterministicEncode.leftmostLiveDeepFeed' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDeterministicEncode.leftmostLiveDeepFeed
+
+/-- info: 'PvNP.PHPMatchingDeterministicEncode.leftmostLiveDeepFeed_length' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDeterministicEncode.leftmostLiveDeepFeed_length
+
+/-- info: 'PvNP.PHPMatchingDeterministicEncode.leftmostLiveDeepFeed_vtrace_eventsSteps_length' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDeterministicEncode.leftmostLiveDeepFeed_vtrace_eventsSteps_length
+
+/-- info: 'PvNP.PHPMatchingDeterministicEncode.leftmostLiveDeepFeed_treeTrace_sync' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDeterministicEncode.leftmostLiveDeepFeed_treeTrace_sync
