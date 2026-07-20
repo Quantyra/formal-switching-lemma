@@ -11889,11 +11889,73 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeInjectivity.decodeMatchFromTerms_encodeMatch
 
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.enteredTermsOf' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.enteredTermsOf
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.leftmostLiveDeepFeed_eq_answerStream' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.leftmostLiveDeepFeed_eq_answerStream
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.decodeAnswerCodeFromTerms' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.decodeAnswerCodeFromTerms
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.decodeAnswerCodeFromTerms_encodeMatch' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.decodeAnswerCodeFromTerms_encodeMatch
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.decodeFeedFromTerms_encodeMatch' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.decodeFeedFromTerms_encodeMatch
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.replayTermsFromTerms' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.replayTermsFromTerms
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.PacketReplayTermsFixed' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.PacketReplayTermsFixed
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.PacketReplayTermsUnique' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.PacketReplayTermsUnique
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.replayTermsFromTerms_encodeMatch' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.replayTermsFromTerms_encodeMatch
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.packetReplayTermsFixed_encodeMatch' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.packetReplayTermsFixed_encodeMatch
+
 /-- info: 'PvNP.PHPMatchingEncodeInjectivity.encodeMatch_eq_of_code_eq_of_entered_terms_eq' depends on axioms: [propext,
  Classical.choice,
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeInjectivity.encodeMatch_eq_of_code_eq_of_entered_terms_eq
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.encodeMatch_eq_of_code_eq_of_packetReplayTermsUnique' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.encodeMatch_eq_of_code_eq_of_packetReplayTermsUnique
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.encodeMatch_subtype_injective_of_packetReplayTermsUnique' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.encodeMatch_subtype_injective_of_packetReplayTermsUnique
 
 /-- info: 'PvNP.PHPMatchingEncodeInjectivity.encodeMatch_eq_of_code_eq_of_sigma_eq' depends on axioms: [propext,
  Classical.choice,

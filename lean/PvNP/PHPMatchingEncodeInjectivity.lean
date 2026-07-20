@@ -40,6 +40,14 @@ open PHPMatchingEncodeDisposal
 open PHPMatchingDeterministicEncode
 open PHPMatchingAnswerTransport
 
+/-! ## Common trace abbreviations -/
+
+/-- The deterministic entered-term sequence used by `encodeMatch`. -/
+def enteredTermsOf {p h : Nat} (rho : MatchingMap p h) (D : MDNF p h)
+    (t : Nat) : List (MTerm p h) :=
+  (blocksOf (vtrace rho D (leftmostLiveDeepFeed rho D t))).map
+    (fun B => B.term)
+
 /-! ## Decode one beta block -/
 
 /-- Decode the pairs of an entered term whose positions are marked by a beta
@@ -433,6 +441,39 @@ theorem decodeAnswerCode_traceAnswerCode {p h ell t : Nat} (hsq : p = h)
           feed
         simpa [vtrace] using hmem)
 
+/-- The deterministic feed is exactly the trace's answer stream on every
+deep-feed image.  `vevents_feed_recoverable` gives the feed as the answer
+stream plus an unused suffix; the synchronized length `t` forces that suffix
+to be empty. -/
+theorem leftmostLiveDeepFeed_eq_answerStream {p h t : Nat} (hsq : p = h)
+    (rho : MatchingMap p h) (D : MDNF p h) (hrho : IsMatching rho)
+    (ht : t ≤ vmdtDepth (canonicalVMDT D rho)) :
+    leftmostLiveDeepFeed rho D t =
+      answerStream (vtrace rho D (leftmostLiveDeepFeed rho D t)) := by
+  have hrec :=
+    vevents_feed_recoverable (freePigeons rho).card rho [] D
+      (leftmostLiveDeepFeed rho D t)
+  rcases hrec with ⟨rest, hrest⟩
+  have hfeedLen :
+      (leftmostLiveDeepFeed rho D t).length = t :=
+    leftmostLiveDeepFeed_length hsq rho D hrho ht
+  have hansLen :
+      (answerStream (vtrace rho D (leftmostLiveDeepFeed rho D t))).length =
+        t := by
+    rw [answerStream_length]
+    exact leftmostLiveDeepFeed_vtrace_eventsSteps_length hsq rho D hrho ht
+  have hansLen' :
+      (answerStream
+          (vevents (freePigeons rho).card rho [] D
+            (leftmostLiveDeepFeed rho D t))).length = t := by
+    simpa [vtrace] using hansLen
+  have hrestLen : rest.length = 0 := by
+    have hlen := congrArg List.length hrest
+    rw [List.length_append, hfeedLen, hansLen'] at hlen
+    omega
+  have hrestNil : rest = [] := List.eq_nil_of_length_eq_zero hrestLen
+  simpa [hrestNil] using hrest
+
 /-! ## Base decoder interface for the next replay stage -/
 
 /-- Recover a base point from `G1` once replay has reconstructed the sigma
@@ -450,6 +491,37 @@ noncomputable def decodeMatchFromTerms {p h w t ell : Nat}
     (terms : List (MTerm p h)) (code : MatchEncode p h w t ell) :
     MatchingMap p h :=
   fun i => decodeBasePoint code.G1 (decodeSigmaOverlay terms code.G2) i
+
+/-- Decode `G3` after the entered-term list has supplied the `G2` sigma
+overlay and hence the base matching.  This is the answer/feed analogue of
+`decodeMatchFromTerms`: the list indexed by `G3` is computed from packet
+data and the supplied entered terms, with no direct access to `rho`. -/
+noncomputable def decodeAnswerCodeFromTerms {p h w t ell : Nat}
+    (terms : List (MTerm p h)) (code : MatchEncode p h w t ell)
+    (hlen : (freeVertexList (decodeMatchFromTerms terms code)).length =
+      2 * ell) : List (Vertex p h) :=
+  List.ofFn fun i =>
+    (freeVertexList (decodeMatchFromTerms terms code)).get
+      ⟨(code.G3 i).val, by
+        have hc := (code.G3 i).isLt
+        omega⟩
+
+private theorem decodeAnswerCodeFromTerms_eq_of_base_eq
+    {p h w t ell : Nat} (terms : List (MTerm p h))
+    (code : MatchEncode p h w t ell) (rho : MatchingMap p h)
+    (hlen : (freeVertexList (decodeMatchFromTerms terms code)).length =
+      2 * ell)
+    (hrhoLen : (freeVertexList rho).length = 2 * ell)
+    (hbase : decodeMatchFromTerms terms code = rho) :
+    decodeAnswerCodeFromTerms terms code hlen =
+      List.ofFn fun i =>
+        (freeVertexList rho).get
+          ⟨(code.G3 i).val, by
+            have hc := (code.G3 i).isLt
+            omega⟩ := by
+  subst rho
+  unfold decodeAnswerCodeFromTerms
+  rw [List.ofFn_inj]
 
 /-- The base-decoder interface agrees with the existing G1 recovery theorem
 on every deterministic trace image. -/
@@ -524,6 +596,163 @@ theorem decodeMatchFromTerms_encodeMatch {p h w t ell : Nat} (hsq : p = h)
   simpa [decodeMatchFromTerms, feed, blocks, code] using
     encodeMatch_decodeBasePoint_from_terms hsq rho D hrho hell ht hw i
 
+/-- `G3` is also decoded from packet data once the entered-term list has
+supplied the G2 sigma overlay. -/
+theorem decodeAnswerCodeFromTerms_encodeMatch {p h w t ell : Nat}
+    (hsq : p = h) (rho : MatchingMap p h) (D : MDNF p h)
+    (hrho : IsMatching rho) (hell : (freePigeons rho).card = ell)
+    (ht : t ≤ vmdtDepth (canonicalVMDT D rho))
+    (hw : ∀ term ∈ D, term.length ≤ w) :
+    let feed := leftmostLiveDeepFeed rho D t
+    let blocks := blocksOf (vtrace rho D feed)
+    let terms := blocks.map fun B => B.term
+    let code := encodeMatch hsq rho D hrho hell ht hw
+    let hlen :
+        (freeVertexList (decodeMatchFromTerms terms code)).length =
+          2 * ell := by
+      rw [decodeMatchFromTerms_encodeMatch hsq rho D hrho hell ht hw]
+      exact freeVertexList_length_square hsq hrho hell
+    decodeAnswerCodeFromTerms terms code hlen =
+      answerStream (vtrace rho D feed) := by
+  intro feed blocks terms code hlen
+  have hbase :
+      decodeMatchFromTerms terms code = rho := by
+    simpa [feed, blocks, terms, code] using
+      decodeMatchFromTerms_encodeMatch hsq rho D hrho hell ht hw
+  have hans :
+      (answerStream (vtrace rho D feed)).length = t := by
+    rw [answerStream_length]
+    simpa [feed] using
+      leftmostLiveDeepFeed_vtrace_eventsSteps_length hsq rho D hrho ht
+  have hround :
+      decodeAnswerCode (encodeExt rho D feed)
+          (blockSigmas (blocksOf (vtrace rho D feed))).join
+          (by
+            rw [replayVertexList_encodeExt rho D feed]
+            exact freeVertexList_length_square hsq hrho hell)
+          (traceAnswerCode rho D hsq hrho hell feed hans) =
+        answerStream (vtrace rho D feed) := by
+    simpa using
+      decodeAnswerCode_traceAnswerCode hsq rho D hrho hell feed hans
+  have hdecoded :
+      decodeAnswerCodeFromTerms terms code hlen =
+        List.ofFn fun i =>
+          (freeVertexList rho).get
+            ⟨(code.G3 i).val, by
+              have hc := (code.G3 i).isLt
+              have hlenrho := freeVertexList_length_square hsq hrho hell
+              omega⟩ := by
+    exact decodeAnswerCodeFromTerms_eq_of_base_eq terms code rho hlen
+      (freeVertexList_length_square hsq hrho hell) hbase
+  refine hdecoded.trans ?_
+  simpa [decodeAnswerCode, replayVertexDecode, code, encodeMatch,
+    traceAnswerCodeDeep, feed, blocks, terms, replayVertexList_encodeExt]
+    using hround
+
+/-- Supplied entered terms decode the packet's answer codes back to the
+deterministic deep feed itself. -/
+theorem decodeFeedFromTerms_encodeMatch {p h w t ell : Nat}
+    (hsq : p = h) (rho : MatchingMap p h) (D : MDNF p h)
+    (hrho : IsMatching rho) (hell : (freePigeons rho).card = ell)
+    (ht : t ≤ vmdtDepth (canonicalVMDT D rho))
+    (hw : ∀ term ∈ D, term.length ≤ w) :
+    let feed := leftmostLiveDeepFeed rho D t
+    let blocks := blocksOf (vtrace rho D feed)
+    let terms := blocks.map fun B => B.term
+    let code := encodeMatch hsq rho D hrho hell ht hw
+    let hlen :
+        (freeVertexList (decodeMatchFromTerms terms code)).length =
+          2 * ell := by
+      rw [decodeMatchFromTerms_encodeMatch hsq rho D hrho hell ht hw]
+      exact freeVertexList_length_square hsq hrho hell
+    decodeAnswerCodeFromTerms terms code hlen = feed := by
+  intro feed blocks terms code hlen
+  calc
+    decodeAnswerCodeFromTerms terms code hlen =
+        answerStream (vtrace rho D feed) := by
+      simpa [feed, blocks, terms, code] using
+        decodeAnswerCodeFromTerms_encodeMatch hsq rho D hrho hell ht hw
+    _ = feed := by
+      simpa [feed] using
+        (leftmostLiveDeepFeed_eq_answerStream hsq rho D hrho ht).symm
+
+/-- Replay an entered-term list from packet data and a candidate entered-term
+list.  The candidate terms first decode the base from `G1/G2`; that decoded
+base then decodes `G3` into the answer feed used to run the vertex trace. -/
+noncomputable def replayTermsFromTerms {p h w t ell : Nat}
+    (D : MDNF p h) (terms : List (MTerm p h))
+    (code : MatchEncode p h w t ell)
+    (hlen : (freeVertexList (decodeMatchFromTerms terms code)).length =
+      2 * ell) : List (MTerm p h) :=
+  (blocksOf (vtrace (decodeMatchFromTerms terms code) D
+    (decodeAnswerCodeFromTerms terms code hlen))).map fun B => B.term
+
+/-- A candidate entered-term list is accepted by pure packet replay when it
+replays to itself. -/
+def PacketReplayTermsFixed {p h w t ell : Nat} (D : MDNF p h)
+    (terms : List (MTerm p h)) (code : MatchEncode p h w t ell) : Prop :=
+  ∃ hlen, replayTermsFromTerms D terms code hlen = terms
+
+/-- Exact residual for full packet injectivity: the packet has at most one
+entered-term replay fixed point. -/
+def PacketReplayTermsUnique {p h w t ell : Nat} (D : MDNF p h)
+    (code : MatchEncode p h w t ell) : Prop :=
+  ∀ terms₁ terms₂,
+    PacketReplayTermsFixed D terms₁ code →
+    PacketReplayTermsFixed D terms₂ code →
+    terms₁ = terms₂
+
+/-- The true deterministic entered-term sequence is a fixed point of the pure
+packet replay operator on every encode image. -/
+theorem replayTermsFromTerms_encodeMatch {p h w t ell : Nat}
+    (hsq : p = h) (rho : MatchingMap p h) (D : MDNF p h)
+    (hrho : IsMatching rho) (hell : (freePigeons rho).card = ell)
+    (ht : t ≤ vmdtDepth (canonicalVMDT D rho))
+    (hw : ∀ term ∈ D, term.length ≤ w) :
+    let feed := leftmostLiveDeepFeed rho D t
+    let blocks := blocksOf (vtrace rho D feed)
+    let terms := blocks.map fun B => B.term
+    let code := encodeMatch hsq rho D hrho hell ht hw
+    let hlen :
+        (freeVertexList (decodeMatchFromTerms terms code)).length =
+          2 * ell := by
+      rw [decodeMatchFromTerms_encodeMatch hsq rho D hrho hell ht hw]
+      exact freeVertexList_length_square hsq hrho hell
+    replayTermsFromTerms D terms code hlen = terms := by
+  intro feed blocks terms code hlen
+  have hbase :
+      decodeMatchFromTerms terms code = rho := by
+    simpa [feed, blocks, terms, code] using
+      decodeMatchFromTerms_encodeMatch hsq rho D hrho hell ht hw
+  have hfeed :
+      decodeAnswerCodeFromTerms terms code hlen = feed := by
+    simpa [feed, blocks, terms, code] using
+      decodeFeedFromTerms_encodeMatch hsq rho D hrho hell ht hw
+  simp [replayTermsFromTerms, hbase, hfeed, terms, blocks]
+
+/-- The actual entered-term sequence on an encode image is accepted by the
+packet fixed-point predicate. -/
+theorem packetReplayTermsFixed_encodeMatch {p h w t ell : Nat}
+    (hsq : p = h) (rho : MatchingMap p h) (D : MDNF p h)
+    (hrho : IsMatching rho) (hell : (freePigeons rho).card = ell)
+    (ht : t ≤ vmdtDepth (canonicalVMDT D rho))
+    (hw : ∀ term ∈ D, term.length ≤ w) :
+    PacketReplayTermsFixed D (enteredTermsOf rho D t)
+      (encodeMatch hsq rho D hrho hell ht hw) := by
+  let feed := leftmostLiveDeepFeed rho D t
+  let blocks := blocksOf (vtrace rho D feed)
+  let terms := blocks.map fun B => B.term
+  let code := encodeMatch hsq rho D hrho hell ht hw
+  refine ⟨?_, ?_⟩
+  · simpa [enteredTermsOf, feed, blocks, terms, code] using
+      (show
+        (freeVertexList
+          (decodeMatchFromTerms terms code)).length = 2 * ell from by
+          rw [decodeMatchFromTerms_encodeMatch hsq rho D hrho hell ht hw]
+          exact freeVertexList_length_square hsq hrho hell)
+  · simpa [enteredTermsOf, feed, blocks, terms, code] using
+      replayTermsFromTerms_encodeMatch hsq rho D hrho hell ht hw
+
 /-- **Entered-term conditional injectivity.**  Equal `encodeMatch` packets
 and equal replayed entered-term sequences force equal bases.  All sigma
 information used here is decoded from the common packet G2; the remaining
@@ -586,6 +815,83 @@ theorem encodeMatch_eq_of_code_eq_of_entered_terms_eq
           (decodeSigmaOverlay (blocks₂.map fun B => B.term) code₂.G2) i := by
       simp only [hG1, hoverlay]
     _ = rho₂ i := hr₂
+
+/-- If the common packet has a unique pure replay fixed point, equal packets
+force equal base matchings.  Thus full injectivity is reduced to a uniqueness
+theorem about `PacketReplayTermsFixed`, with no direct access to `rho` in the
+replay predicate. -/
+theorem encodeMatch_eq_of_code_eq_of_packetReplayTermsUnique
+    {p h w t ell : Nat} (hsq : p = h)
+    (rho₁ rho₂ : MatchingMap p h) (D : MDNF p h)
+    (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+    (hell₁ : (freePigeons rho₁).card = ell)
+    (hell₂ : (freePigeons rho₂).card = ell)
+    (ht₁ : t ≤ vmdtDepth (canonicalVMDT D rho₁))
+    (ht₂ : t ≤ vmdtDepth (canonicalVMDT D rho₂))
+    (hw : ∀ term ∈ D, term.length ≤ w)
+    (hcode : encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw =
+      encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw)
+    (huniq : PacketReplayTermsUnique D
+      (encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw)) :
+    rho₁ = rho₂ := by
+  let code₁ := encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw
+  let code₂ := encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw
+  have hfix₁ :
+      PacketReplayTermsFixed D (enteredTermsOf rho₁ D t) code₁ := by
+    simpa [code₁] using
+      packetReplayTermsFixed_encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw
+  have hfix₂_code₂ :
+      PacketReplayTermsFixed D (enteredTermsOf rho₂ D t) code₂ := by
+    simpa [code₂] using
+      packetReplayTermsFixed_encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw
+  have hfix₂ :
+      PacketReplayTermsFixed D (enteredTermsOf rho₂ D t) code₁ := by
+    simpa [code₁, code₂, hcode] using hfix₂_code₂
+  have hterms :
+      enteredTermsOf rho₁ D t = enteredTermsOf rho₂ D t := by
+    exact huniq _ _ hfix₁ hfix₂
+  exact encodeMatch_eq_of_code_eq_of_entered_terms_eq hsq
+    rho₁ rho₂ D hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ hw hcode
+    (by simpa [enteredTermsOf] using hterms)
+
+/-- Subtype form of the fixed-point uniqueness reduction.  A proof that every
+packet in the bad set has a unique pure replay fixed point gives injectivity
+of the `encodeMatch` map on that bad set. -/
+theorem encodeMatch_subtype_injective_of_packetReplayTermsUnique
+    {p h w t ell : Nat} (hsq : p = h) (D : MDNF p h)
+    (hw : ∀ term ∈ D, term.length ≤ w)
+    (huniq :
+      ∀ rho : {rho : MatchingMap p h // rho ∈ vbadMatchings D (t - 1) ell},
+        let hmem := (mem_vbadMatchings D (t - 1) ell rho.1).mp rho.2
+        let ht : t ≤ vmdtDepth (canonicalVMDT D rho.1) :=
+          Nat.le_of_pred_lt hmem.2
+        PacketReplayTermsUnique D
+          (encodeMatch hsq rho.1 D hmem.1.1 hmem.1.2 ht hw)) :
+    Function.Injective
+      (fun rho : {rho : MatchingMap p h // rho ∈ vbadMatchings D (t - 1) ell} =>
+        let hmem := (mem_vbadMatchings D (t - 1) ell rho.1).mp rho.2
+        let ht : t ≤ vmdtDepth (canonicalVMDT D rho.1) :=
+          Nat.le_of_pred_lt hmem.2
+        encodeMatch hsq rho.1 D hmem.1.1 hmem.1.2 ht hw) := by
+  intro rho₁ rho₂ hcode
+  let hmem₁ := (mem_vbadMatchings D (t - 1) ell rho₁.1).mp rho₁.2
+  let hmem₂ := (mem_vbadMatchings D (t - 1) ell rho₂.1).mp rho₂.2
+  let ht₁ : t ≤ vmdtDepth (canonicalVMDT D rho₁.1) :=
+    Nat.le_of_pred_lt hmem₁.2
+  let ht₂ : t ≤ vmdtDepth (canonicalVMDT D rho₂.1) :=
+    Nat.le_of_pred_lt hmem₂.2
+  have hcode' :
+      encodeMatch hsq rho₁.1 D hmem₁.1.1 hmem₁.1.2 ht₁ hw =
+        encodeMatch hsq rho₂.1 D hmem₂.1.1 hmem₂.1.2 ht₂ hw := by
+    simpa [hmem₁, hmem₂, ht₁, ht₂] using hcode
+  have huniq₁ :
+      PacketReplayTermsUnique D
+        (encodeMatch hsq rho₁.1 D hmem₁.1.1 hmem₁.1.2 ht₁ hw) := by
+    simpa [hmem₁, ht₁] using huniq rho₁
+  apply Subtype.ext
+  exact encodeMatch_eq_of_code_eq_of_packetReplayTermsUnique hsq
+    rho₁.1 rho₂.1 D hmem₁.1.1 hmem₂.1.1 hmem₁.1.2 hmem₂.1.2
+    ht₁ ht₂ hw hcode' huniq₁
 
 /-- **Conditional injectivity shell.** Equal codes and equal sigma-overlay
 matchings force equal bases.  The stronger theorem
