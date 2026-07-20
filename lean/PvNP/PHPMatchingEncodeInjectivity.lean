@@ -36,9 +36,19 @@ Full multi-block injectivity reduces to uniqueness of coherent fixed points
 which remains **open** (no new coherent counterexample found; no general
 uniqueness proof in this story).
 
+**S2197 weaker preimage residual.**  Prefer proving equal codes force equal
+`enteredTermsOf` (`EncodeMatchEnteredTermsEqResidual`), then discharge bases
+via `encodeMatch_eq_of_code_eq_of_entered_terms_eq`.  Empty-G2 entered-term
+equality is unconditional
+(`enteredTermsOf_eq_of_encodeMatch_eq_of_G2_nil`); length transport and the
+`firstNotFalsifiedTerm_eq_of_factor` / `compose_decodeBasePoint_of_overlayAgreesG1`
+seeds are landed.  Full multi-block `enteredTermsOf_eq_of_encodeMatch_eq` and
+unconditional `encodeMatch_subtype_injective` remain open (same obstruction:
+G3 is free-list-relative).
+
 Stage C adds dual sigma recovery (`decodeSigmaFromBase`), unconditional
 empty-G2 injectivity (`encodeMatch_eq_of_code_eq_of_G2_nil`), the UF
-`firstNotFalsifiedTerm` scan stub, and residual packaging.
+`firstNotFalsifiedTerm` scan, and residual packaging.
 
 This is encode/decode bookkeeping only.  It proves no bad-set cardinality or
 switching statement.
@@ -1402,11 +1412,233 @@ def firstNotFalsifiedTerm {p h : Nat} (mu : MatchingMap p h) :
       else if termFalsifiedB mu t = true then firstNotFalsifiedTerm mu rest
       else some t
 
+private theorem firstNotFalsifiedTerm_cons {p h : Nat} (mu : MatchingMap p h)
+    (t : MTerm p h) (rest : MDNF p h) :
+    firstNotFalsifiedTerm mu (t :: rest) =
+      if termMatchingLegalB t = false then firstNotFalsifiedTerm mu rest
+      else if termFalsifiedB mu t = true then firstNotFalsifiedTerm mu rest
+      else some t :=
+  rfl
+
+/-- Factorization form of `firstNotFalsifiedTerm` (illegal/falsified prefix). -/
+theorem firstNotFalsifiedTerm_eq_of_factor {p h : Nat} (mu : MatchingMap p h)
+    (D : MDNF p h) (pre : List (MTerm p h)) (T : MTerm p h) (suf : MDNF p h)
+    (hfactor : D = pre ++ T :: suf)
+    (hpre : ∀ t' ∈ pre,
+      termMatchingLegalB t' = false ∨ termFalsifiedB mu t' = true)
+    (hTleg : termMatchingLegalB T = true)
+    (hTnf : termFalsifiedB mu T = false) :
+    firstNotFalsifiedTerm mu D = some T := by
+  subst hfactor
+  induction pre with
+  | nil =>
+      rw [List.nil_append, firstNotFalsifiedTerm_cons]
+      simp [hTleg, hTnf]
+  | cons p ps ih =>
+      have hp := hpre p (List.mem_cons_self _ _)
+      have hrest : ∀ t' ∈ ps,
+          termMatchingLegalB t' = false ∨ termFalsifiedB mu t' = true :=
+        fun t' ht' => hpre t' (List.mem_cons_of_mem _ ht')
+      rw [List.cons_append, firstNotFalsifiedTerm_cons]
+      rcases hp with hileg | hfals
+      · simp only [hileg, ↓reduceIte]
+        exact ih hrest
+      · by_cases hileg' : termMatchingLegalB p = false
+        · simp only [hileg', ↓reduceIte]
+          exact ih hrest
+        · have hleg' : termMatchingLegalB p = true :=
+            Bool.eq_true_of_not_eq_false hileg'
+          simp only [hleg', Bool.true_eq_false, ↓reduceIte, hfals]
+          exact ih hrest
+
+/-- Coherent overlay agreement upgrades to full `G1 = compose rho sigma`
+when `rho` is the base decoder strip of that overlay. -/
+theorem compose_decodeBasePoint_of_overlayAgreesG1 {p h : Nat}
+    (G1 sigma : MatchingMap p h) (hagree : OverlayAgreesG1 G1 sigma) :
+    compose (fun i => decodeBasePoint G1 sigma i) sigma = G1 := by
+  funext i
+  dsimp only [compose, decodeBasePoint]
+  split_ifs with hs
+  · -- sigma i = none: left branch of compose is G1 i
+    cases hG : G1 i <;> simp [hs, hG]
+  · -- sigma i ≠ none
+    rcases Option.ne_none_iff_exists'.mp hs with ⟨a, hsig⟩
+    have hG1 : G1 i = some a := hagree i a hsig
+    simp [hsig, hG1]
+
+/-- On every encode image the entered-term list is empty iff G2 is empty. -/
+theorem enteredTermsOf_eq_nil_iff_G2_nil {p h w t ell : Nat} (hsq : p = h)
+    (rho : MatchingMap p h) (D : MDNF p h)
+    (hrho : IsMatching rho) (hell : (freePigeons rho).card = ell)
+    (ht : t ≤ vmdtDepth (canonicalVMDT D rho))
+    (hw : ∀ term ∈ D, term.length ≤ w) :
+    enteredTermsOf rho D t = [] ↔
+      (encodeMatch hsq rho D hrho hell ht hw).G2 = [] := by
+  constructor
+  · intro hterms
+    have hlen := enteredTermsOf_length_eq_G2 hsq rho D hrho hell ht hw
+    rw [hterms, List.length_nil] at hlen
+    exact List.eq_nil_of_length_eq_zero hlen.symm
+  · intro hG2
+    have hβ :
+        (encodeMatch hsq rho D hrho hell ht hw).G2 =
+          blockSigmasBeta (w := w)
+            (blocksOf (vtrace rho D (leftmostLiveDeepFeed rho D t))) := by
+      simp [encodeMatch, traceBetaDeep, traceBeta]
+    have hblocks :
+        blocksOf (vtrace rho D (leftmostLiveDeepFeed rho D t)) = [] :=
+      (blockSigmasBeta_eq_nil_iff _).mp (hβ.symm.trans hG2)
+    simp [enteredTermsOf, hblocks]
+
+/-- **S2197 empty-G2 entered-term recovery.** Equal codes with empty G2 force
+equal (empty) entered-term sequences. -/
+theorem enteredTermsOf_eq_of_encodeMatch_eq_of_G2_nil
+    {p h w t ell : Nat} (hsq : p = h)
+    (rho₁ rho₂ : MatchingMap p h) (D : MDNF p h)
+    (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+    (hell₁ : (freePigeons rho₁).card = ell)
+    (hell₂ : (freePigeons rho₂).card = ell)
+    (ht₁ : t ≤ vmdtDepth (canonicalVMDT D rho₁))
+    (ht₂ : t ≤ vmdtDepth (canonicalVMDT D rho₂))
+    (hw : ∀ term ∈ D, term.length ≤ w)
+    (hcode : encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw =
+      encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw)
+    (hG2 : (encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw).G2 = []) :
+    enteredTermsOf rho₁ D t = enteredTermsOf rho₂ D t := by
+  have hG2₂ :
+      (encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw).G2 = [] := by
+    have := congrArg MatchEncode.G2 hcode
+    simpa [hG2] using this.symm
+  have h1 :
+      enteredTermsOf rho₁ D t = [] :=
+    (enteredTermsOf_eq_nil_iff_G2_nil hsq rho₁ D hrho₁ hell₁ ht₁ hw).mpr hG2
+  have h2 :
+      enteredTermsOf rho₂ D t = [] :=
+    (enteredTermsOf_eq_nil_iff_G2_nil hsq rho₂ D hrho₂ hell₂ ht₂ hw).mpr hG2₂
+  exact h1.trans h2.symm
+
+/-- **S2197 length transport.** Equal `encodeMatch` codes force equal entered-term
+list lengths (both equal the common G2 length). -/
+theorem enteredTermsOf_length_eq_of_encodeMatch_eq
+    {p h w t ell : Nat} (hsq : p = h)
+    (rho₁ rho₂ : MatchingMap p h) (D : MDNF p h)
+    (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+    (hell₁ : (freePigeons rho₁).card = ell)
+    (hell₂ : (freePigeons rho₂).card = ell)
+    (ht₁ : t ≤ vmdtDepth (canonicalVMDT D rho₁))
+    (ht₂ : t ≤ vmdtDepth (canonicalVMDT D rho₂))
+    (hw : ∀ term ∈ D, term.length ≤ w)
+    (hcode : encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw =
+      encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw) :
+    (enteredTermsOf rho₁ D t).length = (enteredTermsOf rho₂ D t).length := by
+  have h1 := enteredTermsOf_length_eq_G2 hsq rho₁ D hrho₁ hell₁ ht₁ hw
+  have h2 := enteredTermsOf_length_eq_G2 hsq rho₂ D hrho₂ hell₂ ht₂ hw
+  have hG2 :
+      (encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw).G2 =
+        (encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw).G2 :=
+    congrArg MatchEncode.G2 hcode
+  calc
+    (enteredTermsOf rho₁ D t).length =
+        (encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw).G2.length := h1
+    _ = (encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw).G2.length := by
+      rw [hG2]
+    _ = (enteredTermsOf rho₂ D t).length := h2.symm
+
+/-- **S2197 residual (active).** Full multi-block
+`enteredTermsOf_eq_of_encodeMatch_eq` — equal codes alone force equal entered-term
+sequences on encode images.  Empty-G2 case is discharged
+(`enteredTermsOf_eq_of_encodeMatch_eq_of_G2_nil`).  Combined with
+`encodeMatch_eq_of_code_eq_of_entered_terms_eq` this yields unconditional
+`encodeMatch_eq_of_code_eq` / `encodeMatch_subtype_injective`.
+
+Equivalent sufficient residual: `EncodeMatchCoherentReplayUniqueResidual`
+(S2196).  Obstruction: G3 answer codes are indices into `freeVertexList rho`,
+so pure multi-block term replay still needs base/free-list recovery; first-block
+`firstNotFalsifiedTerm` under G1 is the intended head-recovery seed
+(`firstNotFalsifiedTerm_eq_of_factor`). -/
+def EncodeMatchEnteredTermsEqResidual {p h w t ell : Nat} (hsq : p = h)
+    (D : MDNF p h) (hw : ∀ term ∈ D, term.length ≤ w) : Prop :=
+  ∀ (rho₁ rho₂ : MatchingMap p h)
+    (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+    (hell₁ : (freePigeons rho₁).card = ell)
+    (hell₂ : (freePigeons rho₂).card = ell)
+    (ht₁ : t ≤ vmdtDepth (canonicalVMDT D rho₁))
+    (ht₂ : t ≤ vmdtDepth (canonicalVMDT D rho₂)),
+    encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw =
+        encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw →
+      enteredTermsOf rho₁ D t = enteredTermsOf rho₂ D t
+
+/-- Full base equality from equal codes, given the S2197 entered-term residual. -/
+theorem encodeMatch_eq_of_code_eq_of_enteredTermsEqResidual
+    {p h w t ell : Nat} (hsq : p = h)
+    (rho₁ rho₂ : MatchingMap p h) (D : MDNF p h)
+    (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+    (hell₁ : (freePigeons rho₁).card = ell)
+    (hell₂ : (freePigeons rho₂).card = ell)
+    (ht₁ : t ≤ vmdtDepth (canonicalVMDT D rho₁))
+    (ht₂ : t ≤ vmdtDepth (canonicalVMDT D rho₂))
+    (hw : ∀ term ∈ D, term.length ≤ w)
+    (hcode : encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw =
+      encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw)
+    (hres : EncodeMatchEnteredTermsEqResidual (t := t) (ell := ell) (w := w)
+      hsq D hw) :
+    rho₁ = rho₂ :=
+  encodeMatch_eq_of_code_eq_of_entered_terms_eq hsq
+    rho₁ rho₂ D hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ hw hcode
+    (by
+      simpa [enteredTermsOf] using
+        hres rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ hcode)
+
+/-- Subtype injectivity from the S2197 entered-term residual. -/
+theorem encodeMatch_subtype_injective_of_enteredTermsEqResidual
+    {p h w t ell : Nat} (hsq : p = h) (D : MDNF p h)
+    (hw : ∀ term ∈ D, term.length ≤ w)
+    (hres : EncodeMatchEnteredTermsEqResidual (t := t) (ell := ell) (w := w)
+      hsq D hw) :
+    Function.Injective
+      (fun rho : {rho : MatchingMap p h // rho ∈ vbadMatchings D (t - 1) ell} =>
+        let hmem := (mem_vbadMatchings D (t - 1) ell rho.1).mp rho.2
+        let ht : t ≤ vmdtDepth (canonicalVMDT D rho.1) :=
+          Nat.le_of_pred_lt hmem.2
+        encodeMatch hsq rho.1 D hmem.1.1 hmem.1.2 ht hw) := by
+  intro rho₁ rho₂ hcode
+  let hmem₁ := (mem_vbadMatchings D (t - 1) ell rho₁.1).mp rho₁.2
+  let hmem₂ := (mem_vbadMatchings D (t - 1) ell rho₂.1).mp rho₂.2
+  let ht₁ : t ≤ vmdtDepth (canonicalVMDT D rho₁.1) :=
+    Nat.le_of_pred_lt hmem₁.2
+  let ht₂ : t ≤ vmdtDepth (canonicalVMDT D rho₂.1) :=
+    Nat.le_of_pred_lt hmem₂.2
+  have hcode' :
+      encodeMatch hsq rho₁.1 D hmem₁.1.1 hmem₁.1.2 ht₁ hw =
+        encodeMatch hsq rho₂.1 D hmem₂.1.1 hmem₂.1.2 ht₂ hw := by
+    simpa [hmem₁, hmem₂, ht₁, ht₂] using hcode
+  apply Subtype.ext
+  exact encodeMatch_eq_of_code_eq_of_enteredTermsEqResidual hsq
+    rho₁.1 rho₂.1 D hmem₁.1.1 hmem₂.1.1 hmem₁.1.2 hmem₂.1.2
+    ht₁ ht₂ hw hcode' hres
+
+/-- Empty-G2 codes discharge the S2197 entered-term residual on that slice. -/
+theorem encodeMatchEnteredTermsEqResidual_of_G2_nil
+    {p h w t ell : Nat} (hsq : p = h) (D : MDNF p h)
+    (hw : ∀ term ∈ D, term.length ≤ w)
+    (hnil :
+      ∀ (rho : MatchingMap p h) (hrho : IsMatching rho)
+        (hell : (freePigeons rho).card = ell)
+        (ht : t ≤ vmdtDepth (canonicalVMDT D rho)),
+        (encodeMatch hsq rho D hrho hell ht hw).G2 = []) :
+    EncodeMatchEnteredTermsEqResidual (t := t) (ell := ell) (w := w)
+      hsq D hw := by
+  intro rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ hcode
+  exact enteredTermsOf_eq_of_encodeMatch_eq_of_G2_nil hsq
+    rho₁ rho₂ D hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ hw hcode
+    (hnil rho₁ hrho₁ hell₁ ht₁)
+
 /-- **Residual (S2189 Stage C — DEAD after S2190).**  Full
 `PacketReplayTermsUnique` on every `encodeMatch` image.  Formally refuted
 by `PHPMatchingReplayCounterexample`; retained only as historical packaging
 for the S2189 shells.  Active residual is
-`EncodeMatchCoherentReplayUniqueResidual` (S2196).
+`EncodeMatchCoherentReplayUniqueResidual` (S2196) /
+`EncodeMatchEnteredTermsEqResidual` (S2197).
 
 Empty-G2 injectivity is unconditional (`encodeMatch_eq_of_code_eq_of_G2_nil`).
 -/

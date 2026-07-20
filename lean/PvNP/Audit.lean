@@ -12101,3 +12101,56 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingReplayCounterexample.spur_and_true_coherent_status
+
+/-! S2197: weaker preimage residual - entered-term equality from equal codes. -/
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.firstNotFalsifiedTerm_eq_of_factor' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.firstNotFalsifiedTerm_eq_of_factor
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.compose_decodeBasePoint_of_overlayAgreesG1' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.compose_decodeBasePoint_of_overlayAgreesG1
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.enteredTermsOf_eq_nil_iff_G2_nil' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.enteredTermsOf_eq_nil_iff_G2_nil
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.enteredTermsOf_eq_of_encodeMatch_eq_of_G2_nil' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.enteredTermsOf_eq_of_encodeMatch_eq_of_G2_nil
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.enteredTermsOf_length_eq_of_encodeMatch_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.enteredTermsOf_length_eq_of_encodeMatch_eq
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.EncodeMatchEnteredTermsEqResidual' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.EncodeMatchEnteredTermsEqResidual
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.encodeMatch_eq_of_code_eq_of_enteredTermsEqResidual' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.encodeMatch_eq_of_code_eq_of_enteredTermsEqResidual
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.encodeMatch_subtype_injective_of_enteredTermsEqResidual' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.encodeMatch_subtype_injective_of_enteredTermsEqResidual
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.encodeMatchEnteredTermsEqResidual_of_G2_nil' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.encodeMatchEnteredTermsEqResidual_of_G2_nil
+
