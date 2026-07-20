@@ -27,6 +27,7 @@ import PvNP.PHPMatchingCodeBound
 import PvNP.PHPMatchingEncodeDisposal
 import PvNP.PHPMatchingAnswerTransport
 import PvNP.PHPMatchingDeterministicEncode
+import PvNP.PHPMatchingEncodeInjectivity
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
@@ -11807,3 +11808,27 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 /-- info: 'PvNP.PHPMatchingDeterministicEncode.encodeMatch_of_vbad' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingDeterministicEncode.encodeMatch_of_vbad
+
+/-! S2189 GA-4 Stage A: positional sigma decode and base-decoder interface. -/
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.decodeSigmaBlock_sigmaMarks' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.decodeSigmaBlock_sigmaMarks
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.decodeSigmaBlocks_blockSigmasBeta' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.decodeSigmaBlocks_blockSigmasBeta
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.encodeMatch_decodeSigmaBlocks' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.encodeMatch_decodeSigmaBlocks
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.decodeBasePoint_encodeExt' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.decodeBasePoint_encodeExt

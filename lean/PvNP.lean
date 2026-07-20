@@ -108,6 +108,7 @@ import PvNP.PHPMatchingCodeBound
 import PvNP.PHPMatchingEncodeDisposal
 import PvNP.PHPMatchingAnswerTransport
 import PvNP.PHPMatchingDeterministicEncode
+import PvNP.PHPMatchingEncodeInjectivity
 import PvNP.RestrictedPHPFloor
 import PvNP.ScheduledAutoCollapse
 import PvNP.ScheduledCollapseDemo
