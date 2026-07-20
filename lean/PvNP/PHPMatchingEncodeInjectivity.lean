@@ -804,8 +804,10 @@ def PacketReplayTermsCoherent {p h w t ell : Nat}
   IsMatching (decodeMatchFromTerms terms code) ∧
   (freePigeons (decodeMatchFromTerms terms code)).card = ell
 
-/-- Exact residual for full packet injectivity after S2190: the packet has
-at most one coherent pure-replay fixed point. -/
+/-- **Sufficient** coherent-replay residual for full packet injectivity after
+S2190: if the packet has at most one coherent pure-replay fixed point, the
+existing shells close injectivity.  Not proved necessary (extraneous coherent
+fixed points could exist while encodeMatch remains injective). -/
 def PacketReplayTermsCoherentUnique {p h w t ell : Nat} (D : MDNF p h)
     (code : MatchEncode p h w t ell) : Prop :=
   ∀ terms₁ terms₂,

@@ -26,10 +26,10 @@ of S2189 remain valid but their uniqueness premise cannot be discharged.
 **S2196 coherent exclusion.**  The spur fails
 `PacketReplayTermsCoherent` because its sigma overlay assigns `0 ↦ 0`
 while `G1 0 = some 2` (directional `OverlayAgreesG1` fails).  The true
-entered-term list is coherent.  Bounded manual search on this packet
-among length-`G2` singletons drawn from `cexD` finds no second coherent
-fixed point; general coherent uniqueness remains open (no stop-loss
-coherent counterexample found).
+entered-term list is coherent.  Commentary only (not a kernel-checked
+exhaustion): among the two named length-`G2` singletons from `cexD`, the
+spur is incoherent and the true list is coherent; general coherent
+uniqueness remains open (no stop-loss coherent counterexample found).
 
 This module makes **no positive injectivity claim**.
 
@@ -750,10 +750,8 @@ theorem true_coherent :
       cexRho_isMatching cex_ell cex_ht cex_hw
   simpa [cexCode, true_terms_eq_entered] using h
 
-/-- Bounded manual search note (S2196): among length-`G2` (= 1) singleton
-candidates drawn from `cexD`, only `[term11]` is coherent; `[term00]` is
-excluded above.  No second coherent fixed point is known on this packet,
-and no general coherent counterexample was found.  General
+/-- Named-pair status (S2196): `[term00]` incoherent and `[term11]` coherent
+on `cexCode`.  Not a finite exhaustion of all candidate lists.  General
 `PacketReplayTermsCoherentUnique` remains open. -/
 theorem spur_and_true_coherent_status :
     ¬ PacketReplayTermsCoherent cexD [term00] cexCode ∧
