@@ -23,6 +23,7 @@ import PvNP.PHPMatchingComposition
 import PvNP.PHPMatchingCanonicalMDT
 import PvNP.PHPMatchingVertexTree
 import PvNP.PHPMatchingExtensionEncode
+import PvNP.PHPMatchingCodeBound
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
@@ -11565,3 +11566,33 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 /-- info: 'PvNP.PHPMatchingExtensionEncode.blocksOf_entered_first' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingExtensionEncode.blocksOf_entered_first
+
+/-! S2187 stage-2 star-code / graded per-stage bound pins. -/
+
+/-- info: 'PvNP.PHPMatchingCodeBound.unstar_tagLast_append' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCodeBound.unstar_tagLast_append
+
+/-- info: 'PvNP.PHPMatchingCodeBound.unstar_starDataL' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCodeBound.unstar_starDataL
+
+/-- info: 'PvNP.PHPMatchingCodeBound.starData_length' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCodeBound.starData_length
+
+/-- info: 'PvNP.PHPMatchingCodeBound.starData_inj' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCodeBound.starData_inj
+
+/-- info: 'PvNP.PHPMatchingCodeBound.mcode_family_card_le' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCodeBound.mcode_family_card_le
+
+/-- info: 'PvNP.PHPMatchingCodeBound.mcode_answers_family_card_le' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCodeBound.mcode_answers_family_card_le
+
+/-- info: 'PvNP.PHPMatchingCodeBound.starData_roundtrip_instance' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingCodeBound.starData_roundtrip_instance

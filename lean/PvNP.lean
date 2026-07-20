@@ -104,6 +104,7 @@ import PvNP.PHPMatchingComposition
 import PvNP.PHPMatchingCanonicalMDT
 import PvNP.PHPMatchingVertexTree
 import PvNP.PHPMatchingExtensionEncode
+import PvNP.PHPMatchingCodeBound
 import PvNP.RestrictedPHPFloor
 import PvNP.ScheduledAutoCollapse
 import PvNP.ScheduledCollapseDemo
