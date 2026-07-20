@@ -11419,3 +11419,13 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 /-- info: 'PvNP.PHPMatchingExtensionEncode.encodeExt_isMatching' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingExtensionEncode.encodeExt_isMatching
+
+/-! S2187 stage-1b.4a in-block drain pins. -/
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.compose_stepsOverlay_cons' depends on axioms: [Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.compose_stepsOverlay_cons
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.vevents_pending_drained' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.vevents_pending_drained

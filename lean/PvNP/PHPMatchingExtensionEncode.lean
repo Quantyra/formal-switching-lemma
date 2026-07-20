@@ -1831,5 +1831,160 @@ theorem encodeExt_isMatching {p h : Nat} (rho : MatchingMap p h)
   · exact crossConsistent_of_fresh rho _
       (blockSigmas_join_fresh (freePigeons rho).card rho [] D feed)
 
+/-! ## Stage 1b.4a: the in-block drain (frozen vertices covered by the
+block's own steps)
+
+The seed of the drop range's upper bound `j ≤ s`: whenever a later block
+opens, the current pending vertices are covered by the base composed
+with the trace's **leading steps alone** — the current block's own
+walked pairs. Together with `pairsToMatching (stepsPrefix ...)`, this
+localizes coverage to `v(π_i)` per block. -/
+
+/-- The pair overlay of an event list's leading steps. -/
+def stepsOverlay {p h : Nat} (es : List (VEvent p h)) : MatchingMap p h :=
+  pairsToMatching ((stepsPrefix es).map VStep.pair)
+
+theorem stepsOverlay_nil {p h : Nat} :
+    stepsOverlay ([] : List (VEvent p h)) = emptyMatching p h := rfl
+
+theorem stepsOverlay_enter {p h : Nat} (t : MTerm p h)
+    (ent : MatchingMap p h) (es : List (VEvent p h)) :
+    stepsOverlay (.enter t ent :: es) = emptyMatching p h := rfl
+
+theorem stepsOverlay_qstep {p h : Nat} (st : VStep p h)
+    (es : List (VEvent p h)) :
+    stepsOverlay (.qstep st :: es) =
+      compose (singleMatching st.pair.1 st.pair.2) (stepsOverlay es) :=
+  rfl
+
+/-- Composing with a leading single pair re-associates onto the base. -/
+theorem compose_stepsOverlay_cons {p h : Nat} (mu : MatchingMap p h)
+    (st : VStep p h) (es : List (VEvent p h)) :
+    compose mu (stepsOverlay (.qstep st :: es)) =
+      compose (compose mu (singleMatching st.pair.1 st.pair.2))
+        (stepsOverlay es) := by
+  rw [stepsOverlay_qstep, ← compose_assoc]
+
+/-- **In-block drain**: if a later block opens (the trace chunks to a
+nonempty block list), every pending vertex is covered by the base
+composed with the trace's leading steps — the open block drains its
+frozen list using its own walked pairs only. -/
+theorem vevents_pending_drained {p h : Nat} :
+    ∀ (fuel : Nat) (mu : MatchingMap p h) (pending : List (Vertex p h))
+      (D : MDNF p h) (feed : List (Vertex p h)) (v : Vertex p h),
+      v ∈ pending →
+      blocksOf (vevents fuel mu pending D feed) ≠ [] →
+      vertexCoveredB
+        (compose mu (stepsOverlay (vevents fuel mu pending D feed)))
+        v = true
+  | _, _, [], [], _, v, hv, _ => by cases hv
+  | _, _, [], _ :: _, _, v, hv, _ => by cases hv
+  | fuel, mu, v' :: vs, D, feed, v, hv, hne => by
+      by_cases hcov : vertexCoveredB mu v' = true
+      · rw [vevents_block_skip_covered fuel mu v' vs D feed hcov] at hne ⊢
+        cases hv with
+        | head =>
+            exact vertexCoveredB_mono_mAgree (mAgree_compose_left mu _)
+              v' hcov
+        | tail _ hv' =>
+            exact vevents_pending_drained fuel mu vs D feed v hv' hne
+      · have hcov' : vertexCoveredB mu v' = false :=
+          Bool.eq_false_iff.mpr hcov
+        cases fuel with
+        | zero =>
+            rw [vevents_block_zero mu v' vs D feed hcov'] at hne
+            exact absurd blocksOf_nil hne
+        | succ fuel' =>
+            cases v' with
+            | inl i =>
+                have hfree : mu i = none := by
+                  simp only [vertexCoveredB] at hcov'
+                  cases hmi : mu i with
+                  | none => rfl
+                  | some c =>
+                      rw [hmi] at hcov'
+                      simp at hcov'
+                cases feed with
+                | nil =>
+                    rw [vevents_block_feed_nil fuel' mu _ vs D hcov']
+                      at hne
+                    exact absurd blocksOf_nil hne
+                | cons av fs =>
+                    cases av with
+                    | inl q =>
+                        rw [vevents_block_pigeon_illkind fuel' mu i vs D q
+                          fs hcov'] at hne
+                        exact absurd blocksOf_nil hne
+                    | inr a =>
+                        by_cases hha : holeUsed mu a = true
+                        · rw [vevents_block_pigeon_dead fuel' mu i vs D a
+                            fs hcov' hha] at hne
+                          exact absurd blocksOf_nil hne
+                        · have hha' : holeUsed mu a = false :=
+                            Bool.eq_false_iff.mpr hha
+                          rw [vevents_block_pigeon_live fuel' mu i vs D a
+                            fs hcov' hha'] at hne ⊢
+                          rw [compose_stepsOverlay_cons]
+                          rw [blocksOf_qstep] at hne
+                          cases hv with
+                          | head =>
+                              have hcv : vertexCoveredB
+                                  (compose mu (singleMatching i a))
+                                  (Sum.inl i) = true := by
+                                simp only [vertexCoveredB]
+                                rw [compose_single_self mu i a hfree]
+                                rfl
+                              exact vertexCoveredB_mono_mAgree
+                                (mAgree_compose_left _ _) _ hcv
+                          | tail _ hv' =>
+                              exact vevents_pending_drained fuel'
+                                (compose mu (singleMatching i a)) vs D fs
+                                v hv' hne
+            | inr b =>
+                cases feed with
+                | nil =>
+                    rw [vevents_block_feed_nil fuel' mu _ vs D hcov']
+                      at hne
+                    exact absurd blocksOf_nil hne
+                | cons av fs =>
+                    cases av with
+                    | inr a =>
+                        rw [vevents_block_hole_illkind fuel' mu b vs D a
+                          fs hcov'] at hne
+                        exact absurd blocksOf_nil hne
+                    | inl q =>
+                        by_cases hq : (mu q).isSome = true
+                        · rw [vevents_block_hole_dead fuel' mu b vs D q fs
+                            hcov' hq] at hne
+                          exact absurd blocksOf_nil hne
+                        · have hq' : (mu q).isSome = false :=
+                            Bool.eq_false_iff.mpr hq
+                          have hfreeq : mu q = none := by
+                            cases hmq : mu q with
+                            | none => rfl
+                            | some c =>
+                                rw [hmq] at hq'
+                                simp at hq'
+                          rw [vevents_block_hole_live fuel' mu b vs D q fs
+                            hcov' hq'] at hne ⊢
+                          rw [compose_stepsOverlay_cons]
+                          rw [blocksOf_qstep] at hne
+                          cases hv with
+                          | head =>
+                              have hcv : vertexCoveredB
+                                  (compose mu (singleMatching q b))
+                                  (Sum.inr b) = true := by
+                                simp only [vertexCoveredB]
+                                exact holeUsed_compose_single mu q b
+                                  hfreeq
+                              exact vertexCoveredB_mono_mAgree
+                                (mAgree_compose_left _ _) _ hcv
+                          | tail _ hv' =>
+                              exact vevents_pending_drained fuel'
+                                (compose mu (singleMatching q b)) vs D fs
+                                v hv' hne
+  termination_by fuel _ pending D _ _ _ _ =>
+    (fuel, pending.length + D.length)
+
 end PHPMatchingExtensionEncode
 end PvNP
