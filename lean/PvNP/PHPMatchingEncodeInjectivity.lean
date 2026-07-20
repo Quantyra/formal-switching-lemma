@@ -5,16 +5,15 @@ import PvNP.PHPMatchingEncodeDisposal
 # GA-4 Stage A: positional decode scaffolding (S2189)
 
 This module begins the pure replay/decode side of the deterministic matching
-encode.  It isolates and proves the first losslessness fact needed by replay:
-once the entered terms have been recovered, `G2` recovers, block by block, the
-exact finite sets of sigma pairs selected by `blockSigmas`.  The theorem is
-then specialized to the `encodeMatch` image.
+encode.  It proves that once the entered terms have been recovered, `G2`
+recovers the exact blockwise sigma sets, and that once this sigma overlay is
+known the corrected `(G1,sigma)` answer namespace decodes all of `G3` back to
+the exact answer stream.
 
-The remaining GA-4 work is explicit: recover the entered terms (and then the
-walked pi segments) from `(G1,G2,G3)` alone.  Until that replay theorem is
-available, the decoder below takes the entered-term list as intermediate
-replay state; consequently this module does not claim `Function.InjOn` for
-`encodeMatch`.
+The remaining GA-4 work is explicit: break the remaining entered-term/sigma
+replay dependency and recover the entered terms and walked pi segments from
+`(G1,G2,G3)` alone.  Consequently this module still does not claim
+`Function.InjOn` for `encodeMatch`.
 
 This is encode/decode bookkeeping only.  It proves no bad-set cardinality or
 switching statement.
@@ -31,6 +30,7 @@ open PHPMatchingVertexTree
 open PHPMatchingExtensionEncode
 open PHPMatchingEncodeDisposal
 open PHPMatchingDeterministicEncode
+open PHPMatchingAnswerTransport
 
 /-! ## Decode one beta block -/
 
@@ -201,6 +201,56 @@ theorem encodeMatch_decodeSigmaBlocks {p h w t ell : Nat} (hsq : p = h)
   apply decodeSigmaBlocks_blockSigmasBeta
   intro B hB
   exact hw B.term (block_term_mem_D rho D feed hrho B hB)
+
+/-! ## Decode G3 in the corrected replay namespace -/
+
+/-- Decode a fixed-length G3 function after replay has recovered the sigma
+overlay.  Both inputs are packet data (`G1`) or reconstructed from packet data
+(`sigma`); the unknown base matching is not an argument. -/
+def decodeAnswerCode {p h ell t : Nat} (G1 : MatchingMap p h)
+    (sigma : List (Fin p × Fin h))
+    (hlen : (replayVertexList G1 sigma).length = 2 * ell)
+    (G3 : Fin t → Fin (2 * ell)) : List (Vertex p h) :=
+  List.ofFn fun i => replayVertexDecode G1 sigma hlen (G3 i)
+
+/-- The corrected G3 namespace roundtrips the complete answer stream on every
+trace image once the trace sigma list is known.  This removes the former use
+of `freeVertexList rho` from the decoder side. -/
+theorem decodeAnswerCode_traceAnswerCode {p h ell t : Nat} (hsq : p = h)
+    (rho : MatchingMap p h) (D : MDNF p h) (hrho : IsMatching rho)
+    (hell : (freePigeons rho).card = ell) (feed : List (Vertex p h))
+    (hans : (answerStream (vtrace rho D feed)).length = t) :
+    let sigma := (blockSigmas (blocksOf (vtrace rho D feed))).join
+    let G1 := encodeExt rho D feed
+    let hlen : (replayVertexList G1 sigma).length = 2 * ell := by
+      rw [replayVertexList_encodeExt rho D feed]
+      exact freeVertexList_length_square hsq hrho hell
+    decodeAnswerCode G1 sigma hlen
+        (traceAnswerCode rho D hsq hrho hell feed hans) =
+      answerStream (vtrace rho D feed) := by
+  intro sigma G1 hlen
+  apply List.ext_get
+  · simp [decodeAnswerCode, hans]
+  · intro n hn1 hn2
+    have hnt : n < t := by simpa [decodeAnswerCode] using hn1
+    let i : Fin t := ⟨n, hnt⟩
+    simp only [decodeAnswerCode, List.get_ofFn]
+    change replayVertexDecode G1 sigma hlen
+        (traceAnswerCode rho D hsq hrho hell feed hans i) =
+      (answerStream (vtrace rho D feed))[n]
+    simp only [traceAnswerCode]
+    exact replayVertexDecode_replayVertexCode G1 sigma hlen
+      ((answerStream (vtrace rho D feed)).get ⟨n, by simpa [hans] using hnt⟩)
+      (by
+        rw [replayVertexList_encodeExt rho D feed]
+        apply (mem_freeVertexList rho _).mpr
+        have hmem :
+            (answerStream (vtrace rho D feed)).get
+                ⟨n, by simpa [hans] using hnt⟩ ∈
+              answerStream (vtrace rho D feed) := List.get_mem _ _ _
+        apply answerStream_mem_freeVertices (freePigeons rho).card rho [] D
+          feed
+        simpa [vtrace] using hmem)
 
 /-! ## Base decoder interface for the next replay stage -/
 

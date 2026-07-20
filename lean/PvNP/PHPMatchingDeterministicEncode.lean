@@ -17,9 +17,10 @@ tree depth, then the deterministic feed has length `t` and replaying the
 canonical trace against that feed has exactly `t` query events.
 
 Stages 3-6 assemble the concrete graded encode components along that feed:
-G2 = beta-marks from `blockSigmas`, G3 = free-vertex answer codes in `[2*ell]`,
-the free-pigeon drop on G1 = `encodeExt`, and the packaged `encodeMatch`
-tuple whose G2/G3 side matches the predicates consumed by
+G2 = beta-marks from `blockSigmas`, G3 = replay-namespace answer codes in
+`[2*ell]` computed from G1 and sigma rather than the unknown base, the
+free-pigeon drop on G1 = `encodeExt`, and the packaged `encodeMatch` tuple
+whose G2/G3 side matches the predicates consumed by
 `mcode_answers_family_card_le`.
 
 This is trace/encode bookkeeping only.  It proves no injectivity, no bad-set
@@ -1155,6 +1156,35 @@ theorem mem_freeVertexList {p h : Nat} (mu : MatchingMap p h)
         · right
           exact ⟨c, (Finset.mem_sort (· ≤ ·)).mpr hc, hcb⟩
 
+/-- Reconstruct the pre-extension base from `G1` and the decoded sigma list.
+This is the answer namespace's UF-style replay state: unlike the original G3
+definition, it does not take the unknown base `rho` as an input. -/
+def replayBase {p h : Nat} (G1 : MatchingMap p h)
+    (sigma : List (Fin p × Fin h)) : MatchingMap p h :=
+  fun i => if pairsToMatching sigma i = none then G1 i else none
+
+/-- Canonical answer namespace computed from replay data only. -/
+def replayVertexList {p h : Nat} (G1 : MatchingMap p h)
+    (sigma : List (Fin p × Fin h)) : List (Vertex p h) :=
+  freeVertexList (replayBase G1 sigma)
+
+/-- On an encode image, replay reconstructs the original base pointwise. -/
+theorem replayBase_encodeExt {p h : Nat} (rho : MatchingMap p h)
+    (D : MDNF p h) (feed : List (Vertex p h)) :
+    replayBase (encodeExt rho D feed)
+        (blockSigmas (blocksOf (vtrace rho D feed))).join = rho := by
+  funext i
+  exact (PHPMatchingEncodeDisposal.encodeExt_recover_base rho D feed i).symm
+
+/-- Consequently the corrected answer namespace agrees with the old
+free-base enumeration on every encode image. -/
+theorem replayVertexList_encodeExt {p h : Nat} (rho : MatchingMap p h)
+    (D : MDNF p h) (feed : List (Vertex p h)) :
+    replayVertexList (encodeExt rho D feed)
+        (blockSigmas (blocksOf (vtrace rho D feed))).join =
+      freeVertexList rho := by
+  simp only [replayVertexList, replayBase_encodeExt]
+
 /-- First-index of a vertex in a list (recursive; no competing `BEq`). -/
 def vertexIdx {p h : Nat} : List (Vertex p h) → Vertex p h → Nat
   | [], _ => 0
@@ -1175,6 +1205,21 @@ private theorem vertexIdx_lt_of_mem {p h : Nat} :
           | tail _ h => exact h
         exact Nat.succ_lt_succ (vertexIdx_lt_of_mem xs v hv')
 
+/-- Looking up a present vertex at its first index returns that vertex. -/
+theorem vertexIdx_get {p h : Nat} :
+    ∀ (l : List (Vertex p h)) (v : Vertex p h) (hv : v ∈ l),
+      l[vertexIdx l v]'(vertexIdx_lt_of_mem l v hv) = v
+  | x :: xs, v, hv => by
+      unfold vertexIdx
+      by_cases hx : x = v
+      · simp only [hx, ↓reduceIte, List.getElem_cons_zero]
+      · simp only [hx, ↓reduceIte]
+        have hv' : v ∈ xs := by
+          cases hv with
+          | head => exact absurd rfl hx
+          | tail _ h => exact h
+        simpa [List.getElem_cons_succ] using vertexIdx_get xs v hv'
+
 /-- Encode one free vertex as its index in the square free-vertex list. -/
 def freeVertexCode {p h ell : Nat} (mu : MatchingMap p h)
     (hsq : p = h) (hmu : IsMatching mu)
@@ -1186,6 +1231,33 @@ def freeVertexCode {p h ell : Nat} (mu : MatchingMap p h)
     have hlt := vertexIdx_lt_of_mem (freeVertexList mu) v hmem
     omega⟩
 
+/-- Encode in the corrected namespace, which is computed from `G1` and a
+decoded sigma list rather than from the unknown base. -/
+def replayVertexCode {p h ell : Nat} (G1 : MatchingMap p h)
+    (sigma : List (Fin p × Fin h))
+    (hlen : (replayVertexList G1 sigma).length = 2 * ell)
+    (v : Vertex p h) (hv : v ∈ replayVertexList G1 sigma) : Fin (2 * ell) :=
+  ⟨vertexIdx (replayVertexList G1 sigma) v, by
+    have hlt := vertexIdx_lt_of_mem (replayVertexList G1 sigma) v hv
+    omega⟩
+
+/-- Decode one corrected-namespace symbol. -/
+def replayVertexDecode {p h ell : Nat} (G1 : MatchingMap p h)
+    (sigma : List (Fin p × Fin h))
+    (hlen : (replayVertexList G1 sigma).length = 2 * ell)
+    (c : Fin (2 * ell)) : Vertex p h :=
+  (replayVertexList G1 sigma).get ⟨c.val, by omega⟩
+
+/-- One-symbol roundtrip for the corrected answer namespace. -/
+theorem replayVertexDecode_replayVertexCode {p h ell : Nat}
+    (G1 : MatchingMap p h) (sigma : List (Fin p × Fin h))
+    (hlen : (replayVertexList G1 sigma).length = 2 * ell)
+    (v : Vertex p h) (hv : v ∈ replayVertexList G1 sigma) :
+    replayVertexDecode G1 sigma hlen
+        (replayVertexCode G1 sigma hlen v hv) = v := by
+  unfold replayVertexDecode replayVertexCode
+  exact vertexIdx_get (replayVertexList G1 sigma) v hv
+
 /-- **G3**: answer stream packaged as `Fin t → Fin (2ℓ)`. -/
 def traceAnswerCode {p h ell t : Nat} (rho : MatchingMap p h)
     (D : MDNF p h) (hsq : p = h) (hrho : IsMatching rho)
@@ -1193,11 +1265,20 @@ def traceAnswerCode {p h ell t : Nat} (rho : MatchingMap p h)
     (feed : List (Vertex p h))
     (hlen : (answerStream (vtrace rho D feed)).length = t) :
     Fin t → Fin (2 * ell) :=
+  let sigma := (blockSigmas (blocksOf (vtrace rho D feed))).join
+  let G1 := encodeExt rho D feed
+  have hns : replayVertexList G1 sigma = freeVertexList rho :=
+    replayVertexList_encodeExt rho D feed
+  have hlist : (replayVertexList G1 sigma).length = 2 * ell := by
+    rw [hns]
+    exact freeVertexList_length_square hsq hrho hell
   fun i =>
-    freeVertexCode rho hsq hrho hell
+    replayVertexCode G1 sigma hlist
       ((answerStream (vtrace rho D feed)).get ⟨i.val, by
         rw [hlen]; exact i.isLt⟩)
       (by
+        rw [hns]
+        apply (mem_freeVertexList rho _).mpr
         have hvmem :
             (answerStream (vtrace rho D feed)).get
               ⟨i.val, by rw [hlen]; exact i.isLt⟩ ∈

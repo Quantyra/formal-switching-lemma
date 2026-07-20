@@ -11775,6 +11775,22 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 #guard_msgs in
 #print axioms PvNP.PHPMatchingDeterministicEncode.freeVertexList_length_square
 
+/-- info: 'PvNP.PHPMatchingDeterministicEncode.replayBase_encodeExt' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDeterministicEncode.replayBase_encodeExt
+
+/-- info: 'PvNP.PHPMatchingDeterministicEncode.replayVertexList_encodeExt' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDeterministicEncode.replayVertexList_encodeExt
+
+/-- info: 'PvNP.PHPMatchingDeterministicEncode.replayVertexDecode_replayVertexCode' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingDeterministicEncode.replayVertexDecode_replayVertexCode
+
 /-- info: 'PvNP.PHPMatchingDeterministicEncode.traceAnswerCode' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingDeterministicEncode.traceAnswerCode
@@ -11828,6 +11844,12 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeInjectivity.encodeMatch_decodeSigmaBlocks
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.decodeAnswerCode_traceAnswerCode' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.decodeAnswerCode_traceAnswerCode
 
 /-- info: 'PvNP.PHPMatchingEncodeInjectivity.decodeBasePoint_encodeExt' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
