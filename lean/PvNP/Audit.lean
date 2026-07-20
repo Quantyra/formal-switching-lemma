@@ -11529,3 +11529,39 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 /-- info: 'PvNP.PHPMatchingExtensionEncode.vtrace_drop_range' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingExtensionEncode.vtrace_drop_range
+
+/-! S2187 stage-1c alignment / entered-order pins. -/
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.eventsPairs_eq_map' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.eventsPairs_eq_map
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.steps_sublist_join' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.steps_sublist_join
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.blocksOf_steps_pairs_pairwise' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.blocksOf_steps_pairs_pairwise
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.blocksOf_segment_alignment' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.blocksOf_segment_alignment
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.pairFalsB_mono' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.pairFalsB_mono
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.termFalsifiedB_mono' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.termFalsifiedB_mono
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.blocksOf_entry_isMatching' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.blocksOf_entry_isMatching
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.blocksOf_entered_first' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.blocksOf_entered_first

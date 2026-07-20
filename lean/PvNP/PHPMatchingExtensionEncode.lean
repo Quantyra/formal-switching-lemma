@@ -3711,5 +3711,487 @@ theorem vtrace_drop_range {p h : Nat} (fuel : Nat)
   · rw [hpart]
     exact steps_join_length_le_two_sigmas _ hlow
 
+/-! ## Stage 1c: block alignment and the entered-term order (pin 3.2) -/
+
+/-- The flat pair list is the flat step list's pair projection. -/
+theorem eventsPairs_eq_map {p h : Nat} :
+    ∀ es : List (VEvent p h),
+      eventsPairs es = (eventsSteps es).map VStep.pair
+  | [] => rfl
+  | .enter t ent :: es => by
+      rw [eventsPairs_enter, eventsSteps_enter]
+      exact eventsPairs_eq_map es
+  | .qstep st :: es => by
+      rw [eventsPairs_qstep, eventsSteps_qstep, List.map_cons]
+      rw [eventsPairs_eq_map es]
+
+/-- A member block's steps are a sublist of the blocks' joined steps. -/
+theorem steps_sublist_join {p h : Nat} :
+    ∀ (Bs : List (VBlock p h)) (B : VBlock p h), B ∈ Bs →
+      List.Sublist B.steps ((Bs.map VBlock.steps).join)
+  | [], _, hB => by cases hB
+  | B' :: Bs, B, hB => by
+      rw [List.map_cons, List.join_cons]
+      cases hB with
+      | head => exact List.sublist_append_left _ _
+      | tail _ hB' =>
+          exact List.Sublist.trans (steps_sublist_join Bs B hB')
+            (List.sublist_append_right _ _)
+
+/-- Every block's walked pairs are pairwise vertex-disjoint (a segment of
+the one walked matching). -/
+theorem blocksOf_steps_pairs_pairwise {p h : Nat} (fuel : Nat)
+    (mu : MatchingMap p h) (D : MDNF p h) (feed : List (Vertex p h))
+    (B : VBlock p h) (hB : B ∈ blocksOf (vevents fuel mu [] D feed)) :
+    List.Pairwise PairDisjoint (B.steps.map VStep.pair) := by
+  have htrace := vevents_pairs_pairwise fuel mu [] D feed
+  rw [eventsPairs_eq_map] at htrace
+  have hsub : List.Sublist B.steps (eventsSteps
+      (vevents fuel mu [] D feed)) := by
+    rw [vtrace_steps_partition]
+    exact steps_sublist_join _ B hB
+  exact List.Pairwise.sublist (List.Sublist.map _ hsub) htrace
+
+/-- **Pin 3.2, alignment packaging**: on every canonical trace, each
+block's walked segment is a branch of a full matching tree over its
+entered restricted term — its pairs are pairwise disjoint and its query
+labels stay inside the frozen vertex list — and on every non-final
+(coverage-draining) block the segment covers the σ′-vertex set:
+`π_i ∈ M(V(σ_i))` in this formalization's components. -/
+theorem blocksOf_segment_alignment {p h : Nat} (fuel : Nat)
+    (mu : MatchingMap p h) (D : MDNF p h) (feed : List (Vertex p h)) :
+    (∀ B ∈ blocksOf (vevents fuel mu [] D feed),
+      List.Pairwise PairDisjoint (B.steps.map VStep.pair) ∧
+        ∀ st ∈ B.steps, st.vertex ∈ termVertices B.entry B.term) ∧
+      List.Pairwise (fun B _ =>
+        pairVertices (sigmaFull B) ⊆
+          pairVertices (B.steps.map VStep.pair))
+        (blocksOf (vevents fuel mu [] D feed)) := by
+  constructor
+  · intro B hB
+    exact ⟨blocksOf_steps_pairs_pairwise fuel mu D feed B hB,
+      blocksOf_steps_vertex_mem_frozen fuel mu [] D feed B hB⟩
+  · refine (blocksOf_frozen_covered fuel mu [] D feed).imp_of_mem ?_
+    intro B B' _ _ hdr
+    exact sigmaFull_vertices_subset B hdr
+
+/-- Pair falsification persists into hole-injective extensions. -/
+theorem pairFalsB_mono {p h : Nat} {mu nu : MatchingMap p h}
+    (hag : MAgree mu nu) (hnu : IsMatching nu) (e : Fin p × Fin h)
+    (hf : pairFalsB mu e = true) : pairFalsB nu e = true := by
+  unfold pairFalsB at hf ⊢
+  cases hmu : mu e.1 with
+  | some b =>
+      rw [hmu] at hf
+      rw [hag e.1 b hmu]
+      exact hf
+  | none =>
+      rw [hmu] at hf
+      rcases (holeUsed_eq_true_iff mu e.2).mp hf with ⟨j, hj⟩
+      have hnj : nu j = some e.2 := hag j e.2 hj
+      cases hnue : nu e.1 with
+      | none =>
+          exact (holeUsed_eq_true_iff nu e.2).mpr ⟨j, hnj⟩
+      | some c =>
+          cases hce : c == e.2 with
+          | false => simpa using hce
+          | true =>
+              exfalso
+              have hc : c = e.2 := by simpa using hce
+              rw [hc] at hnue
+              have hej : e.1 = j := hnu e.1 j e.2 hnue hnj
+              rw [hej, hj] at hmu
+              cases hmu
+
+/-- Term falsification persists into hole-injective extensions. -/
+theorem termFalsifiedB_mono {p h : Nat} {mu nu : MatchingMap p h}
+    (hag : MAgree mu nu) (hnu : IsMatching nu) (t : MTerm p h)
+    (hf : termFalsifiedB mu t = true) : termFalsifiedB nu t = true := by
+  unfold termFalsifiedB at hf ⊢
+  rw [List.any_eq_true] at hf ⊢
+  rcases hf with ⟨e, he, hef⟩
+  exact ⟨e, he, pairFalsB_mono hag hnu e hef⟩
+
+/-- Every block entry of a trace over a hole-injective base is
+hole-injective. -/
+theorem blocksOf_entry_isMatching {p h : Nat} :
+    ∀ (fuel : Nat) (mu : MatchingMap p h) (pending : List (Vertex p h))
+      (D : MDNF p h) (feed : List (Vertex p h)), IsMatching mu →
+      ∀ (t' : MTerm p h) (ent' : MatchingMap p h),
+        VEvent.enter t' ent' ∈ vevents fuel mu pending D feed →
+        IsMatching ent'
+  | _, _, [], [], feed, _, t', ent', hm => by
+      rw [vevents_nil] at hm
+      cases hm
+  | fuel, mu, [], t :: rest, feed, hmu, t', ent', hm => by
+      by_cases hleg : termMatchingLegalB t = true
+      · by_cases hfals : termFalsifiedB mu t = true
+        · rw [vevents_skip_falsified fuel mu t rest feed hleg hfals] at hm
+          exact blocksOf_entry_isMatching fuel mu [] rest feed hmu t' ent'
+            hm
+        · have hfals' : termFalsifiedB mu t = false :=
+            Bool.eq_false_iff.mpr hfals
+          by_cases hsat : termSatisfiedB mu t = true
+          · rw [vevents_stop_satisfied fuel mu t rest feed hleg hfals'
+              hsat] at hm
+            cases hm
+          · have hsat' : termSatisfiedB mu t = false :=
+              Bool.eq_false_iff.mpr hsat
+            cases fuel with
+            | zero =>
+                rw [vevents_entry_zero mu t rest feed hleg hfals' hsat']
+                  at hm
+                cases hm
+            | succ fuel' =>
+                cases htv : termVertices mu t with
+                | nil =>
+                    rw [vevents_entry_novertices fuel' mu t rest feed hleg
+                      hfals' hsat' htv] at hm
+                    cases hm
+                | cons v vs =>
+                    cases v with
+                    | inl i =>
+                        have hfree : mu i = none :=
+                          termVertices_head_pigeon_free mu t i vs htv
+                        cases feed with
+                        | nil =>
+                            rw [vevents_entry_feed_nil fuel' mu t rest i
+                              vs hleg hfals' hsat' htv] at hm
+                            cases hm
+                        | cons av fs =>
+                            cases av with
+                            | inl q =>
+                                rw [vevents_entry_feed_illkind fuel' mu t
+                                  rest i vs q fs hleg hfals' hsat' htv]
+                                  at hm
+                                cases hm
+                            | inr a =>
+                                by_cases hha : holeUsed mu a = true
+                                · rw [vevents_entry_pigeon_dead fuel' mu t
+                                    rest i vs a fs hleg hfals' hsat' htv
+                                    hha] at hm
+                                  cases hm
+                                · have hha' : holeUsed mu a = false :=
+                                    Bool.eq_false_iff.mpr hha
+                                  rw [vevents_entry_pigeon_live fuel' mu t
+                                    rest i vs a fs hleg hfals' hsat' htv
+                                    hha'] at hm
+                                  cases hm with
+                                  | head => exact hmu
+                                  | tail _ hm' =>
+                                      cases hm' with
+                                      | tail _ hm'' =>
+                                          exact blocksOf_entry_isMatching
+                                            fuel'
+                                            (compose mu
+                                              (singleMatching i a)) vs
+                                            (t :: rest) fs
+                                            (isMatching_compose_single
+                                              hmu i a hfree hha') t' ent'
+                                            hm''
+                    | inr b =>
+                        exact absurd htv
+                          (termVertices_head_not_hole mu t b vs)
+      · have hleg' : termMatchingLegalB t = false :=
+          Bool.eq_false_iff.mpr hleg
+        rw [vevents_skip_illegal fuel mu t rest feed hleg'] at hm
+        exact blocksOf_entry_isMatching fuel mu [] rest feed hmu t' ent'
+          hm
+  | fuel, mu, v :: vs, D, feed, hmu, t', ent', hm => by
+      by_cases hcov : vertexCoveredB mu v = true
+      · rw [vevents_block_skip_covered fuel mu v vs D feed hcov] at hm
+        exact blocksOf_entry_isMatching fuel mu vs D feed hmu t' ent' hm
+      · have hcov' : vertexCoveredB mu v = false :=
+          Bool.eq_false_iff.mpr hcov
+        cases fuel with
+        | zero =>
+            rw [vevents_block_zero mu v vs D feed hcov'] at hm
+            cases hm
+        | succ fuel' =>
+            cases v with
+            | inl i =>
+                have hfree : mu i = none := by
+                  simp only [vertexCoveredB] at hcov'
+                  cases hmi : mu i with
+                  | none => rfl
+                  | some c =>
+                      rw [hmi] at hcov'
+                      simp at hcov'
+                cases feed with
+                | nil =>
+                    rw [vevents_block_feed_nil fuel' mu _ vs D hcov']
+                      at hm
+                    cases hm
+                | cons av fs =>
+                    cases av with
+                    | inl q =>
+                        rw [vevents_block_pigeon_illkind fuel' mu i vs D q
+                          fs hcov'] at hm
+                        cases hm
+                    | inr a =>
+                        by_cases hha : holeUsed mu a = true
+                        · rw [vevents_block_pigeon_dead fuel' mu i vs D a
+                            fs hcov' hha] at hm
+                          cases hm
+                        · have hha' : holeUsed mu a = false :=
+                            Bool.eq_false_iff.mpr hha
+                          rw [vevents_block_pigeon_live fuel' mu i vs D a
+                            fs hcov' hha'] at hm
+                          cases hm with
+                          | tail _ hm' =>
+                              exact blocksOf_entry_isMatching fuel'
+                                (compose mu (singleMatching i a)) vs D fs
+                                (isMatching_compose_single hmu i a hfree
+                                  hha') t' ent' hm'
+            | inr b =>
+                have hbfree : holeUsed mu b = false := by
+                  simpa only [vertexCoveredB] using hcov'
+                cases feed with
+                | nil =>
+                    rw [vevents_block_feed_nil fuel' mu _ vs D hcov']
+                      at hm
+                    cases hm
+                | cons av fs =>
+                    cases av with
+                    | inr a =>
+                        rw [vevents_block_hole_illkind fuel' mu b vs D a
+                          fs hcov'] at hm
+                        cases hm
+                    | inl q =>
+                        by_cases hq : (mu q).isSome = true
+                        · rw [vevents_block_hole_dead fuel' mu b vs D q fs
+                            hcov' hq] at hm
+                          cases hm
+                        · have hq' : (mu q).isSome = false :=
+                            Bool.eq_false_iff.mpr hq
+                          have hfreeq : mu q = none := by
+                            cases hmq : mu q with
+                            | none => rfl
+                            | some c =>
+                                rw [hmq] at hq'
+                                simp at hq'
+                          rw [vevents_block_hole_live fuel' mu b vs D q fs
+                            hcov' hq'] at hm
+                          cases hm with
+                          | tail _ hm' =>
+                              exact blocksOf_entry_isMatching fuel'
+                                (compose mu (singleMatching q b)) vs D fs
+                                (isMatching_compose_single hmu q b hfreeq
+                                  hbfree) t' ent' hm'
+  termination_by fuel _ pending D _ _ _ _ _ =>
+    (fuel, pending.length + D.length)
+
+/-- **Pin 3.2, entered-term order**: every entered term is the
+first-≢0 term — each earlier term of the MDNF is illegal or already
+falsified at the block's entry (and falsification persists, so the
+identification is stable). Requires a hole-injective base. -/
+theorem blocksOf_entered_first {p h : Nat} :
+    ∀ (fuel : Nat) (mu : MatchingMap p h) (pending : List (Vertex p h))
+      (D : MDNF p h) (feed : List (Vertex p h)), IsMatching mu →
+      ∀ B ∈ blocksOf (vevents fuel mu pending D feed),
+        ∃ pre suf, D = pre ++ B.term :: suf ∧
+          ∀ t' ∈ pre, termMatchingLegalB t' = false ∨
+            termFalsifiedB B.entry t' = true
+  | _, _, [], [], feed, _ => by
+      rw [vevents_nil, blocksOf_nil]
+      intro B hB
+      cases hB
+  | fuel, mu, [], t :: rest, feed, hmu => by
+      by_cases hleg : termMatchingLegalB t = true
+      · by_cases hfals : termFalsifiedB mu t = true
+        · rw [vevents_skip_falsified fuel mu t rest feed hleg hfals]
+          intro B hB
+          rcases blocksOf_entered_first fuel mu [] rest feed hmu B hB with
+            ⟨pre, suf, hD, hpre⟩
+          refine ⟨t :: pre, suf, by rw [hD]; rfl, ?_⟩
+          intro t' ht'
+          cases ht' with
+          | head =>
+              right
+              have hag := (vevents_enter_spec fuel mu [] rest feed B.term
+                B.entry (enter_mem_of_mem_blocksOf _ B hB)).1
+              have hent := blocksOf_entry_isMatching fuel mu [] rest feed
+                hmu B.term B.entry (enter_mem_of_mem_blocksOf _ B hB)
+              exact termFalsifiedB_mono hag hent t hfals
+          | tail _ ht'' => exact hpre t' ht''
+        · have hfals' : termFalsifiedB mu t = false :=
+            Bool.eq_false_iff.mpr hfals
+          by_cases hsat : termSatisfiedB mu t = true
+          · rw [vevents_stop_satisfied fuel mu t rest feed hleg hfals'
+              hsat, blocksOf_nil]
+            intro B hB
+            cases hB
+          · have hsat' : termSatisfiedB mu t = false :=
+              Bool.eq_false_iff.mpr hsat
+            cases fuel with
+            | zero =>
+                rw [vevents_entry_zero mu t rest feed hleg hfals' hsat',
+                  blocksOf_nil]
+                intro B hB
+                cases hB
+            | succ fuel' =>
+                cases htv : termVertices mu t with
+                | nil =>
+                    rw [vevents_entry_novertices fuel' mu t rest feed hleg
+                      hfals' hsat' htv, blocksOf_nil]
+                    intro B hB
+                    cases hB
+                | cons v vs =>
+                    cases v with
+                    | inl i =>
+                        have hfree : mu i = none :=
+                          termVertices_head_pigeon_free mu t i vs htv
+                        cases feed with
+                        | nil =>
+                            rw [vevents_entry_feed_nil fuel' mu t rest i
+                              vs hleg hfals' hsat' htv, blocksOf_nil]
+                            intro B hB
+                            cases hB
+                        | cons av fs =>
+                            cases av with
+                            | inl q =>
+                                rw [vevents_entry_feed_illkind fuel' mu t
+                                  rest i vs q fs hleg hfals' hsat' htv,
+                                  blocksOf_nil]
+                                intro B hB
+                                cases hB
+                            | inr a =>
+                                by_cases hha : holeUsed mu a = true
+                                · rw [vevents_entry_pigeon_dead fuel' mu t
+                                    rest i vs a fs hleg hfals' hsat' htv
+                                    hha, blocksOf_nil]
+                                  intro B hB
+                                  cases hB
+                                · have hha' : holeUsed mu a = false :=
+                                    Bool.eq_false_iff.mpr hha
+                                  rw [vevents_entry_pigeon_live fuel' mu t
+                                    rest i vs a fs hleg hfals' hsat' htv
+                                    hha', blocksOf_enter]
+                                  intro B hB
+                                  cases hB with
+                                  | head =>
+                                      exact ⟨[], rest, rfl, by
+                                        intro t' ht'
+                                        cases ht'⟩
+                                  | tail _ hB' =>
+                                      rw [show afterSteps
+                                          (VEvent.qstep
+                                            ⟨Sum.inl i, (i, a)⟩ ::
+                                            vevents fuel'
+                                              (compose mu
+                                                (singleMatching i a)) vs
+                                              (t :: rest) fs) =
+                                          afterSteps (vevents fuel'
+                                            (compose mu
+                                              (singleMatching i a)) vs
+                                            (t :: rest) fs) from rfl]
+                                        at hB'
+                                      rw [blocksOf_afterSteps] at hB'
+                                      exact blocksOf_entered_first fuel'
+                                        (compose mu (singleMatching i a))
+                                        vs (t :: rest) fs
+                                        (isMatching_compose_single hmu i
+                                          a hfree hha') B hB'
+                    | inr b =>
+                        exact absurd htv
+                          (termVertices_head_not_hole mu t b vs)
+      · have hleg' : termMatchingLegalB t = false :=
+          Bool.eq_false_iff.mpr hleg
+        rw [vevents_skip_illegal fuel mu t rest feed hleg']
+        intro B hB
+        rcases blocksOf_entered_first fuel mu [] rest feed hmu B hB with
+          ⟨pre, suf, hD, hpre⟩
+        refine ⟨t :: pre, suf, by rw [hD]; rfl, ?_⟩
+        intro t' ht'
+        cases ht' with
+        | head => exact Or.inl hleg'
+        | tail _ ht'' => exact hpre t' ht''
+  | fuel, mu, v :: vs, D, feed, hmu => by
+      by_cases hcov : vertexCoveredB mu v = true
+      · rw [vevents_block_skip_covered fuel mu v vs D feed hcov]
+        exact blocksOf_entered_first fuel mu vs D feed hmu
+      · have hcov' : vertexCoveredB mu v = false :=
+          Bool.eq_false_iff.mpr hcov
+        cases fuel with
+        | zero =>
+            rw [vevents_block_zero mu v vs D feed hcov', blocksOf_nil]
+            intro B hB
+            cases hB
+        | succ fuel' =>
+            cases v with
+            | inl i =>
+                have hfree : mu i = none := by
+                  simp only [vertexCoveredB] at hcov'
+                  cases hmi : mu i with
+                  | none => rfl
+                  | some c =>
+                      rw [hmi] at hcov'
+                      simp at hcov'
+                cases feed with
+                | nil =>
+                    rw [vevents_block_feed_nil fuel' mu _ vs D hcov',
+                      blocksOf_nil]
+                    intro B hB
+                    cases hB
+                | cons av fs =>
+                    cases av with
+                    | inl q =>
+                        rw [vevents_block_pigeon_illkind fuel' mu i vs D q
+                          fs hcov', blocksOf_nil]
+                        intro B hB
+                        cases hB
+                    | inr a =>
+                        by_cases hha : holeUsed mu a = true
+                        · rw [vevents_block_pigeon_dead fuel' mu i vs D a
+                            fs hcov' hha, blocksOf_nil]
+                          intro B hB
+                          cases hB
+                        · have hha' : holeUsed mu a = false :=
+                            Bool.eq_false_iff.mpr hha
+                          rw [vevents_block_pigeon_live fuel' mu i vs D a
+                            fs hcov' hha', blocksOf_qstep]
+                          exact blocksOf_entered_first fuel'
+                            (compose mu (singleMatching i a)) vs D fs
+                            (isMatching_compose_single hmu i a hfree
+                              hha')
+            | inr b =>
+                have hbfree : holeUsed mu b = false := by
+                  simpa only [vertexCoveredB] using hcov'
+                cases feed with
+                | nil =>
+                    rw [vevents_block_feed_nil fuel' mu _ vs D hcov',
+                      blocksOf_nil]
+                    intro B hB
+                    cases hB
+                | cons av fs =>
+                    cases av with
+                    | inr a =>
+                        rw [vevents_block_hole_illkind fuel' mu b vs D a
+                          fs hcov', blocksOf_nil]
+                        intro B hB
+                        cases hB
+                    | inl q =>
+                        by_cases hq : (mu q).isSome = true
+                        · rw [vevents_block_hole_dead fuel' mu b vs D q fs
+                            hcov' hq, blocksOf_nil]
+                          intro B hB
+                          cases hB
+                        · have hq' : (mu q).isSome = false :=
+                            Bool.eq_false_iff.mpr hq
+                          have hfreeq : mu q = none := by
+                            cases hmq : mu q with
+                            | none => rfl
+                            | some c =>
+                                rw [hmq] at hq'
+                                simp at hq'
+                          rw [vevents_block_hole_live fuel' mu b vs D q fs
+                            hcov' hq', blocksOf_qstep]
+                          exact blocksOf_entered_first fuel'
+                            (compose mu (singleMatching q b)) vs D fs
+                            (isMatching_compose_single hmu q b hfreeq
+                              hbfree)
+  termination_by fuel _ pending D _ _ =>
+    (fuel, pending.length + D.length)
+
 end PHPMatchingExtensionEncode
 end PvNP
