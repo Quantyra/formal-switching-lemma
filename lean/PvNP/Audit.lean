@@ -25,6 +25,7 @@ import PvNP.PHPMatchingVertexTree
 import PvNP.PHPMatchingExtensionEncode
 import PvNP.PHPMatchingCodeBound
 import PvNP.PHPMatchingEncodeDisposal
+import PvNP.PHPMatchingAnswerTransport
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
@@ -11643,3 +11644,39 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 /-- info: 'PvNP.PHPMatchingEncodeDisposal.disposal_bad_at_one' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeDisposal.disposal_bad_at_one
+
+/-! S2187 stage-4 path-answer transport pins. -/
+
+/-- info: 'PvNP.PHPMatchingAnswerTransport.vevents_feed_recoverable' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingAnswerTransport.vevents_feed_recoverable
+
+/-- info: 'PvNP.PHPMatchingAnswerTransport.stepAnswer_fresh' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingAnswerTransport.stepAnswer_fresh
+
+/-- info: 'PvNP.PHPMatchingAnswerTransport.mem_freeVertices' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingAnswerTransport.mem_freeVertices
+
+/-- info: 'PvNP.PHPMatchingAnswerTransport.answerStream_mem_freeVertices' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingAnswerTransport.answerStream_mem_freeVertices
+
+/-- info: 'PvNP.PHPMatchingAnswerTransport.freeVertices_card' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingAnswerTransport.freeVertices_card
+
+/-- info: 'PvNP.PHPMatchingAnswerTransport.card_usedHoles_eq_matched' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingAnswerTransport.card_usedHoles_eq_matched
+
+/-- info: 'PvNP.PHPMatchingAnswerTransport.card_freeHoles_square' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingAnswerTransport.card_freeHoles_square
+
+/-- info: 'PvNP.PHPMatchingAnswerTransport.freeVertices_card_square' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingAnswerTransport.freeVertices_card_square
