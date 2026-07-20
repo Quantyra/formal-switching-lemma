@@ -18,8 +18,8 @@ pure-replay fixed points:
   fixed-point predicate never checks overlay/`G1` consistency), and the
   resulting wrong base `(1 ↦ 1)` traces straight into `[(0,0)]`.
 
-Consequently `EncodeMatchReplayUniqueResidual` is unprovable as stated and
-the S2189 fixed-point uniqueness route to full
+Consequently `EncodeMatchReplayUniqueResidual` is **formally refuted** as
+stated and the S2189 fixed-point uniqueness route to full
 `Function.InjOn encodeMatch` is closed.  The conditional reduction shells
 of S2189 remain valid but their uniqueness premise cannot be discharged.
 
@@ -698,7 +698,7 @@ theorem packetReplayTermsUnique_refuted :
   exact term_lists_ne (hu [term00] [term11] spur_fixed true_fixed)
 
 /-- **Refutation (S2190).**  `EncodeMatchReplayUniqueResidual` is
-unprovable as stated: it fails at `p = h = 3`, `w = 3`, `t = 1`,
+formally refuted as stated: it fails at `p = h = 3`, `w = 3`, `t = 1`,
 `ell = 2` on `cexD`. -/
 theorem encodeMatchReplayUniqueResidual_refuted :
     ¬ EncodeMatchReplayUniqueResidual (t := 1) (ell := 2) (w := 3)
