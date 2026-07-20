@@ -3073,5 +3073,643 @@ theorem vertex_mem_pairVertices_of_covered {p h : Nat}
           have hm := pairsToMatching_eq_some l j b hj
           exact (mem_pairVertices_inr l b).mpr ⟨(j, b), hm, rfl⟩
 
+/-! ## Stage 1b.4d-2: per-block label distinctness and the partition -/
+
+/-- Leading steps are a sublist of all steps. -/
+theorem stepsPrefix_sublist_eventsSteps {p h : Nat} :
+    ∀ es : List (VEvent p h),
+      List.Sublist (stepsPrefix es) (eventsSteps es)
+  | [] => List.Sublist.refl _
+  | .enter t ent :: es => by
+      rw [show stepsPrefix (.enter t ent :: es) = [] from rfl,
+        eventsSteps_enter]
+      exact List.nil_sublist _
+  | .qstep st :: es => by
+      rw [show stepsPrefix (.qstep st :: es) = st :: stepsPrefix es
+        from rfl, eventsSteps_qstep]
+      exact List.Sublist.cons₂ st (stepsPrefix_sublist_eventsSteps es)
+
+/-- **Per-block label distinctness**: each block's query labels are
+pairwise distinct (its steps are consecutive trace steps). -/
+theorem blocksOf_steps_labels_pairwise {p h : Nat} :
+    ∀ (fuel : Nat) (mu : MatchingMap p h) (pending : List (Vertex p h))
+      (D : MDNF p h) (feed : List (Vertex p h)),
+      ∀ B ∈ blocksOf (vevents fuel mu pending D feed),
+        List.Pairwise (fun s1 s2 : VStep p h => s1.vertex ≠ s2.vertex)
+          B.steps
+  | _, _, [], [], feed => by
+      rw [vevents_nil, blocksOf_nil]
+      intro B hB
+      cases hB
+  | fuel, mu, [], t :: rest, feed => by
+      by_cases hleg : termMatchingLegalB t = true
+      · by_cases hfals : termFalsifiedB mu t = true
+        · rw [vevents_skip_falsified fuel mu t rest feed hleg hfals]
+          exact blocksOf_steps_labels_pairwise fuel mu [] rest feed
+        · have hfals' : termFalsifiedB mu t = false :=
+            Bool.eq_false_iff.mpr hfals
+          by_cases hsat : termSatisfiedB mu t = true
+          · rw [vevents_stop_satisfied fuel mu t rest feed hleg hfals'
+              hsat, blocksOf_nil]
+            intro B hB
+            cases hB
+          · have hsat' : termSatisfiedB mu t = false :=
+              Bool.eq_false_iff.mpr hsat
+            cases fuel with
+            | zero =>
+                rw [vevents_entry_zero mu t rest feed hleg hfals' hsat',
+                  blocksOf_nil]
+                intro B hB
+                cases hB
+            | succ fuel' =>
+                cases htv : termVertices mu t with
+                | nil =>
+                    rw [vevents_entry_novertices fuel' mu t rest feed hleg
+                      hfals' hsat' htv, blocksOf_nil]
+                    intro B hB
+                    cases hB
+                | cons v vs =>
+                    cases v with
+                    | inl i =>
+                        have hfree : mu i = none :=
+                          termVertices_head_pigeon_free mu t i vs htv
+                        cases feed with
+                        | nil =>
+                            rw [vevents_entry_feed_nil fuel' mu t rest i
+                              vs hleg hfals' hsat' htv, blocksOf_nil]
+                            intro B hB
+                            cases hB
+                        | cons av fs =>
+                            cases av with
+                            | inl q =>
+                                rw [vevents_entry_feed_illkind fuel' mu t
+                                  rest i vs q fs hleg hfals' hsat' htv,
+                                  blocksOf_nil]
+                                intro B hB
+                                cases hB
+                            | inr a =>
+                                by_cases hha : holeUsed mu a = true
+                                · rw [vevents_entry_pigeon_dead fuel' mu t
+                                    rest i vs a fs hleg hfals' hsat' htv
+                                    hha, blocksOf_nil]
+                                  intro B hB
+                                  cases hB
+                                · have hha' : holeUsed mu a = false :=
+                                    Bool.eq_false_iff.mpr hha
+                                  rw [vevents_entry_pigeon_live fuel' mu t
+                                    rest i vs a fs hleg hfals' hsat' htv
+                                    hha', blocksOf_enter]
+                                  intro B hB
+                                  cases hB with
+                                  | head =>
+                                      rw [show stepsPrefix
+                                          (VEvent.qstep
+                                            ⟨Sum.inl i, (i, a)⟩ ::
+                                            vevents fuel'
+                                              (compose mu
+                                                (singleMatching i a)) vs
+                                              (t :: rest) fs) =
+                                        ⟨Sum.inl i, (i, a)⟩ ::
+                                          stepsPrefix (vevents fuel'
+                                            (compose mu
+                                              (singleMatching i a)) vs
+                                            (t :: rest) fs) from rfl,
+                                        List.pairwise_cons]
+                                      constructor
+                                      · intro st hst heq
+                                        have hmem := List.Sublist.subset
+                                          (stepsPrefix_sublist_eventsSteps
+                                            (vevents fuel'
+                                              (compose mu
+                                                (singleMatching i a)) vs
+                                              (t :: rest) fs)) hst
+                                        have hfr :=
+                                          vevents_steps_vertex_fresh
+                                            fuel'
+                                            (compose mu
+                                              (singleMatching i a)) vs
+                                            (t :: rest) fs st hmem
+                                        rw [← heq] at hfr
+                                        have hcv : vertexCoveredB
+                                            (compose mu
+                                              (singleMatching i a))
+                                            (Sum.inl i) = true := by
+                                          simp only [vertexCoveredB]
+                                          rw [compose_single_self mu i a
+                                            hfree]
+                                          rfl
+                                        rw [hfr] at hcv
+                                        cases hcv
+                                      · exact List.Pairwise.sublist
+                                          (stepsPrefix_sublist_eventsSteps
+                                            _)
+                                          (vevents_steps_vertex_pairwise
+                                            fuel'
+                                            (compose mu
+                                              (singleMatching i a)) vs
+                                            (t :: rest) fs)
+                                  | tail _ hB' =>
+                                      rw [show afterSteps
+                                          (VEvent.qstep
+                                            ⟨Sum.inl i, (i, a)⟩ ::
+                                            vevents fuel'
+                                              (compose mu
+                                                (singleMatching i a)) vs
+                                              (t :: rest) fs) =
+                                          afterSteps (vevents fuel'
+                                            (compose mu
+                                              (singleMatching i a)) vs
+                                            (t :: rest) fs) from rfl]
+                                        at hB'
+                                      rw [blocksOf_afterSteps] at hB'
+                                      exact blocksOf_steps_labels_pairwise
+                                        fuel'
+                                        (compose mu (singleMatching i a))
+                                        vs (t :: rest) fs B hB'
+                    | inr b =>
+                        exact absurd htv
+                          (termVertices_head_not_hole mu t b vs)
+      · have hleg' : termMatchingLegalB t = false :=
+          Bool.eq_false_iff.mpr hleg
+        rw [vevents_skip_illegal fuel mu t rest feed hleg']
+        exact blocksOf_steps_labels_pairwise fuel mu [] rest feed
+  | fuel, mu, v :: vs, D, feed => by
+      by_cases hcov : vertexCoveredB mu v = true
+      · rw [vevents_block_skip_covered fuel mu v vs D feed hcov]
+        exact blocksOf_steps_labels_pairwise fuel mu vs D feed
+      · have hcov' : vertexCoveredB mu v = false :=
+          Bool.eq_false_iff.mpr hcov
+        cases fuel with
+        | zero =>
+            rw [vevents_block_zero mu v vs D feed hcov', blocksOf_nil]
+            intro B hB
+            cases hB
+        | succ fuel' =>
+            cases v with
+            | inl i =>
+                cases feed with
+                | nil =>
+                    rw [vevents_block_feed_nil fuel' mu _ vs D hcov',
+                      blocksOf_nil]
+                    intro B hB
+                    cases hB
+                | cons av fs =>
+                    cases av with
+                    | inl q =>
+                        rw [vevents_block_pigeon_illkind fuel' mu i vs D q
+                          fs hcov', blocksOf_nil]
+                        intro B hB
+                        cases hB
+                    | inr a =>
+                        by_cases hha : holeUsed mu a = true
+                        · rw [vevents_block_pigeon_dead fuel' mu i vs D a
+                            fs hcov' hha, blocksOf_nil]
+                          intro B hB
+                          cases hB
+                        · have hha' : holeUsed mu a = false :=
+                            Bool.eq_false_iff.mpr hha
+                          rw [vevents_block_pigeon_live fuel' mu i vs D a
+                            fs hcov' hha', blocksOf_qstep]
+                          exact blocksOf_steps_labels_pairwise fuel'
+                            (compose mu (singleMatching i a)) vs D fs
+            | inr b =>
+                cases feed with
+                | nil =>
+                    rw [vevents_block_feed_nil fuel' mu _ vs D hcov',
+                      blocksOf_nil]
+                    intro B hB
+                    cases hB
+                | cons av fs =>
+                    cases av with
+                    | inr a =>
+                        rw [vevents_block_hole_illkind fuel' mu b vs D a
+                          fs hcov', blocksOf_nil]
+                        intro B hB
+                        cases hB
+                    | inl q =>
+                        by_cases hq : (mu q).isSome = true
+                        · rw [vevents_block_hole_dead fuel' mu b vs D q fs
+                            hcov' hq, blocksOf_nil]
+                          intro B hB
+                          cases hB
+                        · have hq' : (mu q).isSome = false :=
+                            Bool.eq_false_iff.mpr hq
+                          rw [vevents_block_hole_live fuel' mu b vs D q fs
+                            hcov' hq', blocksOf_qstep]
+                          exact blocksOf_steps_labels_pairwise fuel'
+                            (compose mu (singleMatching q b)) vs D fs
+  termination_by fuel _ pending D _ => (fuel, pending.length + D.length)
+
+/-- Frozen-list membership, characterized. -/
+theorem mem_termVertices_iff {p h : Nat} (mu : MatchingMap p h)
+    (t : MTerm p h) (w : Vertex p h) :
+    w ∈ termVertices mu t ↔
+      ∃ e, e ∈ t.filter (pairUnresolvedB mu) ∧
+        (w = Sum.inl e.1 ∨ w = Sum.inr e.2) := by
+  unfold termVertices
+  rw [List.mem_bind]
+  constructor
+  · rintro ⟨e, he, hw⟩
+    refine ⟨e, he, ?_⟩
+    simp at hw
+    exact hw
+  · rintro ⟨e, he, hw⟩
+    refine ⟨e, he, ?_⟩
+    cases hw with
+    | inl h1 =>
+        rw [h1]
+        exact List.mem_cons_self _ _
+    | inr h2 =>
+        rw [h2]
+        exact List.mem_cons_of_mem _ (List.mem_cons_self _ _)
+
+/-- The flat step list decomposes as the leading steps plus the chunked
+blocks' steps. -/
+theorem eventsSteps_eq_prefix_append_join {p h : Nat} :
+    ∀ es : List (VEvent p h),
+      eventsSteps es =
+        stepsPrefix es ++ ((blocksOf es).map VBlock.steps).join
+  | [] => by
+      rw [blocksOf_nil]
+      rfl
+  | .qstep st :: es => by
+      rw [eventsSteps_qstep, blocksOf_qstep,
+        show stepsPrefix (.qstep st :: es) = st :: stepsPrefix es
+          from rfl,
+        eventsSteps_eq_prefix_append_join es]
+      rfl
+  | .enter t ent :: es => by
+      rw [eventsSteps_enter, blocksOf_enter,
+        show stepsPrefix (VEvent.enter t ent :: es) = [] from rfl,
+        blocksOf_afterSteps, eventsSteps_eq_prefix_append_join es]
+      simp
+
+/-- **Pin 3.2, partition**: for canonical (scan-launched) traces, the
+walked steps are exactly the concatenation of the blocks' segments — the
+segments partition π. -/
+theorem vtrace_steps_partition {p h : Nat} (fuel : Nat)
+    (mu : MatchingMap p h) (D : MDNF p h) (feed : List (Vertex p h)) :
+    eventsSteps (vevents fuel mu [] D feed) =
+      ((blocksOf (vevents fuel mu [] D feed)).map VBlock.steps).join := by
+  have hdec := eventsSteps_eq_prefix_append_join
+    (vevents fuel mu [] D feed)
+  cases vevents_scan_shape fuel mu D feed with
+  | inl hnil =>
+      rw [hnil, blocksOf_nil]
+      rfl
+  | inr hent =>
+      rcases hent with ⟨t', ent', es, hes⟩
+      rw [hes] at hdec ⊢
+      rw [show stepsPrefix (VEvent.enter t' ent' :: es) = [] from rfl]
+        at hdec
+      simpa using hdec
+
+/-! ## Stage 1b.4d-3: the per-block bounds and the drop range -/
+
+/-- On a coverage-draining block, σ′'s vertices sit inside the walked
+segment's vertices. -/
+theorem sigmaFull_vertices_subset {p h : Nat} (B : VBlock p h)
+    (hdrain : ∀ w ∈ termVertices B.entry B.term,
+      vertexCoveredB (compose B.entry
+        (pairsToMatching (B.steps.map VStep.pair))) w = true) :
+    pairVertices (sigmaFull B) ⊆ pairVertices (B.steps.map VStep.pair) := by
+  intro v hv
+  cases v with
+  | inl i =>
+      rcases (mem_pairVertices_inl _ i).mp hv with ⟨e, he, hei⟩
+      have hverts := sigma_vertices_mem_termVertices B e he
+      have hcov := hdrain _ hverts.1
+      have hunres := ((mem_sigmaFull B e).mp he).2
+      have hun : vertexCoveredB B.entry (Sum.inl e.1) = false := by
+        unfold pairUnresolvedB at hunres
+        rw [Bool.and_eq_true] at hunres
+        have hfree : B.entry e.1 = none := by
+          have hb := hunres.1
+          simpa using hb
+        simp only [vertexCoveredB]
+        rw [hfree]
+        rfl
+      have hres := vertex_mem_pairVertices_of_covered B.entry _ _ hcov hun
+      rw [← hei]
+      exact hres
+  | inr b =>
+      rcases (mem_pairVertices_inr _ b).mp hv with ⟨e, he, heb⟩
+      have hverts := sigma_vertices_mem_termVertices B e he
+      have hcov := hdrain _ hverts.2
+      have hunres := ((mem_sigmaFull B e).mp he).2
+      have hun : vertexCoveredB B.entry (Sum.inr e.2) = false := by
+        unfold pairUnresolvedB at hunres
+        rw [Bool.and_eq_true] at hunres
+        have hhole : holeUsed B.entry e.2 = false := by
+          have hb := hunres.2
+          simpa using hb
+        simpa only [vertexCoveredB] using hhole
+      have hres := vertex_mem_pairVertices_of_covered B.entry _ _ hcov hun
+      rw [← heb]
+      exact hres
+
+/-- Upper drop bound, full blocks: `|σ′_i| ≤ |π_i|` — pairwise-disjoint
+σ′-pairs use two vertices each inside the segment's `≤ 2|π_i|`-vertex
+set. -/
+theorem sigmaFull_length_le_steps {p h : Nat} (B : VBlock p h)
+    (hleg : termMatchingLegalB B.term = true)
+    (hdrain : ∀ w ∈ termVertices B.entry B.term,
+      vertexCoveredB (compose B.entry
+        (pairsToMatching (B.steps.map VStep.pair))) w = true) :
+    (sigmaFull B).length ≤ B.steps.length := by
+  have h1 := pairVertices_card_of_disjoint (sigmaFull B)
+    (sigmaFull_nodup B) (sigmaFull_pairwise B hleg)
+  have h2 : (pairVertices (sigmaFull B)).card ≤
+      (pairVertices (B.steps.map VStep.pair)).card :=
+    Finset.card_le_card (sigmaFull_vertices_subset B hdrain)
+  have h3 := pairVertices_card_le (B.steps.map VStep.pair)
+  rw [List.length_map] at h3
+  omega
+
+/-- The `Sum` boolean equality on PHP vertices is honest (spelled out by
+constructor cases; the derived instance has no registered `LawfulBEq`). -/
+theorem vertex_beq_iff {p h : Nat} (v w : Vertex p h) :
+    (v == w) = true ↔ v = w := by
+  cases v with
+  | inl i =>
+      cases w with
+      | inl j =>
+          constructor
+          · intro hb
+            have hij : i = j := by
+              simpa using (show (i == j) = true from hb)
+            rw [hij]
+          · intro he
+            cases he
+            show (i == i) = true
+            simp
+      | inr b =>
+          constructor
+          · intro hb
+            cases hb
+          · intro he
+            cases he
+  | inr a =>
+      cases w with
+      | inl j =>
+          constructor
+          · intro hb
+            cases hb
+          · intro he
+            cases he
+      | inr b =>
+          constructor
+          · intro hb
+            have hab : a = b := by
+              simpa using (show (a == b) = true from hb)
+            rw [hab]
+          · intro he
+            cases he
+            show (a == a) = true
+            simp
+
+/-- `contains` agrees with membership on vertex lists. -/
+theorem contains_iff_mem {p h : Nat} (qs : List (Vertex p h))
+    (v : Vertex p h) : qs.contains v = true ↔ v ∈ qs := by
+  induction qs with
+  | nil =>
+      constructor
+      · intro hc
+        cases hc
+      · intro hv
+        cases hv
+  | cons x xs ih =>
+      rw [List.contains_cons, Bool.or_eq_true, ih]
+      constructor
+      · rintro (hbeq | hmem)
+        · have hvx : v = x := (vertex_beq_iff v x).mp hbeq
+          rw [hvx]
+          exact List.mem_cons_self _ _
+        · exact List.mem_cons_of_mem _ hmem
+      · intro hv
+        cases hv with
+        | head =>
+            left
+            exact (vertex_beq_iff _ _).mpr rfl
+        | tail _ hm =>
+            right
+            exact hm
+
+/-- Upper drop bound, truncated blocks: `|σ_k| ≤ |π_k|` — distinct
+collected pairs contain distinct queried labels. -/
+theorem sigmaTrunc_length_le_steps {p h : Nat} (B : VBlock p h)
+    (hleg : termMatchingLegalB B.term = true) :
+    (sigmaTrunc B).length ≤ B.steps.length := by
+  have hpd := sigmaFull_pairwise B hleg
+  have hnd : (sigmaTrunc B).Nodup := (sigmaFull_nodup B).filter _
+  have hcmem : ∀ e ∈ sigmaTrunc B,
+      (if (blockQueried B).contains (Sum.inl e.1) = true
+        then Sum.inl e.1 else Sum.inr e.2) ∈ blockQueried B := by
+    intro e he
+    have hq := ((mem_sigmaTrunc B e).mp he).2
+    unfold pairQueriedB at hq
+    rw [Bool.or_eq_true] at hq
+    by_cases hc : (blockQueried B).contains (Sum.inl e.1) = true
+    · rw [if_pos hc]
+      exact (contains_iff_mem _ _).mp hc
+    · rw [if_neg hc]
+      have hr : (blockQueried B).contains (Sum.inr e.2) = true := by
+        cases hq with
+        | inl h1 => exact absurd h1 hc
+        | inr h2 => exact h2
+      exact (contains_iff_mem _ _).mp hr
+  have hcinj : ∀ x ∈ sigmaTrunc B, ∀ y ∈ sigmaTrunc B,
+      (if (blockQueried B).contains (Sum.inl x.1) = true
+        then Sum.inl x.1 else Sum.inr x.2) =
+      (if (blockQueried B).contains (Sum.inl y.1) = true
+        then Sum.inl y.1 else Sum.inr y.2) → x = y := by
+    intro x hx y hy hcxy
+    by_contra hne
+    have hd := hpd.forall pairDisjoint_symm
+      (sigmaTrunc_subset_sigmaFull B x hx)
+      (sigmaTrunc_subset_sigmaFull B y hy) hne
+    by_cases hcx : (blockQueried B).contains (Sum.inl x.1) = true <;>
+      by_cases hcy : (blockQueried B).contains (Sum.inl y.1) = true
+    · rw [if_pos hcx, if_pos hcy] at hcxy
+      have : x.1 = y.1 := by injection hcxy
+      exact hd.1 this
+    · rw [if_pos hcx, if_neg hcy] at hcxy
+      cases hcxy
+    · rw [if_neg hcx, if_pos hcy] at hcxy
+      cases hcxy
+    · rw [if_neg hcx, if_neg hcy] at hcxy
+      have : x.2 = y.2 := by injection hcxy
+      exact hd.2 this
+  have hmapnd := List.Nodup.map_on hcinj hnd
+  have h1 : ((sigmaTrunc B).map (fun e =>
+      if (blockQueried B).contains (Sum.inl e.1) = true
+        then Sum.inl e.1 else Sum.inr e.2)).toFinset.card =
+      (sigmaTrunc B).length := by
+    rw [List.toFinset_card_of_nodup hmapnd, List.length_map]
+  have h2 : ((sigmaTrunc B).map (fun e =>
+      if (blockQueried B).contains (Sum.inl e.1) = true
+        then Sum.inl e.1 else Sum.inr e.2)).toFinset ⊆
+      (blockQueried B).toFinset := by
+    intro v hv
+    rw [List.mem_toFinset] at hv ⊢
+    rcases List.mem_map.mp hv with ⟨e, he, hce⟩
+    rw [← hce]
+    exact hcmem e he
+  have h3 := Finset.card_le_card h2
+  have h4 := List.toFinset_card_le (blockQueried B)
+  have h5 : (blockQueried B).length = B.steps.length :=
+    List.length_map _ _
+  omega
+
+/-- Lower drop bound per block: `|π_i| ≤ 2|σ_i|` even after truncation —
+every queried label is a vertex of a collected pair, labels are
+distinct, and each pair carries two vertices. -/
+theorem steps_length_le_two_sigmaTrunc {p h : Nat} (B : VBlock p h)
+    (hfroz : ∀ st ∈ B.steps, st.vertex ∈ termVertices B.entry B.term)
+    (hlp : List.Pairwise (fun s1 s2 : VStep p h => s1.vertex ≠ s2.vertex)
+      B.steps) :
+    B.steps.length ≤ 2 * (sigmaTrunc B).length := by
+  have hsteps_nd : B.steps.Nodup := by
+    refine hlp.imp ?_
+    intro s1 s2 hne heq
+    exact hne (congrArg VStep.vertex heq)
+  have hlab_nd : (blockQueried B).Nodup := by
+    refine List.Nodup.map_on ?_ hsteps_nd
+    intro x hx y hy hxy
+    by_contra hne
+    exact hlp.forall (fun _ _ hab => fun heq => hab heq.symm) hx hy hne hxy
+  have hsub : ∀ w ∈ blockQueried B, w ∈ pairVertices (sigmaTrunc B) := by
+    intro w hw
+    rcases List.mem_map.mp hw with ⟨st, hst, hstw⟩
+    have hfz := hfroz st hst
+    rcases (mem_termVertices_iff B.entry B.term st.vertex).mp hfz with
+      ⟨e, hef, hor⟩
+    have heS : e ∈ sigmaFull B := by
+      rw [mem_sigmaFull]
+      exact ⟨(List.mem_filter.mp hef).1, (List.mem_filter.mp hef).2⟩
+    have heT : e ∈ sigmaTrunc B := by
+      rw [mem_sigmaTrunc]
+      refine ⟨heS, ?_⟩
+      unfold pairQueriedB
+      rw [Bool.or_eq_true]
+      cases hor with
+      | inl h1 =>
+          left
+          refine (contains_iff_mem _ _).mpr ?_
+          rw [← h1]
+          exact List.mem_map.mpr ⟨st, hst, rfl⟩
+      | inr h2 =>
+          right
+          refine (contains_iff_mem _ _).mpr ?_
+          rw [← h2]
+          exact List.mem_map.mpr ⟨st, hst, rfl⟩
+    rw [← hstw]
+    cases hor with
+    | inl h1 =>
+        rw [h1]
+        exact (mem_pairVertices_inl _ _).mpr ⟨e, heT, rfl⟩
+    | inr h2 =>
+        rw [h2]
+        exact (mem_pairVertices_inr _ _).mpr ⟨e, heT, rfl⟩
+  calc B.steps.length = (blockQueried B).length :=
+        (List.length_map _ _).symm
+    _ = (blockQueried B).toFinset.card :=
+        (List.toFinset_card_of_nodup hlab_nd).symm
+    _ ≤ (pairVertices (sigmaTrunc B)).card := by
+        apply Finset.card_le_card
+        intro v hv
+        rw [List.mem_toFinset] at hv
+        exact hsub v hv
+    _ ≤ 2 * (sigmaTrunc B).length := pairVertices_card_le _
+
+/-- Upper summation: `j ≤ s` over the block list. -/
+theorem blockSigmas_join_length_le_steps {p h : Nat} :
+    ∀ (Bs : List (VBlock p h)),
+      List.Pairwise
+        (fun B _ => (sigmaFull B).length ≤ B.steps.length) Bs →
+      (∀ B ∈ Bs, (sigmaTrunc B).length ≤ B.steps.length) →
+      ((blockSigmas Bs).join).length ≤
+        ((Bs.map VBlock.steps).join).length
+  | [], _, _ => Nat.le_refl _
+  | [B], _, htr => by
+      rw [show blockSigmas [B] = [sigmaTrunc B] from rfl]
+      simp only [List.map_cons, List.map_nil, List.join_cons,
+        List.join_nil, List.append_nil]
+      exact htr B (List.mem_cons_self _ _)
+  | B :: B' :: Bs, hfull, htr => by
+      rw [show blockSigmas (B :: B' :: Bs) =
+        sigmaFull B :: blockSigmas (B' :: Bs) from rfl]
+      simp only [List.map_cons, List.join_cons, List.length_append]
+      have h1 : (sigmaFull B).length ≤ B.steps.length :=
+        (List.pairwise_cons.mp hfull).1 B' (List.mem_cons_self _ _)
+      have h2 := blockSigmas_join_length_le_steps (B' :: Bs)
+        (List.pairwise_cons.mp hfull).2
+        (fun b hb => htr b (List.mem_cons_of_mem _ hb))
+      simp only [List.map_cons, List.join_cons, List.length_append] at h2
+      omega
+
+/-- Lower summation: `s ≤ 2j` over the block list. -/
+theorem steps_join_length_le_two_sigmas {p h : Nat} :
+    ∀ (Bs : List (VBlock p h)),
+      (∀ B ∈ Bs, B.steps.length ≤ 2 * (sigmaTrunc B).length) →
+      ((Bs.map VBlock.steps).join).length ≤
+        2 * ((blockSigmas Bs).join).length
+  | [], _ => Nat.le_refl _
+  | [B], hlow => by
+      rw [show blockSigmas [B] = [sigmaTrunc B] from rfl]
+      simp only [List.map_cons, List.map_nil, List.join_cons,
+        List.join_nil, List.append_nil]
+      exact hlow B (List.mem_cons_self _ _)
+  | B :: B' :: Bs, hlow => by
+      rw [show blockSigmas (B :: B' :: Bs) =
+        sigmaFull B :: blockSigmas (B' :: Bs) from rfl]
+      simp only [List.map_cons, List.join_cons, List.length_append]
+      have h1 := hlow B (List.mem_cons_self _ _)
+      have h1' : (sigmaTrunc B).length ≤ (sigmaFull B).length :=
+        List.length_filter_le _ _
+      have h2 := steps_join_length_le_two_sigmas (B' :: Bs)
+        (fun b hb => hlow b (List.mem_cons_of_mem _ hb))
+      simp only [List.map_cons, List.join_cons, List.length_append] at h2
+      omega
+
+/-- **Pin 3.1, the drop range** `⌈s/2⌉ ≤ j ≤ s` in `Nat` form
+(`s ≤ 2j ∧ j ≤ s`): the encode's σ-count against the walked-pair count,
+over any canonical trace. Upper: pairwise-disjoint σ′-pairs use two
+segment vertices each on full blocks (the s/2-type deficit realized), and
+distinct collected pairs carry distinct queried labels on the truncated
+block. Lower: every queried label is a vertex of a collected pair —
+under the queried-vertex rule the collected pairs never evaporate. -/
+theorem vtrace_drop_range {p h : Nat} (fuel : Nat)
+    (mu : MatchingMap p h) (D : MDNF p h) (feed : List (Vertex p h)) :
+    ((blockSigmas (blocksOf (vevents fuel mu [] D feed))).join).length ≤
+        (eventsSteps (vevents fuel mu [] D feed)).length ∧
+      (eventsSteps (vevents fuel mu [] D feed)).length ≤
+        2 * ((blockSigmas (blocksOf
+          (vevents fuel mu [] D feed))).join).length := by
+  have hpart := vtrace_steps_partition fuel mu D feed
+  have hfull : List.Pairwise
+      (fun B _ => (sigmaFull B).length ≤ B.steps.length)
+      (blocksOf (vevents fuel mu [] D feed)) := by
+    refine (blocksOf_frozen_covered fuel mu [] D feed).imp_of_mem ?_
+    intro B B' hB _ hdr
+    exact sigmaFull_length_le_steps B
+      (blocksOf_entry_spec fuel mu [] D feed B hB).2.1 hdr
+  have htr : ∀ B ∈ blocksOf (vevents fuel mu [] D feed),
+      (sigmaTrunc B).length ≤ B.steps.length := by
+    intro B hB
+    exact sigmaTrunc_length_le_steps B
+      (blocksOf_entry_spec fuel mu [] D feed B hB).2.1
+  have hlow : ∀ B ∈ blocksOf (vevents fuel mu [] D feed),
+      B.steps.length ≤ 2 * (sigmaTrunc B).length := by
+    intro B hB
+    exact steps_length_le_two_sigmaTrunc B
+      (blocksOf_steps_vertex_mem_frozen fuel mu [] D feed B hB)
+      (blocksOf_steps_labels_pairwise fuel mu [] D feed B hB)
+  constructor
+  · rw [hpart]
+    exact blockSigmas_join_length_le_steps _ hfull htr
+  · rw [hpart]
+    exact steps_join_length_le_two_sigmas _ hlow
+
 end PHPMatchingExtensionEncode
 end PvNP

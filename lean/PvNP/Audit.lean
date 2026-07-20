@@ -11481,3 +11481,51 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingExtensionEncode.vertex_mem_pairVertices_of_covered
+
+/-! S2187 stage-1b.4d drop-range / partition pins. -/
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.stepsPrefix_sublist_eventsSteps' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.stepsPrefix_sublist_eventsSteps
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.blocksOf_steps_labels_pairwise' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.blocksOf_steps_labels_pairwise
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.mem_termVertices_iff' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.mem_termVertices_iff
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.eventsSteps_eq_prefix_append_join' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.eventsSteps_eq_prefix_append_join
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.vtrace_steps_partition' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.vtrace_steps_partition
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.sigmaFull_vertices_subset' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.sigmaFull_vertices_subset
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.sigmaFull_length_le_steps' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.sigmaFull_length_le_steps
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.sigmaTrunc_length_le_steps' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.sigmaTrunc_length_le_steps
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.steps_length_le_two_sigmaTrunc' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.steps_length_le_two_sigmaTrunc
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.vtrace_drop_range' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.vtrace_drop_range
