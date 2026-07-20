@@ -2381,5 +2381,375 @@ theorem vevents_steps_vertex_pairwise {p h : Nat} :
   termination_by fuel _ pending D _ =>
     (fuel, pending.length + D.length)
 
+/-! ## Stage 1b.4c: per-block step provenance and frozen coverage -/
+
+/-- Traces launched from a scan state are empty or open with a block
+entry — no orphan steps. -/
+theorem vevents_scan_shape {p h : Nat} :
+    ∀ (fuel : Nat) (mu : MatchingMap p h) (D : MDNF p h)
+      (feed : List (Vertex p h)),
+      vevents fuel mu [] D feed = [] ∨
+        ∃ t ent es, vevents fuel mu [] D feed = .enter t ent :: es
+  | fuel, mu, [], feed => Or.inl (vevents_nil fuel mu feed)
+  | fuel, mu, t :: rest, feed => by
+      by_cases hleg : termMatchingLegalB t = true
+      · by_cases hfals : termFalsifiedB mu t = true
+        · rw [vevents_skip_falsified fuel mu t rest feed hleg hfals]
+          exact vevents_scan_shape fuel mu rest feed
+        · have hfals' : termFalsifiedB mu t = false :=
+            Bool.eq_false_iff.mpr hfals
+          by_cases hsat : termSatisfiedB mu t = true
+          · exact Or.inl (vevents_stop_satisfied fuel mu t rest feed hleg
+              hfals' hsat)
+          · have hsat' : termSatisfiedB mu t = false :=
+              Bool.eq_false_iff.mpr hsat
+            cases fuel with
+            | zero =>
+                exact Or.inl (vevents_entry_zero mu t rest feed hleg
+                  hfals' hsat')
+            | succ fuel' =>
+                cases htv : termVertices mu t with
+                | nil =>
+                    exact Or.inl (vevents_entry_novertices fuel' mu t rest
+                      feed hleg hfals' hsat' htv)
+                | cons v vs =>
+                    cases v with
+                    | inl i =>
+                        cases feed with
+                        | nil =>
+                            exact Or.inl (vevents_entry_feed_nil fuel' mu
+                              t rest i vs hleg hfals' hsat' htv)
+                        | cons av fs =>
+                            cases av with
+                            | inl q =>
+                                exact Or.inl (vevents_entry_feed_illkind
+                                  fuel' mu t rest i vs q fs hleg hfals'
+                                  hsat' htv)
+                            | inr a =>
+                                by_cases hha : holeUsed mu a = true
+                                · exact Or.inl
+                                    (vevents_entry_pigeon_dead fuel' mu t
+                                      rest i vs a fs hleg hfals' hsat'
+                                      htv hha)
+                                · have hha' : holeUsed mu a = false :=
+                                    Bool.eq_false_iff.mpr hha
+                                  exact Or.inr ⟨t, mu, _,
+                                    vevents_entry_pigeon_live fuel' mu t
+                                      rest i vs a fs hleg hfals' hsat'
+                                      htv hha'⟩
+                    | inr b =>
+                        exact absurd htv
+                          (termVertices_head_not_hole mu t b vs)
+      · have hleg' : termMatchingLegalB t = false :=
+          Bool.eq_false_iff.mpr hleg
+        rw [vevents_skip_illegal fuel mu t rest feed hleg']
+        exact vevents_scan_shape fuel mu rest feed
+  termination_by fuel _ D _ => (fuel, D.length)
+
+/-- Leading steps of a trace query pending vertices only. -/
+theorem stepsPrefix_vertex_mem_pending {p h : Nat} :
+    ∀ (fuel : Nat) (mu : MatchingMap p h) (pending : List (Vertex p h))
+      (D : MDNF p h) (feed : List (Vertex p h)),
+      ∀ st ∈ stepsPrefix (vevents fuel mu pending D feed),
+        st.vertex ∈ pending
+  | fuel, mu, [], D, feed => by
+      intro st hst
+      cases vevents_scan_shape fuel mu D feed with
+      | inl hnil =>
+          rw [hnil] at hst
+          cases hst
+      | inr hent =>
+          rcases hent with ⟨t', ent', es, hes⟩
+          rw [hes] at hst
+          rw [show stepsPrefix (VEvent.enter t' ent' :: es) = [] from rfl]
+            at hst
+          cases hst
+  | fuel, mu, v :: vs, D, feed => by
+      by_cases hcov : vertexCoveredB mu v = true
+      · rw [vevents_block_skip_covered fuel mu v vs D feed hcov]
+        intro st hst
+        exact List.mem_cons_of_mem _
+          (stepsPrefix_vertex_mem_pending fuel mu vs D feed st hst)
+      · have hcov' : vertexCoveredB mu v = false :=
+          Bool.eq_false_iff.mpr hcov
+        cases fuel with
+        | zero =>
+            rw [vevents_block_zero mu v vs D feed hcov']
+            intro st hst
+            cases hst
+        | succ fuel' =>
+            cases v with
+            | inl i =>
+                cases feed with
+                | nil =>
+                    rw [vevents_block_feed_nil fuel' mu _ vs D hcov']
+                    intro st hst
+                    cases hst
+                | cons av fs =>
+                    cases av with
+                    | inl q =>
+                        rw [vevents_block_pigeon_illkind fuel' mu i vs D q
+                          fs hcov']
+                        intro st hst
+                        cases hst
+                    | inr a =>
+                        by_cases hha : holeUsed mu a = true
+                        · rw [vevents_block_pigeon_dead fuel' mu i vs D a
+                            fs hcov' hha]
+                          intro st hst
+                          cases hst
+                        · have hha' : holeUsed mu a = false :=
+                            Bool.eq_false_iff.mpr hha
+                          rw [vevents_block_pigeon_live fuel' mu i vs D a
+                            fs hcov' hha']
+                          intro st hst
+                          rw [show stepsPrefix (VEvent.qstep
+                              ⟨Sum.inl i, (i, a)⟩ ::
+                              vevents fuel'
+                                (compose mu (singleMatching i a)) vs D
+                                fs) =
+                            ⟨Sum.inl i, (i, a)⟩ ::
+                              stepsPrefix (vevents fuel'
+                                (compose mu (singleMatching i a)) vs D
+                                fs) from rfl] at hst
+                          cases hst with
+                          | head => exact List.mem_cons_self _ _
+                          | tail _ hst' =>
+                              exact List.mem_cons_of_mem _
+                                (stepsPrefix_vertex_mem_pending fuel'
+                                  (compose mu (singleMatching i a)) vs D
+                                  fs st hst')
+            | inr b =>
+                cases feed with
+                | nil =>
+                    rw [vevents_block_feed_nil fuel' mu _ vs D hcov']
+                    intro st hst
+                    cases hst
+                | cons av fs =>
+                    cases av with
+                    | inr a =>
+                        rw [vevents_block_hole_illkind fuel' mu b vs D a
+                          fs hcov']
+                        intro st hst
+                        cases hst
+                    | inl q =>
+                        by_cases hq : (mu q).isSome = true
+                        · rw [vevents_block_hole_dead fuel' mu b vs D q fs
+                            hcov' hq]
+                          intro st hst
+                          cases hst
+                        · have hq' : (mu q).isSome = false :=
+                            Bool.eq_false_iff.mpr hq
+                          rw [vevents_block_hole_live fuel' mu b vs D q fs
+                            hcov' hq']
+                          intro st hst
+                          rw [show stepsPrefix (VEvent.qstep
+                              ⟨Sum.inr b, (q, b)⟩ ::
+                              vevents fuel'
+                                (compose mu (singleMatching q b)) vs D
+                                fs) =
+                            ⟨Sum.inr b, (q, b)⟩ ::
+                              stepsPrefix (vevents fuel'
+                                (compose mu (singleMatching q b)) vs D
+                                fs) from rfl] at hst
+                          cases hst with
+                          | head => exact List.mem_cons_self _ _
+                          | tail _ hst' =>
+                              exact List.mem_cons_of_mem _
+                                (stepsPrefix_vertex_mem_pending fuel'
+                                  (compose mu (singleMatching q b)) vs D
+                                  fs st hst')
+  termination_by fuel _ pending D _ =>
+    (fuel, pending.length + D.length)
+
+/-- **Every block queries its own frozen list**: each step's label of
+each block lies in the block's frozen vertex list (pin 3.2 seed — the
+walked segment stays inside V of the entered restricted term). -/
+theorem blocksOf_steps_vertex_mem_frozen {p h : Nat} :
+    ∀ (fuel : Nat) (mu : MatchingMap p h) (pending : List (Vertex p h))
+      (D : MDNF p h) (feed : List (Vertex p h)),
+      ∀ B ∈ blocksOf (vevents fuel mu pending D feed),
+        ∀ st ∈ B.steps, st.vertex ∈ termVertices B.entry B.term
+  | _, _, [], [], feed => by
+      rw [vevents_nil, blocksOf_nil]
+      intro B hB
+      cases hB
+  | fuel, mu, [], t :: rest, feed => by
+      by_cases hleg : termMatchingLegalB t = true
+      · by_cases hfals : termFalsifiedB mu t = true
+        · rw [vevents_skip_falsified fuel mu t rest feed hleg hfals]
+          exact blocksOf_steps_vertex_mem_frozen fuel mu [] rest feed
+        · have hfals' : termFalsifiedB mu t = false :=
+            Bool.eq_false_iff.mpr hfals
+          by_cases hsat : termSatisfiedB mu t = true
+          · rw [vevents_stop_satisfied fuel mu t rest feed hleg hfals'
+              hsat, blocksOf_nil]
+            intro B hB
+            cases hB
+          · have hsat' : termSatisfiedB mu t = false :=
+              Bool.eq_false_iff.mpr hsat
+            cases fuel with
+            | zero =>
+                rw [vevents_entry_zero mu t rest feed hleg hfals' hsat',
+                  blocksOf_nil]
+                intro B hB
+                cases hB
+            | succ fuel' =>
+                cases htv : termVertices mu t with
+                | nil =>
+                    rw [vevents_entry_novertices fuel' mu t rest feed hleg
+                      hfals' hsat' htv, blocksOf_nil]
+                    intro B hB
+                    cases hB
+                | cons v vs =>
+                    cases v with
+                    | inl i =>
+                        cases feed with
+                        | nil =>
+                            rw [vevents_entry_feed_nil fuel' mu t rest i
+                              vs hleg hfals' hsat' htv, blocksOf_nil]
+                            intro B hB
+                            cases hB
+                        | cons av fs =>
+                            cases av with
+                            | inl q =>
+                                rw [vevents_entry_feed_illkind fuel' mu t
+                                  rest i vs q fs hleg hfals' hsat' htv,
+                                  blocksOf_nil]
+                                intro B hB
+                                cases hB
+                            | inr a =>
+                                by_cases hha : holeUsed mu a = true
+                                · rw [vevents_entry_pigeon_dead fuel' mu t
+                                    rest i vs a fs hleg hfals' hsat' htv
+                                    hha, blocksOf_nil]
+                                  intro B hB
+                                  cases hB
+                                · have hha' : holeUsed mu a = false :=
+                                    Bool.eq_false_iff.mpr hha
+                                  rw [vevents_entry_pigeon_live fuel' mu t
+                                    rest i vs a fs hleg hfals' hsat' htv
+                                    hha', blocksOf_enter]
+                                  intro B hB
+                                  cases hB with
+                                  | head =>
+                                      intro st hst
+                                      rw [show stepsPrefix
+                                          (VEvent.qstep
+                                            ⟨Sum.inl i, (i, a)⟩ ::
+                                            vevents fuel'
+                                              (compose mu
+                                                (singleMatching i a)) vs
+                                              (t :: rest) fs) =
+                                        ⟨Sum.inl i, (i, a)⟩ ::
+                                          stepsPrefix (vevents fuel'
+                                            (compose mu
+                                              (singleMatching i a)) vs
+                                            (t :: rest) fs) from rfl]
+                                        at hst
+                                      rw [htv]
+                                      cases hst with
+                                      | head =>
+                                          exact List.mem_cons_self _ _
+                                      | tail _ hst' =>
+                                          exact List.mem_cons_of_mem _
+                                            (stepsPrefix_vertex_mem_pending
+                                              fuel'
+                                              (compose mu
+                                                (singleMatching i a)) vs
+                                              (t :: rest) fs st hst')
+                                  | tail _ hB' =>
+                                      rw [show afterSteps
+                                          (VEvent.qstep
+                                            ⟨Sum.inl i, (i, a)⟩ ::
+                                            vevents fuel'
+                                              (compose mu
+                                                (singleMatching i a)) vs
+                                              (t :: rest) fs) =
+                                          afterSteps (vevents fuel'
+                                            (compose mu
+                                              (singleMatching i a)) vs
+                                            (t :: rest) fs) from rfl]
+                                        at hB'
+                                      rw [blocksOf_afterSteps] at hB'
+                                      exact blocksOf_steps_vertex_mem_frozen
+                                        fuel'
+                                        (compose mu (singleMatching i a))
+                                        vs (t :: rest) fs B hB'
+                    | inr b =>
+                        exact absurd htv
+                          (termVertices_head_not_hole mu t b vs)
+      · have hleg' : termMatchingLegalB t = false :=
+          Bool.eq_false_iff.mpr hleg
+        rw [vevents_skip_illegal fuel mu t rest feed hleg']
+        exact blocksOf_steps_vertex_mem_frozen fuel mu [] rest feed
+  | fuel, mu, v :: vs, D, feed => by
+      by_cases hcov : vertexCoveredB mu v = true
+      · rw [vevents_block_skip_covered fuel mu v vs D feed hcov]
+        exact blocksOf_steps_vertex_mem_frozen fuel mu vs D feed
+      · have hcov' : vertexCoveredB mu v = false :=
+          Bool.eq_false_iff.mpr hcov
+        cases fuel with
+        | zero =>
+            rw [vevents_block_zero mu v vs D feed hcov', blocksOf_nil]
+            intro B hB
+            cases hB
+        | succ fuel' =>
+            cases v with
+            | inl i =>
+                cases feed with
+                | nil =>
+                    rw [vevents_block_feed_nil fuel' mu _ vs D hcov',
+                      blocksOf_nil]
+                    intro B hB
+                    cases hB
+                | cons av fs =>
+                    cases av with
+                    | inl q =>
+                        rw [vevents_block_pigeon_illkind fuel' mu i vs D q
+                          fs hcov', blocksOf_nil]
+                        intro B hB
+                        cases hB
+                    | inr a =>
+                        by_cases hha : holeUsed mu a = true
+                        · rw [vevents_block_pigeon_dead fuel' mu i vs D a
+                            fs hcov' hha, blocksOf_nil]
+                          intro B hB
+                          cases hB
+                        · have hha' : holeUsed mu a = false :=
+                            Bool.eq_false_iff.mpr hha
+                          rw [vevents_block_pigeon_live fuel' mu i vs D a
+                            fs hcov' hha', blocksOf_qstep]
+                          exact blocksOf_steps_vertex_mem_frozen fuel'
+                            (compose mu (singleMatching i a)) vs D fs
+            | inr b =>
+                cases feed with
+                | nil =>
+                    rw [vevents_block_feed_nil fuel' mu _ vs D hcov',
+                      blocksOf_nil]
+                    intro B hB
+                    cases hB
+                | cons av fs =>
+                    cases av with
+                    | inr a =>
+                        rw [vevents_block_hole_illkind fuel' mu b vs D a
+                          fs hcov', blocksOf_nil]
+                        intro B hB
+                        cases hB
+                    | inl q =>
+                        by_cases hq : (mu q).isSome = true
+                        · rw [vevents_block_hole_dead fuel' mu b vs D q fs
+                            hcov' hq, blocksOf_nil]
+                          intro B hB
+                          cases hB
+                        · have hq' : (mu q).isSome = false :=
+                            Bool.eq_false_iff.mpr hq
+                          rw [vevents_block_hole_live fuel' mu b vs D q fs
+                            hcov' hq', blocksOf_qstep]
+                          exact blocksOf_steps_vertex_mem_frozen fuel'
+                            (compose mu (singleMatching q b)) vs D fs
+  termination_by fuel _ pending D _ =>
+    (fuel, pending.length + D.length)
+
 end PHPMatchingExtensionEncode
 end PvNP

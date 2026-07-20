@@ -11443,3 +11443,19 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 /-- info: 'PvNP.PHPMatchingExtensionEncode.vevents_steps_vertex_pairwise' depends on axioms: [propext, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingExtensionEncode.vevents_steps_vertex_pairwise
+
+/-! S2187 stage-1b.4c step-provenance pins. -/
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.vevents_scan_shape' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.vevents_scan_shape
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.stepsPrefix_vertex_mem_pending' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.stepsPrefix_vertex_mem_pending
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.blocksOf_steps_vertex_mem_frozen' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.blocksOf_steps_vertex_mem_frozen
