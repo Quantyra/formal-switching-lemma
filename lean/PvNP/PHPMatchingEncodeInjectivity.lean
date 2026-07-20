@@ -16,12 +16,14 @@ module now performs the G2 side as a pure decoder: entered terms and G2
 determine the sigma-overlay matching used by G1, independently of the
 original rho, and `decodeMatchFromTerms` roundtrips to rho on every encode
 image.  Full `Function.InjOn encodeMatch` is still blocked at the entered
-term replay step: after the first block, the walk state needs the path
-matching `ρ * π`, while G1 deliberately omits π and the G3 answer namespace
-is decoded only after the sigma overlay is known.  The missing theorem is
-therefore a pure packet replay lemma proving that `(G1,G2,G3)` determines
-the entered-term sequence; once supplied,
-`encodeMatch_eq_of_code_eq_of_entered_terms_eq` closes base injectivity.
+term replay step.  The true entered-term sequence is now proved to be a
+fixed point of the pure `(G1,G2,G3)` operator `replayTermsFromTerms`; the
+exact residual is `PacketReplayTermsUnique`, asserting that this fixed point
+is unique.  After the first block, proving uniqueness must reconcile the
+path matching `ρ * π` with G1 (which omits π) and the G3 answer namespace
+(which is decoded only after the sigma overlay is known).  Once uniqueness
+is supplied, `encodeMatch_subtype_injective_of_packetReplayTermsUnique`
+closes injectivity on the graded bad-set subtype.
 
 This is encode/decode bookkeeping only.  It proves no bad-set cardinality or
 switching statement.
