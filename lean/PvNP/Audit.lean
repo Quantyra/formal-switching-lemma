@@ -11459,3 +11459,25 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingExtensionEncode.blocksOf_steps_vertex_mem_frozen
+
+/-! S2187 stage-1b.4d-1 frozen-coverage / vertex-card pins. -/
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.blocksOf_frozen_covered' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.blocksOf_frozen_covered
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.pairVertices_card_of_disjoint' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.pairVertices_card_of_disjoint
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.pairVertices_card_le' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.pairVertices_card_le
+
+/-- info: 'PvNP.PHPMatchingExtensionEncode.vertex_mem_pairVertices_of_covered' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingExtensionEncode.vertex_mem_pairVertices_of_covered

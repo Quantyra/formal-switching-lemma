@@ -2751,5 +2751,327 @@ theorem blocksOf_steps_vertex_mem_frozen {p h : Nat} :
   termination_by fuel _ pending D _ =>
     (fuel, pending.length + D.length)
 
+/-! ## Stage 1b.4d: frozen coverage per non-final block, and vertex
+cardinalities -/
+
+/-- **Non-final blocks drain their frozen list with their own steps**:
+in Pairwise form (the relation ignores its second argument, so it binds
+exactly the blocks that have a successor), every non-final block's
+frozen vertices are covered by its entry composed with its own walked
+pairs. -/
+theorem blocksOf_frozen_covered {p h : Nat} :
+    ∀ (fuel : Nat) (mu : MatchingMap p h) (pending : List (Vertex p h))
+      (D : MDNF p h) (feed : List (Vertex p h)),
+      List.Pairwise (fun B _ => ∀ w ∈ termVertices B.entry B.term,
+        vertexCoveredB (compose B.entry
+          (pairsToMatching (B.steps.map VStep.pair))) w = true)
+        (blocksOf (vevents fuel mu pending D feed))
+  | _, _, [], [], feed => by
+      rw [vevents_nil, blocksOf_nil]
+      exact List.Pairwise.nil
+  | fuel, mu, [], t :: rest, feed => by
+      by_cases hleg : termMatchingLegalB t = true
+      · by_cases hfals : termFalsifiedB mu t = true
+        · rw [vevents_skip_falsified fuel mu t rest feed hleg hfals]
+          exact blocksOf_frozen_covered fuel mu [] rest feed
+        · have hfals' : termFalsifiedB mu t = false :=
+            Bool.eq_false_iff.mpr hfals
+          by_cases hsat : termSatisfiedB mu t = true
+          · rw [vevents_stop_satisfied fuel mu t rest feed hleg hfals'
+              hsat, blocksOf_nil]
+            exact List.Pairwise.nil
+          · have hsat' : termSatisfiedB mu t = false :=
+              Bool.eq_false_iff.mpr hsat
+            cases fuel with
+            | zero =>
+                rw [vevents_entry_zero mu t rest feed hleg hfals' hsat',
+                  blocksOf_nil]
+                exact List.Pairwise.nil
+            | succ fuel' =>
+                cases htv : termVertices mu t with
+                | nil =>
+                    rw [vevents_entry_novertices fuel' mu t rest feed hleg
+                      hfals' hsat' htv, blocksOf_nil]
+                    exact List.Pairwise.nil
+                | cons v vs =>
+                    cases v with
+                    | inl i =>
+                        have hfree : mu i = none :=
+                          termVertices_head_pigeon_free mu t i vs htv
+                        cases feed with
+                        | nil =>
+                            rw [vevents_entry_feed_nil fuel' mu t rest i
+                              vs hleg hfals' hsat' htv, blocksOf_nil]
+                            exact List.Pairwise.nil
+                        | cons av fs =>
+                            cases av with
+                            | inl q =>
+                                rw [vevents_entry_feed_illkind fuel' mu t
+                                  rest i vs q fs hleg hfals' hsat' htv,
+                                  blocksOf_nil]
+                                exact List.Pairwise.nil
+                            | inr a =>
+                                by_cases hha : holeUsed mu a = true
+                                · rw [vevents_entry_pigeon_dead fuel' mu t
+                                    rest i vs a fs hleg hfals' hsat' htv
+                                    hha, blocksOf_nil]
+                                  exact List.Pairwise.nil
+                                · have hha' : holeUsed mu a = false :=
+                                    Bool.eq_false_iff.mpr hha
+                                  rw [vevents_entry_pigeon_live fuel' mu t
+                                    rest i vs a fs hleg hfals' hsat' htv
+                                    hha', blocksOf_enter,
+                                    List.pairwise_cons]
+                                  constructor
+                                  · intro B' hB' w hw
+                                    have hB'' : B' ∈ blocksOf
+                                        (vevents fuel'
+                                          (compose mu
+                                            (singleMatching i a)) vs
+                                          (t :: rest) fs) := by
+                                      have h1 := hB'
+                                      rw [show afterSteps
+                                          (VEvent.qstep
+                                            ⟨Sum.inl i, (i, a)⟩ ::
+                                            vevents fuel'
+                                              (compose mu
+                                                (singleMatching i a)) vs
+                                              (t :: rest) fs) =
+                                          afterSteps (vevents fuel'
+                                            (compose mu
+                                              (singleMatching i a)) vs
+                                            (t :: rest) fs) from rfl]
+                                        at h1
+                                      rw [blocksOf_afterSteps] at h1
+                                      exact h1
+                                    have hne : blocksOf (vevents fuel'
+                                        (compose mu (singleMatching i a))
+                                        vs (t :: rest) fs) ≠ [] :=
+                                      List.ne_nil_of_mem hB''
+                                    show vertexCoveredB (compose mu
+                                      (stepsOverlay (VEvent.qstep
+                                        ⟨Sum.inl i, (i, a)⟩ ::
+                                        vevents fuel'
+                                          (compose mu
+                                            (singleMatching i a)) vs
+                                          (t :: rest) fs))) w = true
+                                    rw [compose_stepsOverlay_cons]
+                                    rw [htv] at hw
+                                    cases hw with
+                                    | head =>
+                                        have hcv : vertexCoveredB
+                                            (compose mu
+                                              (singleMatching i a))
+                                            (Sum.inl i) = true := by
+                                          simp only [vertexCoveredB]
+                                          rw [compose_single_self mu i a
+                                            hfree]
+                                          rfl
+                                        exact vertexCoveredB_mono_mAgree
+                                          (mAgree_compose_left _ _) _ hcv
+                                    | tail _ hw' =>
+                                        exact vevents_pending_drained
+                                          fuel'
+                                          (compose mu
+                                            (singleMatching i a)) vs
+                                          (t :: rest) fs w hw' hne
+                                  · have hrec := blocksOf_frozen_covered
+                                      fuel'
+                                      (compose mu (singleMatching i a))
+                                      vs (t :: rest) fs
+                                    rw [show afterSteps
+                                        (VEvent.qstep
+                                          ⟨Sum.inl i, (i, a)⟩ ::
+                                          vevents fuel'
+                                            (compose mu
+                                              (singleMatching i a)) vs
+                                            (t :: rest) fs) =
+                                        afterSteps (vevents fuel'
+                                          (compose mu
+                                            (singleMatching i a)) vs
+                                          (t :: rest) fs) from rfl]
+                                    rw [blocksOf_afterSteps]
+                                    exact hrec
+                    | inr b =>
+                        exact absurd htv
+                          (termVertices_head_not_hole mu t b vs)
+      · have hleg' : termMatchingLegalB t = false :=
+          Bool.eq_false_iff.mpr hleg
+        rw [vevents_skip_illegal fuel mu t rest feed hleg']
+        exact blocksOf_frozen_covered fuel mu [] rest feed
+  | fuel, mu, v :: vs, D, feed => by
+      by_cases hcov : vertexCoveredB mu v = true
+      · rw [vevents_block_skip_covered fuel mu v vs D feed hcov]
+        exact blocksOf_frozen_covered fuel mu vs D feed
+      · have hcov' : vertexCoveredB mu v = false :=
+          Bool.eq_false_iff.mpr hcov
+        cases fuel with
+        | zero =>
+            rw [vevents_block_zero mu v vs D feed hcov', blocksOf_nil]
+            exact List.Pairwise.nil
+        | succ fuel' =>
+            cases v with
+            | inl i =>
+                cases feed with
+                | nil =>
+                    rw [vevents_block_feed_nil fuel' mu _ vs D hcov',
+                      blocksOf_nil]
+                    exact List.Pairwise.nil
+                | cons av fs =>
+                    cases av with
+                    | inl q =>
+                        rw [vevents_block_pigeon_illkind fuel' mu i vs D q
+                          fs hcov', blocksOf_nil]
+                        exact List.Pairwise.nil
+                    | inr a =>
+                        by_cases hha : holeUsed mu a = true
+                        · rw [vevents_block_pigeon_dead fuel' mu i vs D a
+                            fs hcov' hha, blocksOf_nil]
+                          exact List.Pairwise.nil
+                        · have hha' : holeUsed mu a = false :=
+                            Bool.eq_false_iff.mpr hha
+                          rw [vevents_block_pigeon_live fuel' mu i vs D a
+                            fs hcov' hha', blocksOf_qstep]
+                          exact blocksOf_frozen_covered fuel'
+                            (compose mu (singleMatching i a)) vs D fs
+            | inr b =>
+                cases feed with
+                | nil =>
+                    rw [vevents_block_feed_nil fuel' mu _ vs D hcov',
+                      blocksOf_nil]
+                    exact List.Pairwise.nil
+                | cons av fs =>
+                    cases av with
+                    | inr a =>
+                        rw [vevents_block_hole_illkind fuel' mu b vs D a
+                          fs hcov', blocksOf_nil]
+                        exact List.Pairwise.nil
+                    | inl q =>
+                        by_cases hq : (mu q).isSome = true
+                        · rw [vevents_block_hole_dead fuel' mu b vs D q fs
+                            hcov' hq, blocksOf_nil]
+                          exact List.Pairwise.nil
+                        · have hq' : (mu q).isSome = false :=
+                            Bool.eq_false_iff.mpr hq
+                          rw [vevents_block_hole_live fuel' mu b vs D q fs
+                            hcov' hq', blocksOf_qstep]
+                          exact blocksOf_frozen_covered fuel'
+                            (compose mu (singleMatching q b)) vs D fs
+  termination_by fuel _ pending D _ => (fuel, pending.length + D.length)
+
+/-- The vertex set of a pair list, as a `Finset` of PHP vertices. -/
+def pairVertices {p h : Nat} (l : List (Fin p × Fin h)) :
+    Finset (Vertex p h) :=
+  (l.map (fun e => Sum.inl e.1)).toFinset ∪
+    (l.map (fun e => Sum.inr e.2)).toFinset
+
+theorem mem_pairVertices_inl {p h : Nat} (l : List (Fin p × Fin h))
+    (i : Fin p) :
+    Sum.inl i ∈ pairVertices l ↔ ∃ e ∈ l, e.1 = i := by
+  unfold pairVertices
+  simp
+
+theorem mem_pairVertices_inr {p h : Nat} (l : List (Fin p × Fin h))
+    (b : Fin h) :
+    Sum.inr b ∈ pairVertices l ↔ ∃ e ∈ l, e.2 = b := by
+  unfold pairVertices
+  simp
+
+/-- A pairwise vertex-disjoint duplicate-free pair list has exactly
+`2·length` vertices. -/
+theorem pairVertices_card_of_disjoint {p h : Nat}
+    (l : List (Fin p × Fin h)) (hnd : l.Nodup)
+    (hpd : List.Pairwise PairDisjoint l) :
+    (pairVertices l).card = 2 * l.length := by
+  unfold pairVertices
+  have hfst : (l.map (fun e => Sum.inl (β := Fin h) e.1)).Nodup := by
+    refine List.Nodup.map_on ?_ hnd
+    intro x hx y hy hxy
+    by_contra hne
+    have hd := hpd.forall pairDisjoint_symm hx hy hne
+    exact hd.1 (by
+      have : Sum.inl (β := Fin h) x.1 = Sum.inl y.1 := hxy
+      injection this)
+  have hsnd : (l.map (fun e => Sum.inr (α := Fin p) e.2)).Nodup := by
+    refine List.Nodup.map_on ?_ hnd
+    intro x hx y hy hxy
+    by_contra hne
+    have hd := hpd.forall pairDisjoint_symm hx hy hne
+    exact hd.2 (by
+      have : Sum.inr (α := Fin p) x.2 = Sum.inr y.2 := hxy
+      injection this)
+  have hdisj : Disjoint
+      (l.map (fun e => Sum.inl (β := Fin h) e.1)).toFinset
+      (l.map (fun e => Sum.inr (α := Fin p) e.2)).toFinset := by
+    rw [Finset.disjoint_left]
+    intro v hv1 hv2
+    rw [List.mem_toFinset, List.mem_map] at hv1 hv2
+    rcases hv1 with ⟨x, _, hx⟩
+    rcases hv2 with ⟨y, _, hy⟩
+    rw [← hx] at hy
+    cases hy
+  rw [Finset.card_union_of_disjoint hdisj]
+  rw [List.toFinset_card_of_nodup hfst, List.toFinset_card_of_nodup hsnd]
+  rw [List.length_map, List.length_map]
+  omega
+
+/-- Any pair list has at most `2·length` vertices. -/
+theorem pairVertices_card_le {p h : Nat} (l : List (Fin p × Fin h)) :
+    (pairVertices l).card ≤ 2 * l.length := by
+  unfold pairVertices
+  calc _ ≤ (l.map (fun e => Sum.inl (β := Fin h) e.1)).toFinset.card +
+        (l.map (fun e => Sum.inr (α := Fin p) e.2)).toFinset.card :=
+      Finset.card_union_le _ _
+    _ ≤ l.length + l.length := by
+        have h1 := List.toFinset_card_le
+          (l.map (fun e => Sum.inl (β := Fin h) e.1))
+        have h2 := List.toFinset_card_le
+          (l.map (fun e => Sum.inr (α := Fin p) e.2))
+        rw [List.length_map] at h1 h2
+        omega
+    _ = 2 * l.length := by omega
+
+/-- A vertex covered by an overlay extension but uncovered at the base
+is a vertex of the overlay's pairs. -/
+theorem vertex_mem_pairVertices_of_covered {p h : Nat}
+    (mu : MatchingMap p h) (l : List (Fin p × Fin h)) (v : Vertex p h)
+    (hcv : vertexCoveredB (compose mu (pairsToMatching l)) v = true)
+    (hun : vertexCoveredB mu v = false) : v ∈ pairVertices l := by
+  cases v with
+  | inl i =>
+      simp only [vertexCoveredB] at hcv hun
+      have hfree : mu i = none := by
+        cases hmi : mu i with
+        | none => rfl
+        | some c =>
+            rw [hmi] at hun
+            simp at hun
+      rw [compose_free_left mu _ i hfree] at hcv
+      cases hov : pairsToMatching l i with
+      | none =>
+          rw [hov] at hcv
+          simp at hcv
+      | some b =>
+          have hm := pairsToMatching_eq_some l i b hov
+          exact (mem_pairVertices_inl l i).mpr ⟨(i, b), hm, rfl⟩
+  | inr b =>
+      simp only [vertexCoveredB] at hcv hun
+      rcases (holeUsed_eq_true_iff _ b).mp hcv with ⟨j, hj⟩
+      cases hmj : mu j with
+      | some c =>
+          rw [compose_fixed_left mu _ j c hmj] at hj
+          have hcb : c = b := by
+            cases hj
+            rfl
+          rw [hcb] at hmj
+          have : holeUsed mu b = true :=
+            (holeUsed_eq_true_iff mu b).mpr ⟨j, hmj⟩
+          rw [hun] at this
+          cases this
+      | none =>
+          rw [compose_free_left mu _ j hmj] at hj
+          have hm := pairsToMatching_eq_some l j b hj
+          exact (mem_pairVertices_inr l b).mpr ⟨(j, b), hm, rfl⟩
+
 end PHPMatchingExtensionEncode
 end PvNP
