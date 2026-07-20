@@ -1551,11 +1551,13 @@ sequences on encode images.  Empty-G2 case is discharged
 `encodeMatch_eq_of_code_eq_of_entered_terms_eq` this yields unconditional
 `encodeMatch_eq_of_code_eq` / `encodeMatch_subtype_injective`.
 
-Equivalent sufficient residual: `EncodeMatchCoherentReplayUniqueResidual`
-(S2196).  Obstruction: G3 answer codes are indices into `freeVertexList rho`,
-so pure multi-block term replay still needs base/free-list recovery; first-block
-`firstNotFalsifiedTerm` under G1 is the intended head-recovery seed
-(`firstNotFalsifiedTerm_eq_of_factor`). -/
+Alternative (stronger) sufficient residual: `EncodeMatchCoherentReplayUniqueResidual`
+(S2196) — not proved equivalent; it quantifies over all coherent candidates,
+while this residual compares only genuine encode preimages.  Obstruction: G3
+answer codes are indices into `freeVertexList rho`, so pure multi-block term
+replay still needs base/free-list recovery; first-block `firstNotFalsifiedTerm`
+under G1 is the intended head-recovery seed (generic factorization lemma
+landed; genuine-head bridge still open). -/
 def EncodeMatchEnteredTermsEqResidual {p h w t ell : Nat} (hsq : p = h)
     (D : MDNF p h) (hw : ∀ term ∈ D, term.length ≤ w) : Prop :=
   ∀ (rho₁ rho₂ : MatchingMap p h)
@@ -1617,7 +1619,10 @@ theorem encodeMatch_subtype_injective_of_enteredTermsEqResidual
     rho₁.1 rho₂.1 D hmem₁.1.1 hmem₂.1.1 hmem₁.1.2 hmem₂.1.2
     ht₁ ht₂ hw hcode' hres
 
-/-- Empty-G2 codes discharge the S2197 entered-term residual on that slice. -/
+/-- If every eligible encode image has empty G2, the full S2197 residual
+holds (via the pairwise empty-G2 equality theorem).  This is a global
+empty-G2 hypothesis on the family, not a restriction of the residual's
+domain to an empty-G2 subtype. -/
 theorem encodeMatchEnteredTermsEqResidual_of_G2_nil
     {p h w t ell : Nat} (hsq : p = h) (D : MDNF p h)
     (hw : ∀ term ∈ D, term.length ≤ w)
