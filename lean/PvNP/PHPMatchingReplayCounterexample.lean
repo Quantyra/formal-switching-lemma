@@ -1,7 +1,7 @@
 import PvNP.PHPMatchingEncodeInjectivity
 
 /-!
-# S2190: kernel-checked refutation of packet replay fixed-point uniqueness
+# S2190 / S2196: packet replay counterexample and coherent exclusion
 
 `PacketReplayTermsUnique` — S2189's named GA-4 residual — is **false** on
 `encodeMatch` images in general.  This module exhibits a concrete 3×3
@@ -22,6 +22,14 @@ Consequently `EncodeMatchReplayUniqueResidual` is **formally refuted** as
 stated and the S2189 fixed-point uniqueness route to full
 `Function.InjOn encodeMatch` is closed.  The conditional reduction shells
 of S2189 remain valid but their uniqueness premise cannot be discharged.
+
+**S2196 coherent exclusion.**  The spur fails
+`PacketReplayTermsCoherent` because its sigma overlay assigns `0 ↦ 0`
+while `G1 0 = some 2` (directional `OverlayAgreesG1` fails).  The true
+entered-term list is coherent.  Bounded manual search on this packet
+among length-`G2` singletons drawn from `cexD` finds no second coherent
+fixed point; general coherent uniqueness remains open (no stop-loss
+coherent counterexample found).
 
 This module makes **no positive injectivity claim**.
 
@@ -706,6 +714,51 @@ theorem encodeMatchReplayUniqueResidual_refuted :
   intro hres
   exact packetReplayTermsUnique_refuted
     (hres cexRho cexRho_isMatching cex_ell cex_ht)
+
+/-! ## S2196: coherent exclusion of the S2190 spur -/
+
+private theorem spur_overlay_disagrees_G1 :
+    ¬ OverlayAgreesG1 cexCode.G1 (decodeSigmaOverlay [term00] cexCode.G2) := by
+  intro h
+  have hsig :
+      decodeSigmaOverlay [term00] cexCode.G2 (0 : Fin 3) = some (0 : Fin 3) := by
+    rw [spur_overlay]; simp
+  have hG1 : cexCode.G1 (0 : Fin 3) = some (0 : Fin 3) := h 0 0 hsig
+  have hG1' : cexCode.G1 (0 : Fin 3) = some (2 : Fin 3) := by
+    rw [cexCode_G1]; simp
+  have hne : (0 : Fin 3) ≠ 2 := by decide
+  exact hne (Option.some.inj (hG1.symm.trans hG1'))
+
+/-- **S2196.**  The S2190 spurious fixed point is **not** coherent: its
+sigma overlay assigns `0 ↦ 0` while packet `G1` has `0 ↦ 2`. -/
+theorem spur_not_coherent :
+    ¬ PacketReplayTermsCoherent cexD [term00] cexCode := by
+  intro hc
+  exact spur_overlay_disagrees_G1 hc.2.2.1
+
+private theorem true_terms_eq_entered :
+    enteredTermsOf cexRho cexD 1 = [term11] := by
+  simp only [enteredTermsOf]
+  rw [cex_deepFeed_eq, terms_rho_feed]
+
+/-- **S2196.**  The true entered-term list on the counterexample packet is
+coherent (via the general encode-image theorem). -/
+theorem true_coherent :
+    PacketReplayTermsCoherent cexD [term11] cexCode := by
+  have h :=
+    packetReplayTermsCoherent_encodeMatch rfl cexRho cexD
+      cexRho_isMatching cex_ell cex_ht cex_hw
+  simpa [cexCode, true_terms_eq_entered] using h
+
+/-- Bounded manual search note (S2196): among length-`G2` (= 1) singleton
+candidates drawn from `cexD`, only `[term11]` is coherent; `[term00]` is
+excluded above.  No second coherent fixed point is known on this packet,
+and no general coherent counterexample was found.  General
+`PacketReplayTermsCoherentUnique` remains open. -/
+theorem spur_and_true_coherent_status :
+    ¬ PacketReplayTermsCoherent cexD [term00] cexCode ∧
+      PacketReplayTermsCoherent cexD [term11] cexCode :=
+  ⟨spur_not_coherent, true_coherent⟩
 
 end PHPMatchingReplayCounterexample
 end PvNP

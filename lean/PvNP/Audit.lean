@@ -12023,3 +12023,81 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingReplayCounterexample.encodeMatchReplayUniqueResidual_refuted
+
+/-! S2196: coherent packet-replay predicate; encode coherence; spur excluded. -/
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.OverlayAgreesG1' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.OverlayAgreesG1
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.PacketReplayTermsCoherent' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.PacketReplayTermsCoherent
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.PacketReplayTermsCoherentUnique' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.PacketReplayTermsCoherentUnique
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.packetReplayTermsCoherent_encodeMatch' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.packetReplayTermsCoherent_encodeMatch
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.overlayAgreesG1_encodeMatch' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.overlayAgreesG1_encodeMatch
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.enteredTermsOf_length_eq_G2' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.enteredTermsOf_length_eq_G2
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.isMatching_decodeSigmaOverlay_encodeMatch' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.isMatching_decodeSigmaOverlay_encodeMatch
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.encodeMatch_eq_of_code_eq_of_packetReplayTermsCoherentUnique' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.encodeMatch_eq_of_code_eq_of_packetReplayTermsCoherentUnique
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.encodeMatch_subtype_injective_of_packetReplayTermsCoherentUnique' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.encodeMatch_subtype_injective_of_packetReplayTermsCoherentUnique
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.EncodeMatchCoherentReplayUniqueResidual' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.EncodeMatchCoherentReplayUniqueResidual
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.encodeMatch_subtype_injective_of_coherent_residual' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.encodeMatch_subtype_injective_of_coherent_residual
+
+/-- info: 'PvNP.PHPMatchingReplayCounterexample.spur_not_coherent' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingReplayCounterexample.spur_not_coherent
+
+/-- info: 'PvNP.PHPMatchingReplayCounterexample.true_coherent' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingReplayCounterexample.true_coherent
+
+/-- info: 'PvNP.PHPMatchingReplayCounterexample.spur_and_true_coherent_status' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingReplayCounterexample.spur_and_true_coherent_status

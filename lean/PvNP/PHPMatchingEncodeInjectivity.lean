@@ -2,7 +2,7 @@ import PvNP.PHPMatchingDeterministicEncode
 import PvNP.PHPMatchingEncodeDisposal
 
 /-!
-# GA-4 Stage A/B/C: decode scaffolding + conditional injectivity (S2189)
+# GA-4 Stage A/B/C + S2196 coherent replay: decode scaffolding + injectivity shells
 
 This module begins the pure replay/decode side of the deterministic matching
 encode.  It proves that once the entered terms have been recovered, `G2`
@@ -16,18 +16,29 @@ module now performs the G2 side as a pure decoder: entered terms and G2
 determine the sigma-overlay matching used by G1, independently of the
 original rho, and `decodeMatchFromTerms` roundtrips to rho on every encode
 image.  The true entered-term sequence is a fixed point of the pure
-`(G1,G2,G3)` operator `replayTermsFromTerms`; the residual
-`PacketReplayTermsUnique` asserts uniqueness of that fixed point.  Once
-uniqueness is supplied,
-`encodeMatch_subtype_injective_of_packetReplayTermsUnique` closes injectivity
-on the graded bad-set subtype.
+`(G1,G2,G3)` operator `replayTermsFromTerms`.
+
+**S2190 residual status (closed as dead).**  The pure fixed-point uniqueness
+predicate `PacketReplayTermsUnique` is **formally refuted** on encode images
+(see `PHPMatchingReplayCounterexample`): a spurious fixed point can decode a
+wrong sigma overlay that is inconsistent with `G1`.  The S2189 fixed-point
+uniqueness route is therefore dead; its conditional shells remain valid but
+their uniqueness premise cannot be discharged.
+
+**S2196 coherent route.**  `PacketReplayTermsCoherent` strengthens the
+fixed-point predicate by requiring length agreement with `G2`, directional
+overlay–`G1` agreement (`OverlayAgreesG1`: every sigma assignment is present
+in `G1`, not global equality), matching-hood of overlay and decoded base,
+and free-pigeon count `ell` on the decoded base.  Encode images are coherent
+(`packetReplayTermsCoherent_encodeMatch`); the S2190 spur is excluded.
+Full multi-block injectivity reduces to uniqueness of coherent fixed points
+(`PacketReplayTermsCoherentUnique` / `EncodeMatchCoherentReplayUniqueResidual`),
+which remains **open** (no new coherent counterexample found; no general
+uniqueness proof in this story).
 
 Stage C adds dual sigma recovery (`decodeSigmaFromBase`), unconditional
 empty-G2 injectivity (`encodeMatch_eq_of_code_eq_of_G2_nil`), the UF
-`firstNotFalsifiedTerm` scan stub, and residual packaging
-(`EncodeMatchReplayUniqueResidual`).  Full multi-block
-`Function.InjOn encodeMatch` remains open at unique pure replay of entered
-terms (equivalently: UF prefix replay across all blocks).
+`firstNotFalsifiedTerm` scan stub, and residual packaging.
 
 This is encode/decode bookkeeping only.  It proves no bad-set cardinality or
 switching statement.
@@ -767,6 +778,147 @@ theorem packetReplayTermsFixed_encodeMatch {p h w t ell : Nat}
   · simpa [enteredTermsOf, feed, blocks, terms, code] using
       replayTermsFromTerms_encodeMatch hsq rho D hrho hell ht hw
 
+/-! ## S2196: coherent packet-replay predicate
+
+Pure fixed-point uniqueness is dead (S2190).  Coherence adds the
+structural side-conditions that genuine encode entered-terms satisfy and
+that the S2190 spur violates: length agreement with `G2`, directional
+overlay–`G1` agreement, matching-hood, and free-pigeon count. -/
+
+/-- Directional overlay–G1 agreement: every sigma-overlay assignment is
+present in `G1`.  This is **not** global overlay equality with `G1`
+(which would force an empty base). -/
+def OverlayAgreesG1 {p h : Nat} (G1 sigma : MatchingMap p h) : Prop :=
+  ∀ i a, sigma i = some a → G1 i = some a
+
+/-- A candidate entered-term list is **coherent** for a packet when it is a
+pure-replay fixed point and additionally satisfies the structural
+side-conditions of a genuine encode image. -/
+def PacketReplayTermsCoherent {p h w t ell : Nat}
+    (D : MDNF p h) (terms : List (MTerm p h))
+    (code : MatchEncode p h w t ell) : Prop :=
+  PacketReplayTermsFixed D terms code ∧
+  terms.length = code.G2.length ∧
+  OverlayAgreesG1 code.G1 (decodeSigmaOverlay terms code.G2) ∧
+  IsMatching (decodeSigmaOverlay terms code.G2) ∧
+  IsMatching (decodeMatchFromTerms terms code) ∧
+  (freePigeons (decodeMatchFromTerms terms code)).card = ell
+
+/-- Exact residual for full packet injectivity after S2190: the packet has
+at most one coherent pure-replay fixed point. -/
+def PacketReplayTermsCoherentUnique {p h w t ell : Nat} (D : MDNF p h)
+    (code : MatchEncode p h w t ell) : Prop :=
+  ∀ terms₁ terms₂,
+    PacketReplayTermsCoherent D terms₁ code →
+    PacketReplayTermsCoherent D terms₂ code →
+    terms₁ = terms₂
+
+private theorem blockSigmasBeta_length {p h w : Nat} :
+    ∀ (blocks : List (VBlock p h)),
+      (blockSigmasBeta (w := w) blocks).length = blocks.length
+  | [] => rfl
+  | [B] => rfl
+  | B :: B' :: Bs => by
+      simp only [blockSigmasBeta, List.length_cons]
+      exact congrArg Nat.succ
+        (blockSigmasBeta_length (w := w) (B' :: Bs))
+
+/-- On every encode image the entered-term list has the same length as G2. -/
+theorem enteredTermsOf_length_eq_G2 {p h w t ell : Nat} (hsq : p = h)
+    (rho : MatchingMap p h) (D : MDNF p h)
+    (hrho : IsMatching rho) (hell : (freePigeons rho).card = ell)
+    (ht : t ≤ vmdtDepth (canonicalVMDT D rho))
+    (hw : ∀ term ∈ D, term.length ≤ w) :
+    (enteredTermsOf rho D t).length =
+      (encodeMatch hsq rho D hrho hell ht hw).G2.length := by
+  simp only [enteredTermsOf, encodeMatch, traceBetaDeep, traceBeta,
+    List.length_map]
+  exact (blockSigmasBeta_length (w := w)
+    (blocksOf (vtrace rho D (leftmostLiveDeepFeed rho D t)))).symm
+
+/-- Encode-image sigma overlay is hole-injective. -/
+theorem isMatching_decodeSigmaOverlay_encodeMatch {p h w t ell : Nat}
+    (hsq : p = h) (rho : MatchingMap p h) (D : MDNF p h)
+    (hrho : IsMatching rho) (hell : (freePigeons rho).card = ell)
+    (ht : t ≤ vmdtDepth (canonicalVMDT D rho))
+    (hw : ∀ term ∈ D, term.length ≤ w) :
+    let feed := leftmostLiveDeepFeed rho D t
+    let blocks := blocksOf (vtrace rho D feed)
+    let code := encodeMatch hsq rho D hrho hell ht hw
+    IsMatching (decodeSigmaOverlay (blocks.map fun B => B.term) code.G2) := by
+  intro feed blocks code
+  have hoverlay :
+      decodeSigmaOverlay (blocks.map fun B => B.term) code.G2 =
+        pairsToMatching (blockSigmas blocks).join := by
+    simpa [feed, blocks, code] using
+      encodeMatch_decodeSigmaOverlay hsq rho D hrho hell ht hw
+  rw [hoverlay]
+  exact isMatching_pairsToMatching _
+    (blockSigmas_join_pairwise (freePigeons rho).card rho [] D feed)
+
+/-- On every encode image the path sigma is directionally present in G1. -/
+theorem overlayAgreesG1_encodeMatch {p h w t ell : Nat} (hsq : p = h)
+    (rho : MatchingMap p h) (D : MDNF p h)
+    (hrho : IsMatching rho) (hell : (freePigeons rho).card = ell)
+    (ht : t ≤ vmdtDepth (canonicalVMDT D rho))
+    (hw : ∀ term ∈ D, term.length ≤ w) :
+    let feed := leftmostLiveDeepFeed rho D t
+    let blocks := blocksOf (vtrace rho D feed)
+    let code := encodeMatch hsq rho D hrho hell ht hw
+    OverlayAgreesG1 code.G1
+      (decodeSigmaOverlay (blocks.map fun B => B.term) code.G2) := by
+  intro feed blocks code
+  have hoverlay :
+      decodeSigmaOverlay (blocks.map fun B => B.term) code.G2 =
+        pairsToMatching (blockSigmas blocks).join := by
+    simpa [feed, blocks, code] using
+      encodeMatch_decodeSigmaOverlay hsq rho D hrho hell ht hw
+  intro i a hsig
+  rw [hoverlay] at hsig
+  have hmem : (i, a) ∈ (blockSigmas blocks).join :=
+    pairsToMatching_eq_some _ i a hsig
+  have hfresh :=
+    blockSigmas_join_fresh (freePigeons rho).card rho [] D feed (i, a) hmem
+  have hrho_none : rho i = none := hfresh.1
+  have hG1 :
+      code.G1 i =
+        compose rho (pairsToMatching (blockSigmas blocks).join) i := by
+    simp [code, encodeMatch, feed, encodeExt, blocks]
+  rw [hG1, compose_free_left rho _ i hrho_none, hsig]
+
+/-- The true deterministic entered-term sequence is coherent on every
+encode image. -/
+theorem packetReplayTermsCoherent_encodeMatch {p h w t ell : Nat}
+    (hsq : p = h) (rho : MatchingMap p h) (D : MDNF p h)
+    (hrho : IsMatching rho) (hell : (freePigeons rho).card = ell)
+    (ht : t ≤ vmdtDepth (canonicalVMDT D rho))
+    (hw : ∀ term ∈ D, term.length ≤ w) :
+    PacketReplayTermsCoherent D (enteredTermsOf rho D t)
+      (encodeMatch hsq rho D hrho hell ht hw) := by
+  let feed := leftmostLiveDeepFeed rho D t
+  let blocks := blocksOf (vtrace rho D feed)
+  let terms := blocks.map fun B => B.term
+  let code := encodeMatch hsq rho D hrho hell ht hw
+  refine ⟨?fixed, ?len, ?agree, ?msig, ?mbase, ?free⟩
+  · simpa [enteredTermsOf, feed, blocks, terms, code] using
+      packetReplayTermsFixed_encodeMatch hsq rho D hrho hell ht hw
+  · simpa [enteredTermsOf, feed, blocks, terms, code] using
+      enteredTermsOf_length_eq_G2 hsq rho D hrho hell ht hw
+  · simpa [enteredTermsOf, feed, blocks, terms, code] using
+      overlayAgreesG1_encodeMatch hsq rho D hrho hell ht hw
+  · simpa [enteredTermsOf, feed, blocks, terms, code] using
+      isMatching_decodeSigmaOverlay_encodeMatch hsq rho D hrho hell ht hw
+  · have hbase :
+        decodeMatchFromTerms terms code = rho := by
+      simpa [feed, blocks, terms, code] using
+        decodeMatchFromTerms_encodeMatch hsq rho D hrho hell ht hw
+    simpa [enteredTermsOf, feed, blocks, terms, code, hbase] using hrho
+  · have hbase :
+        decodeMatchFromTerms terms code = rho := by
+      simpa [feed, blocks, terms, code] using
+        decodeMatchFromTerms_encodeMatch hsq rho D hrho hell ht hw
+    simpa [enteredTermsOf, feed, blocks, terms, code, hbase] using hell
+
 /-- **Entered-term conditional injectivity.**  Equal `encodeMatch` packets
 and equal replayed entered-term sequences force equal bases.  All sigma
 information used here is decoded from the common packet G2; the remaining
@@ -906,6 +1058,122 @@ theorem encodeMatch_subtype_injective_of_packetReplayTermsUnique
   exact encodeMatch_eq_of_code_eq_of_packetReplayTermsUnique hsq
     rho₁.1 rho₂.1 D hmem₁.1.1 hmem₂.1.1 hmem₁.1.2 hmem₂.1.2
     ht₁ ht₂ hw hcode' huniq₁
+
+/-! ## S2196 coherent uniqueness shells
+
+Mirror the S2189 fixed-point uniqueness shells under the stronger
+`PacketReplayTermsCoherentUnique` residual.  General uniqueness remains
+open; these shells close injectivity once uniqueness is supplied. -/
+
+/-- If the common packet has a unique coherent pure-replay fixed point,
+equal packets force equal base matchings. -/
+theorem encodeMatch_eq_of_code_eq_of_packetReplayTermsCoherentUnique
+    {p h w t ell : Nat} (hsq : p = h)
+    (rho₁ rho₂ : MatchingMap p h) (D : MDNF p h)
+    (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+    (hell₁ : (freePigeons rho₁).card = ell)
+    (hell₂ : (freePigeons rho₂).card = ell)
+    (ht₁ : t ≤ vmdtDepth (canonicalVMDT D rho₁))
+    (ht₂ : t ≤ vmdtDepth (canonicalVMDT D rho₂))
+    (hw : ∀ term ∈ D, term.length ≤ w)
+    (hcode : encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw =
+      encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw)
+    (huniq : PacketReplayTermsCoherentUnique D
+      (encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw)) :
+    rho₁ = rho₂ := by
+  let code₁ := encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw
+  let code₂ := encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw
+  have hfix₁ :
+      PacketReplayTermsCoherent D (enteredTermsOf rho₁ D t) code₁ := by
+    simpa [code₁] using
+      packetReplayTermsCoherent_encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw
+  have hfix₂_code₂ :
+      PacketReplayTermsCoherent D (enteredTermsOf rho₂ D t) code₂ := by
+    simpa [code₂] using
+      packetReplayTermsCoherent_encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw
+  have hfix₂ :
+      PacketReplayTermsCoherent D (enteredTermsOf rho₂ D t) code₁ := by
+    simpa [code₁, code₂, hcode] using hfix₂_code₂
+  have hterms :
+      enteredTermsOf rho₁ D t = enteredTermsOf rho₂ D t :=
+    huniq _ _ hfix₁ hfix₂
+  exact encodeMatch_eq_of_code_eq_of_entered_terms_eq hsq
+    rho₁ rho₂ D hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ hw hcode
+    (by simpa [enteredTermsOf] using hterms)
+
+/-- Subtype form of the coherent fixed-point uniqueness reduction. -/
+theorem encodeMatch_subtype_injective_of_packetReplayTermsCoherentUnique
+    {p h w t ell : Nat} (hsq : p = h) (D : MDNF p h)
+    (hw : ∀ term ∈ D, term.length ≤ w)
+    (huniq :
+      ∀ rho : {rho : MatchingMap p h // rho ∈ vbadMatchings D (t - 1) ell},
+        let hmem := (mem_vbadMatchings D (t - 1) ell rho.1).mp rho.2
+        let ht : t ≤ vmdtDepth (canonicalVMDT D rho.1) :=
+          Nat.le_of_pred_lt hmem.2
+        PacketReplayTermsCoherentUnique D
+          (encodeMatch hsq rho.1 D hmem.1.1 hmem.1.2 ht hw)) :
+    Function.Injective
+      (fun rho : {rho : MatchingMap p h // rho ∈ vbadMatchings D (t - 1) ell} =>
+        let hmem := (mem_vbadMatchings D (t - 1) ell rho.1).mp rho.2
+        let ht : t ≤ vmdtDepth (canonicalVMDT D rho.1) :=
+          Nat.le_of_pred_lt hmem.2
+        encodeMatch hsq rho.1 D hmem.1.1 hmem.1.2 ht hw) := by
+  intro rho₁ rho₂ hcode
+  let hmem₁ := (mem_vbadMatchings D (t - 1) ell rho₁.1).mp rho₁.2
+  let hmem₂ := (mem_vbadMatchings D (t - 1) ell rho₂.1).mp rho₂.2
+  let ht₁ : t ≤ vmdtDepth (canonicalVMDT D rho₁.1) :=
+    Nat.le_of_pred_lt hmem₁.2
+  let ht₂ : t ≤ vmdtDepth (canonicalVMDT D rho₂.1) :=
+    Nat.le_of_pred_lt hmem₂.2
+  have hcode' :
+      encodeMatch hsq rho₁.1 D hmem₁.1.1 hmem₁.1.2 ht₁ hw =
+        encodeMatch hsq rho₂.1 D hmem₂.1.1 hmem₂.1.2 ht₂ hw := by
+    simpa [hmem₁, hmem₂, ht₁, ht₂] using hcode
+  have huniq₁ :
+      PacketReplayTermsCoherentUnique D
+        (encodeMatch hsq rho₁.1 D hmem₁.1.1 hmem₁.1.2 ht₁ hw) := by
+    simpa [hmem₁, ht₁] using huniq rho₁
+  apply Subtype.ext
+  exact encodeMatch_eq_of_code_eq_of_packetReplayTermsCoherentUnique hsq
+    rho₁.1 rho₂.1 D hmem₁.1.1 hmem₂.1.1 hmem₁.1.2 hmem₂.1.2
+    ht₁ ht₂ hw hcode' huniq₁
+
+/-- **Residual (S2196).**  Full `PacketReplayTermsCoherentUnique` on every
+`encodeMatch` image.  The true entered-term sequence is coherent
+(`packetReplayTermsCoherent_encodeMatch`); discharging uniqueness yields
+`encodeMatch_subtype_injective` on the graded bad set via
+`encodeMatch_subtype_injective_of_packetReplayTermsCoherentUnique`.
+
+The S2189 pure-fixed-point residual is dead (S2190 refutation).  No second
+coherent counterexample is known; general uniqueness remains open. -/
+def EncodeMatchCoherentReplayUniqueResidual {p h w t ell : Nat}
+    (hsq : p = h) (D : MDNF p h)
+    (hw : ∀ term ∈ D, term.length ≤ w) : Prop :=
+  ∀ (rho : MatchingMap p h) (hrho : IsMatching rho)
+    (hell : (freePigeons rho).card = ell)
+    (ht : t ≤ vmdtDepth (canonicalVMDT D rho)),
+    PacketReplayTermsCoherentUnique D
+      (encodeMatch hsq rho D hrho hell ht hw)
+
+/-- Unconditional injectivity on the graded bad-set subtype, assuming the
+encode-image coherent-replay-uniqueness residual. -/
+theorem encodeMatch_subtype_injective_of_coherent_residual
+    {p h w t ell : Nat} (hsq : p = h) (D : MDNF p h)
+    (hw : ∀ term ∈ D, term.length ≤ w)
+    (hres : EncodeMatchCoherentReplayUniqueResidual (t := t) (ell := ell)
+      (w := w) hsq D hw) :
+    Function.Injective
+      (fun rho : {rho : MatchingMap p h // rho ∈ vbadMatchings D (t - 1) ell} =>
+        let hmem := (mem_vbadMatchings D (t - 1) ell rho.1).mp rho.2
+        let ht : t ≤ vmdtDepth (canonicalVMDT D rho.1) :=
+          Nat.le_of_pred_lt hmem.2
+        encodeMatch hsq rho.1 D hmem.1.1 hmem.1.2 ht hw) :=
+  encodeMatch_subtype_injective_of_packetReplayTermsCoherentUnique hsq D hw
+    (fun rho => by
+      let hmem := (mem_vbadMatchings D (t - 1) ell rho.1).mp rho.2
+      let ht : t ≤ vmdtDepth (canonicalVMDT D rho.1) :=
+        Nat.le_of_pred_lt hmem.2
+      simpa [hmem, ht] using hres rho.1 hmem.1.1 hmem.1.2 ht)
 
 /-- **Conditional injectivity shell.** Equal codes and equal sigma-overlay
 matchings force equal bases.  The stronger theorem
@@ -1132,18 +1400,14 @@ def firstNotFalsifiedTerm {p h : Nat} (mu : MatchingMap p h) :
       else if termFalsifiedB mu t = true then firstNotFalsifiedTerm mu rest
       else some t
 
-/-- **Residual (S2189 Stage C).**  Full `PacketReplayTermsUnique` on every
-`encodeMatch` image — equivalently, uniqueness of pure `(G1,G2,G3)` entered-
-term replay fixed points.  The true entered-term sequence is a fixed point
-(`packetReplayTermsFixed_encodeMatch`); discharging uniqueness yields
-`encodeMatch_subtype_injective` on the graded bad set via
-`encodeMatch_subtype_injective_of_packetReplayTermsUnique`.
+/-- **Residual (S2189 Stage C — DEAD after S2190).**  Full
+`PacketReplayTermsUnique` on every `encodeMatch` image.  Formally refuted
+by `PHPMatchingReplayCounterexample`; retained only as historical packaging
+for the S2189 shells.  Active residual is
+`EncodeMatchCoherentReplayUniqueResidual` (S2196).
 
 Empty-G2 injectivity is unconditional (`encodeMatch_eq_of_code_eq_of_G2_nil`).
-The multi-block residual is reconciling path-π with G1 (which stores σ, not π)
-while decoding G3 in the free-vertex namespace of the still-unknown base, or
-equivalently completing UF first-not-falsified prefix replay
-(`firstNotFalsifiedTerm`) across all blocks. -/
+-/
 def EncodeMatchReplayUniqueResidual {p h w t ell : Nat} (hsq : p = h)
     (D : MDNF p h) (hw : ∀ term ∈ D, term.length ≤ w) : Prop :=
   ∀ (rho : MatchingMap p h) (hrho : IsMatching rho)
