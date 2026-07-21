@@ -117,6 +117,7 @@ import PvNP.PHPMatchingEncodeLengthTwoClass
 import PvNP.PHPMatchingEncodePackageInj
 import PvNP.PHPMatchingEncodePackageCount
 import PvNP.PHPMatchingEncodePackageFiber
+import PvNP.PHPMatchingEncodeConditionalFiber
 import PvNP.RestrictedPHPFloor
 import PvNP.ScheduledAutoCollapse
 import PvNP.ScheduledCollapseDemo

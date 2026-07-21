@@ -1,5 +1,25 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- **S2210** uniform conditional-fiber infrastructure
+  (`PHPMatchingEncodeConditionalFiber`): entered-payload fiber injects into
+  honest `G1` space of free-count `ell-j`; payload-only fiber under the existing
+  entered-term residual. Weak structural bounds only — not asymptotic GA-4.
+- **S2209** exact Fin4/`searchD4mp`/t=3 bad-set classification: card = 6
+  (strict vs honest denom 16). Oracle only; does not scale.
+- **S2208** package mcode counting consumer: product bound TRIVIAL (663552 ≫ 16).
+- **S2207** package subtype injectivity on the same Fin4 package.
+
+### Stop-loss (package encode GA-4 asymptotic)
+
+The current `G3 : Fin t → Fin (2·ell)` + mcode product route is **stop-lossed**
+for asymptotic PHP switching: even with injectivity, the `(2ell)^t` factor
+prevents a switching-quality ratio. Next work must redesign answer recovery
+or pivot codes; do not claim GA-4 closure or tag v0.11.0 from this stack alone.
+
 ## [0.10.0] - 2026-07-20
 
 ### Added

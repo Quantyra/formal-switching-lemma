@@ -36,6 +36,7 @@ import PvNP.PHPMatchingEncodeLengthTwoClass
 import PvNP.PHPMatchingEncodePackageInj
 import PvNP.PHPMatchingEncodePackageCount
 import PvNP.PHPMatchingEncodePackageFiber
+import PvNP.PHPMatchingEncodeConditionalFiber
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
@@ -12792,3 +12793,29 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodePackageFiber.package_fiber_searchD4mp_t_three_summary
+
+/-! S2210: uniform conditional-fiber bounds (weak, honest). -/
+
+/-- info: 'PvNP.PHPMatchingEncodeConditionalFiber.badEncode_G1_mem_honest' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeConditionalFiber.badEncode_G1_mem_honest
+
+/-- info: 'PvNP.PHPMatchingEncodeConditionalFiber.enteredPayloadFiber_card_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeConditionalFiber.enteredPayloadFiber_card_le
+
+/-- info: 'PvNP.PHPMatchingEncodeConditionalFiber.payloadFiber_card_le_of_enteredTermsEqResidual' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeConditionalFiber.payloadFiber_card_le_of_enteredTermsEqResidual
+
+/-- info: 'PvNP.PHPMatchingEncodeConditionalFiber.conditional_fiber_uniform_summary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeConditionalFiber.conditional_fiber_uniform_summary
