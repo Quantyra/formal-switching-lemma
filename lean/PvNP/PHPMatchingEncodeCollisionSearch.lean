@@ -13,12 +13,25 @@ This is a genuine preimage search over matchings (not a named-pair DNF-term
 check).  Bounds are honest:
 
 * board `Fin 2` only (7 hole-injective matchings, fully listed and complete);
-* free-count `ell = 2` slice: unique preimage ⇒ no collision;
+* DNF fixed to the two-term search family `searchD` (not arbitrary DNF);
+* free-count `ell = 2`: unique preimage ⇒ no collision (any `t`);
 * free-count `ell = 1` at `t = 1`: entered-term length ≤ 1, so the S2198
   length-≤1 residual discharges equal-code entered-term equality — no
   length-2 collision on this slice;
-* free-count `0` and `t ≥ 2` length-2 images remain open (no collision
-  witness banked; no false exhaustion claim).
+* free-count `ell ∈ {0,1}` at `t = 2`: depth eligibility is impossible
+  (`vmdtDepth (canonicalVMDT searchD ρ) ≤ ell < 2`), so the encode-preimage
+  slice is empty — no collision and no length-2 encode image;
+* free-count `ell = 2` at `t = 2`: unique preimage again ⇒ no collision.
+  (Whether the empty matching actually meets depth ≥ 2 is irrelevant to the
+  collision question.)
+
+**Exhaustive on this board/DNF/t=2 package:** every hole-injective Fin-2
+matching falls in one of the slices above; no genuine-preimage collision
+witness exists, and no bank stop-loss is needed.
+
+**Still open outside this package:** general `D`, boards larger than Fin 2,
+and unconditional multi-block `enteredTermsOf` recovery from the packet alone
+(S2197–S2199 residual on general encode images).
 
 INTEGRITY: no `sorry`, no `admit`, no new `axiom`, no `native_decide`.
 -/
@@ -501,6 +514,141 @@ theorem no_collision_ell_one_t_one'
   exact hterms (no_collision_ell_one_t_one rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂
     ht₁ ht₂ hcode)
 
+/-! ## Depth eligibility barrier (canonical fuel = free-pigeon count) -/
+
+/-- Canonical depth never exceeds free-pigeon count, so `ell < t` kills every
+encode-preimage hypothesis `t ≤ vmdtDepth (canonicalVMDT searchD ρ)`. -/
+theorem not_depth_eligible_of_free_lt_t {ell t : Nat}
+    (rho : MatchingMap 2 2) (hell : (freePigeons rho).card = ell)
+    (hlt : ell < t) :
+    ¬ t ≤ vmdtDepth (canonicalVMDT searchD rho) := by
+  intro ht
+  have hle := vmdtDepth_canonicalVMDT_le_freePigeons searchD rho
+  omega
+
+/-- No free-count-1 matching is depth-eligible at `t = 2`. -/
+theorem not_depth_eligible_ell_one_t_two (rho : MatchingMap 2 2)
+    (hell : (freePigeons rho).card = 1) :
+    ¬ 2 ≤ vmdtDepth (canonicalVMDT searchD rho) :=
+  not_depth_eligible_of_free_lt_t (ell := 1) (t := 2) rho hell (by decide)
+
+/-- No free-count-0 matching is depth-eligible at `t = 2`. -/
+theorem not_depth_eligible_ell_zero_t_two (rho : MatchingMap 2 2)
+    (hell : (freePigeons rho).card = 0) :
+    ¬ 2 ≤ vmdtDepth (canonicalVMDT searchD rho) :=
+  not_depth_eligible_of_free_lt_t (ell := 0) (t := 2) rho hell (by decide)
+
+/-- On every encode image, entered-term length is at most the free-pigeon
+count (via `length ≤ t ≤ depth ≤ ell`). -/
+theorem enteredTermsOf_length_le_ell {ell t : Nat}
+    (rho : MatchingMap 2 2) (hrho : IsMatching rho)
+    (hell : (freePigeons rho).card = ell)
+    (ht : t ≤ vmdtDepth (canonicalVMDT searchD rho)) :
+    (enteredTermsOf rho searchD t).length ≤ ell := by
+  have hlen := enteredTermsOf_length_le_t rfl rho searchD hrho ht
+  have hdepth := vmdtDepth_canonicalVMDT_le_freePigeons searchD rho
+  omega
+
+/-- No length-2 encode image exists at free-count `ell ≤ 1`. -/
+theorem no_length_two_encode_image_of_ell_le_one {ell t : Nat}
+    (rho : MatchingMap 2 2) (hrho : IsMatching rho)
+    (hell : (freePigeons rho).card = ell) (hell_le : ell ≤ 1)
+    (ht : t ≤ vmdtDepth (canonicalVMDT searchD rho)) :
+    (enteredTermsOf rho searchD t).length ≠ 2 := by
+  intro hlen
+  have hle := enteredTermsOf_length_le_ell (ell := ell) (t := t) rho hrho
+    hell ht
+  omega
+
+/-! ## Fin-2 / `t = 2` genuine-preimage pair search -/
+
+/-- **ell = 1, t = 2:** the four free-count-1 matchings are pairwise
+non-colliding because none is depth-eligible — the encode-preimage slice is
+empty, so the collision predicate cannot hold. -/
+theorem no_collision_ell_one_t_two
+    (rho₁ rho₂ : MatchingMap 2 2)
+    (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+    (hell₁ : (freePigeons rho₁).card = 1)
+    (hell₂ : (freePigeons rho₂).card = 1)
+    (ht₁ : 2 ≤ vmdtDepth (canonicalVMDT searchD rho₁))
+    (ht₂ : 2 ≤ vmdtDepth (canonicalVMDT searchD rho₂)) :
+    ¬ isEnteredTermsCollision (t := 2) (ell := 1)
+      rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ := by
+  exact (not_depth_eligible_ell_one_t_two rho₁ hell₁ ht₁).elim
+
+/-- **ell = 0, t = 2:** the two perfect matchings are pairwise non-colliding
+because neither is depth-eligible — empty encode-preimage slice. -/
+theorem no_collision_ell_zero_t_two
+    (rho₁ rho₂ : MatchingMap 2 2)
+    (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+    (hell₁ : (freePigeons rho₁).card = 0)
+    (hell₂ : (freePigeons rho₂).card = 0)
+    (ht₁ : 2 ≤ vmdtDepth (canonicalVMDT searchD rho₁))
+    (ht₂ : 2 ≤ vmdtDepth (canonicalVMDT searchD rho₂)) :
+    ¬ isEnteredTermsCollision (t := 2) (ell := 0)
+      rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ := by
+  exact (not_depth_eligible_ell_zero_t_two rho₁ hell₁ ht₁).elim
+
+/-- **ell = 2, t = 2:** unique free-count-2 preimage ⇒ no collision. -/
+theorem no_collision_ell_two_t_two
+    (rho₁ rho₂ : MatchingMap 2 2)
+    (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+    (hell₁ : (freePigeons rho₁).card = 2)
+    (hell₂ : (freePigeons rho₂).card = 2)
+    (ht₁ : 2 ≤ vmdtDepth (canonicalVMDT searchD rho₁))
+    (ht₂ : 2 ≤ vmdtDepth (canonicalVMDT searchD rho₂)) :
+    ¬ isEnteredTermsCollision (t := 2) (ell := 2)
+      rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ :=
+  no_collision_ell_two rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂
+
+/-- Explicit ell=1 classification pin: every free-count-1 matching fails
+depth ≥ 2 under `searchD`. -/
+theorem ell_one_all_not_depth_eligible_t_two :
+    ∀ rho ∈
+        [mkMap2 none (some 0), mkMap2 none (some 1),
+          mkMap2 (some 0) none, mkMap2 (some 1) none],
+      (freePigeons rho).card = 1 ∧
+        ¬ 2 ≤ vmdtDepth (canonicalVMDT searchD rho) := by
+  intro rho hrho
+  have h' :
+      rho = mkMap2 none (some 0) ∨
+        rho = mkMap2 none (some 1) ∨
+        rho = mkMap2 (some 0) none ∨
+        rho = mkMap2 (some 1) none := by
+    simpa using hrho
+  rcases h' with h | h | h | h
+  · subst h
+    exact ⟨freePigeons_mkMap2_none_some 0,
+      not_depth_eligible_ell_one_t_two _ (freePigeons_mkMap2_none_some 0)⟩
+  · subst h
+    exact ⟨freePigeons_mkMap2_none_some 1,
+      not_depth_eligible_ell_one_t_two _ (freePigeons_mkMap2_none_some 1)⟩
+  · subst h
+    exact ⟨freePigeons_mkMap2_some_none 0,
+      not_depth_eligible_ell_one_t_two _ (freePigeons_mkMap2_some_none 0)⟩
+  · subst h
+    exact ⟨freePigeons_mkMap2_some_none 1,
+      not_depth_eligible_ell_one_t_two _ (freePigeons_mkMap2_some_none 1)⟩
+
+/-- Explicit ell=0 classification pin: both perfect matchings fail depth ≥ 2. -/
+theorem ell_zero_all_not_depth_eligible_t_two :
+    ∀ rho ∈
+        [mkMap2 (some 0) (some 1), mkMap2 (some 1) (some 0)],
+      (freePigeons rho).card = 0 ∧
+        ¬ 2 ≤ vmdtDepth (canonicalVMDT searchD rho) := by
+  intro rho hrho
+  have h' :
+      rho = mkMap2 (some 0) (some 1) ∨
+        rho = mkMap2 (some 1) (some 0) := by
+    simpa using hrho
+  rcases h' with h | h
+  · subst h
+    exact ⟨freePigeons_mkMap2_diag,
+      not_depth_eligible_ell_zero_t_two _ freePigeons_mkMap2_diag⟩
+  · subst h
+    exact ⟨freePigeons_mkMap2_anti,
+      not_depth_eligible_ell_zero_t_two _ freePigeons_mkMap2_anti⟩
+
 /-- **S2199 collision-search summary (Fin 2 / `searchD`).**
 
 * Exhaustive matching list length 7 (`allMatchings2_length`), complete for
@@ -509,9 +657,12 @@ theorem no_collision_ell_one_t_one'
 * `ell = 1`, `t = 1`: equal codes ⇒ equal entered terms via length-≤1
   residual (`no_collision_ell_one_t_one'`); no length-2 collision possible
   because entered-term length ≤ `t = 1`.
-* `ell = 0` and `t ≥ 2` length-2 images: open (no witness, no false
-  exhaustion).  Next story: pin pairwise encode equality on the two perfect
-  matchings and on free-count-1 maps at `t = 2`.
+* `ell = 1`, `t = 2`: empty depth-eligible slice
+  (`no_collision_ell_one_t_two` / `ell_one_all_not_depth_eligible_t_two`).
+* `ell = 0`, `t = 2`: empty depth-eligible slice
+  (`no_collision_ell_zero_t_two` / `ell_zero_all_not_depth_eligible_t_two`).
+* `ell = 2`, `t = 2`: unique preimage (`no_collision_ell_two_t_two`).
+* No collision witness; no bank stop-loss.  DNF remains fixed to `searchD`.
 -/
 theorem collision_search_fin2_summary :
     allMatchings2.length = 7 ∧
@@ -531,11 +682,70 @@ theorem collision_search_fin2_summary :
         (ht₁ : 1 ≤ vmdtDepth (canonicalVMDT searchD rho₁))
         (ht₂ : 1 ≤ vmdtDepth (canonicalVMDT searchD rho₂)),
         ¬ isEnteredTermsCollision (t := 1) (ell := 1)
+          rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂) ∧
+      (∀ (rho₁ rho₂ : MatchingMap 2 2)
+        (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+        (hell₁ : (freePigeons rho₁).card = 1)
+        (hell₂ : (freePigeons rho₂).card = 1)
+        (ht₁ : 2 ≤ vmdtDepth (canonicalVMDT searchD rho₁))
+        (ht₂ : 2 ≤ vmdtDepth (canonicalVMDT searchD rho₂)),
+        ¬ isEnteredTermsCollision (t := 2) (ell := 1)
+          rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂) ∧
+      (∀ (rho₁ rho₂ : MatchingMap 2 2)
+        (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+        (hell₁ : (freePigeons rho₁).card = 0)
+        (hell₂ : (freePigeons rho₂).card = 0)
+        (ht₁ : 2 ≤ vmdtDepth (canonicalVMDT searchD rho₁))
+        (ht₂ : 2 ≤ vmdtDepth (canonicalVMDT searchD rho₂)),
+        ¬ isEnteredTermsCollision (t := 2) (ell := 0)
+          rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂) ∧
+      (∀ (rho₁ rho₂ : MatchingMap 2 2)
+        (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+        (hell₁ : (freePigeons rho₁).card = 2)
+        (hell₂ : (freePigeons rho₂).card = 2)
+        (ht₁ : 2 ≤ vmdtDepth (canonicalVMDT searchD rho₁))
+        (ht₂ : 2 ≤ vmdtDepth (canonicalVMDT searchD rho₂)),
+        ¬ isEnteredTermsCollision (t := 2) (ell := 2)
           rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂) :=
   ⟨allMatchings2_length,
     mem_allMatchings2_of_isMatching,
     fun _ _ _ _ _ _ _ _ => no_collision_ell_two _ _ _ _ _ _ _ _,
-    fun _ _ _ _ _ _ _ _ => no_collision_ell_one_t_one' _ _ _ _ _ _ _ _⟩
+    fun _ _ _ _ _ _ _ _ => no_collision_ell_one_t_one' _ _ _ _ _ _ _ _,
+    fun _ _ _ _ _ _ _ _ => no_collision_ell_one_t_two _ _ _ _ _ _ _ _,
+    fun _ _ _ _ _ _ _ _ => no_collision_ell_zero_t_two _ _ _ _ _ _ _ _,
+    fun _ _ _ _ _ _ _ _ => no_collision_ell_two_t_two _ _ _ _ _ _ _ _⟩
+
+/-- Packaged t=2 Fin-2 closure: every free-count class is collision-free on
+the depth-eligible encode-preimage slice (empty for `ell < 2`, unique for
+`ell = 2`). -/
+theorem no_collision_fin2_t_two :
+    (∀ (rho₁ rho₂ : MatchingMap 2 2)
+      (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+      (hell₁ : (freePigeons rho₁).card = 0)
+      (hell₂ : (freePigeons rho₂).card = 0)
+      (ht₁ : 2 ≤ vmdtDepth (canonicalVMDT searchD rho₁))
+      (ht₂ : 2 ≤ vmdtDepth (canonicalVMDT searchD rho₂)),
+      ¬ isEnteredTermsCollision (t := 2) (ell := 0)
+        rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂) ∧
+    (∀ (rho₁ rho₂ : MatchingMap 2 2)
+      (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+      (hell₁ : (freePigeons rho₁).card = 1)
+      (hell₂ : (freePigeons rho₂).card = 1)
+      (ht₁ : 2 ≤ vmdtDepth (canonicalVMDT searchD rho₁))
+      (ht₂ : 2 ≤ vmdtDepth (canonicalVMDT searchD rho₂)),
+      ¬ isEnteredTermsCollision (t := 2) (ell := 1)
+        rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂) ∧
+    (∀ (rho₁ rho₂ : MatchingMap 2 2)
+      (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+      (hell₁ : (freePigeons rho₁).card = 2)
+      (hell₂ : (freePigeons rho₂).card = 2)
+      (ht₁ : 2 ≤ vmdtDepth (canonicalVMDT searchD rho₁))
+      (ht₂ : 2 ≤ vmdtDepth (canonicalVMDT searchD rho₂)),
+      ¬ isEnteredTermsCollision (t := 2) (ell := 2)
+        rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂) :=
+  ⟨fun _ _ _ _ _ _ _ _ => no_collision_ell_zero_t_two _ _ _ _ _ _ _ _,
+    fun _ _ _ _ _ _ _ _ => no_collision_ell_one_t_two _ _ _ _ _ _ _ _,
+    fun _ _ _ _ _ _ _ _ => no_collision_ell_two_t_two _ _ _ _ _ _ _ _⟩
 
 end PHPMatchingEncodeCollisionSearch
 end PvNP

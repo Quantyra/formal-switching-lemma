@@ -12199,7 +12199,7 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 #guard_msgs in
 #print axioms PvNP.PHPMatchingReplayCounterexample.cex_no_named_enteredTerms_collision
 
-/-! S2199: length-2 exit recovery + genuine Fin-2 collision search. -/
+/-! S2199: length-2 exit recovery + genuine Fin-2 collision search (t=2 closed). -/
 
 /-- info: 'PvNP.PHPMatchingEncodeInjectivity.pairsToMatching_append' depends on axioms: [propext, Quot.sound] -/
 #guard_msgs in
@@ -12283,9 +12283,75 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeCollisionSearch.no_collision_ell_one_t_one
 
+/-- info: 'PvNP.PHPMatchingEncodeCollisionSearch.not_depth_eligible_of_free_lt_t' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeCollisionSearch.not_depth_eligible_of_free_lt_t
+
+/-- info: 'PvNP.PHPMatchingEncodeCollisionSearch.not_depth_eligible_ell_one_t_two' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeCollisionSearch.not_depth_eligible_ell_one_t_two
+
+/-- info: 'PvNP.PHPMatchingEncodeCollisionSearch.not_depth_eligible_ell_zero_t_two' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeCollisionSearch.not_depth_eligible_ell_zero_t_two
+
+/-- info: 'PvNP.PHPMatchingEncodeCollisionSearch.enteredTermsOf_length_le_ell' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeCollisionSearch.enteredTermsOf_length_le_ell
+
+/-- info: 'PvNP.PHPMatchingEncodeCollisionSearch.no_length_two_encode_image_of_ell_le_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeCollisionSearch.no_length_two_encode_image_of_ell_le_one
+
+/-- info: 'PvNP.PHPMatchingEncodeCollisionSearch.no_collision_ell_one_t_two' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeCollisionSearch.no_collision_ell_one_t_two
+
+/-- info: 'PvNP.PHPMatchingEncodeCollisionSearch.no_collision_ell_zero_t_two' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeCollisionSearch.no_collision_ell_zero_t_two
+
+/-- info: 'PvNP.PHPMatchingEncodeCollisionSearch.no_collision_ell_two_t_two' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeCollisionSearch.no_collision_ell_two_t_two
+
+/-- info: 'PvNP.PHPMatchingEncodeCollisionSearch.ell_one_all_not_depth_eligible_t_two' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeCollisionSearch.ell_one_all_not_depth_eligible_t_two
+
+/-- info: 'PvNP.PHPMatchingEncodeCollisionSearch.ell_zero_all_not_depth_eligible_t_two' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeCollisionSearch.ell_zero_all_not_depth_eligible_t_two
+
 /-- info: 'PvNP.PHPMatchingEncodeCollisionSearch.collision_search_fin2_summary' depends on axioms: [propext,
  Classical.choice,
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeCollisionSearch.collision_search_fin2_summary
+
+/-- info: 'PvNP.PHPMatchingEncodeCollisionSearch.no_collision_fin2_t_two' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeCollisionSearch.no_collision_fin2_t_two
 
