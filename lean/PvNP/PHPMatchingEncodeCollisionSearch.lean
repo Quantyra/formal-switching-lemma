@@ -2,7 +2,7 @@ import PvNP.PHPMatchingEncodeInjectivity
 import Mathlib.Tactic.FinCases
 
 /-!
-# S2199–S2202: genuine encode-preimage collision search
+# S2199–S2203: genuine encode-preimage collision search
 
 ## S2199: Fin-2 entered-term collision search
 
@@ -30,8 +30,22 @@ Board `Fin 3`, DNF `searchD3` (three width-1 diagonal terms), depth `t = 2`:
 * `EncodeMatchLengthTwoExitEqResidual` discharged vacuously on this package;
 * no path-exit / entered-term collision witness; no bank stop-loss.
 
-**Still open:** general multi-block (`t ≥ 3` or width ≥ 2) path-exit recovery
-from the packet alone; unconditional `encodeMatch_subtype_injective`.
+## S2203: width≥2 length-2 path-exit collision gate (non-vacuous)
+
+Board `Fin 3`, DNF `searchDw2` (width-2 anti-diagonal first term plus a
+width-1 closer), depth `t = 3`, empty matching:
+
+* genuine width-2 first term `[(0,1),(1,0)]`;
+* non-vacuous length-2 encode image under empty `ρ` (`enteredTermsOf` length 2);
+* free-count `ell = 3`: unique empty preimage ⇒ no path-exit / entered-term
+  collision; `ell < 3`: empty depth-eligible slice at `t = 3`;
+* `EncodeMatchLengthTwoExitEqResidual` and the S2197 residual discharge on this
+  package by unique-preimage (not by absence of length-2 images);
+* no bank stop-loss.
+
+**Still open:** packet-only walked-pair / G3-prefix path-exit recovery in
+general (beyond unique-preimage packages); unconditional
+`encodeMatch_subtype_injective`.
 
 INTEGRITY: no `sorry`, no `admit`, no new `axiom`, no `native_decide`.
 -/
@@ -45,6 +59,7 @@ open PHPMatchingVertexTree
 open PHPMatchingExtensionEncode
 open PHPMatchingDeterministicEncode
 open PHPMatchingEncodeInjectivity
+open RestrictedPHPFloor
 
 /-! ## Exhaustive Fin-2 matching enumeration -/
 
@@ -1239,6 +1254,759 @@ theorem collision_search_fin3_t_two_summary :
     fun ell => encodeMatchEnteredTermsEqResidual_searchD3_t_two (ell := ell),
     fun ell rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ =>
       no_path_exit_collision_searchD3_t_two (ell := ell)
+        rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂⟩
+
+/-! ## S2203: width≥2 length-2 path-exit collision gate (non-vacuous)
+
+Board `Fin 3`, search DNF `searchDw2` with a genuine width-2 first term
+`[(0,1),(1,0)]` and closer `[(2,2)]`.  Under the empty matching the
+leftmost live depth-3 path:
+
+1. enters the width-2 term and walks pairs `(0,0),(1,1)` (two steps);
+2. path-exit falsifies that term and opens the closer (one step).
+
+Entered-term length is therefore 2.  Honest bounds:
+
+* free-count `ell = 3`: unique empty matching ⇒ no collision;
+* free-count `ell < 3` at `t = 3`: empty depth-eligible slice
+  (`depth ≤ freePigeons`);
+* residuals discharge by unique-preimage on the only eligible free-count
+  (non-vacuous: a length-2 image exists);
+* no bank stop-loss.  Packet-only walked-pair recovery remains open outside
+  unique-preimage packages.
+-/
+
+/-- Width-2 first term of the S2203 search family. -/
+def termW2 : MTerm 3 3 :=
+  [((0 : Fin 3), (1 : Fin 3)), ((1 : Fin 3), (0 : Fin 3))]
+
+/-- Width-1 closer of the S2203 search family. -/
+def termW2close : MTerm 3 3 := [((2 : Fin 3), (2 : Fin 3))]
+
+/-- Search DNF on Fin 3 with a genuine width-2 first term. -/
+def searchDw2 : MDNF 3 3 := [termW2, termW2close]
+
+theorem searchDw2_eq : searchDw2 = [termW2, termW2close] := rfl
+
+theorem termW2_length : termW2.length = 2 := rfl
+
+theorem searchDw2_has_width_ge_two : ∃ term ∈ searchDw2, 2 ≤ term.length :=
+  ⟨termW2, by simp [searchDw2], by simp [termW2_length]⟩
+
+theorem searchDw2_width : ∀ term ∈ searchDw2, term.length ≤ 3 := by
+  intro term ht
+  have ht' : term = termW2 ∨ term = termW2close := by
+    simpa [searchDw2] using ht
+  rcases ht' with h | h <;> subst h <;> decide
+
+theorem searchDw2_width_le_two : ∀ term ∈ searchDw2, term.length ≤ 2 := by
+  intro term ht
+  have ht' : term = termW2 ∨ term = termW2close := by
+    simpa [searchDw2] using ht
+  rcases ht' with h | h <;> subst h <;> decide
+
+private theorem freePigeons_empty3 :
+    (freePigeons (emptyMatching 3 3)).card = 3 := by
+  have h : freePigeons (emptyMatching 3 3) =
+      (Finset.univ : Finset (Fin 3)) := by
+    ext i; simp [freePigeons, emptyMatching]
+  rw [h, Finset.card_univ, Fintype.card_fin]
+
+private theorem finList_3 : finList 3 = [(0 : Fin 3), 1, 2] := by
+  unfold finList
+  simp [List.range_succ, List.range_zero]
+
+private theorem termW2_legal : termMatchingLegalB termW2 = true := by
+  unfold termW2 termMatchingLegalB hasDupB
+  decide
+
+private theorem termW2close_legal : termMatchingLegalB termW2close = true := by
+  unfold termW2close termMatchingLegalB hasDupB
+  decide
+
+/-- Path matching after the first walked pair of the S2203 witness. -/
+private def muW2_1 : MatchingMap 3 3 :=
+  compose (emptyMatching 3 3) (singleMatching (0 : Fin 3) 0)
+
+/-- Path matching after both walked pairs of the first S2203 block. -/
+private def muW2_2 : MatchingMap 3 3 :=
+  compose muW2_1 (singleMatching (1 : Fin 3) 1)
+
+private theorem muW2_1_apply :
+    muW2_1 = fun i => if i = (0 : Fin 3) then some (0 : Fin 3) else none := by
+  funext i
+  simp [muW2_1, compose, singleMatching, emptyMatching]
+
+private theorem muW2_2_apply :
+    muW2_2 = fun i =>
+      if i = (0 : Fin 3) then some (0 : Fin 3)
+      else if i = (1 : Fin 3) then some (1 : Fin 3) else none := by
+  funext i
+  simp [muW2_2, muW2_1, compose, singleMatching, emptyMatching]
+  split_ifs <;> simp_all
+
+private theorem holeUsed_empty (a : Fin 3) :
+    holeUsed (emptyMatching 3 3) a = false := by
+  rw [Bool.eq_false_iff, ne_eq, holeUsed_eq_true_iff]
+  rintro ⟨i, hi⟩
+  simp [emptyMatching] at hi
+
+private theorem holeUsed_muW2_1_0 : holeUsed muW2_1 (0 : Fin 3) = true := by
+  rw [holeUsed_eq_true_iff]
+  exact ⟨0, by simp [muW2_1_apply]⟩
+
+private theorem holeUsed_muW2_1_1 : holeUsed muW2_1 (1 : Fin 3) = false := by
+  rw [Bool.eq_false_iff, ne_eq, holeUsed_eq_true_iff]
+  rintro ⟨i, hi⟩
+  fin_cases i <;> simp [muW2_1_apply] at hi
+
+private theorem holeUsed_muW2_1_2 : holeUsed muW2_1 (2 : Fin 3) = false := by
+  rw [Bool.eq_false_iff, ne_eq, holeUsed_eq_true_iff]
+  rintro ⟨i, hi⟩
+  fin_cases i <;> simp [muW2_1_apply] at hi
+
+private theorem holeUsed_muW2_2_0 : holeUsed muW2_2 (0 : Fin 3) = true := by
+  rw [holeUsed_eq_true_iff]
+  exact ⟨0, by simp [muW2_2_apply]⟩
+
+private theorem holeUsed_muW2_2_1 : holeUsed muW2_2 (1 : Fin 3) = true := by
+  rw [holeUsed_eq_true_iff]
+  exact ⟨1, by simp [muW2_2_apply]⟩
+
+private theorem holeUsed_muW2_2_2 : holeUsed muW2_2 (2 : Fin 3) = false := by
+  rw [Bool.eq_false_iff, ne_eq, holeUsed_eq_true_iff]
+  rintro ⟨i, hi⟩
+  fin_cases i <;> simp [muW2_2_apply] at hi
+
+private theorem termW2_not_fals_empty :
+    termFalsifiedB (emptyMatching 3 3) termW2 = false := by
+  unfold termFalsifiedB termW2 pairFalsB
+  simp [emptyMatching, holeUsed_empty]
+
+private theorem termW2_not_sat_empty :
+    termSatisfiedB (emptyMatching 3 3) termW2 = false := by
+  unfold termSatisfiedB termW2 pairSatB
+  simp [emptyMatching]
+
+private theorem termVertices_empty_termW2 :
+    termVertices (emptyMatching 3 3) termW2 =
+      [Sum.inl (0 : Fin 3), Sum.inr (1 : Fin 3),
+        Sum.inl (1 : Fin 3), Sum.inr (0 : Fin 3)] := by
+  unfold termVertices termW2 pairUnresolvedB
+  simp [emptyMatching, holeUsed_empty]
+
+private theorem vertexCovered_muW2_1_inr1 :
+    vertexCoveredB muW2_1 (Sum.inr (1 : Fin 3)) = false := by
+  simp [vertexCoveredB, holeUsed_muW2_1_1]
+
+private theorem vertexCovered_muW2_2_inl1 :
+    vertexCoveredB muW2_2 (Sum.inl (1 : Fin 3)) = true := by
+  simp [vertexCoveredB, muW2_2_apply]
+
+private theorem vertexCovered_muW2_2_inr0 :
+    vertexCoveredB muW2_2 (Sum.inr (0 : Fin 3)) = true := by
+  simp [vertexCoveredB, holeUsed_muW2_2_0]
+
+private theorem termW2_fals_muW2_2 :
+    termFalsifiedB muW2_2 termW2 = true := by
+  unfold termFalsifiedB termW2 pairFalsB
+  simp [muW2_2_apply]
+
+private theorem termW2close_not_fals_muW2_2 :
+    termFalsifiedB muW2_2 termW2close = false := by
+  unfold termFalsifiedB termW2close pairFalsB
+  have h2 : muW2_2 (2 : Fin 3) = none := by simp [muW2_2_apply]
+  simp [h2, holeUsed_muW2_2_2]
+
+private theorem termW2close_not_sat_muW2_2 :
+    termSatisfiedB muW2_2 termW2close = false := by
+  unfold termSatisfiedB termW2close pairSatB
+  have h2 : muW2_2 (2 : Fin 3) = none := by simp [muW2_2_apply]
+  simp [h2]
+
+private theorem termVertices_muW2_2_termW2close :
+    termVertices muW2_2 termW2close =
+      [Sum.inl (2 : Fin 3), Sum.inr (2 : Fin 3)] := by
+  unfold termVertices termW2close pairUnresolvedB
+  have h2 : muW2_2 (2 : Fin 3) = none := by simp [muW2_2_apply]
+  simp [h2, holeUsed_muW2_2_2]
+
+private theorem muW2_2_two_isNone : (muW2_2 (2 : Fin 3)).isSome = false := by
+  simp [muW2_2_apply]
+
+/-! ### Depth ≥ 3 for empty / `searchDw2` -/
+
+private theorem vwalk_muW2_2_termW2close :
+    vwalkAux 1 muW2_2 [] [termW2close] =
+      .pquery (2 : Fin 3) (fun a =>
+        if holeUsed muW2_2 a = true then .leaf false
+        else vwalkAux 0 (compose muW2_2 (singleMatching (2 : Fin 3) a))
+          [Sum.inr (2 : Fin 3)] [termW2close]) := by
+  simpa [termVertices_muW2_2_termW2close] using
+    (vwalk_entry_pigeon (fuel' := 0) muW2_2 termW2close [] (2 : Fin 3)
+      [Sum.inr (2 : Fin 3)] termW2close_legal termW2close_not_fals_muW2_2
+      termW2close_not_sat_muW2_2 termVertices_muW2_2_termW2close)
+
+private theorem vwalk_muW2_2_searchDw2 :
+    vwalkAux 1 muW2_2 [] searchDw2 = vwalkAux 1 muW2_2 [] [termW2close] := by
+  rw [searchDw2_eq]
+  exact vwalk_skip_falsified 1 muW2_2 termW2 [termW2close]
+    termW2_legal termW2_fals_muW2_2
+
+private theorem depth_muW2_2_searchDw2 :
+    1 ≤ vmdtDepth (vwalkAux 1 muW2_2 [] searchDw2) := by
+  rw [vwalk_muW2_2_searchDw2, vwalk_muW2_2_termW2close, vmdtDepth_pquery]
+  exact Nat.le_add_right 1 _
+
+private theorem vwalk_muW2_2_pending :
+    vwalkAux 1 muW2_2
+        [Sum.inl (1 : Fin 3), Sum.inr (0 : Fin 3)] searchDw2 =
+      vwalkAux 1 muW2_2 [] searchDw2 := by
+  rw [vblock_skip_covered 1 muW2_2 (Sum.inl (1 : Fin 3))
+    [Sum.inr (0 : Fin 3)] searchDw2 vertexCovered_muW2_2_inl1]
+  exact vblock_skip_covered 1 muW2_2 (Sum.inr (0 : Fin 3)) [] searchDw2
+    vertexCovered_muW2_2_inr0
+
+private theorem depth_muW2_2_pending :
+    1 ≤ vmdtDepth
+      (vwalkAux 1 muW2_2
+        [Sum.inl (1 : Fin 3), Sum.inr (0 : Fin 3)] searchDw2) := by
+  rw [vwalk_muW2_2_pending]
+  exact depth_muW2_2_searchDw2
+
+private theorem vwalk_muW2_1_pending :
+    vwalkAux 2 muW2_1
+        [Sum.inr (1 : Fin 3), Sum.inl (1 : Fin 3), Sum.inr (0 : Fin 3)]
+        searchDw2 =
+      .hquery (1 : Fin 3) (fun q =>
+        if (muW2_1 q).isSome = true then .leaf false
+        else vwalkAux 1 (compose muW2_1 (singleMatching q (1 : Fin 3)))
+          [Sum.inl (1 : Fin 3), Sum.inr (0 : Fin 3)] searchDw2) := by
+  simpa using
+    (vblock_query_hole (fuel' := 1) muW2_1 (1 : Fin 3)
+      [Sum.inl (1 : Fin 3), Sum.inr (0 : Fin 3)] searchDw2
+      vertexCovered_muW2_1_inr1)
+
+private theorem depth_muW2_1_pending :
+    2 ≤ vmdtDepth
+      (vwalkAux 2 muW2_1
+        [Sum.inr (1 : Fin 3), Sum.inl (1 : Fin 3), Sum.inr (0 : Fin 3)]
+        searchDw2) := by
+  rw [vwalk_muW2_1_pending, vmdtDepth_hquery]
+  let child : Fin 3 → VMDTree 3 3 := fun q =>
+    if (muW2_1 q).isSome = true then .leaf false
+    else vwalkAux 1 (compose muW2_1 (singleMatching q (1 : Fin 3)))
+      [Sum.inl (1 : Fin 3), Sum.inr (0 : Fin 3)] searchDw2
+  have hq : (muW2_1 (1 : Fin 3)).isSome = false := by simp [muW2_1_apply]
+  have hchild : 1 ≤ vmdtDepth (child 1) := by
+    simp only [child, hq]
+    simpa [muW2_2] using depth_muW2_2_pending
+  have hle : vmdtDepth (child 1) ≤ Finset.univ.sup (fun q => vmdtDepth (child q)) :=
+    Finset.le_sup (f := fun q => vmdtDepth (child q)) (Finset.mem_univ (1 : Fin 3))
+  have : 1 ≤ Finset.univ.sup (fun q => vmdtDepth (child q)) :=
+    le_trans hchild hle
+  simpa [child] using Nat.add_le_add_left this 1
+
+private theorem vwalk_empty_searchDw2 :
+    vwalkAux 3 (emptyMatching 3 3) [] searchDw2 =
+      .pquery (0 : Fin 3) (fun a =>
+        if holeUsed (emptyMatching 3 3) a = true then .leaf false
+        else vwalkAux 2
+          (compose (emptyMatching 3 3) (singleMatching (0 : Fin 3) a))
+          [Sum.inr (1 : Fin 3), Sum.inl (1 : Fin 3), Sum.inr (0 : Fin 3)]
+          searchDw2) := by
+  rw [searchDw2_eq]
+  simpa [termVertices_empty_termW2] using
+    (vwalk_entry_pigeon (fuel' := 2) (emptyMatching 3 3) termW2 [termW2close]
+      (0 : Fin 3)
+      [Sum.inr (1 : Fin 3), Sum.inl (1 : Fin 3), Sum.inr (0 : Fin 3)]
+      termW2_legal termW2_not_fals_empty termW2_not_sat_empty
+      termVertices_empty_termW2)
+
+/-- Canonical depth of empty / `searchDw2` is at least 3. -/
+theorem searchDw2_empty_depth_ge_three :
+    3 ≤ vmdtDepth (canonicalVMDT searchDw2 (emptyMatching 3 3)) := by
+  unfold canonicalVMDT
+  rw [freePigeons_empty3, vwalk_empty_searchDw2, vmdtDepth_pquery]
+  let child : Fin 3 → VMDTree 3 3 := fun a =>
+    if holeUsed (emptyMatching 3 3) a = true then .leaf false
+    else vwalkAux 2
+      (compose (emptyMatching 3 3) (singleMatching (0 : Fin 3) a))
+      [Sum.inr (1 : Fin 3), Sum.inl (1 : Fin 3), Sum.inr (0 : Fin 3)]
+      searchDw2
+  have hchild : 2 ≤ vmdtDepth (child 0) := by
+    simp only [child, holeUsed_empty]
+    simpa [muW2_1] using depth_muW2_1_pending
+  have hle : vmdtDepth (child 0) ≤ Finset.univ.sup (fun a => vmdtDepth (child a)) :=
+    Finset.le_sup (f := fun a => vmdtDepth (child a)) (Finset.mem_univ (0 : Fin 3))
+  have : 2 ≤ Finset.univ.sup (fun a => vmdtDepth (child a)) :=
+    le_trans hchild hle
+  simpa [child] using Nat.add_le_add_left this 1
+
+/-! ### Leftmost live feed = `[inr 0, inl 1, inr 2]` -/
+
+private theorem liveHole_empty_s2_0 :
+    liveHoleDepthB (emptyMatching 3 3) (0 : Fin 3) 2
+      [Sum.inr (1 : Fin 3), Sum.inl (1 : Fin 3), Sum.inr (0 : Fin 3)]
+      searchDw2 2 (0 : Fin 3) = true := by
+  unfold liveHoleDepthB
+  rw [if_pos (holeUsed_empty 0)]
+  exact decide_eq_true (by
+    simpa [muW2_1] using depth_muW2_1_pending)
+
+private theorem leftmostLiveDepthHole_empty_s2 :
+    leftmostLiveDepthHole? (emptyMatching 3 3) (0 : Fin 3) 2
+      [Sum.inr (1 : Fin 3), Sum.inl (1 : Fin 3), Sum.inr (0 : Fin 3)]
+      searchDw2 2 = some (0 : Fin 3) := by
+  unfold leftmostLiveDepthHole?
+  rw [finList_3]
+  simp [List.find?_cons, liveHole_empty_s2_0]
+
+private theorem livePigeon_muW2_1_s1_1 :
+    livePigeonDepthB muW2_1 (1 : Fin 3) 1
+      [Sum.inl (1 : Fin 3), Sum.inr (0 : Fin 3)] searchDw2 1
+      (1 : Fin 3) = true := by
+  unfold livePigeonDepthB
+  have hq : (muW2_1 (1 : Fin 3)).isSome = false := by simp [muW2_1_apply]
+  rw [if_pos hq]
+  exact decide_eq_true (by simpa [muW2_2] using depth_muW2_2_pending)
+
+private theorem livePigeon_muW2_1_s1_0 :
+    livePigeonDepthB muW2_1 (1 : Fin 3) 1
+      [Sum.inl (1 : Fin 3), Sum.inr (0 : Fin 3)] searchDw2 1
+      (0 : Fin 3) = false := by
+  unfold livePigeonDepthB
+  have hq : (muW2_1 (0 : Fin 3)).isSome = true := by simp [muW2_1_apply]
+  simp [hq]
+
+private theorem leftmostLiveDepthPigeon_muW2_1_s1 :
+    leftmostLiveDepthPigeon? muW2_1 (1 : Fin 3) 1
+      [Sum.inl (1 : Fin 3), Sum.inr (0 : Fin 3)] searchDw2 1 =
+      some (1 : Fin 3) := by
+  unfold leftmostLiveDepthPigeon?
+  rw [finList_3]
+  simp [List.find?_cons, livePigeon_muW2_1_s1_0, livePigeon_muW2_1_s1_1]
+
+private theorem liveHole_muW2_2_s0_2 :
+    liveHoleDepthB muW2_2 (2 : Fin 3) 0
+      [Sum.inr (2 : Fin 3)] [termW2close] 0 (2 : Fin 3) = true := by
+  unfold liveHoleDepthB
+  rw [if_pos holeUsed_muW2_2_2]
+  exact decide_eq_true (Nat.zero_le _)
+
+private theorem liveHole_muW2_2_s0_0 :
+    liveHoleDepthB muW2_2 (2 : Fin 3) 0
+      [Sum.inr (2 : Fin 3)] [termW2close] 0 (0 : Fin 3) = false := by
+  unfold liveHoleDepthB
+  simp [holeUsed_muW2_2_0]
+
+private theorem liveHole_muW2_2_s0_1 :
+    liveHoleDepthB muW2_2 (2 : Fin 3) 0
+      [Sum.inr (2 : Fin 3)] [termW2close] 0 (1 : Fin 3) = false := by
+  unfold liveHoleDepthB
+  simp [holeUsed_muW2_2_1]
+
+private theorem leftmostLiveDepthHole_muW2_2_s0 :
+    leftmostLiveDepthHole? muW2_2 (2 : Fin 3) 0
+      [Sum.inr (2 : Fin 3)] [termW2close] 0 = some (2 : Fin 3) := by
+  unfold leftmostLiveDepthHole?
+  rw [finList_3]
+  simp [List.find?_cons, liveHole_muW2_2_s0_0, liveHole_muW2_2_s0_1,
+    liveHole_muW2_2_s0_2]
+
+private theorem leftmostLiveFeedAux_muW2_2_close :
+    leftmostLiveFeedAux 1 muW2_2 [] [termW2close] 1 =
+      [Sum.inr (2 : Fin 3)] := by
+  rw [leftmostLiveFeedAux.eq_def]
+  simp only [Nat.add_eq, Nat.add_zero]
+  -- s+1 = 1 ⇒ s = 0 branch
+  have hleg := termW2close_legal
+  have hfals := termW2close_not_fals_muW2_2
+  have hsat := termW2close_not_sat_muW2_2
+  have htv := termVertices_muW2_2_termW2close
+  have hleft := leftmostLiveDepthHole_muW2_2_s0
+  -- Unfold one step: enter term, answer hole 2, then fuel 0 rest is []
+  simp [hleg, hfals, hsat, htv, hleft, leftmostLiveFeedAux]
+
+private theorem leftmostLiveFeedAux_muW2_2_search :
+    leftmostLiveFeedAux 1 muW2_2 [] searchDw2 1 =
+      [Sum.inr (2 : Fin 3)] := by
+  rw [searchDw2_eq, leftmostLiveFeedAux.eq_def]
+  simp [termW2_legal, termW2_fals_muW2_2, leftmostLiveFeedAux_muW2_2_close]
+
+private theorem leftmostLiveFeedAux_muW2_2_pending :
+    leftmostLiveFeedAux 1 muW2_2
+        [Sum.inl (1 : Fin 3), Sum.inr (0 : Fin 3)] searchDw2 1 =
+      [Sum.inr (2 : Fin 3)] := by
+  rw [leftmostLiveFeedAux.eq_def]
+  simp [vertexCovered_muW2_2_inl1]
+  rw [leftmostLiveFeedAux.eq_def]
+  simp [vertexCovered_muW2_2_inr0, leftmostLiveFeedAux_muW2_2_search]
+
+private theorem leftmostLiveFeedAux_muW2_1_pending :
+    leftmostLiveFeedAux 2 muW2_1
+        [Sum.inr (1 : Fin 3), Sum.inl (1 : Fin 3), Sum.inr (0 : Fin 3)]
+        searchDw2 2 =
+      [Sum.inl (1 : Fin 3), Sum.inr (2 : Fin 3)] := by
+  rw [leftmostLiveFeedAux.eq_def]
+  simp [vertexCovered_muW2_1_inr1, leftmostLiveDepthPigeon_muW2_1_s1]
+  -- after answering pigeon 1 for hole 1, state is muW2_2 pending
+  exact leftmostLiveFeedAux_muW2_2_pending
+
+private theorem leftmostLiveFeed_empty_searchDw2_three :
+    leftmostLiveFeed (emptyMatching 3 3) searchDw2 3 =
+      [Sum.inr (0 : Fin 3), Sum.inl (1 : Fin 3), Sum.inr (2 : Fin 3)] := by
+  unfold leftmostLiveFeed
+  rw [freePigeons_empty3]
+  -- Expand aux at fuel 3 / empty / [] / searchDw2 / 3
+  have hstep :
+      leftmostLiveFeedAux 3 (emptyMatching 3 3) [] searchDw2 3 =
+        Sum.inr (0 : Fin 3) ::
+          leftmostLiveFeedAux 2 muW2_1
+            [Sum.inr (1 : Fin 3), Sum.inl (1 : Fin 3), Sum.inr (0 : Fin 3)]
+            searchDw2 2 := by
+    rw [searchDw2_eq, leftmostLiveFeedAux.eq_def]
+    simp only [termW2_legal, termW2_not_fals_empty, termW2_not_sat_empty,
+      termVertices_empty_termW2, Bool.false_eq_true, ↓reduceIte, Nat.reduceAdd]
+    have hL :
+        leftmostLiveDepthHole? (emptyMatching 3 3) (0 : Fin 3) 2
+          [Sum.inr (1 : Fin 3), Sum.inl (1 : Fin 3), Sum.inr (0 : Fin 3)]
+          [termW2, termW2close] 2 = some (0 : Fin 3) := by
+      simpa [searchDw2] using leftmostLiveDepthHole_empty_s2
+    simp [hL, muW2_1]
+  rw [hstep, leftmostLiveFeedAux_muW2_1_pending]
+
+theorem leftmostLiveDeepFeed_empty_searchDw2_three :
+    leftmostLiveDeepFeed (emptyMatching 3 3) searchDw2 3 =
+      [Sum.inr (0 : Fin 3), Sum.inl (1 : Fin 3), Sum.inr (2 : Fin 3)] := by
+  unfold leftmostLiveDeepFeed
+  exact leftmostLiveFeed_empty_searchDw2_three
+
+/-! ### Trace / blocks / entered-term length 2 -/
+
+private theorem vtrace_empty_searchDw2_three :
+    vtrace (emptyMatching 3 3) searchDw2
+        [Sum.inr (0 : Fin 3), Sum.inl (1 : Fin 3), Sum.inr (2 : Fin 3)] =
+      [.enter termW2 (emptyMatching 3 3),
+        .qstep ⟨Sum.inl (0 : Fin 3), ((0 : Fin 3), (0 : Fin 3))⟩,
+        .qstep ⟨Sum.inr (1 : Fin 3), ((1 : Fin 3), (1 : Fin 3))⟩,
+        .enter termW2close muW2_2,
+        .qstep ⟨Sum.inl (2 : Fin 3), ((2 : Fin 3), (2 : Fin 3))⟩] := by
+  unfold vtrace
+  rw [freePigeons_empty3, searchDw2_eq]
+  have htv := termVertices_empty_termW2
+  rw [vevents_entry_pigeon_live (fuel' := 2) (emptyMatching 3 3) termW2
+    [termW2close] (0 : Fin 3)
+    [Sum.inr (1 : Fin 3), Sum.inl (1 : Fin 3), Sum.inr (0 : Fin 3)]
+    (0 : Fin 3) [Sum.inl (1 : Fin 3), Sum.inr (2 : Fin 3)]
+    termW2_legal termW2_not_fals_empty termW2_not_sat_empty htv
+    (holeUsed_empty 0)]
+  -- fold first-step matching to muW2_1
+  change
+      _ :: _ ::
+        vevents 2 muW2_1
+          [Sum.inr (1 : Fin 3), Sum.inl (1 : Fin 3), Sum.inr (0 : Fin 3)]
+          [termW2, termW2close] [Sum.inl (1 : Fin 3), Sum.inr (2 : Fin 3)] =
+        _
+  rw [vevents_block_hole_live (fuel' := 1) muW2_1 (1 : Fin 3)
+    [Sum.inl (1 : Fin 3), Sum.inr (0 : Fin 3)] [termW2, termW2close]
+    (1 : Fin 3) [Sum.inr (2 : Fin 3)] vertexCovered_muW2_1_inr1
+    (by simp [muW2_1_apply])]
+  change
+      _ :: _ :: _ ::
+        vevents 1 muW2_2 [Sum.inl (1 : Fin 3), Sum.inr (0 : Fin 3)]
+          [termW2, termW2close] [Sum.inr (2 : Fin 3)] =
+        _
+  rw [vevents_block_skip_covered 1 muW2_2 (Sum.inl (1 : Fin 3))
+    [Sum.inr (0 : Fin 3)] [termW2, termW2close] [Sum.inr (2 : Fin 3)]
+    vertexCovered_muW2_2_inl1]
+  rw [vevents_block_skip_covered 1 muW2_2 (Sum.inr (0 : Fin 3)) []
+    [termW2, termW2close] [Sum.inr (2 : Fin 3)]
+    vertexCovered_muW2_2_inr0]
+  rw [vevents_skip_falsified 1 muW2_2 termW2 [termW2close]
+    [Sum.inr (2 : Fin 3)] termW2_legal termW2_fals_muW2_2]
+  rw [vevents_entry_pigeon_live (fuel' := 0) muW2_2 termW2close []
+    (2 : Fin 3) [Sum.inr (2 : Fin 3)] (2 : Fin 3) []
+    termW2close_legal termW2close_not_fals_muW2_2 termW2close_not_sat_muW2_2
+    termVertices_muW2_2_termW2close holeUsed_muW2_2_2]
+  have hcov :
+      vertexCoveredB
+        (compose muW2_2 (singleMatching (2 : Fin 3) 2))
+        (Sum.inr (2 : Fin 3)) = true := by
+    simp [vertexCoveredB, holeUsed, finList_3, compose, singleMatching,
+      muW2_2_apply]
+  rw [vevents_block_skip_covered 0 _ _ _ _ _ hcov]
+  have hsat :
+      termSatisfiedB
+        (compose muW2_2 (singleMatching (2 : Fin 3) 2)) termW2close =
+        true := by
+    unfold termSatisfiedB termW2close pairSatB
+    simp [compose, singleMatching, muW2_2_apply]
+  have hfals' :
+      termFalsifiedB
+        (compose muW2_2 (singleMatching (2 : Fin 3) 2)) termW2close =
+        false := by
+    unfold termFalsifiedB termW2close pairFalsB
+    simp [compose, singleMatching, muW2_2_apply, holeUsed, finList_3]
+  rw [vevents_stop_satisfied 0 _ _ _ _ termW2close_legal hfals' hsat]
+
+private theorem blocksOf_empty_searchDw2_three :
+    blocksOf
+        (vtrace (emptyMatching 3 3) searchDw2
+          [Sum.inr (0 : Fin 3), Sum.inl (1 : Fin 3), Sum.inr (2 : Fin 3)]) =
+      [⟨termW2, emptyMatching 3 3,
+          [⟨Sum.inl (0 : Fin 3), ((0 : Fin 3), (0 : Fin 3))⟩,
+            ⟨Sum.inr (1 : Fin 3), ((1 : Fin 3), (1 : Fin 3))⟩]⟩,
+        ⟨termW2close, muW2_2,
+          [⟨Sum.inl (2 : Fin 3), ((2 : Fin 3), (2 : Fin 3))⟩]⟩] := by
+  rw [vtrace_empty_searchDw2_three]
+  simp [blocksOf, stepsPrefix, afterSteps]
+
+private theorem enteredTermsOf_empty_searchDw2_three :
+    enteredTermsOf (emptyMatching 3 3) searchDw2 3 =
+      [termW2, termW2close] := by
+  simp only [enteredTermsOf, leftmostLiveDeepFeed_empty_searchDw2_three]
+  rw [blocksOf_empty_searchDw2_three]
+  rfl
+
+/-- **S2203 non-vacuous length-2 witness.**  Empty matching on Fin 3 /
+`searchDw2` / `t = 3` yields entered-term length 2, and the DNF has a
+width-≥2 term. -/
+theorem exists_length_two_encode_image_width_ge_two :
+    ∃ (rho : MatchingMap 3 3) (D : MDNF 3 3) (t : Nat),
+      IsMatching rho ∧
+        (∃ term ∈ D, 2 ≤ term.length) ∧
+        t ≤ vmdtDepth (canonicalVMDT D rho) ∧
+        (enteredTermsOf rho D t).length = 2 := by
+  refine ⟨emptyMatching 3 3, searchDw2, 3,
+    isMatching_empty 3 3, searchDw2_has_width_ge_two,
+    searchDw2_empty_depth_ge_three, ?_⟩
+  rw [enteredTermsOf_empty_searchDw2_three]
+  decide
+
+theorem enteredTermsOf_empty_searchDw2_three_length :
+    (enteredTermsOf (emptyMatching 3 3) searchDw2 3).length = 2 := by
+  rw [enteredTermsOf_empty_searchDw2_three]
+  decide
+
+/-! ### Path-exit / entered-term collision predicates on `searchDw2` -/
+
+/-- Path-exit collision predicate on genuine encode preimages (`w = 3`). -/
+def isPathExitCollisionW2 {ell t : Nat}
+    (rho₁ rho₂ : MatchingMap 3 3)
+    (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+    (hell₁ : (freePigeons rho₁).card = ell)
+    (hell₂ : (freePigeons rho₂).card = ell)
+    (ht₁ : t ≤ vmdtDepth (canonicalVMDT searchDw2 rho₁))
+    (ht₂ : t ≤ vmdtDepth (canonicalVMDT searchDw2 rho₂)) : Prop :=
+  encodeMatch (p := 3) (h := 3) (w := 3) (t := t) (ell := ell) rfl
+      rho₁ searchDw2 hrho₁ hell₁ ht₁ searchDw2_width =
+    encodeMatch (p := 3) (h := 3) (w := 3) (t := t) (ell := ell) rfl
+      rho₂ searchDw2 hrho₂ hell₂ ht₂ searchDw2_width ∧
+    firstBlockPathExitMatching rho₁ searchDw2 t ≠
+      firstBlockPathExitMatching rho₂ searchDw2 t
+
+/-- Entered-term collision predicate (Fin 3 / `searchDw2`). -/
+def isEnteredTermsCollisionW2 {ell t : Nat}
+    (rho₁ rho₂ : MatchingMap 3 3)
+    (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+    (hell₁ : (freePigeons rho₁).card = ell)
+    (hell₂ : (freePigeons rho₂).card = ell)
+    (ht₁ : t ≤ vmdtDepth (canonicalVMDT searchDw2 rho₁))
+    (ht₂ : t ≤ vmdtDepth (canonicalVMDT searchDw2 rho₂)) : Prop :=
+  encodeMatch (p := 3) (h := 3) (w := 3) (t := t) (ell := ell) rfl
+      rho₁ searchDw2 hrho₁ hell₁ ht₁ searchDw2_width =
+    encodeMatch (p := 3) (h := 3) (w := 3) (t := t) (ell := ell) rfl
+      rho₂ searchDw2 hrho₂ hell₂ ht₂ searchDw2_width ∧
+    enteredTermsOf rho₁ searchDw2 t ≠ enteredTermsOf rho₂ searchDw2 t
+
+/-! ### Free-count barriers at `t = 3` -/
+
+theorem not_depth_eligible_ell_lt_three_t_three (rho : MatchingMap 3 3)
+    {ell : Nat} (hell : (freePigeons rho).card = ell) (hle : ell ≤ 2) :
+    ¬ 3 ≤ vmdtDepth (canonicalVMDT searchDw2 rho) :=
+  not_depth_eligible_of_free_lt_t_gen searchDw2 rho hell (by omega)
+
+theorem no_path_exit_collision_searchDw2_ell_three {t : Nat}
+    (rho₁ rho₂ : MatchingMap 3 3)
+    (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+    (hell₁ : (freePigeons rho₁).card = 3)
+    (hell₂ : (freePigeons rho₂).card = 3)
+    (ht₁ : t ≤ vmdtDepth (canonicalVMDT searchDw2 rho₁))
+    (ht₂ : t ≤ vmdtDepth (canonicalVMDT searchDw2 rho₂)) :
+    ¬ isPathExitCollisionW2 (t := t) (ell := 3)
+      rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ := by
+  intro ⟨_, hexit⟩
+  have h1 := unique_ell_three rho₁ hrho₁ hell₁
+  have h2 := unique_ell_three rho₂ hrho₂ hell₂
+  exact hexit (by rw [h1, h2])
+
+theorem no_entered_terms_collision_searchDw2_ell_three {t : Nat}
+    (rho₁ rho₂ : MatchingMap 3 3)
+    (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+    (hell₁ : (freePigeons rho₁).card = 3)
+    (hell₂ : (freePigeons rho₂).card = 3)
+    (ht₁ : t ≤ vmdtDepth (canonicalVMDT searchDw2 rho₁))
+    (ht₂ : t ≤ vmdtDepth (canonicalVMDT searchDw2 rho₂)) :
+    ¬ isEnteredTermsCollisionW2 (t := t) (ell := 3)
+      rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ := by
+  intro ⟨_, hterms⟩
+  have h1 := unique_ell_three rho₁ hrho₁ hell₁
+  have h2 := unique_ell_three rho₂ hrho₂ hell₂
+  exact hterms (by rw [h1, h2])
+
+theorem no_path_exit_collision_searchDw2_ell_lt_three_t_three
+    (rho₁ rho₂ : MatchingMap 3 3)
+    (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+    {ell : Nat}
+    (hell₁ : (freePigeons rho₁).card = ell)
+    (hell₂ : (freePigeons rho₂).card = ell)
+    (hle : ell ≤ 2)
+    (ht₁ : 3 ≤ vmdtDepth (canonicalVMDT searchDw2 rho₁))
+    (ht₂ : 3 ≤ vmdtDepth (canonicalVMDT searchDw2 rho₂)) :
+    ¬ isPathExitCollisionW2 (t := 3) (ell := ell)
+      rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ :=
+  (not_depth_eligible_ell_lt_three_t_three rho₁ hell₁ hle ht₁).elim
+
+/-! ### Residual discharge on `searchDw2` / `t = 3` (unique-preimage) -/
+
+private theorem ell_eq_three_of_depth_ge_three {ell : Nat}
+    (rho : MatchingMap 3 3)
+    (hell : (freePigeons rho).card = ell)
+    (ht : 3 ≤ vmdtDepth (canonicalVMDT searchDw2 rho)) :
+    ell = 3 := by
+  have hle := vmdtDepth_canonicalVMDT_le_freePigeons searchDw2 rho
+  have hcard : ell ≤ 3 := by
+    have : (freePigeons rho).card ≤ Fintype.card (Fin 3) :=
+      Finset.card_le_univ _
+    simpa [hell, Fintype.card_fin] using this
+  omega
+
+/-- **S2203:** on Fin 3 / `searchDw2` / `t = 3`, equal codes force equal
+entered-term sequences (unique free-count-3 empty preimage). -/
+theorem encodeMatchEnteredTermsEqResidual_searchDw2_t_three {ell : Nat} :
+    EncodeMatchEnteredTermsEqResidual (p := 3) (h := 3) (w := 3) (t := 3)
+      (ell := ell) rfl searchDw2 searchDw2_width := by
+  intro rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ _hcode
+  have he1 := ell_eq_three_of_depth_ge_three rho₁ hell₁ ht₁
+  have he2 := ell_eq_three_of_depth_ge_three rho₂ hell₂ ht₂
+  have h1 := unique_ell_three rho₁ hrho₁ (by rw [hell₁, he1])
+  have h2 := unique_ell_three rho₂ hrho₂ (by rw [hell₂, he2])
+  simp [h1, h2]
+
+/-- **S2203:** length-2 exit residual holds on this package by unique
+preimage (and a length-2 image exists — see
+`exists_length_two_encode_image_width_ge_two`). -/
+theorem encodeMatchLengthTwoExitEqResidual_searchDw2_t_three {ell : Nat} :
+    EncodeMatchLengthTwoExitEqResidual (p := 3) (h := 3) (w := 3) (t := 3)
+      (ell := ell) rfl searchDw2 searchDw2_width := by
+  intro rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ _hcode _hlen
+  have he1 := ell_eq_three_of_depth_ge_three rho₁ hell₁ ht₁
+  have he2 := ell_eq_three_of_depth_ge_three rho₂ hell₂ ht₂
+  have h1 := unique_ell_three rho₁ hrho₁ (by rw [hell₁, he1])
+  have h2 := unique_ell_three rho₂ hrho₂ (by rw [hell₂, he2])
+  simp [h1, h2]
+
+/-- Equal codes force equal path exits on Fin 3 / `searchDw2` / `t = 3`. -/
+theorem firstBlockPathExitMatching_eq_of_encodeMatch_eq_searchDw2_t_three
+    {ell : Nat}
+    (rho₁ rho₂ : MatchingMap 3 3)
+    (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+    (hell₁ : (freePigeons rho₁).card = ell)
+    (hell₂ : (freePigeons rho₂).card = ell)
+    (ht₁ : 3 ≤ vmdtDepth (canonicalVMDT searchDw2 rho₁))
+    (ht₂ : 3 ≤ vmdtDepth (canonicalVMDT searchDw2 rho₂))
+    (_hcode :
+      encodeMatch (p := 3) (h := 3) (w := 3) (t := 3) (ell := ell) rfl
+        rho₁ searchDw2 hrho₁ hell₁ ht₁ searchDw2_width =
+      encodeMatch (p := 3) (h := 3) (w := 3) (t := 3) (ell := ell) rfl
+        rho₂ searchDw2 hrho₂ hell₂ ht₂ searchDw2_width) :
+    firstBlockPathExitMatching rho₁ searchDw2 3 =
+      firstBlockPathExitMatching rho₂ searchDw2 3 := by
+  have he1 := ell_eq_three_of_depth_ge_three rho₁ hell₁ ht₁
+  have he2 := ell_eq_three_of_depth_ge_three rho₂ hell₂ ht₂
+  have h1 := unique_ell_three rho₁ hrho₁ (by rw [hell₁, he1])
+  have h2 := unique_ell_three rho₂ hrho₂ (by rw [hell₂, he2])
+  simp [h1, h2]
+
+theorem no_path_exit_collision_searchDw2_t_three {ell : Nat}
+    (rho₁ rho₂ : MatchingMap 3 3)
+    (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+    (hell₁ : (freePigeons rho₁).card = ell)
+    (hell₂ : (freePigeons rho₂).card = ell)
+    (ht₁ : 3 ≤ vmdtDepth (canonicalVMDT searchDw2 rho₁))
+    (ht₂ : 3 ≤ vmdtDepth (canonicalVMDT searchDw2 rho₂)) :
+    ¬ isPathExitCollisionW2 (t := 3) (ell := ell)
+      rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ := by
+  intro ⟨hcode, hexit⟩
+  exact hexit
+    (firstBlockPathExitMatching_eq_of_encodeMatch_eq_searchDw2_t_three
+      (ell := ell) rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ hcode)
+
+theorem no_entered_terms_collision_searchDw2_t_three {ell : Nat}
+    (rho₁ rho₂ : MatchingMap 3 3)
+    (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+    (hell₁ : (freePigeons rho₁).card = ell)
+    (hell₂ : (freePigeons rho₂).card = ell)
+    (ht₁ : 3 ≤ vmdtDepth (canonicalVMDT searchDw2 rho₁))
+    (ht₂ : 3 ≤ vmdtDepth (canonicalVMDT searchDw2 rho₂)) :
+    ¬ isEnteredTermsCollisionW2 (t := 3) (ell := ell)
+      rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ := by
+  intro ⟨hcode, hterms⟩
+  exact hterms
+    (encodeMatchEnteredTermsEqResidual_searchDw2_t_three (ell := ell)
+      rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ hcode)
+
+/-- **S2203 collision-search summary (Fin 3 / `searchDw2` / `t = 3`).**
+
+* Genuine width-≥2 term in the DNF (`searchDw2_has_width_ge_two`).
+* Non-vacuous length-2 encode image under empty matching
+  (`exists_length_two_encode_image_width_ge_two`).
+* `ell = 3`: unique empty preimage ⇒ no collision.
+* `ell ≤ 2`: empty depth-eligible slice at `t = 3`.
+* Every free-count: equal codes ⇒ equal entered terms and equal path exits;
+  no path-exit collision witness.
+* `EncodeMatchLengthTwoExitEqResidual` discharged by unique-preimage
+  (non-vacuous length-2 image).
+* No bank stop-loss.  Packet-only walked-pair recovery remains open outside
+  unique-preimage packages.
+-/
+theorem collision_search_fin3_width_ge_two_t_three_summary :
+    (∃ term ∈ searchDw2, 2 ≤ term.length) ∧
+      (∃ (rho : MatchingMap 3 3),
+        IsMatching rho ∧
+          3 ≤ vmdtDepth (canonicalVMDT searchDw2 rho) ∧
+          (enteredTermsOf rho searchDw2 3).length = 2) ∧
+      (∀ (rho : MatchingMap 3 3) (hrho : IsMatching rho),
+        (freePigeons rho).card = 3 → rho = emptyMatching 3 3) ∧
+      (∀ (rho : MatchingMap 3 3) (ell : Nat),
+        (freePigeons rho).card = ell → ell ≤ 2 →
+          ¬ 3 ≤ vmdtDepth (canonicalVMDT searchDw2 rho)) ∧
+      (∀ (ell : Nat),
+        EncodeMatchLengthTwoExitEqResidual (p := 3) (h := 3) (w := 3)
+          (t := 3) (ell := ell) rfl searchDw2 searchDw2_width) ∧
+      (∀ (ell : Nat),
+        EncodeMatchEnteredTermsEqResidual (p := 3) (h := 3) (w := 3)
+          (t := 3) (ell := ell) rfl searchDw2 searchDw2_width) ∧
+      (∀ (ell : Nat) (rho₁ rho₂ : MatchingMap 3 3)
+        (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+        (hell₁ : (freePigeons rho₁).card = ell)
+        (hell₂ : (freePigeons rho₂).card = ell)
+        (ht₁ : 3 ≤ vmdtDepth (canonicalVMDT searchDw2 rho₁))
+        (ht₂ : 3 ≤ vmdtDepth (canonicalVMDT searchDw2 rho₂)),
+        ¬ isPathExitCollisionW2 (t := 3) (ell := ell)
+          rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂) :=
+  ⟨searchDw2_has_width_ge_two,
+    ⟨emptyMatching 3 3, isMatching_empty 3 3,
+      searchDw2_empty_depth_ge_three,
+      enteredTermsOf_empty_searchDw2_three_length⟩,
+    fun rho hrho hell => unique_ell_three rho hrho hell,
+    fun rho _ell hell hle =>
+      not_depth_eligible_ell_lt_three_t_three rho hell hle,
+    fun ell => encodeMatchLengthTwoExitEqResidual_searchDw2_t_three (ell := ell),
+    fun ell => encodeMatchEnteredTermsEqResidual_searchDw2_t_three (ell := ell),
+    fun ell rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ =>
+      no_path_exit_collision_searchDw2_t_three (ell := ell)
         rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂⟩
 
 end PHPMatchingEncodeCollisionSearch

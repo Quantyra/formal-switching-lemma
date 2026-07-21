@@ -101,6 +101,14 @@ discharges `EncodeMatchLengthTwoExitEqResidual` and the S2197 residual at
 require residual discharge outside this package — **no** unconditional
 `encodeMatch_eq_of_code_eq` / `encodeMatch_subtype_injective`.
 
+**S2203 width≥2 length-2 gate (non-vacuous).**  Fin-3 package `searchDw2`
+(width-2 anti-diagonal first term plus closer) at `t = 3` has a genuine
+length-2 encode image under the empty matching
+(`exists_length_two_encode_image_width_ge_two`).  Unique free-count-3
+preimage discharges path-exit / entered-term residuals and rules out
+collisions on that package; packet-only walked-pair recovery and
+unconditional subtype injectivity remain open.
+
 Stage C adds dual sigma recovery (`decodeSigmaFromBase`), unconditional
 empty-G2 injectivity (`encodeMatch_eq_of_code_eq_of_G2_nil`), the UF
 `firstNotFalsifiedTerm` scan, and residual packaging.
@@ -3288,7 +3296,9 @@ Length-2 is conditional on second-block path-entry agreement
 equivalently path-exit agreement via
 `enteredTermsOf_second_eq_of_encodeMatch_eq_of_pathExit_eq` / S2201);
 `EncodeMatchLengthTwoExitEqResidual` packages the missing exit-recovery step
-(discharged on the Fin-3 / `searchD3` / `t = 2` width-≤1 package / S2202).
+(discharged on the Fin-3 / `searchD3` / `t = 2` width-≤1 package / S2202, and
+non-vacuously on Fin-3 / `searchDw2` / `t = 3` unique-preimage package /
+S2203).
 S2200 refutes identifying path second-entry with the first-block σ-exit on
 genuine length-≥2 root traces
 (`second_block_entry_ne_compose_entry_sigmaFull`, kernel witness
@@ -3301,10 +3311,11 @@ path second-entry with the first-block **walked-pair** exit
 `secondBlockEntry?_eq_some_pathExit`) and bridges the second entered term as
 the UF scan under that path exit
 (`enteredTermsOf_second_eq_firstNotFalsified_pathExit`).  Packet-only recovery
-of the walked pairs (G3 is free-list-relative to ρ) remains open, so the
-length-2 exit residual and full multi-block residual stay active.  Conditional
-shells (`encodeMatch_eq_of_code_eq_of_entered_terms_eq`, residual-packaged
-subtype injectivity) still require those residuals — **no** unconditional
+of the walked pairs (G3 is free-list-relative to ρ) remains open outside
+unique-preimage packages, so the general length-2 exit residual and full
+multi-block residual stay active.  Conditional shells
+(`encodeMatch_eq_of_code_eq_of_entered_terms_eq`, residual-packaged subtype
+injectivity) still require those residuals — **no** unconditional
 `encodeMatch_eq_of_code_eq` / `encodeMatch_subtype_injective` is claimed.
 
 Alternative (stronger) sufficient residual: `EncodeMatchCoherentReplayUniqueResidual`

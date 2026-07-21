@@ -12519,3 +12519,47 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeCollisionSearch.collision_search_fin3_t_two_summary
 
+/-! S2203: width≥2 length-2 path-exit collision gate (non-vacuous). -/
+
+/-- info: 'PvNP.PHPMatchingEncodeCollisionSearch.exists_length_two_encode_image_width_ge_two' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeCollisionSearch.exists_length_two_encode_image_width_ge_two
+
+/-- info: 'PvNP.PHPMatchingEncodeCollisionSearch.searchDw2_empty_depth_ge_three' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeCollisionSearch.searchDw2_empty_depth_ge_three
+
+/-- info: 'PvNP.PHPMatchingEncodeCollisionSearch.encodeMatchLengthTwoExitEqResidual_searchDw2_t_three' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeCollisionSearch.encodeMatchLengthTwoExitEqResidual_searchDw2_t_three
+
+/-- info: 'PvNP.PHPMatchingEncodeCollisionSearch.encodeMatchEnteredTermsEqResidual_searchDw2_t_three' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeCollisionSearch.encodeMatchEnteredTermsEqResidual_searchDw2_t_three
+
+/-- info: 'PvNP.PHPMatchingEncodeCollisionSearch.firstBlockPathExitMatching_eq_of_encodeMatch_eq_searchDw2_t_three' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeCollisionSearch.firstBlockPathExitMatching_eq_of_encodeMatch_eq_searchDw2_t_three
+
+/-- info: 'PvNP.PHPMatchingEncodeCollisionSearch.no_path_exit_collision_searchDw2_t_three' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeCollisionSearch.no_path_exit_collision_searchDw2_t_three
+
+/-- info: 'PvNP.PHPMatchingEncodeCollisionSearch.collision_search_fin3_width_ge_two_t_three_summary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeCollisionSearch.collision_search_fin3_width_ge_two_t_three_summary
+
