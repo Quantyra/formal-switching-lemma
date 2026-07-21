@@ -35,6 +35,7 @@ import PvNP.PHPMatchingEncodeFiberSearch
 import PvNP.PHPMatchingEncodeLengthTwoClass
 import PvNP.PHPMatchingEncodePackageInj
 import PvNP.PHPMatchingEncodePackageCount
+import PvNP.PHPMatchingEncodePackageFiber
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
@@ -12749,3 +12750,45 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodePackageCount.package_count_searchD4mp_t_three_summary
+
+/-! S2209: exact Fin4 package bad-set classification and coupled image. -/
+
+/-- info: 'PvNP.PHPMatchingEncodePackageFiber.packageBadIndex_injective' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePackageFiber.packageBadIndex_injective
+
+/-- info: 'PvNP.PHPMatchingEncodePackageFiber.diagonal_depth_ge_three' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePackageFiber.diagonal_depth_ge_three
+
+/-- info: 'PvNP.PHPMatchingEncodePackageFiber.vbadMatchings_searchD4mp_two_three_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePackageFiber.vbadMatchings_searchD4mp_two_three_eq
+
+/-- info: 'PvNP.PHPMatchingEncodePackageFiber.vbadMatchings_searchD4mp_two_three_card_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePackageFiber.vbadMatchings_searchD4mp_two_three_card_eq
+
+/-- info: 'PvNP.PHPMatchingEncodePackageFiber.realizedPackageEncodeImage_card_eq_six' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePackageFiber.realizedPackageEncodeImage_card_eq_six
+
+/-- info: 'PvNP.PHPMatchingEncodePackageFiber.vbadMatchings_searchD4mp_two_three_card_lt_denominator' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePackageFiber.vbadMatchings_searchD4mp_two_three_card_lt_denominator
+
+/-- info: 'PvNP.PHPMatchingEncodePackageFiber.package_fiber_searchD4mp_t_three_summary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePackageFiber.package_fiber_searchD4mp_t_three_summary
