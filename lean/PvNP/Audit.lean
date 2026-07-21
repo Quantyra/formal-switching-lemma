@@ -33,6 +33,7 @@ import PvNP.PHPMatchingEncodeCollisionSearch
 import PvNP.PHPMatchingEncodeMultiPreimage
 import PvNP.PHPMatchingEncodeFiberSearch
 import PvNP.PHPMatchingEncodeLengthTwoClass
+import PvNP.PHPMatchingEncodePackageInj
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
@@ -12673,4 +12674,30 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeLengthTwoClass.length_two_class_fin4_t_three_summary
+
+/-! S2207: searchD4mp/t=3 package subtype injectivity. -/
+
+/-- info: 'PvNP.PHPMatchingEncodePackageInj.enteredTermsOf_length_le_two_searchD4mp_t_three' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePackageInj.enteredTermsOf_length_le_two_searchD4mp_t_three
+
+/-- info: 'PvNP.PHPMatchingEncodePackageInj.encodeMatchEnteredTermsEqResidual_searchD4mp_t_three' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePackageInj.encodeMatchEnteredTermsEqResidual_searchD4mp_t_three
+
+/-- info: 'PvNP.PHPMatchingEncodePackageInj.encodeMatch_subtype_injective_searchD4mp_t_three' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePackageInj.encodeMatch_subtype_injective_searchD4mp_t_three
+
+/-- info: 'PvNP.PHPMatchingEncodePackageInj.package_inj_searchD4mp_t_three_summary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePackageInj.package_inj_searchD4mp_t_three_summary
 
