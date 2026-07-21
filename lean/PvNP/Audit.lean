@@ -34,6 +34,7 @@ import PvNP.PHPMatchingEncodeMultiPreimage
 import PvNP.PHPMatchingEncodeFiberSearch
 import PvNP.PHPMatchingEncodeLengthTwoClass
 import PvNP.PHPMatchingEncodePackageInj
+import PvNP.PHPMatchingEncodePackageCount
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
@@ -12701,3 +12702,50 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodePackageInj.package_inj_searchD4mp_t_three_summary
 
+/-! S2208: searchD4mp/t=3 package counting consumer. -/
+
+/-- info: 'PvNP.PHPMatchingEncodePackageCount.packageEncode_injective' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePackageCount.packageEncode_injective
+
+/-- info: 'PvNP.PHPMatchingEncodePackageCount.vbadMatchings_searchD4mp_two_card_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePackageCount.vbadMatchings_searchD4mp_two_card_le
+
+/-- info: 'PvNP.PHPMatchingEncodePackageCount.vbadMatchings_searchD4mp_two_three_card_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePackageCount.vbadMatchings_searchD4mp_two_three_card_le
+
+/-- info: 'PvNP.PHPMatchingEncodePackageCount.rhoA_mem_vbadMatchings_searchD4mp_two_three' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePackageCount.rhoA_mem_vbadMatchings_searchD4mp_two_three
+
+/-- info: 'PvNP.PHPMatchingEncodePackageCount.rhoB_mem_vbadMatchings_searchD4mp_two_three' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePackageCount.rhoB_mem_vbadMatchings_searchD4mp_two_three
+
+/-- info: 'PvNP.PHPMatchingEncodePackageCount.vbadMatchings_searchD4mp_two_three_card_ge_two' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePackageCount.vbadMatchings_searchD4mp_two_three_card_ge_two
+
+/-- info: 'PvNP.PHPMatchingEncodePackageCount.searchD4mp_package_code_bound_exceeds_denominator' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePackageCount.searchD4mp_package_code_bound_exceeds_denominator
+
+/-- info: 'PvNP.PHPMatchingEncodePackageCount.package_count_searchD4mp_t_three_summary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePackageCount.package_count_searchD4mp_t_three_summary
