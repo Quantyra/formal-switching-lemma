@@ -32,6 +32,7 @@ import PvNP.PHPMatchingReplayCounterexample
 import PvNP.PHPMatchingEncodeCollisionSearch
 import PvNP.PHPMatchingEncodeMultiPreimage
 import PvNP.PHPMatchingEncodeFiberSearch
+import PvNP.PHPMatchingEncodeLengthTwoClass
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
@@ -12634,4 +12635,42 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeFiberSearch.fiber_search_fin4_t_three_summary
+
+/-! S2206: length-2 free-count-3 base classification; package ell=3 residual. -/
+
+/-- info: 'PvNP.PHPMatchingEncodeLengthTwoClass.not_depth_ge_three_singleMatching_0_1' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeLengthTwoClass.not_depth_ge_three_singleMatching_0_1
+
+/-- info: 'PvNP.PHPMatchingEncodeLengthTwoClass.not_depth_ge_three_singleMatching_1_0' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeLengthTwoClass.not_depth_ge_three_singleMatching_1_0
+
+/-- info: 'PvNP.PHPMatchingEncodeLengthTwoClass.length_two_free_count_three_eq_rhoA_or_rhoB' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeLengthTwoClass.length_two_free_count_three_eq_rhoA_or_rhoB
+
+/-- info: 'PvNP.PHPMatchingEncodeLengthTwoClass.encodeMatchLengthTwoExitEqResidual_searchD4mp_t_three_ell_three' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeLengthTwoClass.encodeMatchLengthTwoExitEqResidual_searchD4mp_t_three_ell_three
+
+/-- info: 'PvNP.PHPMatchingEncodeLengthTwoClass.encodeMatchLengthTwoExitEqResidual_searchD4mp_t_three' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeLengthTwoClass.encodeMatchLengthTwoExitEqResidual_searchD4mp_t_three
+
+/-- info: 'PvNP.PHPMatchingEncodeLengthTwoClass.length_two_class_fin4_t_three_summary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeLengthTwoClass.length_two_class_fin4_t_three_summary
 

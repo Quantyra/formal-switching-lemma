@@ -112,6 +112,8 @@ import PvNP.PHPMatchingEncodeInjectivity
 import PvNP.PHPMatchingReplayCounterexample
 import PvNP.PHPMatchingEncodeCollisionSearch
 import PvNP.PHPMatchingEncodeMultiPreimage
+import PvNP.PHPMatchingEncodeFiberSearch
+import PvNP.PHPMatchingEncodeLengthTwoClass
 import PvNP.RestrictedPHPFloor
 import PvNP.ScheduledAutoCollapse
 import PvNP.ScheduledCollapseDemo
