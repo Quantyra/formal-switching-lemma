@@ -12257,6 +12257,50 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeInjectivity.encodeMatchEnteredTermsEqResidual_of_length_le_two_of_exit
 
+/-! S2200: path second-entry ≠ σ-exit (kernel) + packet first-σ recovery. -/
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.termSatisfiedB_compose_entry_sigmaFull' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.termSatisfiedB_compose_entry_sigmaFull
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.termFalsifiedB_eq_false_of_termSatisfiedB' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.termFalsifiedB_eq_false_of_termSatisfiedB
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.exitBridge_second_entry_ne_sigma_exit' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.exitBridge_second_entry_ne_sigma_exit
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.exitBridge_sigma_exit_satisfies_first_term' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.exitBridge_sigma_exit_satisfies_first_term
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.exitBridge_path_entry_falsifies_first_term' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.exitBridge_path_entry_falsifies_first_term
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.packetFirstBlockSigma' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.packetFirstBlockSigma
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.packetFirstBlockSigma_eq_of_encodeMatch_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.packetFirstBlockSigma_eq_of_encodeMatch_eq
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.packetFirstBlockSigma_eq_decode_head_of_encode_image' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.packetFirstBlockSigma_eq_decode_head_of_encode_image
+
 /-- info: 'PvNP.PHPMatchingEncodeCollisionSearch.allMatchings2_length' depends on axioms: [propext] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeCollisionSearch.allMatchings2_length
