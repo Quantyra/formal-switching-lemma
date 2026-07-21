@@ -4,6 +4,12 @@
 
 ### Added
 
+- **S2211** REDESIGN decision and first formal probe
+  (`PHPMatchingEncodeAnswerRedesign`): replace ell-dependent `G3` with an
+  ell-independent alphabet; the path-code pivot is rejected because its ratio
+  worsens in `t`.  Proves the uniform `j ≤ t ≤ 2j` encode-image range and the
+  pure honest-times-mcode grade bound without `(2ell)^t`.  This does not yet
+  eliminate `G3`; the package remains stop-lossed.
 - **S2210** uniform conditional-fiber infrastructure
   (`PHPMatchingEncodeConditionalFiber`): entered-payload fiber injects into
   honest `G1` space of free-count `ell-j`; payload-only fiber under the existing

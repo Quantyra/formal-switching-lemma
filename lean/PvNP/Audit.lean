@@ -37,6 +37,7 @@ import PvNP.PHPMatchingEncodePackageInj
 import PvNP.PHPMatchingEncodePackageCount
 import PvNP.PHPMatchingEncodePackageFiber
 import PvNP.PHPMatchingEncodeConditionalFiber
+import PvNP.PHPMatchingEncodeAnswerRedesign
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
@@ -12819,3 +12820,33 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeConditionalFiber.conditional_fiber_uniform_summary
+
+/-! S2211: answer-code redesign decision and first formal probe. -/
+
+/-- info: 'PvNP.PHPMatchingEncodeAnswerRedesign.answerStream_mem_freeVertices_s2211' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeAnswerRedesign.answerStream_mem_freeVertices_s2211
+
+/-- info: 'PvNP.PHPMatchingEncodeAnswerRedesign.deepFeed_eq_answerStream' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeAnswerRedesign.deepFeed_eq_answerStream
+
+/-- info: 'PvNP.PHPMatchingEncodeAnswerRedesign.encodeMatch_j_le_t' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeAnswerRedesign.encodeMatch_j_le_t
+
+/-- info: 'PvNP.PHPMatchingEncodeAnswerRedesign.mcode_only_grade_card_le_of_g1g2_inj' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeAnswerRedesign.mcode_only_grade_card_le_of_g1g2_inj
+
+/-- info: 'PvNP.PHPMatchingEncodeAnswerRedesign.answer_redesign_s2211_summary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeAnswerRedesign.answer_redesign_s2211_summary
