@@ -89,10 +89,17 @@ scan under that path exit
 equal path exits force length-2 entered-term equality
 (`enteredTermsOf_second_eq_of_encodeMatch_eq_of_pathExit_eq`).  Packet-only
 recovery of the walked pairs (hence of the path exit from `(G1,G2,G3)`
-alone) remains open, so `EncodeMatchLengthTwoExitEqResidual` is not
-discharged.  Conditional injectivity shells still require residual
-discharge — **no** unconditional `encodeMatch_eq_of_code_eq` /
-`encodeMatch_subtype_injective`.
+alone) remains open in general, so `EncodeMatchLengthTwoExitEqResidual` is
+not discharged unconditionally.
+
+**S2202 Fin-3 path-exit gate.**  On width-≤1 DNFs at `t = 2`, entered-term
+length ≤ 1 (no length-2 image: one-step first block would force walked
+pairs = `σ′`, contradicting S2200).  The Fin-3 package `searchD3` therefore
+discharges `EncodeMatchLengthTwoExitEqResidual` and the S2197 residual at
+`t = 2`, and equal codes force equal path exits
+(`PHPMatchingEncodeCollisionSearch`).  Conditional injectivity shells still
+require residual discharge outside this package — **no** unconditional
+`encodeMatch_eq_of_code_eq` / `encodeMatch_subtype_injective`.
 
 Stage C adds dual sigma recovery (`decodeSigmaFromBase`), unconditional
 empty-G2 injectivity (`encodeMatch_eq_of_code_eq_of_G2_nil`), the UF
@@ -3280,7 +3287,8 @@ Length-2 is conditional on second-block path-entry agreement
 (`enteredTermsOf_eq_of_encodeMatch_eq_of_length_two_of_exit_eq` / S2199;
 equivalently path-exit agreement via
 `enteredTermsOf_second_eq_of_encodeMatch_eq_of_pathExit_eq` / S2201);
-`EncodeMatchLengthTwoExitEqResidual` packages the missing exit-recovery step.
+`EncodeMatchLengthTwoExitEqResidual` packages the missing exit-recovery step
+(discharged on the Fin-3 / `searchD3` / `t = 2` width-≤1 package / S2202).
 S2200 refutes identifying path second-entry with the first-block σ-exit on
 genuine length-≥2 root traces
 (`second_block_entry_ne_compose_entry_sigmaFull`, kernel witness
