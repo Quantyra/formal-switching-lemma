@@ -30,11 +30,11 @@ entered-term list is coherent.  Among the two named length-`G2` singletons
 from `cexD`, the spur is incoherent and the true list is coherent; general
 coherent uniqueness remains open (no stop-loss coherent counterexample found).
 
-**S2198 head-bridge collision gate.**  On `cexCode`, the true entered head
-matches `firstNotFalsifiedTerm G1 D` (`cex_entered_head_eq_firstNotFalsified_G1`),
-and the named coherent pair has no second fixed point
-(`cex_no_named_enteredTerms_collision`).  No equal-code / unequal-enteredTerms
-collision witness among named candidates.
+**S2198 head-bridge named-candidate check (not a full bounded search).**  On
+`cexCode`, the true entered head matches `firstNotFalsifiedTerm G1 D`
+(`cex_entered_head_eq_firstNotFalsified_G1`), and among the two named
+length-`G2` candidates only the true list is coherent.  Not an exhaustive
+search over all candidate lists or genuine encode preimages.
 
 This module makes **no positive injectivity claim**.
 
@@ -763,9 +763,9 @@ theorem spur_and_true_coherent_status :
       PacketReplayTermsCoherent cexD [term11] cexCode :=
   ⟨spur_not_coherent, true_coherent⟩
 
-/-! ## S2198: head-bridge collision gate on the named S2190 packet -/
+/-! ## S2198: head-bridge named-candidate check on the S2190 packet -/
 
-/-- **S2198 collision gate.**  On the S2190 encode image, the true entered
+/-- **S2198 named head check.**  On the S2190 encode image, the true entered
 head matches `firstNotFalsifiedTerm` under packet `G1` (nonempty case of the
 general head bridge). -/
 theorem cex_entered_head_eq_firstNotFalsified_G1 :
@@ -790,11 +790,9 @@ theorem cex_named_coherent_unique :
   · exact htrue
   · exact absurd (by simpa [hspur] using hc) spur_not_coherent
 
-/-- **S2198 no entered-term collision on the named packet.**  The true encode
-preimage has entered terms `[term11]`; the spur list is not a coherent
-decode of the same code (so it is not a second encode-style preimage under
-the coherent route).  No equal-code / unequal-enteredTerms witness is known
-among named candidates. -/
+/-- **S2198 named-pair status.**  True encode preimage has entered terms
+`[term11]`; spur is not coherent on the same code.  Two named candidates
+only — not a quantified no-collision theorem over all preimages. -/
 theorem cex_no_named_enteredTerms_collision :
     enteredTermsOf cexRho cexD 1 = [term11] ∧
       firstNotFalsifiedTerm cexCode.G1 cexD = some term11 ∧
