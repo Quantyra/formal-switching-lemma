@@ -26,10 +26,15 @@ of S2189 remain valid but their uniqueness premise cannot be discharged.
 **S2196 coherent exclusion.**  The spur fails
 `PacketReplayTermsCoherent` because its sigma overlay assigns `0 ↦ 0`
 while `G1 0 = some 2` (directional `OverlayAgreesG1` fails).  The true
-entered-term list is coherent.  Commentary only (not a kernel-checked
-exhaustion): among the two named length-`G2` singletons from `cexD`, the
-spur is incoherent and the true list is coherent; general coherent
-uniqueness remains open (no stop-loss coherent counterexample found).
+entered-term list is coherent.  Among the two named length-`G2` singletons
+from `cexD`, the spur is incoherent and the true list is coherent; general
+coherent uniqueness remains open (no stop-loss coherent counterexample found).
+
+**S2198 head-bridge collision gate.**  On `cexCode`, the true entered head
+matches `firstNotFalsifiedTerm G1 D` (`cex_entered_head_eq_firstNotFalsified_G1`),
+and the named coherent pair has no second fixed point
+(`cex_no_named_enteredTerms_collision`).  No equal-code / unequal-enteredTerms
+collision witness among named candidates.
 
 This module makes **no positive injectivity claim**.
 
@@ -757,6 +762,46 @@ theorem spur_and_true_coherent_status :
     ¬ PacketReplayTermsCoherent cexD [term00] cexCode ∧
       PacketReplayTermsCoherent cexD [term11] cexCode :=
   ⟨spur_not_coherent, true_coherent⟩
+
+/-! ## S2198: head-bridge collision gate on the named S2190 packet -/
+
+/-- **S2198 collision gate.**  On the S2190 encode image, the true entered
+head matches `firstNotFalsifiedTerm` under packet `G1` (nonempty case of the
+general head bridge). -/
+theorem cex_entered_head_eq_firstNotFalsified_G1 :
+    firstNotFalsifiedTerm cexCode.G1 cexD = some term11 := by
+  have hcons : enteredTermsOf cexRho cexD 1 = [term11] :=
+    true_terms_eq_entered
+  have h :=
+    enteredTermsOf_head_eq_firstNotFalsified_G1_of_cons rfl cexRho cexD
+      cexRho_isMatching cex_ell cex_ht cex_hw term11 [] hcons
+  simpa [cexCode] using h
+
+/-- **S2198 named coherent uniqueness on `cexCode`.**  Among the two named
+length-`G2` candidates from `cexD`, only the true entered list is coherent.
+Combined with the head bridge, there is no second named coherent fixed point. -/
+theorem cex_named_coherent_unique :
+    ∀ terms,
+      PacketReplayTermsCoherent cexD terms cexCode →
+      terms = [term11] ∨ terms = [term00] →
+      terms = [term11] := by
+  intro terms hc hnamed
+  rcases hnamed with htrue | hspur
+  · exact htrue
+  · exact absurd (by simpa [hspur] using hc) spur_not_coherent
+
+/-- **S2198 no entered-term collision on the named packet.**  The true encode
+preimage has entered terms `[term11]`; the spur list is not a coherent
+decode of the same code (so it is not a second encode-style preimage under
+the coherent route).  No equal-code / unequal-enteredTerms witness is known
+among named candidates. -/
+theorem cex_no_named_enteredTerms_collision :
+    enteredTermsOf cexRho cexD 1 = [term11] ∧
+      firstNotFalsifiedTerm cexCode.G1 cexD = some term11 ∧
+      ¬ PacketReplayTermsCoherent cexD [term00] cexCode ∧
+      PacketReplayTermsCoherent cexD [term11] cexCode :=
+  ⟨true_terms_eq_entered, cex_entered_head_eq_firstNotFalsified_G1,
+    spur_not_coherent, true_coherent⟩
 
 end PHPMatchingReplayCounterexample
 end PvNP

@@ -12154,3 +12154,47 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeInjectivity.encodeMatchEnteredTermsEqResidual_of_G2_nil
 
+/-! S2198: UF head bridge + length-1 residual + named collision gate. -/
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.enteredTermsOf_head_eq_firstNotFalsified_G1_of_cons' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.enteredTermsOf_head_eq_firstNotFalsified_G1_of_cons
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.enteredTermsOf_head_eq_firstNotFalsified_G1' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.enteredTermsOf_head_eq_firstNotFalsified_G1
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.enteredTermsOf_eq_of_encodeMatch_eq_of_length_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.enteredTermsOf_eq_of_encodeMatch_eq_of_length_one
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.encodeMatchEnteredTermsEqResidual_of_length_le_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.encodeMatchEnteredTermsEqResidual_of_length_le_one
+
+/-- info: 'PvNP.PHPMatchingReplayCounterexample.cex_entered_head_eq_firstNotFalsified_G1' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingReplayCounterexample.cex_entered_head_eq_firstNotFalsified_G1
+
+/-- info: 'PvNP.PHPMatchingReplayCounterexample.cex_named_coherent_unique' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingReplayCounterexample.cex_named_coherent_unique
+
+/-- info: 'PvNP.PHPMatchingReplayCounterexample.cex_no_named_enteredTerms_collision' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingReplayCounterexample.cex_no_named_enteredTerms_collision
+

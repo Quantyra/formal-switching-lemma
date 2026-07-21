@@ -42,9 +42,17 @@ via `encodeMatch_eq_of_code_eq_of_entered_terms_eq`.  Empty-G2 entered-term
 equality is unconditional
 (`enteredTermsOf_eq_of_encodeMatch_eq_of_G2_nil`); length transport and the
 `firstNotFalsifiedTerm_eq_of_factor` / `compose_decodeBasePoint_of_overlayAgreesG1`
-seeds are landed.  Full multi-block `enteredTermsOf_eq_of_encodeMatch_eq` and
-unconditional `encodeMatch_subtype_injective` remain open (same obstruction:
-G3 is free-list-relative).
+seeds are landed.
+
+**S2198 genuine-head bridge.**  On nonempty encode images,
+`firstNotFalsifiedTerm G1 D = some (enteredTermsOf).head`
+(`enteredTermsOf_head_eq_firstNotFalsified_G1`).  Length-1 entered-term
+equality from equal codes is unconditional
+(`enteredTermsOf_eq_of_encodeMatch_eq_of_length_one`); the residual discharges
+on families with entered-term length ≤ 1.  Full multi-block
+`enteredTermsOf_eq_of_encodeMatch_eq` and unconditional
+`encodeMatch_subtype_injective` remain open (same obstruction: G3 is
+free-list-relative; multi-block term identity past the head still open).
 
 Stage C adds dual sigma recovery (`decodeSigmaFromBase`), unconditional
 empty-G2 injectivity (`encodeMatch_eq_of_code_eq_of_G2_nil`), the UF
@@ -1451,6 +1459,460 @@ theorem firstNotFalsifiedTerm_eq_of_factor {p h : Nat} (mu : MatchingMap p h)
           simp only [hleg', Bool.true_eq_false, ↓reduceIte, hfals]
           exact ih hrest
 
+/-! ## S2198: genuine-head bridge under encode G1 -/
+
+/-- First block of a root trace (empty pending) enters under the base matching. -/
+private theorem blocksOf_vevents_nil_pending_head_entry {p h : Nat} :
+    ∀ (fuel : Nat) (mu : MatchingMap p h) (D : MDNF p h)
+      (feed : List (Vertex p h)) (B : VBlock p h) (Bs : List (VBlock p h)),
+      blocksOf (vevents fuel mu [] D feed) = B :: Bs →
+      B.entry = mu
+  | _, _, [], feed, B, Bs, hblocks => by
+      rw [vevents_nil, blocksOf_nil] at hblocks
+      cases hblocks
+  | fuel, mu, t :: rest, feed, B, Bs, hblocks => by
+      by_cases hleg : termMatchingLegalB t = true
+      · by_cases hfals : termFalsifiedB mu t = true
+        · rw [vevents_skip_falsified fuel mu t rest feed hleg hfals] at hblocks
+          exact blocksOf_vevents_nil_pending_head_entry fuel mu rest feed B Bs
+            hblocks
+        · have hfals' : termFalsifiedB mu t = false :=
+            Bool.eq_false_iff.mpr hfals
+          by_cases hsat : termSatisfiedB mu t = true
+          · rw [vevents_stop_satisfied fuel mu t rest feed hleg hfals' hsat,
+              blocksOf_nil] at hblocks
+            cases hblocks
+          · have hsat' : termSatisfiedB mu t = false :=
+              Bool.eq_false_iff.mpr hsat
+            cases fuel with
+            | zero =>
+                rw [vevents_entry_zero mu t rest feed hleg hfals' hsat',
+                  blocksOf_nil] at hblocks
+                cases hblocks
+            | succ fuel' =>
+                cases htv : termVertices mu t with
+                | nil =>
+                    rw [vevents_entry_novertices fuel' mu t rest feed hleg
+                      hfals' hsat' htv, blocksOf_nil] at hblocks
+                    cases hblocks
+                | cons v vs =>
+                    cases v with
+                    | inl i =>
+                        cases feed with
+                        | nil =>
+                            rw [vevents_entry_feed_nil fuel' mu t rest i vs
+                              hleg hfals' hsat' htv, blocksOf_nil] at hblocks
+                            cases hblocks
+                        | cons av fs =>
+                            cases av with
+                            | inl q =>
+                                rw [vevents_entry_feed_illkind fuel' mu t rest
+                                  i vs q fs hleg hfals' hsat' htv,
+                                  blocksOf_nil] at hblocks
+                                cases hblocks
+                            | inr a =>
+                                by_cases hha : holeUsed mu a = true
+                                · rw [vevents_entry_pigeon_dead fuel' mu t
+                                    rest i vs a fs hleg hfals' hsat' htv hha,
+                                    blocksOf_nil] at hblocks
+                                  cases hblocks
+                                · have hha' : holeUsed mu a = false :=
+                                    Bool.eq_false_iff.mpr hha
+                                  rw [vevents_entry_pigeon_live fuel' mu t rest
+                                    i vs a fs hleg hfals' hsat' htv hha',
+                                    blocksOf_enter] at hblocks
+                                  cases hblocks
+                                  rfl
+                    | inr b =>
+                        exact absurd htv
+                          (termVertices_head_not_hole mu t b vs)
+      · have hleg' : termMatchingLegalB t = false :=
+          Bool.eq_false_iff.mpr hleg
+        rw [vevents_skip_illegal fuel mu t rest feed hleg'] at hblocks
+        exact blocksOf_vevents_nil_pending_head_entry fuel mu rest feed B Bs
+          hblocks
+  termination_by fuel _ D _ _ _ => (fuel, D.length)
+
+private theorem pairsToMatching_mem_of_pairwise {p h : Nat} :
+    ∀ {l : List (Fin p × Fin h)}, List.Pairwise PairDisjoint l →
+      ∀ {i : Fin p} {a : Fin h}, (i, a) ∈ l →
+        pairsToMatching l i = some a
+  | [], _, _, _, hm => by cases hm
+  | (j, b) :: es, hpd, i, a, hm => by
+      rw [show pairsToMatching ((j, b) :: es) =
+        compose (singleMatching j b) (pairsToMatching es) from rfl]
+      rw [List.pairwise_cons] at hpd
+      cases hm with
+      | head =>
+          simp [compose, singleMatching]
+      | tail _ hm' =>
+          have hne : j ≠ i := (hpd.1 (i, a) hm').1
+          have hsingle : singleMatching j b i = none := by
+            unfold singleMatching
+            rw [if_neg (Ne.symm hne)]
+          rw [compose_free_left _ _ i hsingle]
+          exact pairsToMatching_mem_of_pairwise hpd.2 hm'
+
+private theorem pairsToMatching_eq_none_of_not_mem_fst {p h : Nat} :
+    ∀ (l : List (Fin p × Fin h)) (i : Fin p),
+      (∀ a, (i, a) ∉ l) → pairsToMatching l i = none
+  | [], i, _ => rfl
+  | (j, b) :: es, i, hni => by
+      rw [show pairsToMatching ((j, b) :: es) =
+        compose (singleMatching j b) (pairsToMatching es) from rfl]
+      by_cases hji : j = i
+      · exact absurd (by rw [hji]; exact List.mem_cons_self _ _) (hni b)
+      · have hsingle : singleMatching j b i = none := by
+          unfold singleMatching
+          rw [if_neg (Ne.symm hji)]
+        rw [compose_free_left _ _ i hsingle]
+        exact pairsToMatching_eq_none_of_not_mem_fst es i
+          (fun a ha => hni a (List.mem_cons_of_mem _ ha))
+
+/-- σ-join membership of a first-block full-σ pair, except last-block truncation. -/
+private theorem mem_blockSigmas_join_of_mem_sigmaFull_head {p h : Nat}
+    (B : VBlock p h) (Bs : List (VBlock p h)) (e : Fin p × Fin h)
+    (he : e ∈ sigmaFull B) :
+    e ∈ (blockSigmas (B :: Bs)).join ∨
+      (Bs = [] ∧ e ∉ sigmaTrunc B) := by
+  cases Bs with
+  | nil =>
+      rw [show blockSigmas [B] = [sigmaTrunc B] from rfl,
+        List.join_cons, List.join_nil, List.append_nil]
+      by_cases htr : e ∈ sigmaTrunc B
+      · exact Or.inl htr
+      · exact Or.inr ⟨rfl, htr⟩
+  | cons B' Bs' =>
+      rw [show blockSigmas (B :: B' :: Bs') =
+        sigmaFull B :: blockSigmas (B' :: Bs') from rfl,
+        List.join_cons]
+      exact Or.inl (List.mem_append_left _ he)
+
+private theorem pairFalsB_eq_false_of_pairSatB {p h : Nat}
+    (mu : MatchingMap p h) (e : Fin p × Fin h)
+    (hsat : pairSatB mu e = true) : pairFalsB mu e = false := by
+  unfold pairSatB at hsat
+  cases hmu : mu e.1 with
+  | none =>
+      simp [hmu] at hsat
+  | some b =>
+      have hb : b = e.2 := by simpa [hmu] using hsat
+      unfold pairFalsB
+      simp [hmu, hb]
+
+private theorem pairSatB_of_eq_some {p h : Nat} (mu : MatchingMap p h)
+    (e : Fin p × Fin h) (h : mu e.1 = some e.2) :
+    pairSatB mu e = true := by
+  unfold pairSatB
+  simpa using h
+
+/-- First entered term of a root trace is not falsified under `ρσ = encodeExt`. -/
+private theorem termFalsifiedB_encodeExt_eq_false_of_head_block {p h : Nat}
+    (rho : MatchingMap p h) (D : MDNF p h) (feed : List (Vertex p h))
+    (hrho : IsMatching rho) (B : VBlock p h) (Bs : List (VBlock p h))
+    (hblocks : blocksOf (vtrace rho D feed) = B :: Bs) :
+    termFalsifiedB (encodeExt rho D feed) B.term = false := by
+  have hentry :
+      B.entry = rho :=
+    blocksOf_vevents_nil_pending_head_entry (freePigeons rho).card rho D feed
+      B Bs (by simpa [vtrace] using hblocks)
+  have hBmem : B ∈ blocksOf (vtrace rho D feed) := by
+    rw [hblocks]; exact List.mem_cons_self _ _
+  have hspec :=
+    blocksOf_entry_spec (freePigeons rho).card rho [] D feed B hBmem
+  have hleg : termMatchingLegalB B.term = true := hspec.2.1
+  have hnfals_entry : termFalsifiedB B.entry B.term = false := hspec.2.2.1
+  rw [hentry] at hnfals_entry
+  have hpd :
+      List.Pairwise PairDisjoint
+        (blockSigmas (blocksOf (vtrace rho D feed))).join :=
+    blockSigmas_join_pairwise (freePigeons rho).card rho [] D feed
+  rw [hblocks] at hpd
+  let sigma := pairsToMatching (blockSigmas (B :: Bs)).join
+  have hG1 : encodeExt rho D feed = compose rho sigma := by
+    unfold encodeExt sigma
+    rw [hblocks]
+  have hfresh :
+      ∀ e ∈ (blockSigmas (B :: Bs)).join,
+        rho e.1 = none ∧ holeUsed rho e.2 = false := by
+    intro e he
+    have he' : e ∈ (blockSigmas (blocksOf (vtrace rho D feed))).join := by
+      simpa [hblocks] using he
+    exact blockSigmas_join_fresh (freePigeons rho).card rho [] D feed e he'
+  have hsigma_none_of_rho :
+      ∀ i a, rho i = some a → sigma i = none := by
+    intro i a hi
+    apply pairsToMatching_eq_none_of_not_mem_fst
+    intro b hb
+    have hfr := (hfresh (i, b) hb).1
+    rw [hi] at hfr
+    cases hfr
+  have hG1m : IsMatching (encodeExt rho D feed) :=
+    encodeExt_isMatching rho D feed hrho
+  -- Show no pair of the head term is falsified under G1.
+  unfold termFalsifiedB
+  cases hany : B.term.any (pairFalsB (encodeExt rho D feed)) with
+  | false => rfl
+  | true =>
+      rw [List.any_eq_true] at hany
+      rcases hany with ⟨e, heT, hef⟩
+      have hnfe : pairFalsB rho e = false := by
+        cases hf : pairFalsB rho e with
+        | false => rfl
+        | true =>
+            have htf : termFalsifiedB rho B.term = true := by
+              unfold termFalsifiedB
+              exact List.any_eq_true.mpr ⟨e, heT, hf⟩
+            rw [hnfals_entry] at htf
+            cases htf
+      have htri := pair_status_trichotomy rho e
+      have hnsat_or : pairSatB rho e = true ∨ pairUnresolvedB rho e = true := by
+        cases hs : pairSatB rho e with
+        | true => exact Or.inl rfl
+        | false =>
+            rw [hs, hnfe] at htri
+            exact Or.inr (by simpa using htri)
+      rcases hnsat_or with hsat | hunres
+      · -- Already satisfied under ρ: survives into G1.
+        have hrhoe : rho e.1 = some e.2 := by
+          unfold pairSatB at hsat
+          simpa using hsat
+        have hG1e : encodeExt rho D feed e.1 = some e.2 := by
+          rw [hG1, compose_fixed_left rho sigma e.1 e.2 hrhoe]
+        have hsatG : pairSatB (encodeExt rho D feed) e = true :=
+          pairSatB_of_eq_some _ e hG1e
+        have hfalsG := pairFalsB_eq_false_of_pairSatB _ e hsatG
+        rw [hfalsG] at hef
+        cases hef
+      · -- Unresolved under ρ: lies in σ′ of the head block.
+        have heσ : e ∈ sigmaFull B := by
+          rw [mem_sigmaFull]
+          refine ⟨heT, ?_⟩
+          simpa [hentry] using hunres
+        rcases mem_blockSigmas_join_of_mem_sigmaFull_head B Bs e heσ with
+          hmem | ⟨hBs, hntr⟩
+        · -- Pair collected into ρσ: assigned correctly.
+          have hsig : sigma e.1 = some e.2 :=
+            pairsToMatching_mem_of_pairwise hpd hmem
+          have hrho_none : rho e.1 = none := (hfresh e hmem).1
+          have hG1e : encodeExt rho D feed e.1 = some e.2 := by
+            rw [hG1, compose_free_left rho sigma e.1 hrho_none, hsig]
+          have hsatG : pairSatB (encodeExt rho D feed) e = true :=
+            pairSatB_of_eq_some _ e hG1e
+          have hfalsG := pairFalsB_eq_false_of_pairSatB _ e hsatG
+          rw [hfalsG] at hef
+          cases hef
+        · -- Last-block truncation: pair left free under ρσ, hole free.
+          have hjoin : (blockSigmas (B :: Bs)).join = sigmaTrunc B := by
+            subst hBs
+            rw [show blockSigmas [B] = [sigmaTrunc B] from rfl,
+              List.join_cons, List.join_nil, List.append_nil]
+          have hnone_sigma : sigma e.1 = none := by
+            apply pairsToMatching_eq_none_of_not_mem_fst
+            intro b hb
+            have hb' : (e.1, b) ∈ sigmaTrunc B := by
+              simpa [hjoin] using hb
+            have hbσ : (e.1, b) ∈ sigmaFull B :=
+              sigmaTrunc_subset_sigmaFull B _ hb'
+            have hpdB := sigmaFull_pairwise B hleg
+            by_cases hbe : (e.1, b) = e
+            · have : e ∈ sigmaTrunc B := by
+                simpa [hbe] using hb'
+              exact hntr this
+            · exact (hpdB.forall pairDisjoint_symm hbσ heσ hbe).1 rfl
+          unfold pairUnresolvedB at hunres
+          rw [Bool.and_eq_true] at hunres
+          have hrho_none : rho e.1 = none := by simpa using hunres.1
+          have hhole_rho : holeUsed rho e.2 = false := by
+            simpa using hunres.2
+          have hG1e : encodeExt rho D feed e.1 = none := by
+            rw [hG1, compose_free_left rho sigma e.1 hrho_none, hnone_sigma]
+          have hhole_sigma : holeUsed sigma e.2 = false := by
+            cases hs : holeUsed sigma e.2 with
+            | false => rfl
+            | true =>
+                rcases (holeUsed_eq_true_iff sigma e.2).mp hs with ⟨j, hj⟩
+                have hm : (j, e.2) ∈ (blockSigmas (B :: Bs)).join :=
+                  pairsToMatching_eq_some _ j e.2 hj
+                have hmtr : (j, e.2) ∈ sigmaTrunc B := by
+                  simpa [hjoin] using hm
+                have hmσ : (j, e.2) ∈ sigmaFull B :=
+                  sigmaTrunc_subset_sigmaFull B _ hmtr
+                have hpdB := sigmaFull_pairwise B hleg
+                by_cases hje : (j, e.2) = e
+                · have : e ∈ sigmaTrunc B := by
+                    simpa [hje] using hmtr
+                  exact absurd this hntr
+                · exact absurd rfl
+                    (hpdB.forall pairDisjoint_symm hmσ heσ hje).2
+          have hhole_G1 : holeUsed (encodeExt rho D feed) e.2 = false := by
+            rw [hG1,
+              holeUsed_compose rho sigma hsigma_none_of_rho e.2,
+              hhole_rho, hhole_sigma]
+            rfl
+          have hfalsG : pairFalsB (encodeExt rho D feed) e = false := by
+            unfold pairFalsB
+            rw [hG1e, hhole_G1]
+          rw [hfalsG] at hef
+          cases hef
+
+/-- **S2198 head bridge (cons form).**  On every nonempty encode image the
+first entered term is exactly the Razborov/UF first-not-falsified scan of
+packet `G1` against `D`. -/
+theorem enteredTermsOf_head_eq_firstNotFalsified_G1_of_cons
+    {p h w t ell : Nat} (hsq : p = h)
+    (rho : MatchingMap p h) (D : MDNF p h)
+    (hrho : IsMatching rho) (hell : (freePigeons rho).card = ell)
+    (ht : t ≤ vmdtDepth (canonicalVMDT D rho))
+    (hw : ∀ term ∈ D, term.length ≤ w)
+    (T : MTerm p h) (rest : List (MTerm p h))
+    (hcons : enteredTermsOf rho D t = T :: rest) :
+    firstNotFalsifiedTerm
+        (encodeMatch hsq rho D hrho hell ht hw).G1 D =
+      some T := by
+  let feed := leftmostLiveDeepFeed rho D t
+  have hblocks_terms :
+      (blocksOf (vtrace rho D feed)).map (fun B => B.term) = T :: rest := by
+    simpa [enteredTermsOf, feed] using hcons
+  have hne : blocksOf (vtrace rho D feed) ≠ [] := by
+    intro hb
+    rw [hb, List.map_nil] at hblocks_terms
+    cases hblocks_terms
+  rcases List.exists_cons_of_ne_nil hne with ⟨B, Bs, hblocks⟩
+  have hT : B.term = T := by
+    rw [hblocks, List.map_cons, List.cons.injEq] at hblocks_terms
+    exact hblocks_terms.1
+  have hentry :
+      B.entry = rho :=
+    blocksOf_vevents_nil_pending_head_entry (freePigeons rho).card rho D feed
+      B Bs (by simpa [vtrace] using hblocks)
+  have hBmem : B ∈ blocksOf (vtrace rho D feed) := by
+    rw [hblocks]; exact List.mem_cons_self _ _
+  rcases blocksOf_entered_first (freePigeons rho).card rho [] D feed hrho B
+      hBmem with ⟨pre, suf, hD, hpre⟩
+  have hspec :=
+    blocksOf_entry_spec (freePigeons rho).card rho [] D feed B hBmem
+  have hleg : termMatchingLegalB B.term = true := hspec.2.1
+  have hG1 :
+      (encodeMatch hsq rho D hrho hell ht hw).G1 =
+        encodeExt rho D feed := by
+    simp [encodeMatch, feed]
+  have hG1m : IsMatching (encodeExt rho D feed) :=
+    encodeExt_isMatching rho D feed hrho
+  have hag : MAgree rho (encodeExt rho D feed) := by
+    simpa [encodeExt, feed] using
+      (mAgree_compose_left rho
+        (pairsToMatching
+          (blockSigmas (blocksOf (vtrace rho D feed))).join))
+  have hpreG1 : ∀ t' ∈ pre,
+      termMatchingLegalB t' = false ∨
+        termFalsifiedB (encodeExt rho D feed) t' = true := by
+    intro t' ht'
+    rcases hpre t' ht' with hileg | hfals
+    · exact Or.inl hileg
+    · right
+      have hfalsρ : termFalsifiedB rho t' = true := by
+        simpa [hentry] using hfals
+      exact termFalsifiedB_mono hag hG1m t' hfalsρ
+  have hTnf :
+      termFalsifiedB (encodeExt rho D feed) B.term = false :=
+    termFalsifiedB_encodeExt_eq_false_of_head_block rho D feed hrho B Bs
+      hblocks
+  have hscan :
+      firstNotFalsifiedTerm (encodeExt rho D feed) D = some B.term :=
+    firstNotFalsifiedTerm_eq_of_factor (encodeExt rho D feed) D pre B.term suf
+      hD hpreG1 hleg hTnf
+  rw [hG1, hscan, hT]
+
+/-- **S2198 head bridge.**  Nonempty encode entered-term lists have head equal
+to `firstNotFalsifiedTerm` under packet `G1`. -/
+theorem enteredTermsOf_head_eq_firstNotFalsified_G1
+    {p h w t ell : Nat} (hsq : p = h)
+    (rho : MatchingMap p h) (D : MDNF p h)
+    (hrho : IsMatching rho) (hell : (freePigeons rho).card = ell)
+    (ht : t ≤ vmdtDepth (canonicalVMDT D rho))
+    (hw : ∀ term ∈ D, term.length ≤ w)
+    (hne : enteredTermsOf rho D t ≠ []) :
+    firstNotFalsifiedTerm
+        (encodeMatch hsq rho D hrho hell ht hw).G1 D =
+      some (enteredTermsOf rho D t).head! := by
+  rcases List.exists_cons_of_ne_nil hne with ⟨T, rest, hcons⟩
+  have hbridge :=
+    enteredTermsOf_head_eq_firstNotFalsified_G1_of_cons hsq rho D hrho hell
+      ht hw T rest hcons
+  simpa [hcons, List.head!_cons] using hbridge
+
+/-- **S2198 single-block residual slice.**  Equal codes with a length-1
+entered-term list force equal entered-term sequences (head recovered from
+shared `G1` via the head bridge). -/
+theorem enteredTermsOf_eq_of_encodeMatch_eq_of_length_one
+    {p h w t ell : Nat} (hsq : p = h)
+    (rho₁ rho₂ : MatchingMap p h) (D : MDNF p h)
+    (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+    (hell₁ : (freePigeons rho₁).card = ell)
+    (hell₂ : (freePigeons rho₂).card = ell)
+    (ht₁ : t ≤ vmdtDepth (canonicalVMDT D rho₁))
+    (ht₂ : t ≤ vmdtDepth (canonicalVMDT D rho₂))
+    (hw : ∀ term ∈ D, term.length ≤ w)
+    (hcode : encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw =
+      encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw)
+    (hlen : (enteredTermsOf rho₁ D t).length = 1) :
+    enteredTermsOf rho₁ D t = enteredTermsOf rho₂ D t := by
+  have hlen₂ :
+      (enteredTermsOf rho₂ D t).length = 1 := by
+    have h1 := enteredTermsOf_length_eq_G2 hsq rho₁ D hrho₁ hell₁ ht₁ hw
+    have h2 := enteredTermsOf_length_eq_G2 hsq rho₂ D hrho₂ hell₂ ht₂ hw
+    have hG2 :
+        (encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw).G2 =
+          (encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw).G2 :=
+      congrArg MatchEncode.G2 hcode
+    calc
+      (enteredTermsOf rho₂ D t).length =
+          (encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw).G2.length := h2
+      _ = (encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw).G2.length := by
+        rw [hG2]
+      _ = (enteredTermsOf rho₁ D t).length := h1.symm
+      _ = 1 := hlen
+  have hne₁ : enteredTermsOf rho₁ D t ≠ [] := by
+    intro h
+    rw [h, List.length_nil] at hlen
+    cases hlen
+  have hne₂ : enteredTermsOf rho₂ D t ≠ [] := by
+    intro h
+    rw [h, List.length_nil] at hlen₂
+    cases hlen₂
+  rcases List.exists_cons_of_ne_nil hne₁ with ⟨T₁, r₁, hc₁⟩
+  rcases List.exists_cons_of_ne_nil hne₂ with ⟨T₂, r₂, hc₂⟩
+  have hr₁ : r₁ = [] := by
+    have : (T₁ :: r₁).length = 1 := by simpa [hc₁] using hlen
+    simp only [List.length_cons] at this
+    exact List.eq_nil_of_length_eq_zero (Nat.succ.inj this)
+  have hr₂ : r₂ = [] := by
+    have : (T₂ :: r₂).length = 1 := by simpa [hc₂] using hlen₂
+    simp only [List.length_cons] at this
+    exact List.eq_nil_of_length_eq_zero (Nat.succ.inj this)
+  have hG1 :
+      (encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw).G1 =
+        (encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw).G1 :=
+    congrArg MatchEncode.G1 hcode
+  have hscan₁ :=
+    enteredTermsOf_head_eq_firstNotFalsified_G1_of_cons hsq rho₁ D hrho₁
+      hell₁ ht₁ hw T₁ r₁ hc₁
+  have hscan₂ :=
+    enteredTermsOf_head_eq_firstNotFalsified_G1_of_cons hsq rho₂ D hrho₂
+      hell₂ ht₂ hw T₂ r₂ hc₂
+  have hT : T₁ = T₂ := by
+    have h :
+        firstNotFalsifiedTerm
+          (encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw).G1 D = some T₁ :=
+      hscan₁
+    have h' :
+        firstNotFalsifiedTerm
+          (encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw).G1 D = some T₂ := by
+      rw [hG1, hscan₂]
+    exact Option.some.inj (h.symm.trans h')
+  rw [hc₁, hc₂, hr₁, hr₂, hT]
+
 /-- Coherent overlay agreement upgrades to full `G1 = compose rho sigma`
 when `rho` is the base decoder strip of that overlay. -/
 theorem compose_decodeBasePoint_of_overlayAgreesG1 {p h : Nat}
@@ -1546,18 +2008,17 @@ theorem enteredTermsOf_length_eq_of_encodeMatch_eq
 
 /-- **S2197 residual (active).** Full multi-block
 `enteredTermsOf_eq_of_encodeMatch_eq` — equal codes alone force equal entered-term
-sequences on encode images.  Empty-G2 case is discharged
-(`enteredTermsOf_eq_of_encodeMatch_eq_of_G2_nil`).  Combined with
-`encodeMatch_eq_of_code_eq_of_entered_terms_eq` this yields unconditional
-`encodeMatch_eq_of_code_eq` / `encodeMatch_subtype_injective`.
+sequences on encode images.  Empty-G2 and length-1 cases are discharged
+(`enteredTermsOf_eq_of_encodeMatch_eq_of_G2_nil`,
+`enteredTermsOf_eq_of_encodeMatch_eq_of_length_one` / S2198 head bridge).
+Combined with `encodeMatch_eq_of_code_eq_of_entered_terms_eq` this yields
+unconditional `encodeMatch_eq_of_code_eq` / `encodeMatch_subtype_injective`.
 
 Alternative (stronger) sufficient residual: `EncodeMatchCoherentReplayUniqueResidual`
 (S2196) — not proved equivalent; it quantifies over all coherent candidates,
 while this residual compares only genuine encode preimages.  Obstruction: G3
 answer codes are indices into `freeVertexList rho`, so pure multi-block term
-replay still needs base/free-list recovery; first-block `firstNotFalsifiedTerm`
-under G1 is the intended head-recovery seed (generic factorization lemma
-landed; genuine-head bridge still open). -/
+replay past the head still needs base/free-list recovery. -/
 def EncodeMatchEnteredTermsEqResidual {p h w t ell : Nat} (hsq : p = h)
     (D : MDNF p h) (hw : ∀ term ∈ D, term.length ≤ w) : Prop :=
   ∀ (rho₁ rho₂ : MatchingMap p h)
@@ -1637,6 +2098,39 @@ theorem encodeMatchEnteredTermsEqResidual_of_G2_nil
   exact enteredTermsOf_eq_of_encodeMatch_eq_of_G2_nil hsq
     rho₁ rho₂ D hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ hw hcode
     (hnil rho₁ hrho₁ hell₁ ht₁)
+
+/-- Length-≤1 entered-term images discharge the S2197 residual (empty via
+G2-nil; singleton via the S2198 head bridge). -/
+theorem encodeMatchEnteredTermsEqResidual_of_length_le_one
+    {p h w t ell : Nat} (hsq : p = h) (D : MDNF p h)
+    (hw : ∀ term ∈ D, term.length ≤ w)
+    (hbound :
+      ∀ (rho : MatchingMap p h) (hrho : IsMatching rho)
+        (hell : (freePigeons rho).card = ell)
+        (ht : t ≤ vmdtDepth (canonicalVMDT D rho)),
+        (enteredTermsOf rho D t).length ≤ 1) :
+    EncodeMatchEnteredTermsEqResidual (t := t) (ell := ell) (w := w)
+      hsq D hw := by
+  intro rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ hcode
+  have hlen₁ := hbound rho₁ hrho₁ hell₁ ht₁
+  match hlt : (enteredTermsOf rho₁ D t).length with
+  | 0 =>
+      have hnil₁ : enteredTermsOf rho₁ D t = [] :=
+        List.eq_nil_of_length_eq_zero (by simpa [hlt] using rfl)
+      have hG2 :
+          (encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw).G2 = [] :=
+        (enteredTermsOf_eq_nil_iff_G2_nil hsq rho₁ D hrho₁ hell₁ ht₁ hw).mp
+          hnil₁
+      exact enteredTermsOf_eq_of_encodeMatch_eq_of_G2_nil hsq
+        rho₁ rho₂ D hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ hw hcode hG2
+  | 1 =>
+      exact enteredTermsOf_eq_of_encodeMatch_eq_of_length_one hsq
+        rho₁ rho₂ D hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ hw hcode
+        (by simpa [hlt])
+  | n + 2 =>
+      have : (enteredTermsOf rho₁ D t).length ≤ 1 := hlen₁
+      rw [hlt] at this
+      exact absurd this (by omega)
 
 /-- **Residual (S2189 Stage C — DEAD after S2190).**  Full
 `PacketReplayTermsUnique` on every `encodeMatch` image.  Formally refuted
