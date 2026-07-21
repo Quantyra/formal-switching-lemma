@@ -39,6 +39,7 @@ import PvNP.PHPMatchingEncodePackageFiber
 import PvNP.PHPMatchingEncodeConditionalFiber
 import PvNP.PHPMatchingEncodeAnswerRedesign
 import PvNP.PHPMatchingEncodeAnswerAlphabet
+import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
@@ -12889,3 +12890,47 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeAnswerAlphabet.answer_alphabet_s2212_summary
+
+/-! S2213: conditional ell-free answer alphabet on the at-most-two-block slice. -/
+
+/-- info: 'PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo.EncodeMatchG1G2LengthTwoPathExitEqResidual' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo.EncodeMatchG1G2LengthTwoPathExitEqResidual
+
+/-- info: 'PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo.enteredTermsOf_eq_of_G1_G2_eq_of_length_two_of_pathExit_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo.enteredTermsOf_eq_of_G1_G2_eq_of_length_two_of_pathExit_eq
+
+/-- info: 'PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo.enteredTermsOf_eq_of_G1_G2_eq_of_length_le_two_of_pathExitResidual' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo.enteredTermsOf_eq_of_G1_G2_eq_of_length_le_two_of_pathExitResidual
+
+/-- info: 'PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo.encodeMatch_G3_eq_of_G1_G2_eq_of_length_le_two_of_pathExitResidual' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo.encodeMatch_G3_eq_of_G1_G2_eq_of_length_le_two_of_pathExitResidual
+
+/-- info: 'PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo.badEncode_G1G2_injOn_atMostTwoBlockGrade' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo.badEncode_G1G2_injOn_atMostTwoBlockGrade
+
+/-- info: 'PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo.atMostTwoBlockGradeDomain_card_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo.atMostTwoBlockGradeDomain_card_le
+
+/-- info: 'PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo.answer_alphabet_s2213_summary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo.answer_alphabet_s2213_summary

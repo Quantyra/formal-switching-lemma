@@ -120,6 +120,7 @@ import PvNP.PHPMatchingEncodePackageFiber
 import PvNP.PHPMatchingEncodeConditionalFiber
 import PvNP.PHPMatchingEncodeAnswerRedesign
 import PvNP.PHPMatchingEncodeAnswerAlphabet
+import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo
 import PvNP.RestrictedPHPFloor
 import PvNP.ScheduledAutoCollapse
 import PvNP.ScheduledCollapseDemo

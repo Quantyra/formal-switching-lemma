@@ -4,6 +4,10 @@
 
 ### Added
 
+- **S2213** conditional at-most-two entered-block answer-alphabet extension
+  (`PHPMatchingEncodeAnswerAlphabetLengthTwo`): under the new `G1`+`G2`
+  length-two path-exit residual, `G3` is redundant and the honest-times-mcode
+  grade bound extends to this slice.  The package stop-loss remains in force.
 - **S2212** at-most-one entered-block answer-alphabet slice
   (`PHPMatchingEncodeAnswerAlphabet`): `G1` and `G2` determine `G3` and give
   the honest-times-mcode grade bound on this slice only.  No general `G3`
