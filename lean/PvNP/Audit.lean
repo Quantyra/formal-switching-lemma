@@ -31,6 +31,7 @@ import PvNP.PHPMatchingEncodeInjectivity
 import PvNP.PHPMatchingReplayCounterexample
 import PvNP.PHPMatchingEncodeCollisionSearch
 import PvNP.PHPMatchingEncodeMultiPreimage
+import PvNP.PHPMatchingEncodeFiberSearch
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
@@ -12601,4 +12602,36 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeMultiPreimage.multi_preimage_length_two_summary
+
+/-! S2205: Fin4 free-count-3 equal-code fiber search. -/
+
+/-- info: 'PvNP.PHPMatchingEncodeFiberSearch.mem_allSingleEdge4_of_free_count_three' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeFiberSearch.mem_allSingleEdge4_of_free_count_three
+
+/-- info: 'PvNP.PHPMatchingEncodeFiberSearch.no_equal_code_fiber_rhoA_rhoB' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeFiberSearch.no_equal_code_fiber_rhoA_rhoB
+
+/-- info: 'PvNP.PHPMatchingEncodeFiberSearch.no_path_exit_collision_named_fiber' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeFiberSearch.no_path_exit_collision_named_fiber
+
+/-- info: 'PvNP.PHPMatchingEncodeFiberSearch.encodeMatchLengthTwoExitEqResidual_searchD4mp_t_three_of_ell_ne_three' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeFiberSearch.encodeMatchLengthTwoExitEqResidual_searchD4mp_t_three_of_ell_ne_three
+
+/-- info: 'PvNP.PHPMatchingEncodeFiberSearch.fiber_search_fin4_t_three_summary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeFiberSearch.fiber_search_fin4_t_three_summary
 
