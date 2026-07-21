@@ -4,6 +4,10 @@
 
 ### Added
 
+- **S2212** at-most-one entered-block answer-alphabet slice
+  (`PHPMatchingEncodeAnswerAlphabet`): `G1` and `G2` determine `G3` and give
+  the honest-times-mcode grade bound on this slice only.  No general `G3`
+  elimination or scaling of the Fin4 oracle result is claimed.
 - **S2211** REDESIGN decision and first formal probe
   (`PHPMatchingEncodeAnswerRedesign`): replace ell-dependent `G3` with an
   ell-independent alphabet; the path-code pivot is rejected because its ratio

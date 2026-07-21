@@ -38,6 +38,7 @@ import PvNP.PHPMatchingEncodePackageCount
 import PvNP.PHPMatchingEncodePackageFiber
 import PvNP.PHPMatchingEncodeConditionalFiber
 import PvNP.PHPMatchingEncodeAnswerRedesign
+import PvNP.PHPMatchingEncodeAnswerAlphabet
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
@@ -12850,3 +12851,41 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeAnswerRedesign.answer_redesign_s2211_summary
+
+/-! S2212: ell-free answer alphabet on the at-most-one entered-block slice. -/
+
+/-- info: 'PvNP.PHPMatchingEncodeAnswerAlphabet.base_eq_of_G1_G2_eq_of_enteredTerms_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeAnswerAlphabet.base_eq_of_G1_G2_eq_of_enteredTerms_eq
+
+/-- info: 'PvNP.PHPMatchingEncodeAnswerAlphabet.enteredTermsOf_eq_of_G1_G2_eq_of_length_le_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeAnswerAlphabet.enteredTermsOf_eq_of_G1_G2_eq_of_length_le_one
+
+/-- info: 'PvNP.PHPMatchingEncodeAnswerAlphabet.encodeMatch_G3_eq_of_G1_G2_eq_of_length_le_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeAnswerAlphabet.encodeMatch_G3_eq_of_G1_G2_eq_of_length_le_one
+
+/-- info: 'PvNP.PHPMatchingEncodeAnswerAlphabet.badEncode_G1G2_injOn_atMostOneBlockGrade' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeAnswerAlphabet.badEncode_G1G2_injOn_atMostOneBlockGrade
+
+/-- info: 'PvNP.PHPMatchingEncodeAnswerAlphabet.atMostOneBlockGradeDomain_card_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeAnswerAlphabet.atMostOneBlockGradeDomain_card_le
+
+/-- info: 'PvNP.PHPMatchingEncodeAnswerAlphabet.answer_alphabet_s2212_summary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeAnswerAlphabet.answer_alphabet_s2212_summary
