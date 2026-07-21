@@ -65,17 +65,23 @@ Unconditional multi-block residual remains open (need exit/second-entry
 recovery from the packet alone).  Genuine-preimage collision search lives in
 `PHPMatchingEncodeCollisionSearch`.
 
-**S2200 path-entry vs σ-exit.**  On every length-≥2 root trace the second
-block's path entry is the first entry composed with the first block's
-**walked** pairs (`second_block_entry_eq_compose_first_steps`), while
-`firstBlockExitMatching` overlays the first block's **σ′** pairs.  These
-differ: σ-exit satisfies the first entered term, but a second block can
-open only after that term has been falsified under the path matching
-(`secondBlockEntry?_ne_some_firstBlockExitMatching`).  Packet-side recovery
-of the first-block σ-set from `(G1, G2)` head data is landed
-(`packetFirstBlockSigma_eq_of_encode_image`); recovering the **path** second
-entry from the packet alone remains open, so
-`EncodeMatchLengthTwoExitEqResidual` is not discharged.
+**S2200 path-entry vs σ-exit.**  On every length-≥2 root trace the first
+block enters under the base (`B₀.entry = ρ`), the encode-theoretic
+σ-exit `compose B₀.entry (pairsToMatching (σ′₀))` satisfies `B₀.term`, and
+the genuine second-block path entry cannot equal that σ-exit
+(`second_block_entry_ne_compose_entry_sigmaFull` /
+`secondBlockEntry?_ne_some_firstBlockExitMatching`): either `B₁.entry`
+falsifies `B₀.term`, or the same term would be re-entered while already
+σ-satisfied, contradicting the block entry gate.  Packet-side recovery from
+`(G1,G2)` head data yields the **decoded** head β-block
+(`packetFirstBlockSigma_eq_decode_head_of_encode_image`), and on length-≥2
+encode images that decode equals `(σ′₀).toFinset`
+(`packetFirstBlockSigma_eq_sigmaFull_of_length_ge_two`).  Recovering the
+**path** second entry from the packet alone remains open, so
+`EncodeMatchLengthTwoExitEqResidual` is not discharged.  Conditional
+injectivity shells still require residual discharge — path-entry recovery
+does **not** yield unconditional `encodeMatch_eq_of_code_eq` /
+`encodeMatch_subtype_injective`.
 
 Stage C adds dual sigma recovery (`decodeSigmaFromBase`), unconditional
 empty-G2 injectivity (`encodeMatch_eq_of_code_eq_of_G2_nil`), the UF
@@ -2251,8 +2257,135 @@ theorem exitBridge_path_entry_falsifies_first_term :
   unfold exitBridgePathEntry exitBridgeB0 termFalsifiedB pairFalsB
   simp [compose, singleMatching, emptyMatching]
 
+/-! ### S2200 genuine-trace: second path-entry ≠ first-block σ-exit -/
+
+/-- First block of a root `vtrace` (empty pending) enters under the base. -/
+theorem first_block_entry_eq_base {p h : Nat}
+    (rho : MatchingMap p h) (D : MDNF p h) (feed : List (Vertex p h))
+    (B : VBlock p h) (Bs : List (VBlock p h))
+    (hblocks : blocksOf (vtrace rho D feed) = B :: Bs) :
+    B.entry = rho :=
+  blocksOf_vevents_nil_pending_head_entry (freePigeons rho).card rho D feed
+    B Bs (by simpa [vtrace] using hblocks)
+
+/-- **S2200 genuine-trace separation.**  On every length-≥2 root trace the
+second block's path entry is not the first block's encode-theoretic σ-exit
+`compose entry (pairsToMatching σ′)`.  Case split: either `B₁.entry`
+falsifies `B₀.term` (while σ-exit satisfies it), or the first-not-falsified
+scan would re-select `B₀.term` as `B₁.term` and σ-exit would satisfy the
+entered term, contradicting the block entry gate. -/
+theorem second_block_entry_ne_compose_entry_sigmaFull {p h : Nat}
+    (rho : MatchingMap p h) (D : MDNF p h) (feed : List (Vertex p h))
+    (hrho : IsMatching rho)
+    (B₀ B₁ : VBlock p h) (rest : List (VBlock p h))
+    (hblocks : blocksOf (vtrace rho D feed) = B₀ :: B₁ :: rest) :
+    B₁.entry ≠
+      compose B₀.entry (pairsToMatching (sigmaFull B₀)) := by
+  have hB₀mem : B₀ ∈ blocksOf (vtrace rho D feed) := by
+    rw [hblocks]; exact List.mem_cons_self _ _
+  have hB₁mem : B₁ ∈ blocksOf (vtrace rho D feed) := by
+    rw [hblocks]
+    exact List.mem_cons_of_mem _ (List.mem_cons_self _ _)
+  have hspec₀ :=
+    blocksOf_entry_spec (freePigeons rho).card rho [] D feed B₀ hB₀mem
+  have hspec₁ :=
+    blocksOf_entry_spec (freePigeons rho).card rho [] D feed B₁ hB₁mem
+  have hentry₀ : B₀.entry = rho :=
+    first_block_entry_eq_base rho D feed B₀ (B₁ :: rest) hblocks
+  have hmatch₁ : IsMatching B₁.entry :=
+    blocksOf_entry_isMatching (freePigeons rho).card rho [] D feed hrho
+      B₁.term B₁.entry (enter_mem_of_mem_blocksOf _ B₁ hB₁mem)
+  have hsat_exit :
+      termSatisfiedB
+        (compose B₀.entry (pairsToMatching (sigmaFull B₀))) B₀.term =
+        true :=
+    termSatisfiedB_compose_entry_sigmaFull B₀ hspec₀.2.1 hspec₀.2.2.1
+  intro heq
+  by_cases hfals : termFalsifiedB B₁.entry B₀.term = true
+  · have hnf :
+        termFalsifiedB
+          (compose B₀.entry (pairsToMatching (sigmaFull B₀))) B₀.term =
+          false :=
+      termFalsifiedB_eq_false_of_termSatisfiedB _ _ hsat_exit
+    rw [← heq, hfals] at hnf
+    exact Bool.noConfusion hnf
+  · have hfals' : termFalsifiedB B₁.entry B₀.term = false :=
+      Bool.eq_false_iff.mpr hfals
+    rcases blocksOf_entered_first (freePigeons rho).card rho [] D feed hrho
+        B₀ hB₀mem with ⟨pre₀, suf₀, hD₀, hpre₀⟩
+    have hpre₀' :
+        ∀ t' ∈ pre₀,
+          termMatchingLegalB t' = false ∨
+            termFalsifiedB B₁.entry t' = true := by
+      intro t' ht'
+      rcases hpre₀ t' ht' with hileg | hf
+      · exact Or.inl hileg
+      · have hf' : termFalsifiedB rho t' = true := by
+          simpa [hentry₀] using hf
+        exact Or.inr (termFalsifiedB_mono hspec₁.1 hmatch₁ t' hf')
+    have hfnf₀ :
+        firstNotFalsifiedTerm B₁.entry D = some B₀.term :=
+      firstNotFalsifiedTerm_eq_of_factor B₁.entry D pre₀ B₀.term suf₀ hD₀
+        hpre₀' hspec₀.2.1 hfals'
+    have hfnf₁ :
+        firstNotFalsifiedTerm B₁.entry D = some B₁.term :=
+      block_term_eq_firstNotFalsified_entry rho D feed hrho B₁ hB₁mem
+    have hterms : B₀.term = B₁.term :=
+      Option.some.inj (hfnf₀.symm.trans hfnf₁)
+    have hsat₁ : termSatisfiedB B₁.entry B₁.term = true := by
+      rw [← hterms, heq]
+      exact hsat_exit
+    have hnsat₁ : termSatisfiedB B₁.entry B₁.term = false := hspec₁.2.2.2
+    rw [hsat₁] at hnsat₁
+    exact Bool.noConfusion hnsat₁
+
+/-- Encode-image packaging: path `secondBlockEntry?` is never the
+first-block σ-exit on length-≥2 root traces. -/
+theorem secondBlockEntry?_ne_some_firstBlockExitMatching {p h : Nat}
+    (rho : MatchingMap p h) (D : MDNF p h) (t : Nat)
+    (hrho : IsMatching rho)
+    (hlen : 2 ≤ (enteredTermsOf rho D t).length) :
+    secondBlockEntry? rho D t ≠
+      some (firstBlockExitMatching rho D t) := by
+  let feed := leftmostLiveDeepFeed rho D t
+  have hlen' : 2 ≤ (blocksOf (vtrace rho D feed)).length := by
+    simpa [enteredTermsOf, feed, List.length_map] using hlen
+  match hblocks : blocksOf (vtrace rho D feed) with
+  | [] =>
+      rw [hblocks, List.length_nil] at hlen'
+      exact absurd hlen' (by omega)
+  | [B] =>
+      rw [hblocks, List.length_singleton] at hlen'
+      exact absurd hlen' (by omega)
+  | B₀ :: B₁ :: rest =>
+      have hne :
+          B₁.entry ≠
+            compose B₀.entry (pairsToMatching (sigmaFull B₀)) :=
+        second_block_entry_ne_compose_entry_sigmaFull rho D feed hrho
+          B₀ B₁ rest hblocks
+      have hentry₀ : B₀.entry = rho :=
+        first_block_entry_eq_base rho D feed B₀ (B₁ :: rest) hblocks
+      intro heq
+      have hsome :
+          some B₁.entry =
+            some (firstBlockExitMatching rho D t) := by
+        simpa [secondBlockEntry?, feed, hblocks] using heq
+      have hmatch :
+          B₁.entry = firstBlockExitMatching rho D t :=
+        Option.some.inj hsome
+      have hexit :
+          firstBlockExitMatching rho D t =
+            compose rho (pairsToMatching (sigmaFull B₀)) :=
+        firstBlockExitMatching_cons rho D t B₀ (B₁ :: rest)
+          (by simpa [feed] using hblocks)
+      apply hne
+      rw [hmatch, hexit, hentry₀]
+
 /-- Packet-side first-block σ-set candidate: UF head under `G1` plus the
-leading G2 β-mark, independent of `ρ`. -/
+leading G2 β-mark, independent of `ρ`.  On encode images this is the
+decode of that head data — not an a-priori claim of equality with
+`(sigmaFull B).toFinset` except on length-≥2 images (see
+`packetFirstBlockSigma_eq_sigmaFull_of_length_ge_two`). -/
 noncomputable def packetFirstBlockSigma {p h w t ell : Nat}
     (code : MatchEncode p h w t ell) (D : MDNF p h) :
     Option (Finset (Fin p × Fin h)) :=
@@ -2279,7 +2412,9 @@ theorem packetFirstBlockSigma_eq_of_encodeMatch_eq
   simp only [packetFirstBlockSigma, hcode]
 
 /-- On a nonempty encode image the packet head recovers the true first
-entered term together with the leading β-decoded σ-block. -/
+entered term together with the leading β-decoded σ-block (decode of
+head+leading β only — not yet identified with `(sigmaFull B).toFinset`
+unless the image has a successor block). -/
 theorem packetFirstBlockSigma_eq_decode_head_of_encode_image
     {p h w t ell : Nat} (hsq : p = h)
     (rho : MatchingMap p h) (D : MDNF p h)
@@ -2327,6 +2462,49 @@ theorem packetFirstBlockSigma_eq_decode_head_of_encode_image
   -- Unfold the packet decoder on the concrete `some`/`cons` shape.
   show packetFirstBlockSigma code D = some (decodeSigmaBlock B.term beta)
   simp only [packetFirstBlockSigma, hhead, hβ]
+
+/-- On length-≥2 encode images the leading G2 β is the full first-block σ′
+marking, so the packet head decoder recovers exactly `(σ′₀).toFinset`. -/
+theorem packetFirstBlockSigma_eq_sigmaFull_of_length_ge_two
+    {p h w t ell : Nat} (hsq : p = h)
+    (rho : MatchingMap p h) (D : MDNF p h)
+    (hrho : IsMatching rho) (hell : (freePigeons rho).card = ell)
+    (ht : t ≤ vmdtDepth (canonicalVMDT D rho))
+    (hw : ∀ term ∈ D, term.length ≤ w)
+    (B₀ B₁ : VBlock p h) (rest : List (VBlock p h))
+    (hblocks :
+      blocksOf (vtrace rho D (leftmostLiveDeepFeed rho D t)) =
+        B₀ :: B₁ :: rest) :
+    packetFirstBlockSigma (encodeMatch hsq rho D hrho hell ht hw) D =
+      some (sigmaFull B₀).toFinset := by
+  let code := encodeMatch hsq rho D hrho hell ht hw
+  have hG2 :
+      code.G2 =
+        blockSigmasBeta (w := w)
+          (blocksOf (vtrace rho D (leftmostLiveDeepFeed rho D t))) := by
+    simp [code, encodeMatch, traceBetaDeep, traceBeta]
+  rw [hblocks] at hG2
+  have hβshape :
+      code.G2 =
+        sigmaMarks (w := w) B₀.term (sigmaFull B₀) ::
+          blockSigmasBeta (w := w) (B₁ :: rest) := by
+    simpa [blockSigmasBeta] using hG2
+  have hB₀mem :
+      B₀ ∈ blocksOf (vtrace rho D (leftmostLiveDeepFeed rho D t)) := by
+    rw [hblocks]; exact List.mem_cons_self _ _
+  have hw₀ : B₀.term.length ≤ w :=
+    hw B₀.term (block_term_mem_D rho D (leftmostLiveDeepFeed rho D t) hrho
+      B₀ hB₀mem)
+  rcases packetFirstBlockSigma_eq_decode_head_of_encode_image hsq rho D hrho
+      hell ht hw B₀ (B₁ :: rest) hblocks with ⟨beta, betas, hβ, hhead, hpack⟩
+  have hbeta : beta = sigmaMarks (w := w) B₀.term (sigmaFull B₀) :=
+    (List.cons.inj (hβ.symm.trans hβshape)).1
+  have hdecode :
+      decodeSigmaBlock B₀.term beta = (sigmaFull B₀).toFinset := by
+    rw [hbeta]
+    exact decodeSigmaBlock_sigmaMarks B₀.term (sigmaFull B₀)
+      (fun e he => ((mem_sigmaFull B₀ e).mp he).1) hw₀
+  rw [hpack, hdecode]
 
 /-- **S2199 length-2 isolation.**  Equal codes with length-2 entered terms and
 equal second-block path entries force equal entered-term sequences (head from
@@ -2544,13 +2722,18 @@ sequences on encode images.  Empty-G2 and length-1 cases are discharged
 Length-2 is conditional on second-block path-entry agreement
 (`enteredTermsOf_eq_of_encodeMatch_eq_of_length_two_of_exit_eq` / S2199);
 `EncodeMatchLengthTwoExitEqResidual` packages the missing exit-recovery step.
-S2200 refutes identifying path second-entry with the first-block σ-exit
-(`exitBridge_second_entry_ne_sigma_exit`) and lands packet recovery of the
-first-block σ-set from `(G1,G2)` head data
-(`packetFirstBlockSigma_eq_decode_head_of_encode_image`); path second-entry
-recovery from the packet alone remains open.  Combined with
-`encodeMatch_eq_of_code_eq_of_entered_terms_eq` this yields unconditional
-`encodeMatch_eq_of_code_eq` / `encodeMatch_subtype_injective`.
+S2200 refutes identifying path second-entry with the first-block σ-exit on
+genuine length-≥2 root traces
+(`second_block_entry_ne_compose_entry_sigmaFull`, kernel witness
+`exitBridge_second_entry_ne_sigma_exit`) and lands packet recovery of the
+decoded head β-block (`packetFirstBlockSigma_eq_decode_head_of_encode_image`),
+strengthened on length-≥2 images to `(σ′₀).toFinset`
+(`packetFirstBlockSigma_eq_sigmaFull_of_length_ge_two`).  Path second-entry
+recovery from the packet alone remains open, so the length-2 exit residual
+and full multi-block residual stay active.  Conditional shells
+(`encodeMatch_eq_of_code_eq_of_entered_terms_eq`, residual-packaged
+subtype injectivity) still require those residuals — **no** unconditional
+`encodeMatch_eq_of_code_eq` / `encodeMatch_subtype_injective` is claimed.
 
 Alternative (stronger) sufficient residual: `EncodeMatchCoherentReplayUniqueResidual`
 (S2196) — not proved equivalent; it quantifies over all coherent candidates,

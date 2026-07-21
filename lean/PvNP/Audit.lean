@@ -12257,7 +12257,7 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeInjectivity.encodeMatchEnteredTermsEqResidual_of_length_le_two_of_exit
 
-/-! S2200: path second-entry ≠ σ-exit (kernel) + packet first-σ recovery. -/
+/-! S2200: path second-entry ≠ σ-exit (genuine-trace + kernel) + packet first-σ recovery. -/
 
 /-- info: 'PvNP.PHPMatchingEncodeInjectivity.termSatisfiedB_compose_entry_sigmaFull' depends on axioms: [propext,
  Classical.choice,
@@ -12285,6 +12285,22 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeInjectivity.exitBridge_path_entry_falsifies_first_term
 
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.first_block_entry_eq_base' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.first_block_entry_eq_base
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.second_block_entry_ne_compose_entry_sigmaFull' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.second_block_entry_ne_compose_entry_sigmaFull
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.secondBlockEntry?_ne_some_firstBlockExitMatching' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.secondBlockEntry?_ne_some_firstBlockExitMatching
+
 /-- info: 'PvNP.PHPMatchingEncodeInjectivity.packetFirstBlockSigma' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeInjectivity.packetFirstBlockSigma
@@ -12300,6 +12316,12 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeInjectivity.packetFirstBlockSigma_eq_decode_head_of_encode_image
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.packetFirstBlockSigma_eq_sigmaFull_of_length_ge_two' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.packetFirstBlockSigma_eq_sigmaFull_of_length_ge_two
 
 /-- info: 'PvNP.PHPMatchingEncodeCollisionSearch.allMatchings2_length' depends on axioms: [propext] -/
 #guard_msgs in
