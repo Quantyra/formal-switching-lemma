@@ -30,6 +30,7 @@ import PvNP.PHPMatchingDeterministicEncode
 import PvNP.PHPMatchingEncodeInjectivity
 import PvNP.PHPMatchingReplayCounterexample
 import PvNP.PHPMatchingEncodeCollisionSearch
+import PvNP.PHPMatchingEncodeMultiPreimage
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
@@ -12562,4 +12563,42 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeCollisionSearch.collision_search_fin3_width_ge_two_t_three_summary
+
+/-! S2204: multi-preimage length-2 path-exit package. -/
+
+/-- info: 'PvNP.PHPMatchingEncodeMultiPreimage.exists_multi_preimage_length_two' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeMultiPreimage.exists_multi_preimage_length_two
+
+/-- info: 'PvNP.PHPMatchingEncodeMultiPreimage.rhoA_depth_ge_three' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeMultiPreimage.rhoA_depth_ge_three
+
+/-- info: 'PvNP.PHPMatchingEncodeMultiPreimage.rhoB_depth_ge_three' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeMultiPreimage.rhoB_depth_ge_three
+
+/-- info: 'PvNP.PHPMatchingEncodeMultiPreimage.path_exits_rhoA_ne_rhoB' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeMultiPreimage.path_exits_rhoA_ne_rhoB
+
+/-- info: 'PvNP.PHPMatchingEncodeMultiPreimage.encodeMatch_rhoA_ne_rhoB' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeMultiPreimage.encodeMatch_rhoA_ne_rhoB
+
+/-- info: 'PvNP.PHPMatchingEncodeMultiPreimage.no_path_exit_collision_rhoA_rhoB' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeMultiPreimage.no_path_exit_collision_rhoA_rhoB
+
+/-- info: 'PvNP.PHPMatchingEncodeMultiPreimage.multi_preimage_length_two_summary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeMultiPreimage.multi_preimage_length_two_summary
 

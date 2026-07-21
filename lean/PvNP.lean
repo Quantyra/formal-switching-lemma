@@ -110,6 +110,8 @@ import PvNP.PHPMatchingAnswerTransport
 import PvNP.PHPMatchingDeterministicEncode
 import PvNP.PHPMatchingEncodeInjectivity
 import PvNP.PHPMatchingReplayCounterexample
+import PvNP.PHPMatchingEncodeCollisionSearch
+import PvNP.PHPMatchingEncodeMultiPreimage
 import PvNP.RestrictedPHPFloor
 import PvNP.ScheduledAutoCollapse
 import PvNP.ScheduledCollapseDemo
