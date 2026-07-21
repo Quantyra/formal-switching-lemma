@@ -54,6 +54,17 @@ on families with entered-term length ≤ 1.  Full multi-block
 `encodeMatch_subtype_injective` remain open (same obstruction: G3 is
 free-list-relative; multi-block term identity past the head still open).
 
+**S2199 length-2 exit recovery.**  Encode-theoretic first-block exit
+`firstBlockExitMatching = compose ρ (pairsToMatching (σ′₀))` factors `G1` on
+length-≥2 images; every block term is the UF scan of its path entry
+(`block_term_eq_firstNotFalsified_entry`); the second entered term is the
+scan of the second block entry (`enteredTermsOf_second_eq_firstNotFalsified_exit`).
+Equal codes plus equal second-block entries force length-2 entered-term
+equality (`enteredTermsOf_eq_of_encodeMatch_eq_of_length_two_of_exit_eq`).
+Unconditional multi-block residual remains open (need exit/second-entry
+recovery from the packet alone).  Genuine-preimage collision search lives in
+`PHPMatchingEncodeCollisionSearch`.
+
 Stage C adds dual sigma recovery (`decodeSigmaFromBase`), unconditional
 empty-G2 injectivity (`encodeMatch_eq_of_code_eq_of_G2_nil`), the UF
 `firstNotFalsifiedTerm` scan, and residual packaging.
@@ -1913,6 +1924,307 @@ theorem enteredTermsOf_eq_of_encodeMatch_eq_of_length_one
     exact Option.some.inj (h.symm.trans h')
   rw [hc₁, hc₂, hr₁, hr₂, hT]
 
+/-! ## S2199: first-block exit recovery and length-2 isolation -/
+
+/-- Append of pair-lists is first-wins composition of their matchings. -/
+theorem pairsToMatching_append {p h : Nat} :
+    ∀ (l₁ l₂ : List (Fin p × Fin h)),
+      pairsToMatching (l₁ ++ l₂) =
+        compose (pairsToMatching l₁) (pairsToMatching l₂)
+  | [], l₂ => by
+      simp only [List.nil_append]
+      funext i
+      simp [pairsToMatching, compose, emptyMatching]
+  | e :: es, l₂ => by
+      rw [List.cons_append,
+        show pairsToMatching (e :: (es ++ l₂)) =
+          compose (singleMatching e.1 e.2) (pairsToMatching (es ++ l₂)) from rfl,
+        show pairsToMatching (e :: es) =
+          compose (singleMatching e.1 e.2) (pairsToMatching es) from rfl,
+        pairsToMatching_append es l₂, compose_assoc]
+
+/-- **S2199 block-entry bridge.**  Every entered block's term is exactly the
+Razborov/UF first-not-falsified scan of `D` under that block's path entry. -/
+theorem block_term_eq_firstNotFalsified_entry {p h : Nat}
+    (rho : MatchingMap p h) (D : MDNF p h) (feed : List (Vertex p h))
+    (hrho : IsMatching rho) (B : VBlock p h)
+    (hB : B ∈ blocksOf (vtrace rho D feed)) :
+    firstNotFalsifiedTerm B.entry D = some B.term := by
+  rcases blocksOf_entered_first (freePigeons rho).card rho [] D feed hrho B hB with
+    ⟨pre, suf, hD, hpre⟩
+  have hspec :=
+    blocksOf_entry_spec (freePigeons rho).card rho [] D feed B hB
+  exact firstNotFalsifiedTerm_eq_of_factor B.entry D pre B.term suf hD hpre
+    hspec.2.1 hspec.2.2.1
+
+/-- Encode-theoretic exit matching after the first entered block: base `ρ`
+overlaid with that block's full σ′.  Empty-block traces leave the base
+unchanged. -/
+def firstBlockExitMatching {p h : Nat} (rho : MatchingMap p h) (D : MDNF p h)
+    (t : Nat) : MatchingMap p h :=
+  match blocksOf (vtrace rho D (leftmostLiveDeepFeed rho D t)) with
+  | [] => rho
+  | B :: _ => compose rho (pairsToMatching (sigmaFull B))
+
+/-- Path entry of the second entered block, when the entered-term list has
+length at least two; otherwise `none`. -/
+def secondBlockEntry? {p h : Nat} (rho : MatchingMap p h) (D : MDNF p h)
+    (t : Nat) : Option (MatchingMap p h) :=
+  match blocksOf (vtrace rho D (leftmostLiveDeepFeed rho D t)) with
+  | _ :: B₁ :: _ => some B₁.entry
+  | _ => none
+
+theorem firstBlockExitMatching_nil {p h : Nat} (rho : MatchingMap p h)
+    (D : MDNF p h) (t : Nat)
+    (hblocks : blocksOf (vtrace rho D (leftmostLiveDeepFeed rho D t)) = []) :
+    firstBlockExitMatching rho D t = rho := by
+  simp only [firstBlockExitMatching, hblocks]
+
+theorem firstBlockExitMatching_cons {p h : Nat} (rho : MatchingMap p h)
+    (D : MDNF p h) (t : Nat) (B : VBlock p h) (Bs : List (VBlock p h))
+    (hblocks :
+      blocksOf (vtrace rho D (leftmostLiveDeepFeed rho D t)) = B :: Bs) :
+    firstBlockExitMatching rho D t =
+      compose rho (pairsToMatching (sigmaFull B)) := by
+  simp only [firstBlockExitMatching, hblocks]
+
+/-- On every nonempty first-block encode image, the exit is `ρ` composed with
+the first block's full σ′. -/
+theorem firstBlockExit_eq_of_encode_image {p h w t ell : Nat} (hsq : p = h)
+    (rho : MatchingMap p h) (D : MDNF p h)
+    (hrho : IsMatching rho) (hell : (freePigeons rho).card = ell)
+    (ht : t ≤ vmdtDepth (canonicalVMDT D rho))
+    (hw : ∀ term ∈ D, term.length ≤ w)
+    (B : VBlock p h) (Bs : List (VBlock p h))
+    (hblocks :
+      blocksOf (vtrace rho D (leftmostLiveDeepFeed rho D t)) = B :: Bs) :
+    firstBlockExitMatching rho D t =
+      compose rho (pairsToMatching (sigmaFull B)) :=
+  firstBlockExitMatching_cons rho D t B Bs hblocks
+
+/-- Length-≥2 factorization: packet `G1` is the first-block exit overlaid with
+the join of all later block σ's. -/
+theorem encodeExt_eq_compose_firstBlockExit_of_length_ge_two {p h : Nat}
+    (rho : MatchingMap p h) (D : MDNF p h) (feed : List (Vertex p h))
+    (B₀ B₁ : VBlock p h) (rest : List (VBlock p h))
+    (hblocks : blocksOf (vtrace rho D feed) = B₀ :: B₁ :: rest) :
+    encodeExt rho D feed =
+      compose (compose rho (pairsToMatching (sigmaFull B₀)))
+        (pairsToMatching (blockSigmas (B₁ :: rest)).join) := by
+  unfold encodeExt
+  have hσ :
+      blockSigmas (blocksOf (vtrace rho D feed)) =
+        sigmaFull B₀ :: blockSigmas (B₁ :: rest) := by
+    rw [hblocks]
+    rfl
+  rw [hσ, List.join_cons, pairsToMatching_append, compose_assoc]
+
+/-- Encode-image form of the length-≥2 `G1` factorization. -/
+theorem encodeMatch_G1_eq_compose_firstBlockExit_of_length_ge_two
+    {p h w t ell : Nat} (hsq : p = h)
+    (rho : MatchingMap p h) (D : MDNF p h)
+    (hrho : IsMatching rho) (hell : (freePigeons rho).card = ell)
+    (ht : t ≤ vmdtDepth (canonicalVMDT D rho))
+    (hw : ∀ term ∈ D, term.length ≤ w)
+    (B₀ B₁ : VBlock p h) (rest : List (VBlock p h))
+    (hblocks :
+      blocksOf (vtrace rho D (leftmostLiveDeepFeed rho D t)) =
+        B₀ :: B₁ :: rest) :
+    (encodeMatch hsq rho D hrho hell ht hw).G1 =
+      compose (firstBlockExitMatching rho D t)
+        (pairsToMatching (blockSigmas (B₁ :: rest)).join) := by
+  have hG1 :
+      (encodeMatch hsq rho D hrho hell ht hw).G1 =
+        encodeExt rho D (leftmostLiveDeepFeed rho D t) := by
+    simp [encodeMatch]
+  rw [hG1, encodeExt_eq_compose_firstBlockExit_of_length_ge_two rho D _
+    B₀ B₁ rest hblocks, firstBlockExitMatching_cons rho D t B₀ (B₁ :: rest)
+    hblocks]
+
+/-- **S2199 second-head bridge (path entry).**  On every length-≥2 encode
+image the second entered term is the UF first-not-falsified scan of `D`
+under the second block's path entry. -/
+theorem enteredTermsOf_second_eq_firstNotFalsified_exit
+    {p h w t ell : Nat} (hsq : p = h)
+    (rho : MatchingMap p h) (D : MDNF p h)
+    (hrho : IsMatching rho) (hell : (freePigeons rho).card = ell)
+    (ht : t ≤ vmdtDepth (canonicalVMDT D rho))
+    (hw : ∀ term ∈ D, term.length ≤ w)
+    (T₀ T₁ : MTerm p h) (rest : List (MTerm p h))
+    (hcons : enteredTermsOf rho D t = T₀ :: T₁ :: rest) :
+    ∃ exit : MatchingMap p h,
+      secondBlockEntry? rho D t = some exit ∧
+        firstNotFalsifiedTerm exit D = some T₁ := by
+  let feed := leftmostLiveDeepFeed rho D t
+  have hblocks_terms :
+      (blocksOf (vtrace rho D feed)).map (fun B => B.term) =
+        T₀ :: T₁ :: rest := by
+    simpa [enteredTermsOf, feed] using hcons
+  have hne : blocksOf (vtrace rho D feed) ≠ [] := by
+    intro hb
+    rw [hb, List.map_nil] at hblocks_terms
+    cases hblocks_terms
+  rcases List.exists_cons_of_ne_nil hne with ⟨B₀, Bs, hblocks₀⟩
+  have hBs_ne : Bs ≠ [] := by
+    intro hBs
+    have hlen :
+        ((blocksOf (vtrace rho D feed)).map (fun B => B.term)).length =
+          (T₀ :: T₁ :: rest).length := by
+      rw [hblocks_terms]
+    rw [hblocks₀, hBs, List.map_cons, List.map_nil, List.length_cons,
+      List.length_nil, List.length_cons, List.length_cons] at hlen
+    exact absurd hlen (by omega)
+  rcases List.exists_cons_of_ne_nil hBs_ne with ⟨B₁, restB, hBs⟩
+  have hblocks : blocksOf (vtrace rho D feed) = B₀ :: B₁ :: restB := by
+    rw [hblocks₀, hBs]
+  have hT₁ : B₁.term = T₁ := by
+    have hmt :
+        B₀.term :: B₁.term :: restB.map (fun B => B.term) =
+          T₀ :: T₁ :: rest := by
+      simpa [hblocks, List.map_cons] using hblocks_terms
+    exact (List.cons.inj (List.cons.inj hmt).2).1
+  have hB₁mem : B₁ ∈ blocksOf (vtrace rho D feed) := by
+    rw [hblocks]
+    exact List.mem_cons_of_mem _ (List.mem_cons_self _ _)
+  refine ⟨B₁.entry, ?_, ?_⟩
+  · simp only [secondBlockEntry?, feed, hblocks]
+  · have hscan :=
+      block_term_eq_firstNotFalsified_entry rho D feed hrho B₁ hB₁mem
+    simpa [hT₁] using hscan
+
+/-- Second-block path entry, exposed when the entered-term list has length ≥ 2. -/
+theorem secondBlockEntry?_eq_some_of_length_ge_two
+    {p h : Nat} (rho : MatchingMap p h) (D : MDNF p h) (t : Nat)
+    (hlen : 2 ≤ (enteredTermsOf rho D t).length) :
+    ∃ exit, secondBlockEntry? rho D t = some exit := by
+  let feed := leftmostLiveDeepFeed rho D t
+  have hlen' : 2 ≤ (blocksOf (vtrace rho D feed)).length := by
+    simpa [enteredTermsOf, feed, List.length_map] using hlen
+  match hblocks : blocksOf (vtrace rho D feed) with
+  | [] =>
+      rw [hblocks, List.length_nil] at hlen'
+      exact absurd hlen' (by omega)
+  | [B] =>
+      rw [hblocks, List.length_singleton] at hlen'
+      exact absurd hlen' (by omega)
+  | B₀ :: B₁ :: rest =>
+      exact ⟨B₁.entry, by simp [secondBlockEntry?, feed, hblocks]⟩
+
+/-- **S2199 length-2 isolation.**  Equal codes with length-2 entered terms and
+equal second-block path entries force equal entered-term sequences (head from
+shared `G1` via the S2198 bridge; second from the shared exit via the
+second-head bridge). -/
+theorem enteredTermsOf_eq_of_encodeMatch_eq_of_length_two_of_exit_eq
+    {p h w t ell : Nat} (hsq : p = h)
+    (rho₁ rho₂ : MatchingMap p h) (D : MDNF p h)
+    (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+    (hell₁ : (freePigeons rho₁).card = ell)
+    (hell₂ : (freePigeons rho₂).card = ell)
+    (ht₁ : t ≤ vmdtDepth (canonicalVMDT D rho₁))
+    (ht₂ : t ≤ vmdtDepth (canonicalVMDT D rho₂))
+    (hw : ∀ term ∈ D, term.length ≤ w)
+    (hcode : encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw =
+      encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw)
+    (hlen : (enteredTermsOf rho₁ D t).length = 2)
+    (hexit : secondBlockEntry? rho₁ D t = secondBlockEntry? rho₂ D t) :
+    enteredTermsOf rho₁ D t = enteredTermsOf rho₂ D t := by
+  have hlen₂ :
+      (enteredTermsOf rho₂ D t).length = 2 := by
+    have h1 := enteredTermsOf_length_eq_G2 hsq rho₁ D hrho₁ hell₁ ht₁ hw
+    have h2 := enteredTermsOf_length_eq_G2 hsq rho₂ D hrho₂ hell₂ ht₂ hw
+    have hG2 :
+        (encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw).G2 =
+          (encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw).G2 :=
+      congrArg MatchEncode.G2 hcode
+    calc
+      (enteredTermsOf rho₂ D t).length =
+          (encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw).G2.length := h2
+      _ = (encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw).G2.length := by
+        rw [hG2]
+      _ = (enteredTermsOf rho₁ D t).length := h1.symm
+      _ = 2 := hlen
+  have hne₁ : enteredTermsOf rho₁ D t ≠ [] := by
+    intro h; rw [h, List.length_nil] at hlen; cases hlen
+  have hne₂ : enteredTermsOf rho₂ D t ≠ [] := by
+    intro h; rw [h, List.length_nil] at hlen₂; cases hlen₂
+  rcases List.exists_cons_of_ne_nil hne₁ with ⟨T₁, r₁, hc₁⟩
+  rcases List.exists_cons_of_ne_nil hne₂ with ⟨T₂, r₂, hc₂⟩
+  have hr₁_ne : r₁ ≠ [] := by
+    intro hr
+    have : (T₁ :: r₁).length = 2 := by simpa [hc₁] using hlen
+    simp only [hr, List.length_cons, List.length_nil] at this
+    cases this
+  have hr₂_ne : r₂ ≠ [] := by
+    intro hr
+    have : (T₂ :: r₂).length = 2 := by simpa [hc₂] using hlen₂
+    simp only [hr, List.length_cons, List.length_nil] at this
+    cases this
+  rcases List.exists_cons_of_ne_nil hr₁_ne with ⟨U₁, s₁, hr₁⟩
+  rcases List.exists_cons_of_ne_nil hr₂_ne with ⟨U₂, s₂, hr₂⟩
+  have hs₁ : s₁ = [] := by
+    have : (T₁ :: U₁ :: s₁).length = 2 := by
+      simpa [hc₁, hr₁] using hlen
+    simp only [List.length_cons] at this
+    exact List.eq_nil_of_length_eq_zero (by omega)
+  have hs₂ : s₂ = [] := by
+    have : (T₂ :: U₂ :: s₂).length = 2 := by
+      simpa [hc₂, hr₂] using hlen₂
+    simp only [List.length_cons] at this
+    exact List.eq_nil_of_length_eq_zero (by omega)
+  have hG1 :
+      (encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw).G1 =
+        (encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw).G1 :=
+    congrArg MatchEncode.G1 hcode
+  have hscan₁ :=
+    enteredTermsOf_head_eq_firstNotFalsified_G1_of_cons hsq rho₁ D hrho₁
+      hell₁ ht₁ hw T₁ (U₁ :: s₁) (by simpa [hr₁] using hc₁)
+  have hscan₂ :=
+    enteredTermsOf_head_eq_firstNotFalsified_G1_of_cons hsq rho₂ D hrho₂
+      hell₂ ht₂ hw T₂ (U₂ :: s₂) (by simpa [hr₂] using hc₂)
+  have hT : T₁ = T₂ := by
+    have h :
+        firstNotFalsifiedTerm
+          (encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw).G1 D = some T₁ :=
+      hscan₁
+    have h' :
+        firstNotFalsifiedTerm
+          (encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw).G1 D = some T₂ := by
+      rw [hG1, hscan₂]
+    exact Option.some.inj (h.symm.trans h')
+  rcases enteredTermsOf_second_eq_firstNotFalsified_exit hsq rho₁ D hrho₁
+      hell₁ ht₁ hw T₁ U₁ s₁ (by simpa [hr₁, hs₁] using hc₁) with
+    ⟨exit₁, hex₁, hU₁⟩
+  rcases enteredTermsOf_second_eq_firstNotFalsified_exit hsq rho₂ D hrho₂
+      hell₂ ht₂ hw T₂ U₂ s₂ (by simpa [hr₂, hs₂] using hc₂) with
+    ⟨exit₂, hex₂, hU₂⟩
+  have hexit' : some exit₁ = some exit₂ := by
+    calc
+      some exit₁ = secondBlockEntry? rho₁ D t := hex₁.symm
+      _ = secondBlockEntry? rho₂ D t := hexit
+      _ = some exit₂ := hex₂
+  have hexit_eq : exit₁ = exit₂ := Option.some.inj hexit'
+  have hU : U₁ = U₂ := by
+    have h : firstNotFalsifiedTerm exit₁ D = some U₁ := hU₁
+    have h' : firstNotFalsifiedTerm exit₁ D = some U₂ := by
+      rw [hexit_eq, hU₂]
+    exact Option.some.inj (h.symm.trans h')
+  rw [hc₁, hc₂, hr₁, hr₂, hs₁, hs₂, hT, hU]
+
+/-- Length-≤2 residual under a global second-entry agreement hypothesis on
+equal-code pairs (sufficient packaging; not discharged in general). -/
+def EncodeMatchLengthTwoExitEqResidual {p h w t ell : Nat} (hsq : p = h)
+    (D : MDNF p h) (hw : ∀ term ∈ D, term.length ≤ w) : Prop :=
+  ∀ (rho₁ rho₂ : MatchingMap p h)
+    (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+    (hell₁ : (freePigeons rho₁).card = ell)
+    (hell₂ : (freePigeons rho₂).card = ell)
+    (ht₁ : t ≤ vmdtDepth (canonicalVMDT D rho₁))
+    (ht₂ : t ≤ vmdtDepth (canonicalVMDT D rho₂)),
+    encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw =
+        encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw →
+      (enteredTermsOf rho₁ D t).length = 2 →
+        secondBlockEntry? rho₁ D t = secondBlockEntry? rho₂ D t
+
 /-- Coherent overlay agreement upgrades to full `G1 = compose rho sigma`
 when `rho` is the base decoder strip of that overlay. -/
 theorem compose_decodeBasePoint_of_overlayAgreesG1 {p h : Nat}
@@ -2011,6 +2323,9 @@ theorem enteredTermsOf_length_eq_of_encodeMatch_eq
 sequences on encode images.  Empty-G2 and length-1 cases are discharged
 (`enteredTermsOf_eq_of_encodeMatch_eq_of_G2_nil`,
 `enteredTermsOf_eq_of_encodeMatch_eq_of_length_one` / S2198 head bridge).
+Length-2 is conditional on second-block path-entry agreement
+(`enteredTermsOf_eq_of_encodeMatch_eq_of_length_two_of_exit_eq` / S2199);
+`EncodeMatchLengthTwoExitEqResidual` packages the missing exit-recovery step.
 Combined with `encodeMatch_eq_of_code_eq_of_entered_terms_eq` this yields
 unconditional `encodeMatch_eq_of_code_eq` / `encodeMatch_subtype_injective`.
 
@@ -2018,7 +2333,8 @@ Alternative (stronger) sufficient residual: `EncodeMatchCoherentReplayUniqueResi
 (S2196) — not proved equivalent; it quantifies over all coherent candidates,
 while this residual compares only genuine encode preimages.  Obstruction: G3
 answer codes are indices into `freeVertexList rho`, so pure multi-block term
-replay past the head still needs base/free-list recovery. -/
+replay past the head still needs base/free-list / second-entry recovery from
+the packet alone. -/
 def EncodeMatchEnteredTermsEqResidual {p h w t ell : Nat} (hsq : p = h)
     (D : MDNF p h) (hw : ∀ term ∈ D, term.length ≤ w) : Prop :=
   ∀ (rho₁ rho₂ : MatchingMap p h)
@@ -2129,6 +2445,47 @@ theorem encodeMatchEnteredTermsEqResidual_of_length_le_one
         (by simpa [hlt])
   | n + 2 =>
       have : (enteredTermsOf rho₁ D t).length ≤ 1 := hlen₁
+      rw [hlt] at this
+      exact absurd this (by omega)
+
+/-- Length-≤2 entered-term residual from the S2198 length-≤1 discharge plus
+the S2199 exit-agreement residual on length-2 images. -/
+theorem encodeMatchEnteredTermsEqResidual_of_length_le_two_of_exit
+    {p h w t ell : Nat} (hsq : p = h) (D : MDNF p h)
+    (hw : ∀ term ∈ D, term.length ≤ w)
+    (hbound :
+      ∀ (rho : MatchingMap p h) (hrho : IsMatching rho)
+        (hell : (freePigeons rho).card = ell)
+        (ht : t ≤ vmdtDepth (canonicalVMDT D rho)),
+        (enteredTermsOf rho D t).length ≤ 2)
+    (hexit : EncodeMatchLengthTwoExitEqResidual (t := t) (ell := ell) (w := w)
+      hsq D hw) :
+    EncodeMatchEnteredTermsEqResidual (t := t) (ell := ell) (w := w)
+      hsq D hw := by
+  intro rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ hcode
+  have hlen₁ := hbound rho₁ hrho₁ hell₁ ht₁
+  match hlt : (enteredTermsOf rho₁ D t).length with
+  | 0 =>
+      have hnil₁ : enteredTermsOf rho₁ D t = [] :=
+        List.eq_nil_of_length_eq_zero (by simpa [hlt] using rfl)
+      have hG2 :
+          (encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw).G2 = [] :=
+        (enteredTermsOf_eq_nil_iff_G2_nil hsq rho₁ D hrho₁ hell₁ ht₁ hw).mp
+          hnil₁
+      exact enteredTermsOf_eq_of_encodeMatch_eq_of_G2_nil hsq
+        rho₁ rho₂ D hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ hw hcode hG2
+  | 1 =>
+      exact enteredTermsOf_eq_of_encodeMatch_eq_of_length_one hsq
+        rho₁ rho₂ D hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ hw hcode
+        (by simpa [hlt])
+  | 2 =>
+      exact enteredTermsOf_eq_of_encodeMatch_eq_of_length_two_of_exit_eq hsq
+        rho₁ rho₂ D hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ hw hcode
+        (by simpa [hlt])
+        (hexit rho₁ rho₂ hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ hcode
+          (by simpa [hlt]))
+  | n + 3 =>
+      have : (enteredTermsOf rho₁ D t).length ≤ 2 := hlen₁
       rw [hlt] at this
       exact absurd this (by omega)
 

@@ -29,6 +29,7 @@ import PvNP.PHPMatchingAnswerTransport
 import PvNP.PHPMatchingDeterministicEncode
 import PvNP.PHPMatchingEncodeInjectivity
 import PvNP.PHPMatchingReplayCounterexample
+import PvNP.PHPMatchingEncodeCollisionSearch
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
@@ -12197,4 +12198,94 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingReplayCounterexample.cex_no_named_enteredTerms_collision
+
+/-! S2199: length-2 exit recovery + genuine Fin-2 collision search. -/
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.pairsToMatching_append' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.pairsToMatching_append
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.block_term_eq_firstNotFalsified_entry' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.block_term_eq_firstNotFalsified_entry
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.firstBlockExitMatching' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.firstBlockExitMatching
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.firstBlockExit_eq_of_encode_image' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.firstBlockExit_eq_of_encode_image
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.encodeExt_eq_compose_firstBlockExit_of_length_ge_two' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.encodeExt_eq_compose_firstBlockExit_of_length_ge_two
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.encodeMatch_G1_eq_compose_firstBlockExit_of_length_ge_two' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.encodeMatch_G1_eq_compose_firstBlockExit_of_length_ge_two
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.enteredTermsOf_second_eq_firstNotFalsified_exit' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.enteredTermsOf_second_eq_firstNotFalsified_exit
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.enteredTermsOf_eq_of_encodeMatch_eq_of_length_two_of_exit_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.enteredTermsOf_eq_of_encodeMatch_eq_of_length_two_of_exit_eq
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.EncodeMatchLengthTwoExitEqResidual' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.EncodeMatchLengthTwoExitEqResidual
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.encodeMatchEnteredTermsEqResidual_of_length_le_two_of_exit' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.encodeMatchEnteredTermsEqResidual_of_length_le_two_of_exit
+
+/-- info: 'PvNP.PHPMatchingEncodeCollisionSearch.allMatchings2_length' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeCollisionSearch.allMatchings2_length
+
+/-- info: 'PvNP.PHPMatchingEncodeCollisionSearch.mem_allMatchings2_of_isMatching' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeCollisionSearch.mem_allMatchings2_of_isMatching
+
+/-- info: 'PvNP.PHPMatchingEncodeCollisionSearch.no_collision_ell_two' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeCollisionSearch.no_collision_ell_two
+
+/-- info: 'PvNP.PHPMatchingEncodeCollisionSearch.enteredTermsOf_length_le_t' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeCollisionSearch.enteredTermsOf_length_le_t
+
+/-- info: 'PvNP.PHPMatchingEncodeCollisionSearch.no_collision_ell_one_t_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeCollisionSearch.no_collision_ell_one_t_one
+
+/-- info: 'PvNP.PHPMatchingEncodeCollisionSearch.collision_search_fin2_summary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeCollisionSearch.collision_search_fin2_summary
 
