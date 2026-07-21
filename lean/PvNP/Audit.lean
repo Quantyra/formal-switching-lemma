@@ -12323,6 +12323,50 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeInjectivity.packetFirstBlockSigma_eq_sigmaFull_of_length_ge_two
 
+/-! S2201: path second-entry = walked-pair exit + second-scan bridge. -/
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.first_entered_block_entry_eq_compose_stepsPrefix' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.first_entered_block_entry_eq_compose_stepsPrefix
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.vevents_second_block_entry_eq_compose_first_steps' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.vevents_second_block_entry_eq_compose_first_steps
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.second_block_entry_eq_compose_first_steps' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.second_block_entry_eq_compose_first_steps
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.firstBlockPathExitMatching' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.firstBlockPathExitMatching
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.secondBlockEntry?_eq_some_pathExit' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.secondBlockEntry?_eq_some_pathExit
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.enteredTermsOf_second_eq_firstNotFalsified_pathExit' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.enteredTermsOf_second_eq_firstNotFalsified_pathExit
+
+/-- info: 'PvNP.PHPMatchingEncodeInjectivity.enteredTermsOf_second_eq_of_encodeMatch_eq_of_pathExit_eq' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeInjectivity.enteredTermsOf_second_eq_of_encodeMatch_eq_of_pathExit_eq
+
 /-- info: 'PvNP.PHPMatchingEncodeCollisionSearch.allMatchings2_length' depends on axioms: [propext] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeCollisionSearch.allMatchings2_length

@@ -76,11 +76,22 @@ falsifies `B₀.term`, or the same term would be re-entered while already
 `(G1,G2)` head data yields the **decoded** head β-block
 (`packetFirstBlockSigma_eq_decode_head_of_encode_image`), and on length-≥2
 encode images that decode equals `(σ′₀).toFinset`
-(`packetFirstBlockSigma_eq_sigmaFull_of_length_ge_two`).  Recovering the
-**path** second entry from the packet alone remains open, so
-`EncodeMatchLengthTwoExitEqResidual` is not discharged.  Conditional
-injectivity shells still require residual discharge — path-entry recovery
-does **not** yield unconditional `encodeMatch_eq_of_code_eq` /
+(`packetFirstBlockSigma_eq_sigmaFull_of_length_ge_two`).
+
+**S2201 path second-entry = walked-pair exit.**  The genuine second-block
+path entry is the first entry composed with the first block's **walked**
+pairs (`second_block_entry_eq_compose_first_steps` /
+`first_entered_block_entry_eq_compose_stepsPrefix`), packaged as
+`firstBlockPathExitMatching` with
+`secondBlockEntry?_eq_some_pathExit`.  The second entered term is the UF
+scan under that path exit
+(`enteredTermsOf_second_eq_firstNotFalsified_pathExit`).  Equal codes plus
+equal path exits force length-2 entered-term equality
+(`enteredTermsOf_second_eq_of_encodeMatch_eq_of_pathExit_eq`).  Packet-only
+recovery of the walked pairs (hence of the path exit from `(G1,G2,G3)`
+alone) remains open, so `EncodeMatchLengthTwoExitEqResidual` is not
+discharged.  Conditional injectivity shells still require residual
+discharge — **no** unconditional `encodeMatch_eq_of_code_eq` /
 `encodeMatch_subtype_injective`.
 
 Stage C adds dual sigma recovery (`decodeSigmaFromBase`), unconditional
@@ -2506,6 +2517,506 @@ theorem packetFirstBlockSigma_eq_sigmaFull_of_length_ge_two
       (fun e he => ((mem_sigmaFull B₀ e).mp he).1) hw₀
   rw [hpack, hdecode]
 
+/-! ## S2201: path second-entry = first entry composed with walked pairs
+
+The encode-theoretic first-block exit overlays **σ′**.  The genuine path
+second-entry overlays the first block's **walked** pairs instead.  This
+section lands that identity, packages the path exit, and bridges the second
+entered term as the UF scan under that path exit.  Packet-only recovery of
+the walked pairs (hence of the path exit) remains the residual obstruction
+for discharging `EncodeMatchLengthTwoExitEqResidual`.
+-/
+
+private theorem pairsToMatching_cons_eq {p h : Nat} (e : Fin p × Fin h)
+    (es : List (Fin p × Fin h)) :
+    pairsToMatching (e :: es) =
+      compose (singleMatching e.1 e.2) (pairsToMatching es) :=
+  rfl
+
+private theorem stepsPrefix_qstep_eq {p h : Nat} (st : VStep p h)
+    (es : List (VEvent p h)) :
+    stepsPrefix (.qstep st :: es) = st :: stepsPrefix es :=
+  rfl
+
+private theorem stepsPrefix_enter_eq {p h : Nat} (t : MTerm p h)
+    (ent : MatchingMap p h) (es : List (VEvent p h)) :
+    stepsPrefix (.enter t ent :: es) = ([] : List (VStep p h)) :=
+  rfl
+
+/-- First entered block of a `vevents` run: its entry matching equals the
+run base composed with the leading `stepsPrefix` pairs (empty prefix when
+the run opens with `enter` under the base). -/
+theorem first_entered_block_entry_eq_compose_stepsPrefix {p h : Nat} :
+    ∀ (fuel : Nat) (mu : MatchingMap p h) (pending : List (Vertex p h))
+      (D : MDNF p h) (feed : List (Vertex p h))
+      (B : VBlock p h) (Bs : List (VBlock p h)),
+      blocksOf (vevents fuel mu pending D feed) = B :: Bs →
+      B.entry =
+        compose mu
+          (pairsToMatching
+            ((stepsPrefix (vevents fuel mu pending D feed)).map
+              VStep.pair))
+  | _, mu, [], [], feed, B, Bs, hblocks => by
+      rw [vevents_nil, blocksOf_nil] at hblocks
+      cases hblocks
+  | fuel, mu, [], t :: rest, feed, B, Bs, hblocks => by
+      by_cases hleg : termMatchingLegalB t = true
+      · by_cases hfals : termFalsifiedB mu t = true
+        · rw [vevents_skip_falsified fuel mu t rest feed hleg hfals] at hblocks ⊢
+          exact first_entered_block_entry_eq_compose_stepsPrefix fuel mu []
+            rest feed B Bs hblocks
+        · have hfals' : termFalsifiedB mu t = false :=
+            Bool.eq_false_iff.mpr hfals
+          by_cases hsat : termSatisfiedB mu t = true
+          · rw [vevents_stop_satisfied fuel mu t rest feed hleg hfals' hsat,
+              blocksOf_nil] at hblocks
+            cases hblocks
+          · have hsat' : termSatisfiedB mu t = false :=
+              Bool.eq_false_iff.mpr hsat
+            cases fuel with
+            | zero =>
+                rw [vevents_entry_zero mu t rest feed hleg hfals' hsat',
+                  blocksOf_nil] at hblocks
+                cases hblocks
+            | succ fuel' =>
+                cases htv : termVertices mu t with
+                | nil =>
+                    rw [vevents_entry_novertices fuel' mu t rest feed hleg
+                      hfals' hsat' htv, blocksOf_nil] at hblocks
+                    cases hblocks
+                | cons v vs =>
+                    cases v with
+                    | inl i =>
+                        cases feed with
+                        | nil =>
+                            rw [vevents_entry_feed_nil fuel' mu t rest i vs
+                              hleg hfals' hsat' htv, blocksOf_nil] at hblocks
+                            cases hblocks
+                        | cons av fs =>
+                            cases av with
+                            | inl q =>
+                                rw [vevents_entry_feed_illkind fuel' mu t rest
+                                  i vs q fs hleg hfals' hsat' htv,
+                                  blocksOf_nil] at hblocks
+                                cases hblocks
+                            | inr a =>
+                                by_cases hha : holeUsed mu a = true
+                                · rw [vevents_entry_pigeon_dead fuel' mu t
+                                    rest i vs a fs hleg hfals' hsat' htv hha,
+                                    blocksOf_nil] at hblocks
+                                  cases hblocks
+                                · have hha' : holeUsed mu a = false :=
+                                    Bool.eq_false_iff.mpr hha
+                                  rw [vevents_entry_pigeon_live fuel' mu t
+                                    rest i vs a fs hleg hfals' hsat' htv
+                                    hha'] at hblocks ⊢
+                                  rw [blocksOf_enter] at hblocks
+                                  cases hblocks
+                                  simp [stepsPrefix_enter_eq, pairsToMatching,
+                                    compose_empty_right]
+                    | inr b =>
+                        exact absurd htv
+                          (termVertices_head_not_hole mu t b vs)
+      · have hleg' : termMatchingLegalB t = false :=
+          Bool.eq_false_iff.mpr hleg
+        rw [vevents_skip_illegal fuel mu t rest feed hleg'] at hblocks ⊢
+        exact first_entered_block_entry_eq_compose_stepsPrefix fuel mu [] rest
+          feed B Bs hblocks
+  | fuel, mu, v :: vs, D, feed, B, Bs, hblocks => by
+      by_cases hcov : vertexCoveredB mu v = true
+      · rw [vevents_block_skip_covered fuel mu v vs D feed hcov] at hblocks ⊢
+        exact first_entered_block_entry_eq_compose_stepsPrefix fuel mu vs D
+          feed B Bs hblocks
+      · have hcov' : vertexCoveredB mu v = false :=
+          Bool.eq_false_iff.mpr hcov
+        cases fuel with
+        | zero =>
+            rw [vevents_block_zero mu v vs D feed hcov', blocksOf_nil] at hblocks
+            cases hblocks
+        | succ fuel' =>
+            cases v with
+            | inl i =>
+                cases feed with
+                | nil =>
+                    rw [vevents_block_feed_nil fuel' mu _ vs D hcov',
+                      blocksOf_nil] at hblocks
+                    cases hblocks
+                | cons av fs =>
+                    cases av with
+                    | inl q =>
+                        rw [vevents_block_pigeon_illkind fuel' mu i vs D q fs
+                          hcov', blocksOf_nil] at hblocks
+                        cases hblocks
+                    | inr a =>
+                        by_cases hha : holeUsed mu a = true
+                        · rw [vevents_block_pigeon_dead fuel' mu i vs D a fs
+                            hcov' hha, blocksOf_nil] at hblocks
+                          cases hblocks
+                        · have hha' : holeUsed mu a = false :=
+                            Bool.eq_false_iff.mpr hha
+                          rw [vevents_block_pigeon_live fuel' mu i vs D a fs
+                            hcov' hha'] at hblocks ⊢
+                          rw [blocksOf_qstep] at hblocks
+                          have hrec :=
+                            first_entered_block_entry_eq_compose_stepsPrefix
+                              fuel' (compose mu (singleMatching i a)) vs D fs
+                              B Bs hblocks
+                          rw [stepsPrefix_qstep_eq]
+                          have hst :
+                              ({ vertex := Sum.inl i, pair := (i, a) } :
+                                VStep p h).pair = (i, a) := rfl
+                          calc
+                            B.entry =
+                                compose (compose mu (singleMatching i a))
+                                  (pairsToMatching
+                                    ((stepsPrefix
+                                      (vevents fuel'
+                                        (compose mu (singleMatching i a))
+                                        vs D fs)).map VStep.pair)) := hrec
+                            _ =
+                                compose mu
+                                  (pairsToMatching
+                                    (List.map VStep.pair
+                                      ({ vertex := Sum.inl i, pair := (i, a) } ::
+                                        stepsPrefix
+                                          (vevents fuel'
+                                            (compose mu (singleMatching i a))
+                                            vs D fs)))) := by
+                              simp only [List.map_cons, hst,
+                                pairsToMatching_cons_eq, compose_assoc]
+            | inr b =>
+                cases feed with
+                | nil =>
+                    rw [vevents_block_feed_nil fuel' mu _ vs D hcov',
+                      blocksOf_nil] at hblocks
+                    cases hblocks
+                | cons av fs =>
+                    cases av with
+                    | inr a =>
+                        rw [vevents_block_hole_illkind fuel' mu b vs D a fs
+                          hcov', blocksOf_nil] at hblocks
+                        cases hblocks
+                    | inl q =>
+                        by_cases hq : (mu q).isSome = true
+                        · rw [vevents_block_hole_dead fuel' mu b vs D q fs
+                            hcov' hq, blocksOf_nil] at hblocks
+                          cases hblocks
+                        · have hq' : (mu q).isSome = false :=
+                            Bool.eq_false_iff.mpr hq
+                          rw [vevents_block_hole_live fuel' mu b vs D q fs
+                            hcov' hq'] at hblocks ⊢
+                          rw [blocksOf_qstep] at hblocks
+                          have hrec :=
+                            first_entered_block_entry_eq_compose_stepsPrefix
+                              fuel' (compose mu (singleMatching q b)) vs D fs
+                              B Bs hblocks
+                          rw [stepsPrefix_qstep_eq]
+                          have hst :
+                              ({ vertex := Sum.inr b, pair := (q, b) } :
+                                VStep p h).pair = (q, b) := rfl
+                          calc
+                            B.entry =
+                                compose (compose mu (singleMatching q b))
+                                  (pairsToMatching
+                                    ((stepsPrefix
+                                      (vevents fuel'
+                                        (compose mu (singleMatching q b))
+                                        vs D fs)).map VStep.pair)) := hrec
+                            _ =
+                                compose mu
+                                  (pairsToMatching
+                                    (List.map VStep.pair
+                                      ({ vertex := Sum.inr b, pair := (q, b) } ::
+                                        stepsPrefix
+                                          (vevents fuel'
+                                            (compose mu (singleMatching q b))
+                                            vs D fs)))) := by
+                              simp only [List.map_cons, hst,
+                                pairsToMatching_cons_eq, compose_assoc]
+  termination_by fuel _ pending D _ _ _ _ => (fuel, pending.length + D.length)
+
+/-- Second entered block of a events run: its entry is the first block's
+entry composed with that block's walked pairs. -/
+theorem vevents_second_block_entry_eq_compose_first_steps {p h : Nat} :
+    ∀ (fuel : Nat) (mu : MatchingMap p h) (pending : List (Vertex p h))
+      (D : MDNF p h) (feed : List (Vertex p h))
+      (B0 B1 : VBlock p h) (rest : List (VBlock p h)),
+      blocksOf (vevents fuel mu pending D feed) = B0 :: B1 :: rest →
+      B1.entry =
+        compose B0.entry
+          (pairsToMatching (B0.steps.map VStep.pair))
+  | _, mu, [], [], feed, B0, B1, rest, hblocks => by
+      rw [vevents_nil, blocksOf_nil] at hblocks
+      cases hblocks
+  | fuel, mu, [], t :: restD, feed, B0, B1, rest, hblocks => by
+      by_cases hleg : termMatchingLegalB t = true
+      · by_cases hfals : termFalsifiedB mu t = true
+        · rw [vevents_skip_falsified fuel mu t restD feed hleg hfals] at hblocks
+          exact vevents_second_block_entry_eq_compose_first_steps fuel mu []
+            restD feed B0 B1 rest hblocks
+        · have hfals' : termFalsifiedB mu t = false :=
+            Bool.eq_false_iff.mpr hfals
+          by_cases hsat : termSatisfiedB mu t = true
+          · rw [vevents_stop_satisfied fuel mu t restD feed hleg hfals' hsat,
+              blocksOf_nil] at hblocks
+            cases hblocks
+          · have hsat' : termSatisfiedB mu t = false :=
+              Bool.eq_false_iff.mpr hsat
+            cases fuel with
+            | zero =>
+                rw [vevents_entry_zero mu t restD feed hleg hfals' hsat',
+                  blocksOf_nil] at hblocks
+                cases hblocks
+            | succ fuel' =>
+                cases htv : termVertices mu t with
+                | nil =>
+                    rw [vevents_entry_novertices fuel' mu t restD feed hleg
+                      hfals' hsat' htv, blocksOf_nil] at hblocks
+                    cases hblocks
+                | cons v vs =>
+                    cases v with
+                    | inl i =>
+                        cases feed with
+                        | nil =>
+                            rw [vevents_entry_feed_nil fuel' mu t restD i vs
+                              hleg hfals' hsat' htv, blocksOf_nil] at hblocks
+                            cases hblocks
+                        | cons av fs =>
+                            cases av with
+                            | inl q =>
+                                rw [vevents_entry_feed_illkind fuel' mu t
+                                  restD i vs q fs hleg hfals' hsat' htv,
+                                  blocksOf_nil] at hblocks
+                                cases hblocks
+                            | inr a =>
+                                by_cases hha : holeUsed mu a = true
+                                · rw [vevents_entry_pigeon_dead fuel' mu t
+                                    restD i vs a fs hleg hfals' hsat' htv hha,
+                                    blocksOf_nil] at hblocks
+                                  cases hblocks
+                                · have hha' : holeUsed mu a = false :=
+                                    Bool.eq_false_iff.mpr hha
+                                  rw [vevents_entry_pigeon_live fuel' mu t
+                                    restD i vs a fs hleg hfals' hsat' htv
+                                    hha'] at hblocks
+                                  rw [blocksOf_enter] at hblocks
+                                  have hB0 :
+                                      B0 =
+                                        ⟨t, mu,
+                                          stepsPrefix
+                                            (VEvent.qstep
+                                              ⟨Sum.inl i, (i, a)⟩ ::
+                                              vevents fuel'
+                                                (compose mu
+                                                  (singleMatching i a))
+                                                vs (t :: restD) fs)⟩ :=
+                                    (List.cons.inj hblocks).1.symm
+                                  have hBs :
+                                      blocksOf
+                                          (afterSteps
+                                            (VEvent.qstep
+                                              ⟨Sum.inl i, (i, a)⟩ ::
+                                              vevents fuel'
+                                                (compose mu
+                                                  (singleMatching i a))
+                                                vs (t :: restD) fs)) =
+                                        B1 :: rest :=
+                                    (List.cons.inj hblocks).2
+                                  have hBs' :
+                                      blocksOf
+                                          (vevents fuel'
+                                            (compose mu
+                                              (singleMatching i a))
+                                            vs (t :: restD) fs) =
+                                        B1 :: rest := by
+                                    -- afterSteps (qstep :: es) = afterSteps es
+                                    change blocksOf
+                                        (afterSteps
+                                          (vevents fuel'
+                                            (compose mu
+                                              (singleMatching i a))
+                                            vs (t :: restD) fs)) =
+                                      B1 :: rest at hBs
+                                    rwa [blocksOf_afterSteps] at hBs
+                                  have hsteps :
+                                      B0.steps =
+                                        ⟨Sum.inl i, (i, a)⟩ ::
+                                          stepsPrefix
+                                            (vevents fuel'
+                                              (compose mu
+                                                (singleMatching i a))
+                                              vs (t :: restD) fs) := by
+                                    simp only [hB0, stepsPrefix_qstep_eq]
+                                  have hentry0 : B0.entry = mu := by
+                                    simp only [hB0]
+                                  have hB1 :=
+                                    first_entered_block_entry_eq_compose_stepsPrefix
+                                      fuel' (compose mu (singleMatching i a))
+                                      vs (t :: restD) fs B1 rest hBs'
+                                  have hst :
+                                      ({ vertex := Sum.inl i, pair := (i, a) } :
+                                        VStep p h).pair = (i, a) := rfl
+                                  rw [hentry0, hsteps, hB1]
+                                  simp only [List.map_cons, hst,
+                                    pairsToMatching_cons_eq, compose_assoc]
+                    | inr b =>
+                        exact absurd htv
+                          (termVertices_head_not_hole mu t b vs)
+      · have hleg' : termMatchingLegalB t = false :=
+          Bool.eq_false_iff.mpr hleg
+        rw [vevents_skip_illegal fuel mu t restD feed hleg'] at hblocks
+        exact vevents_second_block_entry_eq_compose_first_steps fuel mu []
+          restD feed B0 B1 rest hblocks
+  | fuel, mu, v :: vs, D, feed, B0, B1, rest, hblocks => by
+      by_cases hcov : vertexCoveredB mu v = true
+      · rw [vevents_block_skip_covered fuel mu v vs D feed hcov] at hblocks
+        exact vevents_second_block_entry_eq_compose_first_steps fuel mu vs D
+          feed B0 B1 rest hblocks
+      · have hcov' : vertexCoveredB mu v = false :=
+          Bool.eq_false_iff.mpr hcov
+        cases fuel with
+        | zero =>
+            rw [vevents_block_zero mu v vs D feed hcov', blocksOf_nil] at hblocks
+            cases hblocks
+        | succ fuel' =>
+            cases v with
+            | inl i =>
+                cases feed with
+                | nil =>
+                    rw [vevents_block_feed_nil fuel' mu _ vs D hcov',
+                      blocksOf_nil] at hblocks
+                    cases hblocks
+                | cons av fs =>
+                    cases av with
+                    | inl q =>
+                        rw [vevents_block_pigeon_illkind fuel' mu i vs D q fs
+                          hcov', blocksOf_nil] at hblocks
+                        cases hblocks
+                    | inr a =>
+                        by_cases hha : holeUsed mu a = true
+                        · rw [vevents_block_pigeon_dead fuel' mu i vs D a fs
+                            hcov' hha, blocksOf_nil] at hblocks
+                          cases hblocks
+                        · have hha' : holeUsed mu a = false :=
+                            Bool.eq_false_iff.mpr hha
+                          rw [vevents_block_pigeon_live fuel' mu i vs D a fs
+                            hcov' hha', blocksOf_qstep] at hblocks
+                          exact vevents_second_block_entry_eq_compose_first_steps
+                            fuel' (compose mu (singleMatching i a)) vs D fs
+                            B0 B1 rest hblocks
+            | inr b =>
+                cases feed with
+                | nil =>
+                    rw [vevents_block_feed_nil fuel' mu _ vs D hcov',
+                      blocksOf_nil] at hblocks
+                    cases hblocks
+                | cons av fs =>
+                    cases av with
+                    | inr a =>
+                        rw [vevents_block_hole_illkind fuel' mu b vs D a fs
+                          hcov', blocksOf_nil] at hblocks
+                        cases hblocks
+                    | inl q =>
+                        by_cases hq : (mu q).isSome = true
+                        · rw [vevents_block_hole_dead fuel' mu b vs D q fs
+                            hcov' hq, blocksOf_nil] at hblocks
+                          cases hblocks
+                        · have hq' : (mu q).isSome = false :=
+                            Bool.eq_false_iff.mpr hq
+                          rw [vevents_block_hole_live fuel' mu b vs D q fs
+                            hcov' hq', blocksOf_qstep] at hblocks
+                          exact vevents_second_block_entry_eq_compose_first_steps
+                            fuel' (compose mu (singleMatching q b)) vs D fs
+                            B0 B1 rest hblocks
+  termination_by fuel _ pending D _ _ _ _ _ =>
+    (fuel, pending.length + D.length)
+
+/-- **S2201 path second-entry identity.**  On every length-≥2 root trace the
+second block enters under the first entry composed with the first block's
+walked pairs (not with σ′). -/
+theorem second_block_entry_eq_compose_first_steps {p h : Nat}
+    (rho : MatchingMap p h) (D : MDNF p h) (feed : List (Vertex p h))
+    (B₀ B₁ : VBlock p h) (rest : List (VBlock p h))
+    (hblocks : blocksOf (vtrace rho D feed) = B₀ :: B₁ :: rest) :
+    B₁.entry =
+      compose B₀.entry
+        (pairsToMatching (B₀.steps.map VStep.pair)) :=
+  vevents_second_block_entry_eq_compose_first_steps
+    (freePigeons rho).card rho [] D feed B₀ B₁ rest
+    (by simpa [vtrace] using hblocks)
+
+/-- Path exit matching after the first entered block: base composed with that
+block's walked pairs.  Empty-block traces leave the base unchanged. -/
+def firstBlockPathExitMatching {p h : Nat} (rho : MatchingMap p h)
+    (D : MDNF p h) (t : Nat) : MatchingMap p h :=
+  match blocksOf (vtrace rho D (leftmostLiveDeepFeed rho D t)) with
+  | [] => rho
+  | B :: _ => compose rho (pairsToMatching (B.steps.map VStep.pair))
+
+theorem firstBlockPathExitMatching_cons {p h : Nat} (rho : MatchingMap p h)
+    (D : MDNF p h) (t : Nat) (B : VBlock p h) (Bs : List (VBlock p h))
+    (hblocks :
+      blocksOf (vtrace rho D (leftmostLiveDeepFeed rho D t)) = B :: Bs) :
+    firstBlockPathExitMatching rho D t =
+      compose rho (pairsToMatching (B.steps.map VStep.pair)) := by
+  simp only [firstBlockPathExitMatching, hblocks]
+
+/-- On length-≥2 root traces the path second-entry is exactly the first-block
+path exit. -/
+theorem secondBlockEntry?_eq_some_pathExit {p h : Nat}
+    (rho : MatchingMap p h) (D : MDNF p h) (t : Nat)
+    (hlen : 2 ≤ (enteredTermsOf rho D t).length) :
+    secondBlockEntry? rho D t =
+      some (firstBlockPathExitMatching rho D t) := by
+  let feed := leftmostLiveDeepFeed rho D t
+  have hlen' : 2 ≤ (blocksOf (vtrace rho D feed)).length := by
+    simpa [enteredTermsOf, feed, List.length_map] using hlen
+  match hblocks : blocksOf (vtrace rho D feed) with
+  | [] =>
+      rw [hblocks, List.length_nil] at hlen'
+      exact absurd hlen' (by omega)
+  | [B] =>
+      rw [hblocks, List.length_singleton] at hlen'
+      exact absurd hlen' (by omega)
+  | B₀ :: B₁ :: rest =>
+      have hpath :
+          B₁.entry =
+            compose B₀.entry
+              (pairsToMatching (B₀.steps.map VStep.pair)) :=
+        second_block_entry_eq_compose_first_steps rho D feed B₀ B₁ rest
+          hblocks
+      have hentry₀ : B₀.entry = rho :=
+        first_block_entry_eq_base rho D feed B₀ (B₁ :: rest) hblocks
+      have hexit :
+          firstBlockPathExitMatching rho D t =
+            compose rho (pairsToMatching (B₀.steps.map VStep.pair)) :=
+        firstBlockPathExitMatching_cons rho D t B₀ (B₁ :: rest)
+          (by simpa [feed] using hblocks)
+      simp only [secondBlockEntry?, feed, hblocks, hexit, hpath, hentry₀]
+
+/-- **S2201 second-scan bridge.**  On every length-≥2 encode image the second
+entered term is the UF scan of `D` under the first-block path exit. -/
+theorem enteredTermsOf_second_eq_firstNotFalsified_pathExit
+    {p h w t ell : Nat} (hsq : p = h)
+    (rho : MatchingMap p h) (D : MDNF p h)
+    (hrho : IsMatching rho) (hell : (freePigeons rho).card = ell)
+    (ht : t ≤ vmdtDepth (canonicalVMDT D rho))
+    (hw : ∀ term ∈ D, term.length ≤ w)
+    (T₀ T₁ : MTerm p h) (rest : List (MTerm p h))
+    (hcons : enteredTermsOf rho D t = T₀ :: T₁ :: rest) :
+    firstNotFalsifiedTerm (firstBlockPathExitMatching rho D t) D =
+      some T₁ := by
+  rcases enteredTermsOf_second_eq_firstNotFalsified_exit hsq rho D hrho hell
+      ht hw T₀ T₁ rest hcons with ⟨exit, hex, hscan⟩
+  have hlen : 2 ≤ (enteredTermsOf rho D t).length := by
+    simpa [hcons, List.length_cons] using (by omega : 2 ≤ 2 + rest.length)
+  have hpath : secondBlockEntry? rho D t =
+      some (firstBlockPathExitMatching rho D t) :=
+    secondBlockEntry?_eq_some_pathExit rho D t hlen
+  have hexit : exit = firstBlockPathExitMatching rho D t :=
+    Option.some.inj (hex.symm.trans hpath)
+  simpa [hexit] using hscan
+
 /-- **S2199 length-2 isolation.**  Equal codes with length-2 entered terms and
 equal second-block path entries force equal entered-term sequences (head from
 shared `G1` via the S2198 bridge; second from the shared exit via the
@@ -2605,6 +3116,52 @@ theorem enteredTermsOf_eq_of_encodeMatch_eq_of_length_two_of_exit_eq
       rw [hexit_eq, hU₂]
     exact Option.some.inj (h.symm.trans h')
   rw [hc₁, hc₂, hr₁, hr₂, hs₁, hs₂, hT, hU]
+
+/-- Equal codes force equal second entered terms once path exits agree
+(via the path-exit second-scan bridge / S2201). -/
+theorem enteredTermsOf_second_eq_of_encodeMatch_eq_of_pathExit_eq
+    {p h w t ell : Nat} (hsq : p = h)
+    (rho₁ rho₂ : MatchingMap p h) (D : MDNF p h)
+    (hrho₁ : IsMatching rho₁) (hrho₂ : IsMatching rho₂)
+    (hell₁ : (freePigeons rho₁).card = ell)
+    (hell₂ : (freePigeons rho₂).card = ell)
+    (ht₁ : t ≤ vmdtDepth (canonicalVMDT D rho₁))
+    (ht₂ : t ≤ vmdtDepth (canonicalVMDT D rho₂))
+    (hw : ∀ term ∈ D, term.length ≤ w)
+    (hcode : encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw =
+      encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw)
+    (hlen : (enteredTermsOf rho₁ D t).length = 2)
+    (hexit : firstBlockPathExitMatching rho₁ D t =
+      firstBlockPathExitMatching rho₂ D t) :
+    enteredTermsOf rho₁ D t = enteredTermsOf rho₂ D t := by
+  have hlen₂ :
+      (enteredTermsOf rho₂ D t).length = 2 := by
+    have h1 := enteredTermsOf_length_eq_G2 hsq rho₁ D hrho₁ hell₁ ht₁ hw
+    have h2 := enteredTermsOf_length_eq_G2 hsq rho₂ D hrho₂ hell₂ ht₂ hw
+    have hG2 :
+        (encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw).G2 =
+          (encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw).G2 :=
+      congrArg MatchEncode.G2 hcode
+    calc
+      (enteredTermsOf rho₂ D t).length =
+          (encodeMatch hsq rho₂ D hrho₂ hell₂ ht₂ hw).G2.length := h2
+      _ = (encodeMatch hsq rho₁ D hrho₁ hell₁ ht₁ hw).G2.length := by
+        rw [hG2]
+      _ = (enteredTermsOf rho₁ D t).length := h1.symm
+      _ = 2 := hlen
+  have hse :
+      secondBlockEntry? rho₁ D t = secondBlockEntry? rho₂ D t := by
+    have h1 : 2 ≤ (enteredTermsOf rho₁ D t).length := by simpa [hlen]
+    have h2 : 2 ≤ (enteredTermsOf rho₂ D t).length := by simpa [hlen₂]
+    calc
+      secondBlockEntry? rho₁ D t =
+          some (firstBlockPathExitMatching rho₁ D t) :=
+        secondBlockEntry?_eq_some_pathExit rho₁ D t h1
+      _ = some (firstBlockPathExitMatching rho₂ D t) := by rw [hexit]
+      _ = secondBlockEntry? rho₂ D t :=
+        (secondBlockEntry?_eq_some_pathExit rho₂ D t h2).symm
+  exact enteredTermsOf_eq_of_encodeMatch_eq_of_length_two_of_exit_eq hsq
+    rho₁ rho₂ D hrho₁ hrho₂ hell₁ hell₂ ht₁ ht₂ hw hcode hlen hse
 
 /-- Length-≤2 residual under a global second-entry agreement hypothesis on
 equal-code pairs (sufficient packaging; not discharged in general). -/
@@ -2720,7 +3277,9 @@ sequences on encode images.  Empty-G2 and length-1 cases are discharged
 (`enteredTermsOf_eq_of_encodeMatch_eq_of_G2_nil`,
 `enteredTermsOf_eq_of_encodeMatch_eq_of_length_one` / S2198 head bridge).
 Length-2 is conditional on second-block path-entry agreement
-(`enteredTermsOf_eq_of_encodeMatch_eq_of_length_two_of_exit_eq` / S2199);
+(`enteredTermsOf_eq_of_encodeMatch_eq_of_length_two_of_exit_eq` / S2199;
+equivalently path-exit agreement via
+`enteredTermsOf_second_eq_of_encodeMatch_eq_of_pathExit_eq` / S2201);
 `EncodeMatchLengthTwoExitEqResidual` packages the missing exit-recovery step.
 S2200 refutes identifying path second-entry with the first-block σ-exit on
 genuine length-≥2 root traces
@@ -2728,10 +3287,15 @@ genuine length-≥2 root traces
 `exitBridge_second_entry_ne_sigma_exit`) and lands packet recovery of the
 decoded head β-block (`packetFirstBlockSigma_eq_decode_head_of_encode_image`),
 strengthened on length-≥2 images to `(σ′₀).toFinset`
-(`packetFirstBlockSigma_eq_sigmaFull_of_length_ge_two`).  Path second-entry
-recovery from the packet alone remains open, so the length-2 exit residual
-and full multi-block residual stay active.  Conditional shells
-(`encodeMatch_eq_of_code_eq_of_entered_terms_eq`, residual-packaged
+(`packetFirstBlockSigma_eq_sigmaFull_of_length_ge_two`).  S2201 identifies
+path second-entry with the first-block **walked-pair** exit
+(`second_block_entry_eq_compose_first_steps`,
+`secondBlockEntry?_eq_some_pathExit`) and bridges the second entered term as
+the UF scan under that path exit
+(`enteredTermsOf_second_eq_firstNotFalsified_pathExit`).  Packet-only recovery
+of the walked pairs (G3 is free-list-relative to ρ) remains open, so the
+length-2 exit residual and full multi-block residual stay active.  Conditional
+shells (`encodeMatch_eq_of_code_eq_of_entered_terms_eq`, residual-packaged
 subtype injectivity) still require those residuals — **no** unconditional
 `encodeMatch_eq_of_code_eq` / `encodeMatch_subtype_injective` is claimed.
 
