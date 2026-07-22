@@ -4,6 +4,12 @@
 
 ### Added
 
+- **S2223** path-geometry image/carrier bound: add the `(G1, β)`-only
+  fixed-grade image and prove the mcode-only carrier bound
+  `|image_j| ≤ |honest(ell-j)| * (2w)^j`, plus the fixed `searchD4mp`, `w = 2`
+  package target with `C = 4`.  Structural β/G1/walked coupling is preserved on
+  the bad-domain wrapper.  No side-bit/free-stream tax, no residual preimage
+  grind, no new force gate, no GA-4, P-vs-NP, or `v0.11.0` claim.
 - **S2222** concrete path-geometry PairCode encode step: instantiate the S2221
   packet target with existing deterministic `encodeExt`, β-blocks, and coupled
   walked pairs; prove β well-formedness, G1 honest-space landing, walked length,

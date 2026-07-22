@@ -44,6 +44,7 @@ import PvNP.PHPMatchingEncodeSideBitPackage
 import PvNP.PHPMatchingEncodeSideBitForceFreeze
 import PvNP.PHPMatchingEncodePathGeometryTarget
 import PvNP.PHPMatchingEncodePathGeometryConcrete
+import PvNP.PHPMatchingEncodePathGeometryImage
 import PvNP.PHPMatchingEncodeAnswerAlphabet
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwoPackage
@@ -13178,3 +13179,17 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodePathGeometryConcrete.path_geometry_concrete_s2222_summary
+
+/-! S2223: path-geometry `(G1, β)` image/carrier bound. -/
+
+/-- info: 'PvNP.PHPMatchingEncodePathGeometryImage.pathGeometryBadGradeImage_card_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePathGeometryImage.pathGeometryBadGradeImage_card_le
+
+/-- info: 'PvNP.PHPMatchingEncodePathGeometryImage.path_geometry_image_s2223_summary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePathGeometryImage.path_geometry_image_s2223_summary
