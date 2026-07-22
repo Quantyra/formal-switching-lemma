@@ -43,6 +43,7 @@ import PvNP.PHPMatchingEncodeSideBitImage
 import PvNP.PHPMatchingEncodeSideBitPackage
 import PvNP.PHPMatchingEncodeSideBitForceFreeze
 import PvNP.PHPMatchingEncodePathGeometryTarget
+import PvNP.PHPMatchingEncodePathGeometryConcrete
 import PvNP.PHPMatchingEncodeAnswerAlphabet
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwoPackage
@@ -13151,3 +13152,29 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodePathGeometryTarget.path_geometry_pivot_s2221_summary
+
+/-! S2222: concrete path-geometry PairCode encode structural landing. -/
+
+/-- info: 'PvNP.PHPMatchingEncodePathGeometryConcrete.pathGeometryEncode_beta_wf' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePathGeometryConcrete.pathGeometryEncode_beta_wf
+
+/-- info: 'PvNP.PHPMatchingEncodePathGeometryConcrete.pathGeometryEncode_G1_mem_honest' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePathGeometryConcrete.pathGeometryEncode_G1_mem_honest
+
+/-- info: 'PvNP.PHPMatchingEncodePathGeometryConcrete.pathGeometryEncode_walked_length' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePathGeometryConcrete.pathGeometryEncode_walked_length
+
+/-- info: 'PvNP.PHPMatchingEncodePathGeometryConcrete.path_geometry_concrete_s2222_summary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePathGeometryConcrete.path_geometry_concrete_s2222_summary

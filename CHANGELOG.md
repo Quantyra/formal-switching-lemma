@@ -4,6 +4,12 @@
 
 ### Added
 
+- **S2222** concrete path-geometry PairCode encode step: instantiate the S2221
+  packet target with existing deterministic `encodeExt`, β-blocks, and coupled
+  walked pairs; prove β well-formedness, G1 honest-space landing, walked length,
+  and fixed `searchD4mp` wrapper pins.  Structural only: no residual
+  unique-preimage grind, no side-bit/free-stream product tax, no new force,
+  no GA-4, switching, P-vs-NP, or `v0.11.0` claim.
 - **S2221** path-geometry force pivot target: after S2220 stop-lossed side-bit
   product counting, pin the next force lane as packet-native path geometry /
   coupled walked-pair encode (no free `Fin t → _` stream, no side-bit `4^j`
