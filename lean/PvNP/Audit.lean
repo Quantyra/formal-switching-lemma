@@ -45,6 +45,7 @@ import PvNP.PHPMatchingEncodeSideBitForceFreeze
 import PvNP.PHPMatchingEncodePathGeometryTarget
 import PvNP.PHPMatchingEncodePathGeometryConcrete
 import PvNP.PHPMatchingEncodePathGeometryImage
+import PvNP.PHPMatchingEncodePathGeometryForceBridge
 import PvNP.PHPMatchingEncodeAnswerAlphabet
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwoPackage
@@ -13193,3 +13194,17 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodePathGeometryImage.path_geometry_image_s2223_summary
+
+/-! S2224: path-geometry force-bridge STOP-LOSS package. -/
+
+/-- info: 'PvNP.PHPMatchingEncodePathGeometryForceBridge.pathGeometryBadGrade_card_le_image_mul_of_fiberBound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePathGeometryForceBridge.pathGeometryBadGrade_card_le_image_mul_of_fiberBound
+
+/-- info: 'PvNP.PHPMatchingEncodePathGeometryForceBridge.path_geometry_force_bridge_s2224_stop_loss_summary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePathGeometryForceBridge.path_geometry_force_bridge_s2224_stop_loss_summary

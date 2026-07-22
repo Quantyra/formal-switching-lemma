@@ -4,6 +4,12 @@
 
 ### Added
 
+- **S2224 STOP-LOSS** path-geometry force bridge: add conditional source→image
+  transfer under a named path-geometry image fiber bound, fiber pins, and the
+  fixed `searchD4mp` image/package freeze (`j = 2,3`, `ell = 3`) at `3072`.
+  This remains **TRIVIAL** versus denominator `16`; the only force gate is the
+  replayed exact package-encode `6/16` regression.  No new force from the
+  path-geometry image bound, no GA-4, switching, P-vs-NP, or `v0.11.0` claim.
 - **S2223** path-geometry image/carrier bound: add the `(G1, β)`-only
   fixed-grade image and prove the mcode-only carrier bound
   `|image_j| ≤ |honest(ell-j)| * (2w)^j`, plus the fixed `searchD4mp`, `w = 2`
