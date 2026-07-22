@@ -42,6 +42,7 @@ import PvNP.PHPMatchingEncodeAnswerAlphabet
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwoPackage
 import PvNP.PHPMatchingEncodePackageDenomCompare
+import PvNP.PHPMatchingEncodePackageOracleFreeze
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
@@ -13018,3 +13019,11 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodePackageDenomCompare.package_denom_compare_s2215_summary
+
+/-! S2216 Gate 2: fixed-package oracle freeze and redesign handoff. -/
+
+/-- info: 'PvNP.PHPMatchingEncodePackageOracleFreeze.package_oracle_freeze_s2216_summary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePackageOracleFreeze.package_oracle_freeze_s2216_summary

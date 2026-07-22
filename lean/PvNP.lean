@@ -123,6 +123,7 @@ import PvNP.PHPMatchingEncodeAnswerAlphabet
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwoPackage
 import PvNP.PHPMatchingEncodePackageDenomCompare
+import PvNP.PHPMatchingEncodePackageOracleFreeze
 import PvNP.RestrictedPHPFloor
 import PvNP.ScheduledAutoCollapse
 import PvNP.ScheduledCollapseDemo

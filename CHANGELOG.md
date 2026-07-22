@@ -4,6 +4,8 @@
 
 ### Added
 
+- S2216 Gate 2 FREEZE: stop residual grind; package oracle 6 STRICT / 3072
+  TRIVIAL; handoff redesign.
 - **S2215** Fin4/`searchD4mp`/`t = 3` ell-free package grade sum: the S2214
   `G1`+`G2` bound gives `3072`, still **TRIVIAL** versus honest denominator
   `16`; the independent S2209 exact card `6` remains **STRICT**. Package-only,
