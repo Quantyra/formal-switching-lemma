@@ -4,6 +4,10 @@
 
 ### Added
 
+- **S2215** Fin4/`searchD4mp`/`t = 3` ell-free package grade sum: the S2214
+  `G1`+`G2` bound gives `3072`, still **TRIVIAL** versus honest denominator
+  `16`; the independent S2209 exact card `6` remains **STRICT**. Package-only,
+  not general GA-4 or a release claim.
 - **S2214** Fin4/`searchD4mp`/`t = 3` discharge of the `G1`+`G2`
   length-two path-exit residual and its at-most-two-block grade bound.  This is
   package-only; the asymptotic stop-loss and general residual remain open.

@@ -41,6 +41,7 @@ import PvNP.PHPMatchingEncodeAnswerRedesign
 import PvNP.PHPMatchingEncodeAnswerAlphabet
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwoPackage
+import PvNP.PHPMatchingEncodePackageDenomCompare
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
@@ -12973,3 +12974,47 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwoPackage.path_exit_residual_s2214_summary
+
+/-! S2215: ell-free package bound versus the honest denominator. -/
+
+/-- info: 'PvNP.PHPMatchingEncodePackageDenomCompare.vbadMatchings_searchD4mp_two_card_le_ell_free' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePackageDenomCompare.vbadMatchings_searchD4mp_two_card_le_ell_free
+
+/-- info: 'PvNP.PHPMatchingEncodePackageDenomCompare.vbadMatchings_searchD4mp_two_three_card_le_ell_free' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePackageDenomCompare.vbadMatchings_searchD4mp_two_three_card_le_ell_free
+
+/-- info: 'PvNP.PHPMatchingEncodePackageDenomCompare.searchD4mp_ell_free_bound_exceeds_denominator' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePackageDenomCompare.searchD4mp_ell_free_bound_exceeds_denominator
+
+/-- info: 'PvNP.PHPMatchingEncodePackageDenomCompare.searchD4mp_ell_free_bound_not_strict' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePackageDenomCompare.searchD4mp_ell_free_bound_not_strict
+
+/-- info: 'PvNP.PHPMatchingEncodePackageDenomCompare.searchD4mp_exact_card_eq_six' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePackageDenomCompare.searchD4mp_exact_card_eq_six
+
+/-- info: 'PvNP.PHPMatchingEncodePackageDenomCompare.searchD4mp_exact_card_strict_denominator' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePackageDenomCompare.searchD4mp_exact_card_strict_denominator
+
+/-- info: 'PvNP.PHPMatchingEncodePackageDenomCompare.package_denom_compare_s2215_summary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePackageDenomCompare.package_denom_compare_s2215_summary
