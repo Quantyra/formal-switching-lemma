@@ -4,6 +4,9 @@
 
 ### Added
 
+- **S2214** Fin4/`searchD4mp`/`t = 3` discharge of the `G1`+`G2`
+  length-two path-exit residual and its at-most-two-block grade bound.  This is
+  package-only; the asymptotic stop-loss and general residual remain open.
 - **S2213** conditional at-most-two entered-block answer-alphabet extension
   (`PHPMatchingEncodeAnswerAlphabetLengthTwo`): under the new `G1`+`G2`
   length-two path-exit residual, `G3` is redundant and the honest-times-mcode

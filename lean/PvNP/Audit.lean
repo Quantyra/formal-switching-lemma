@@ -40,6 +40,7 @@ import PvNP.PHPMatchingEncodeConditionalFiber
 import PvNP.PHPMatchingEncodeAnswerRedesign
 import PvNP.PHPMatchingEncodeAnswerAlphabet
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo
+import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwoPackage
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
@@ -12934,3 +12935,41 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo.answer_alphabet_s2213_summary
+
+/-! S2214: Fin4 package discharge of the G1/G2 length-two residual. -/
+
+/-- info: 'PvNP.PHPMatchingEncodeMultiPreimage.encodeMatch_G2_rhoA_ne_rhoB' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeMultiPreimage.encodeMatch_G2_rhoA_ne_rhoB
+
+/-- info: 'PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwoPackage.encodeMatchG1G2LengthTwoPathExitEqResidual_searchD4mp_t_three_ell_three' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwoPackage.encodeMatchG1G2LengthTwoPathExitEqResidual_searchD4mp_t_three_ell_three
+
+/-- info: 'PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwoPackage.encodeMatchG1G2LengthTwoPathExitEqResidual_searchD4mp_t_three' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwoPackage.encodeMatchG1G2LengthTwoPathExitEqResidual_searchD4mp_t_three
+
+/-- info: 'PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwoPackage.atMostTwoBlockGradeDomain_searchD4mp_t_three_card_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwoPackage.atMostTwoBlockGradeDomain_searchD4mp_t_three_card_le
+
+/-- info: 'PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwoPackage.badGrade_searchD4mp_G1G2_card_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwoPackage.badGrade_searchD4mp_G1G2_card_le
+
+/-- info: 'PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwoPackage.path_exit_residual_s2214_summary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwoPackage.path_exit_residual_s2214_summary

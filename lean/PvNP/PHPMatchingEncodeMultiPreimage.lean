@@ -1304,6 +1304,27 @@ private theorem traceBetaDeep_rhoB_three :
   simp only [blockSigmasBeta, sigmaFull_termA_rhoB, sigmaTrunc_termB_muB2,
     sigmaMarks_termA_both, sigmaMarks_termB_pos0]
 
+/-- The named multi-preimage pair is already separated by the `G2`
+β-mark trace. -/
+theorem encodeMatch_G2_rhoA_ne_rhoB
+    (ht₁ : 3 ≤ vmdtDepth (canonicalVMDT searchD4mp rhoA))
+    (ht₂ : 3 ≤ vmdtDepth (canonicalVMDT searchD4mp rhoB)) :
+    (encodeMatch rfl rhoA searchD4mp isMatching_rhoA freePigeons_rhoA ht₁
+      searchD4mp_width).G2 ≠
+    (encodeMatch rfl rhoB searchD4mp isMatching_rhoB freePigeons_rhoB ht₂
+      searchD4mp_width).G2 := by
+  intro hG2
+  change traceBetaDeep (w := 2) rhoA searchD4mp 3 =
+    traceBetaDeep (w := 2) rhoB searchD4mp 3 at hG2
+  rw [traceBetaDeep_rhoA_three, traceBetaDeep_rhoB_three] at hG2
+  have hne :
+      ({(1 : Fin 2)} : Finset (Fin 2)) ≠ ({(0 : Fin 2)} : Finset (Fin 2)) := by
+    intro h
+    have : (1 : Fin 2) ∈ ({(0 : Fin 2)} : Finset (Fin 2)) := by
+      rw [← h]; exact Finset.mem_singleton_self _
+    exact absurd this (by decide)
+  exact hne (List.cons.inj (List.cons.inj hG2).2).1
+
 /-- Named multi-preimage pair has unequal `encodeMatch` codes (distinct
 second-block `G2` β-marks). No bank collision on this fiber. -/
 theorem encodeMatch_rhoA_ne_rhoB
@@ -1314,25 +1335,7 @@ theorem encodeMatch_rhoA_ne_rhoB
       encodeMatch (p := 4) (h := 4) (w := 2) (t := 3) (ell := 3) rfl
         rhoB searchD4mp isMatching_rhoB freePigeons_rhoB ht₂ searchD4mp_width := by
   intro hcode
-  have hG2 :
-      traceBetaDeep (w := 2) rhoA searchD4mp 3 =
-        traceBetaDeep (w := 2) rhoB searchD4mp 3 := by
-    change
-        (encodeMatch (p := 4) (h := 4) (w := 2) (t := 3) (ell := 3) rfl
-            rhoA searchD4mp isMatching_rhoA freePigeons_rhoA ht₁
-            searchD4mp_width).G2 =
-          (encodeMatch (p := 4) (h := 4) (w := 2) (t := 3) (ell := 3) rfl
-            rhoB searchD4mp isMatching_rhoB freePigeons_rhoB ht₂
-            searchD4mp_width).G2
-    exact congrArg MatchEncode.G2 hcode
-  rw [traceBetaDeep_rhoA_three, traceBetaDeep_rhoB_three] at hG2
-  have hne :
-      ({(1 : Fin 2)} : Finset (Fin 2)) ≠ ({(0 : Fin 2)} : Finset (Fin 2)) := by
-    intro h
-    have : (1 : Fin 2) ∈ ({(0 : Fin 2)} : Finset (Fin 2)) := by
-      rw [← h]; exact Finset.mem_singleton_self _
-    exact absurd this (by decide)
-  exact hne (List.cons.inj (List.cons.inj hG2).2).1
+  exact encodeMatch_G2_rhoA_ne_rhoB ht₁ ht₂ (congrArg MatchEncode.G2 hcode)
 
 /-! ## Collision predicate on the named multi-preimage pair -/
 
