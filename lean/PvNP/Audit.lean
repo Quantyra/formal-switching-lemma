@@ -38,11 +38,13 @@ import PvNP.PHPMatchingEncodePackageCount
 import PvNP.PHPMatchingEncodePackageFiber
 import PvNP.PHPMatchingEncodeConditionalFiber
 import PvNP.PHPMatchingEncodeAnswerRedesign
+import PvNP.PHPMatchingEncodeSideBitCarrier
 import PvNP.PHPMatchingEncodeAnswerAlphabet
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwoPackage
 import PvNP.PHPMatchingEncodePackageDenomCompare
 import PvNP.PHPMatchingEncodePackageOracleFreeze
+import PvNP.PHPMatchingEncodeParametricRatio
 import PvNP.PHPFullMatchingCollapseBound
 import PvNP.PHPFullMatchingCollapseExact
 import PvNP.PHPFullMatchingCanonicalDT
@@ -13027,3 +13029,41 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodePackageOracleFreeze.package_oracle_freeze_s2216_summary
+
+/-! S2217: side-bit carrier target and parametric ratio regression interface. -/
+
+/-- info: 'PvNP.PHPMatchingEncodeSideBitCarrier.stepAnswer_eq' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeSideBitCarrier.stepAnswer_eq
+
+/-- info: 'PvNP.PHPMatchingEncodeSideBitCarrier.answerStream_mem_pairVertices' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeSideBitCarrier.answerStream_mem_pairVertices
+
+/-- info: 'PvNP.PHPMatchingEncodeSideBitCarrier.farEndpointFromSide_stepSideBit' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeSideBitCarrier.farEndpointFromSide_stepSideBit
+
+/-- info: 'PvNP.PHPMatchingEncodeSideBitCarrier.mcode_sidebit_grade_card_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeSideBitCarrier.mcode_sidebit_grade_card_le
+
+/-- info: 'PvNP.PHPMatchingEncodeSideBitCarrier.sidebit_carrier_s2217_summary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeSideBitCarrier.sidebit_carrier_s2217_summary
+
+/-- info: 'PvNP.PHPMatchingEncodeParametricRatio.encodedBadRatioStatement_of_injOn_card' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeParametricRatio.encodedBadRatioStatement_of_injOn_card
+
+/-- info: 'PvNP.PHPMatchingEncodeParametricRatio.searchD4mp_packageEncode_exact_ratio_six_sixteen' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeParametricRatio.searchD4mp_packageEncode_exact_ratio_six_sixteen

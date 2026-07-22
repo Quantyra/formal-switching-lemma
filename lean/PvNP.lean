@@ -119,11 +119,13 @@ import PvNP.PHPMatchingEncodePackageCount
 import PvNP.PHPMatchingEncodePackageFiber
 import PvNP.PHPMatchingEncodeConditionalFiber
 import PvNP.PHPMatchingEncodeAnswerRedesign
+import PvNP.PHPMatchingEncodeSideBitCarrier
 import PvNP.PHPMatchingEncodeAnswerAlphabet
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwoPackage
 import PvNP.PHPMatchingEncodePackageDenomCompare
 import PvNP.PHPMatchingEncodePackageOracleFreeze
+import PvNP.PHPMatchingEncodeParametricRatio
 import PvNP.RestrictedPHPFloor
 import PvNP.ScheduledAutoCollapse
 import PvNP.ScheduledCollapseDemo

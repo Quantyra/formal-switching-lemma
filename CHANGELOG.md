@@ -4,6 +4,11 @@
 
 ### Added
 
+- **S2217** parametric redesign force: an ell-independent side-bit carrier
+  target with abstract grade bound `|honest| * (2w)^j * 4^j`, plus a generic
+  encoded-bad ratio interface and fixed `Fin 4` `6/16` regression pin.  This
+  does not supply GA-4 bad-domain injectivity or any switching/lower-bound
+  conclusion.
 - S2216 Gate 2 FREEZE: stop residual grind; package oracle 6 STRICT / 3072
   TRIVIAL; handoff redesign.
 - **S2215** Fin4/`searchD4mp`/`t = 3` ell-free package grade sum: the S2214
