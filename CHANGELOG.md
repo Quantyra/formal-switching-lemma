@@ -4,6 +4,12 @@
 
 ### Added
 
+- **S2221** path-geometry force pivot target: after S2220 stop-lossed side-bit
+  product counting, pin the next force lane as packet-native path geometry /
+  coupled walked-pair encode (no free `Fin t → _` stream, no side-bit `4^j`
+  tax), with a strict encoded-bad force gate and abstract `H·C^j` grade target.
+  Reuses Fin4 `6/16` as regression-only gate witness.  No walked-pair recovery,
+  no new counting bound, no GA-4, switching, P-vs-NP, or `v0.11.0` claim.
 - **S2220 STOP-LOSS** side-bit force freeze: the S2218 side-bit factor only
   weakens the fixed-package S2214 count, so force requires a pivot; walked-pair
   recovery remains open as the residual-class freeze.  The package oracle is

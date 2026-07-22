@@ -123,6 +123,7 @@ import PvNP.PHPMatchingEncodeSideBitCarrier
 import PvNP.PHPMatchingEncodeSideBitImage
 import PvNP.PHPMatchingEncodeSideBitPackage
 import PvNP.PHPMatchingEncodeSideBitForceFreeze
+import PvNP.PHPMatchingEncodePathGeometryTarget
 import PvNP.PHPMatchingEncodeAnswerAlphabet
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwoPackage

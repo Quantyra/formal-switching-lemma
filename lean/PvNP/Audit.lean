@@ -42,6 +42,7 @@ import PvNP.PHPMatchingEncodeSideBitCarrier
 import PvNP.PHPMatchingEncodeSideBitImage
 import PvNP.PHPMatchingEncodeSideBitPackage
 import PvNP.PHPMatchingEncodeSideBitForceFreeze
+import PvNP.PHPMatchingEncodePathGeometryTarget
 import PvNP.PHPMatchingEncodeAnswerAlphabet
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwoPackage
@@ -13132,3 +13133,21 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeSideBitForceFreeze.sidebit_force_freeze_s2220_summary
+
+/-! S2221: packet-native path-geometry force pivot target and gate. -/
+
+/-- info: 'PvNP.PHPMatchingEncodePathGeometryTarget.path_geometry_force_gate_exact_six_sixteen' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePathGeometryTarget.path_geometry_force_gate_exact_six_sixteen
+
+/-- info: 'PvNP.PHPMatchingEncodePathGeometryTarget.path_geometry_grade_target_unit' depends on axioms: [propext] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePathGeometryTarget.path_geometry_grade_target_unit
+
+/-- info: 'PvNP.PHPMatchingEncodePathGeometryTarget.path_geometry_pivot_s2221_summary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePathGeometryTarget.path_geometry_pivot_s2221_summary
