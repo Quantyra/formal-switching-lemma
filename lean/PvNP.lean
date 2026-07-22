@@ -120,6 +120,8 @@ import PvNP.PHPMatchingEncodePackageFiber
 import PvNP.PHPMatchingEncodeConditionalFiber
 import PvNP.PHPMatchingEncodeAnswerRedesign
 import PvNP.PHPMatchingEncodeSideBitCarrier
+import PvNP.PHPMatchingEncodeSideBitImage
+import PvNP.PHPMatchingEncodeSideBitPackage
 import PvNP.PHPMatchingEncodeAnswerAlphabet
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwoPackage

@@ -39,6 +39,8 @@ import PvNP.PHPMatchingEncodePackageFiber
 import PvNP.PHPMatchingEncodeConditionalFiber
 import PvNP.PHPMatchingEncodeAnswerRedesign
 import PvNP.PHPMatchingEncodeSideBitCarrier
+import PvNP.PHPMatchingEncodeSideBitImage
+import PvNP.PHPMatchingEncodeSideBitPackage
 import PvNP.PHPMatchingEncodeAnswerAlphabet
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwoPackage
@@ -13067,3 +13069,59 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeParametricRatio.searchD4mp_packageEncode_exact_ratio_six_sixteen
+
+/-! S2218: side-bit encode image and fixed-package source bound. -/
+
+/-- info: 'PvNP.PHPMatchingEncodeSideBitImage.farEndpointFromSide_traceSideBitsDeep' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeSideBitImage.farEndpointFromSide_traceSideBitsDeep
+
+/-- info: 'PvNP.PHPMatchingEncodeSideBitImage.sideBitBadGrade_mem_j_range' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeSideBitImage.sideBitBadGrade_mem_j_range
+
+/-- info: 'PvNP.PHPMatchingEncodeSideBitImage.sideBitBadGradeImage_card_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeSideBitImage.sideBitBadGradeImage_card_le
+
+/-- info: 'PvNP.PHPMatchingEncodeSideBitImage.sideBitBadGrade_card_le_of_injOn' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeSideBitImage.sideBitBadGrade_card_le_of_injOn
+
+/-- info: 'PvNP.PHPMatchingEncodeSideBitImage.sidebit_image_s2218_summary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeSideBitImage.sidebit_image_s2218_summary
+
+/-- info: 'PvNP.PHPMatchingEncodeSideBitPackage.badGrade_eq_sideBitBadGrade' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeSideBitPackage.badGrade_eq_sideBitBadGrade
+
+/-- info: 'PvNP.PHPMatchingEncodeSideBitPackage.sideBitEncode_injOn_searchD4mp_badGrade' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeSideBitPackage.sideBitEncode_injOn_searchD4mp_badGrade
+
+/-- info: 'PvNP.PHPMatchingEncodeSideBitPackage.badGrade_searchD4mp_sidebit_card_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeSideBitPackage.badGrade_searchD4mp_sidebit_card_le
+
+/-- info: 'PvNP.PHPMatchingEncodeSideBitPackage.sidebit_package_s2218_summary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeSideBitPackage.sidebit_package_s2218_summary

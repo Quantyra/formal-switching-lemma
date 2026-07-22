@@ -4,6 +4,12 @@
 
 ### Added
 
+- **S2218** side-bit encode image landing: deep traces now supply an
+  ell-independent side-bit stream, whose fixed-grade image is bounded by
+  `|honest| * (2w)^j * 4^j`; source bounds remain conditional on injectivity
+  in general and are instantiated only for the fixed `searchD4mp` package via
+  its existing `G1`/`G2` injectivity.  This is not general GA-4, switching, a
+  lower bound, or a `v0.11.0` result; `Fin 4` `6/16` remains regression-only.
 - **S2217** parametric redesign force: an ell-independent side-bit carrier
   target with abstract grade bound `|honest| * (2w)^j * 4^j`, plus a generic
   encoded-bad ratio interface and fixed `Fin 4` `6/16` regression pin.  This
