@@ -41,6 +41,7 @@ import PvNP.PHPMatchingEncodeAnswerRedesign
 import PvNP.PHPMatchingEncodeSideBitCarrier
 import PvNP.PHPMatchingEncodeSideBitImage
 import PvNP.PHPMatchingEncodeSideBitPackage
+import PvNP.PHPMatchingEncodeSideBitForceFreeze
 import PvNP.PHPMatchingEncodeAnswerAlphabet
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwoPackage
@@ -13125,3 +13126,9 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodeSideBitPackage.sidebit_package_s2218_summary
+
+/-- info: 'PvNP.PHPMatchingEncodeSideBitForceFreeze.sidebit_force_freeze_s2220_summary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeSideBitForceFreeze.sidebit_force_freeze_s2220_summary

@@ -4,6 +4,11 @@
 
 ### Added
 
+- **S2220 STOP-LOSS** side-bit force freeze: the S2218 side-bit factor only
+  weakens the fixed-package S2214 count, so force requires a pivot; walked-pair
+  recovery remains open as the residual-class freeze.  The package oracle is
+  still `3072` **TRIVIAL** / exact `6` **STRICT**.  No GA-4, switching,
+  P-vs-NP, or `v0.11.0` claim.
 - **S2218** side-bit encode image landing: deep traces now supply an
   ell-independent side-bit stream, whose fixed-grade image is bounded by
   `|honest| * (2w)^j * 4^j`; source bounds remain conditional on injectivity
