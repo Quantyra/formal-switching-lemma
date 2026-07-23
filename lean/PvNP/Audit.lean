@@ -46,6 +46,7 @@ import PvNP.PHPMatchingEncodePathGeometryTarget
 import PvNP.PHPMatchingEncodePathGeometryConcrete
 import PvNP.PHPMatchingEncodePathGeometryImage
 import PvNP.PHPMatchingEncodePathGeometryForceBridge
+import PvNP.PHPMatchingEncodeGateAForceExhaustion
 import PvNP.PHPMatchingEncodeAnswerAlphabet
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwoPackage
@@ -13208,3 +13209,17 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodePathGeometryForceBridge.path_geometry_force_bridge_s2224_stop_loss_summary
+
+/-! S2225: Gate A force exhaustion / Gate B weight decision pin. -/
+
+/-- info: 'PvNP.PHPMatchingEncodeGateAForceExhaustion.gateB_weight_decision_anchor' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeGateAForceExhaustion.gateB_weight_decision_anchor
+
+/-- info: 'PvNP.PHPMatchingEncodeGateAForceExhaustion.gateA_force_exhaustion_after_s2224_summary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodeGateAForceExhaustion.gateA_force_exhaustion_after_s2224_summary

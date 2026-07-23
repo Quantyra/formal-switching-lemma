@@ -4,6 +4,11 @@
 
 ### Added
 
+- **S2225 decision pin** Gate A force exhaustion / Gate B weight handoff: conjoin
+  the S2216 package-oracle freeze, S2220 side-bit stop-loss, S2224 path-geometry
+  force-bridge stop-loss, and the existing Gate B geometric two-stage schedule
+  witness.  Route decision only; no global Gate A impossibility, no new force
+  theorem, no GA-4, switching, P-vs-NP, or `v0.11.0` claim.
 - **S2224 STOP-LOSS** path-geometry force bridge: add conditional source→image
   transfer under a named path-geometry image fiber bound, fiber pins, and the
   fixed `searchD4mp` image/package freeze (`j = 2,3`, `ell = 3`) at `3072`.
