@@ -4,6 +4,11 @@
 
 ### Added
 
+- **S2226 Gate B weight continuation**: add the coefficient-9 supplied-layer
+  universal family plus the smaller two-gate pair witness at ambient `648`
+  (`stars = [36, 2]`, budgets/gates `[2, 2]`) via `geometricSchedule9 2 36 2`.
+  Schedule weight only; supplied start layer; no frozen-form B4, PHP force,
+  GA-4, switching, P-vs-NP, or `v0.11.0` claim.
 - **S2225 decision pin** Gate A force exhaustion / Gate B weight handoff: conjoin
   the S2216 package-oracle freeze, S2220 side-bit stop-loss, S2224 path-geometry
   force-bridge stop-loss, and the existing Gate B geometric two-stage schedule

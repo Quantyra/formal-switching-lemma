@@ -4777,6 +4777,46 @@ info: 'PvNP.FrozenProductScheduleRatio.geometricFamily_pair_twoStage' depends on
 #print axioms PvNP.FrozenProductScheduleRatio.geometricFamily_pair_twoStage
 
 /-!
+S2226 Gate B weight continuation pins: coefficient-9 supplied-layer universal
+family and the smaller two-gate pair witness at ambient `648`, stars `[36, 2]`,
+budgets `[2, 2]`, gates `[2, 2]`, via `geometricSchedule9 2 36 2`.
+Schedule weight only; supplied start layer; not frozen-form B4; not PHP force;
+no GA-4/switching/PvNP/`v0.11.0` claim.
+-/
+
+/--
+info: 'PvNP.FrozenProductScheduleRatio.autoIteratedCollapse_of_ratioRegime9' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.autoIteratedCollapse_of_ratioRegime9
+
+/--
+info: 'PvNP.FrozenProductScheduleRatio.geometricFamilyCollapse_universal9' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.geometricFamilyCollapse_universal9
+
+/--
+info: 'PvNP.FrozenProductScheduleRatio.geometricFamily_pair_twoStage_uniform9' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.geometricFamily_pair_twoStage_uniform9
+
+/--
+info: 'PvNP.FrozenProductScheduleRatio.gate_b_weight_continuation_s2226_summary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.FrozenProductScheduleRatio.gate_b_weight_continuation_s2226_summary
+
+/-!
 Pins for `PvNP.RefinedThreeStageInstance` (+ its arithmetic companion
 `RefinedThreeStageArith`, same namespace): the resumed S2075 material — a
 concrete finite three-stage auto-reviewed generated-collapse instance at

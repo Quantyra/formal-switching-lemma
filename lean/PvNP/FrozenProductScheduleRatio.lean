@@ -498,6 +498,30 @@ theorem autoIteratedCollapse_of_ratioRegime {n : Nat}
   · simpa [stageS] using hb
   · simpa [stageStars] using hsc
 
+open GeneratedRefinedIteratedCertificate in
+/-- Coefficient-9 schedule collapse from the coefficient-9 ratio-form regime,
+packaged at the same certificate interface as `autoIteratedCollapse`. -/
+theorem autoIteratedCollapse_of_ratioRegime9 {n : Nat}
+    (t : Nat → Nat → Nat)
+    (sched : List ScheduleStage) (base : Restriction n)
+    (L : MinimalLayeredFormula n) (w : Nat)
+    (hm : 1 ≤ L.gates.length)
+    (hw : ∀ g ∈ L.gates, widthDNF g.theDNF ≤ w)
+    (hreg : RegimeFrom9 L.gates.length w (stars base) sched)
+    (ht : TreeBudgetFrom t L.gates.length sched.length sched) :
+    ∃ cert : GeneratedRefinedIteratedCertificate n base
+        L.originalFormula sched.length,
+      cert.stageGateCounts = List.replicate sched.length L.gates.length ∧
+      cert.stageBudgets = sched.map stageS ∧
+      cert.stageStarCounts = sched.map stageStars ∧
+      TreeBudgetFrom t L.gates.length sched.length sched := by
+  obtain ⟨cert, hgc, hb, hsc⟩ :=
+    ScheduledAutoCollapse.autoIteratedCollapse sched base L w hw
+      (regimeFrom9_validFrom hm sched w (stars base) (stars_le base) hreg)
+  refine ⟨cert, hgc, ?_, ?_, ht⟩
+  · simpa [stageS] using hb
+  · simpa [stageStars] using hsc
+
 /-! ## The named geometric star regime -/
 
 /-- **The geometric star schedule.**  All stage budgets are `2`; star counts
@@ -1144,6 +1168,58 @@ theorem geometricFamilyCollapse_universal (k w : Nat) {n : Nat}
   rw [hlen, geometricSchedule_budgets] at hex
   exact hex
 
+open GeneratedRefinedIteratedCertificate in
+/-- **Universal-layer coefficient-9 geometric family.**  EVERY supplied start
+layer with `m >= 1` gates of width `<= w` (`w >= 1`) over `n` variables
+admits the `(k+1)`-stage coefficient-9 geometric-schedule certificate as soon
+as `n >= 2 * (9*m)^k * (9*m*w)`: entry stars `n / (9*m*w)`, ALL stage
+budgets `2`, every stage entering with width budget `>= 1`, and the constant
+tree-budget family `t(d,s) = m` preserved.
+
+Gate B schedule weight only: the start layer is supplied.  This is NOT
+frozen-form B4, NOT a PHP force theorem, NOT GA-4/switching/PvNP, and NOT a
+`v0.11.0` claim. -/
+theorem geometricFamilyCollapse_universal9 (k w : Nat) {n : Nat}
+    (L : MinimalLayeredFormula n)
+    (hm : 1 ≤ L.gates.length) (hw1 : 1 ≤ w)
+    (hw : ∀ g ∈ L.gates, widthDNF g.theDNF ≤ w)
+    (hn : 2 * (9 * L.gates.length) ^ k * (9 * L.gates.length * w) ≤ n) :
+    ∃ cert : GeneratedRefinedIteratedCertificate n (freeRestriction n)
+        L.originalFormula (k + 1),
+      cert.stageGateCounts = List.replicate (k + 1) L.gates.length ∧
+      cert.stageBudgets = List.replicate (k + 1) 2 ∧
+      cert.stageStarCounts =
+        (geometricSchedule9 L.gates.length
+          (n / (9 * L.gates.length * w)) (k + 1)).map stageStars ∧
+      TreeBudgetFrom (fun _ _ => L.gates.length) L.gates.length (k + 1)
+        (geometricSchedule9 L.gates.length
+          (n / (9 * L.gates.length * w)) (k + 1)) := by
+  have hreg' : RegimeFrom9 L.gates.length w (stars (freeRestriction n))
+      (geometricSchedule9 L.gates.length
+        (n / (9 * L.gates.length * w)) (k + 1)) := by
+    rw [stars_freeRestriction]
+    exact geometric_regime_of_bound9 hm hw1 k hn
+  have hlen : (geometricSchedule9 L.gates.length
+      (n / (9 * L.gates.length * w)) (k + 1)).length = k + 1 :=
+    geometricSchedule9_length L.gates.length (k + 1)
+      (n / (9 * L.gates.length * w))
+  have ht : TreeBudgetFrom (fun _ _ => L.gates.length) L.gates.length
+      (geometricSchedule9 L.gates.length
+        (n / (9 * L.gates.length * w)) (k + 1)).length
+      (geometricSchedule9 L.gates.length
+        (n / (9 * L.gates.length * w)) (k + 1)) :=
+    geometricSchedule9_treeBudget L.gates.length L.gates.length (k + 1)
+      (n / (9 * L.gates.length * w))
+      (geometricSchedule9 L.gates.length
+        (n / (9 * L.gates.length * w)) (k + 1)).length
+  have hex := autoIteratedCollapse_of_ratioRegime9
+    (fun _ _ => L.gates.length)
+    (geometricSchedule9 L.gates.length
+      (n / (9 * L.gates.length * w)) (k + 1))
+    (freeRestriction n) L w hm hw hreg' ht
+  rw [hlen, geometricSchedule9_budgets] at hex
+  exact hex
+
 /-! ## A named two-gate witness family for the universal form -/
 
 def pairLit0 (n : Nat) : Literal (n + 2) := ⟨⟨0, by omega⟩, true⟩
@@ -1232,6 +1308,56 @@ theorem geometricFamily_pair_twoStage :
   · rw [hsc]
     rfl
   · exact ht
+
+open GeneratedRefinedIteratedCertificate in
+/-- Smaller coefficient-9 supplied-layer pair witness: ambient `648`, two
+stages, gate counts `[2, 2]`, budgets `[2, 2]`, and star counts `[36, 2]` via
+`geometricSchedule9 2 36 2`.  Gate B schedule weight only; not PHP force. -/
+theorem geometricFamily_pair_twoStage_uniform9 :
+    ∃ cert : GeneratedRefinedIteratedCertificate 648
+        (freeRestriction 648) (pairLayer 646).originalFormula 2,
+      cert.stageGateCounts = [2, 2] ∧
+      cert.stageBudgets = [2, 2] ∧
+      cert.stageStarCounts = [36, 2] ∧
+      TreeBudgetFrom (fun _ _ => 2) 2 2 (geometricSchedule9 2 36 2) := by
+  obtain ⟨cert, hgc, hb, hsc, ht⟩ :=
+    geometricFamilyCollapse_universal9 1 1 (pairLayer 646)
+      (by decide) (Nat.le_refl 1) (pairLayer_width 646) (by decide)
+  refine ⟨cert, ?_, ?_, ?_, ?_⟩
+  · rw [hgc]
+    rfl
+  · rw [hb]
+    rfl
+  · rw [hsc]
+    rfl
+  · exact ht
+
+/-- Optional S2226 summary pin: coefficient-9 supplied-layer universal family
+and the smaller two-gate pair witness are both available. -/
+theorem gate_b_weight_continuation_s2226_summary :
+    (∀ (k w : Nat) {n : Nat} (L : MinimalLayeredFormula n),
+      1 ≤ L.gates.length → 1 ≤ w →
+      (∀ g ∈ L.gates, widthDNF g.theDNF ≤ w) →
+      2 * (9 * L.gates.length) ^ k * (9 * L.gates.length * w) ≤ n →
+      ∃ cert : GeneratedRefinedIteratedCertificate n (freeRestriction n)
+          L.originalFormula (k + 1),
+        cert.stageGateCounts = List.replicate (k + 1) L.gates.length ∧
+        cert.stageBudgets = List.replicate (k + 1) 2 ∧
+        cert.stageStarCounts =
+          (geometricSchedule9 L.gates.length
+            (n / (9 * L.gates.length * w)) (k + 1)).map stageStars ∧
+        TreeBudgetFrom (fun _ _ => L.gates.length) L.gates.length (k + 1)
+          (geometricSchedule9 L.gates.length
+            (n / (9 * L.gates.length * w)) (k + 1))) ∧
+    (∃ cert : GeneratedRefinedIteratedCertificate 648
+        (freeRestriction 648) (pairLayer 646).originalFormula 2,
+      cert.stageGateCounts = [2, 2] ∧
+      cert.stageBudgets = [2, 2] ∧
+      cert.stageStarCounts = [36, 2] ∧
+      TreeBudgetFrom (fun _ _ => 2) 2 2 (geometricSchedule9 2 36 2)) := by
+  exact ⟨fun k w n L hm hw1 hw hn =>
+    geometricFamilyCollapse_universal9 k w L hm hw1 hw hn,
+    geometricFamily_pair_twoStage_uniform9⟩
 
 end FrozenProductScheduleRatio
 end PvNP
