@@ -4777,11 +4777,10 @@ info: 'PvNP.FrozenProductScheduleRatio.geometricFamily_pair_twoStage' depends on
 #print axioms PvNP.FrozenProductScheduleRatio.geometricFamily_pair_twoStage
 
 /-!
-S2226 Gate B weight continuation pins: coefficient-9 supplied-layer universal
-family and the smaller two-gate pair witness at ambient `648`, stars `[36, 2]`,
-budgets `[2, 2]`, gates `[2, 2]`, via `geometricSchedule9 2 36 2`.
-Schedule weight only; supplied start layer; not frozen-form B4; not PHP force;
-no GA-4/switching/PvNP/`v0.11.0` claim.
+S2226 Gate B weight continuation pins: coefficient-9 supplied-layer schedule
+theorem and finite pair instance at ambient `648`, stars `[36, 2]`, budgets
+`[2, 2]`, gates `[2, 2]`, via `geometricSchedule9 2 36 2`. Schedule bookkeeping
+only; start layer remains supplied.
 -/
 
 /--

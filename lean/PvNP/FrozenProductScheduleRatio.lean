@@ -1169,16 +1169,11 @@ theorem geometricFamilyCollapse_universal (k w : Nat) {n : Nat}
   exact hex
 
 open GeneratedRefinedIteratedCertificate in
-/-- **Universal-layer coefficient-9 geometric family.**  EVERY supplied start
-layer with `m >= 1` gates of width `<= w` (`w >= 1`) over `n` variables
-admits the `(k+1)`-stage coefficient-9 geometric-schedule certificate as soon
-as `n >= 2 * (9*m)^k * (9*m*w)`: entry stars `n / (9*m*w)`, ALL stage
-budgets `2`, every stage entering with width budget `>= 1`, and the constant
-tree-budget family `t(d,s) = m` preserved.
-
-Gate B schedule weight only: the start layer is supplied.  This is NOT
-frozen-form B4, NOT a PHP force theorem, NOT GA-4/switching/PvNP, and NOT a
-`v0.11.0` claim. -/
+/-- Coefficient-9 geometric-schedule certificate for a supplied start layer.
+If `L` has `m = L.gates.length >= 1` gates of width `<= w` (`w >= 1`) and
+`2 * (9*m)^k * (9*m*w) <= n`, there is a `(k+1)`-stage certificate with
+entry stars `n / (9*m*w)`, stage budgets `2`, and tree-budget family
+`t(d,s) = m`.  Start layer remains an input; schedule bookkeeping only. -/
 theorem geometricFamilyCollapse_universal9 (k w : Nat) {n : Nat}
     (L : MinimalLayeredFormula n)
     (hm : 1 ≤ L.gates.length) (hw1 : 1 ≤ w)
@@ -1310,9 +1305,9 @@ theorem geometricFamily_pair_twoStage :
   · exact ht
 
 open GeneratedRefinedIteratedCertificate in
-/-- Smaller coefficient-9 supplied-layer pair witness: ambient `648`, two
-stages, gate counts `[2, 2]`, budgets `[2, 2]`, and star counts `[36, 2]` via
-`geometricSchedule9 2 36 2`.  Gate B schedule weight only; not PHP force. -/
+/-- Finite coefficient-9 pair instance: ambient `648`, stages `2`, gate counts
+`[2, 2]`, budgets `[2, 2]`, star counts `[36, 2]` via
+`geometricSchedule9 2 36 2`.  Schedule bookkeeping only. -/
 theorem geometricFamily_pair_twoStage_uniform9 :
     ∃ cert : GeneratedRefinedIteratedCertificate 648
         (freeRestriction 648) (pairLayer 646).originalFormula 2,
@@ -1332,8 +1327,8 @@ theorem geometricFamily_pair_twoStage_uniform9 :
     rfl
   · exact ht
 
-/-- Optional S2226 summary pin: coefficient-9 supplied-layer universal family
-and the smaller two-gate pair witness are both available. -/
+/-- S2226 summary pin: coefficient-9 supplied-layer schedule theorem and the
+finite ambient-`648` pair instance.  Schedule bookkeeping only. -/
 theorem gate_b_weight_continuation_s2226_summary :
     (∀ (k w : Nat) {n : Nat} (L : MinimalLayeredFormula n),
       1 ≤ L.gates.length → 1 ≤ w →
