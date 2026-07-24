@@ -35,9 +35,11 @@ open PHPMatchingEncodeMultiPreimage
 open PHPMatchingEncodeConditionalFiber
 open PHPMatchingEncodeAnswerAlphabetLengthTwo
 open PHPMatchingEncodeAnswerAlphabetLengthTwoPackage
+open PHPMatchingEncodePackageInj
 open PHPMatchingEncodePackageCount
 open PHPMatchingEncodeAnswerRedesign
 open PHPMatchingEncodePathGeometryTarget
+open PHPMatchingCodeBound
 
 /-- Concrete path-geometry certificate: graded β-code plus first-block walked
 pairs (packet-native; no free answer stream). -/
