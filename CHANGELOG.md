@@ -4,6 +4,11 @@
 
 ### Added
 
+- **S2228 Gate B open-obligation reduction**: add
+  `formulaFamilyCollapse_uniform9`, reusing synthesized start layers for the
+  parent-merged embedded-DNF class under the coefficient-9 schedule.
+  Infrastructure only; no Gate A, GA-4, switching, full B4, PHP force,
+  lower-bound, P-vs-NP, or release claim.
 - **S2227 Gate B Entry infrastructure**: thread the existing recurrence-width
   schedule into the frozen-form B4 recurrence Entry width slot, add the
   recurrence-count/root-width wrapper and same-witness numeric pins. Hypothesis

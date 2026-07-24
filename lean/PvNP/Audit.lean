@@ -4884,6 +4884,10 @@ frozen-form B4 in full and Gate A rung 4 remain OPEN.
 #guard_msgs in
 #print axioms PvNP.FormulaFamilyCollapse.formulaFamilyCollapse
 
+/-- info: 'PvNP.FormulaFamilyCollapse.formulaFamilyCollapse_uniform9' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaFamilyCollapse.formulaFamilyCollapse_uniform9
+
 /-- info: 'PvNP.FormulaFamilyCollapse.witnessDNF_width_realized' depends on axioms: [propext, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaFamilyCollapse.witnessDNF_width_realized

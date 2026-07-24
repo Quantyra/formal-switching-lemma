@@ -24,6 +24,13 @@ a start DNF of one two-literal term (`witnessDNF`) — realized start
 width `2`, above the width-1 realized starts of all prior named witnesses
 at the time this module was added.
 
+The coefficient-9 variant `formulaFamilyCollapse_uniform9` repeats the same
+synthesized-start-view reduction for the parent-merged embedded-DNF class,
+using the existing uniform-9 schedule API.  This is infrastructure only: it
+removes a supplied-start-layer obligation within this class, not arbitrary
+layered decomposition, not frozen-form B4, not PHP force/switching, and not a
+lower-bound or P-vs-NP claim.
+
 ## HONEST SCOPE STATEMENT (read this)
 
 * The synthesized class is the PARENT-MERGED EMBEDDED-DNF class: exactly
@@ -193,6 +200,36 @@ theorem formulaFamilyCollapse (k w : Nat) {n : Nat} (p : ParentKind)
   have hlen : (synthLayer p Ds hDs).gates.length = Ds.length :=
     synthGates_length Ds hDs
   have hex := geometricFamilyCollapse_universal k w (synthLayer p Ds hDs)
+    (by rw [hlen]; exact hm) hw1 (synthGates_width w Ds hDs hw)
+    (by rw [hlen]; exact hn)
+  rw [hlen, synthLayer_originalFormula] at hex
+  exact hex
+
+open GeneratedRefinedIteratedCertificate in
+/-- **Coefficient-9 formula-level family collapse (synthesized start view).**
+Same parent-merged embedded-DNF class as `formulaFamilyCollapse`, but using
+the uniform-9 geometric schedule.  The start layer is synthesized from raw
+simple DNFs (`dnfGate`/`synthGates`/`synthLayer`) and the supplied-layer
+uniform-9 theorem is then applied to that constructed layer.  Infrastructure
+only: not arbitrary layered decomposition, not frozen-form B4, not PHP force
+or switching, and not a lower-bound / P-vs-NP claim. -/
+theorem formulaFamilyCollapse_uniform9 (k w : Nat) {n : Nat} (p : ParentKind)
+    (Ds : List (DNF n)) (hDs : ∀ D ∈ Ds, SimpleDNF D)
+    (hm : 1 ≤ Ds.length) (hw1 : 1 ≤ w)
+    (hw : ∀ D ∈ Ds, widthDNF D ≤ w)
+    (hn : 2 * (9 * Ds.length) ^ k * (9 * Ds.length * w) ≤ n) :
+    ∃ cert : GeneratedRefinedIteratedCertificate n (freeRestriction n)
+        (p.merge (Ds.map dnfToBD)) (k + 1),
+      cert.stageGateCounts = List.replicate (k + 1) Ds.length ∧
+      cert.stageBudgets = List.replicate (k + 1) 2 ∧
+      cert.stageStarCounts =
+        (geometricSchedule9 Ds.length (n / (9 * Ds.length * w))
+          (k + 1)).map stageStars ∧
+      TreeBudgetFrom (fun _ _ => Ds.length) Ds.length (k + 1)
+        (geometricSchedule9 Ds.length (n / (9 * Ds.length * w)) (k + 1)) := by
+  have hlen : (synthLayer p Ds hDs).gates.length = Ds.length :=
+    synthGates_length Ds hDs
+  have hex := geometricFamilyCollapse_universal9 k w (synthLayer p Ds hDs)
     (by rw [hlen]; exact hm) hw1 (synthGates_width w Ds hDs hw)
     (by rw [hlen]; exact hn)
   rw [hlen, synthLayer_originalFormula] at hex
