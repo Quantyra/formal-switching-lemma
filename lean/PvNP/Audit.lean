@@ -43,6 +43,7 @@ import PvNP.PHPMatchingEncodeSideBitImage
 import PvNP.PHPMatchingEncodeSideBitPackage
 import PvNP.PHPMatchingEncodeSideBitForceFreeze
 import PvNP.PHPMatchingEncodePathGeometryTarget
+import PvNP.PHPMatchingEncodePathGeometry
 import PvNP.PHPMatchingEncodeAnswerAlphabet
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwo
 import PvNP.PHPMatchingEncodeAnswerAlphabetLengthTwoPackage
@@ -13147,7 +13148,40 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 #print axioms PvNP.PHPMatchingEncodePathGeometryTarget.path_geometry_grade_target_unit
 
 /-- info: 'PvNP.PHPMatchingEncodePathGeometryTarget.path_geometry_pivot_s2221_summary' depends on axioms: [propext,
- Classical.choice,
- Quot.sound] -/
+  Classical.choice,
+  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.PHPMatchingEncodePathGeometryTarget.path_geometry_pivot_s2221_summary
+
+/-! S2222: packet-native path-geometry walked-pair encode. -/
+
+/-- info: 'PvNP.PHPMatchingEncodePathGeometry.firstBlockPathExitMatching_eq_compose_walked' depends on axioms: [propext,
+  Classical.choice,
+  Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePathGeometry.firstBlockPathExitMatching_eq_compose_walked
+
+/-- info: 'PvNP.PHPMatchingEncodePathGeometry.pathGeometryEncode_injOn_searchD4mp_badGrade' depends on axioms: [propext,
+  Classical.choice,
+  Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePathGeometry.pathGeometryEncode_injOn_searchD4mp_badGrade
+
+/-- info: 'PvNP.PHPMatchingEncodePathGeometry.badGrade_searchD4mp_pathGeometry_card_le' depends on axioms: [propext,
+  Classical.choice,
+  Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePathGeometry.badGrade_searchD4mp_pathGeometry_card_le
+
+/-- info: 'PvNP.PHPMatchingEncodePathGeometry.pathGeometry_package_grade_target' depends on axioms: [propext,
+  Classical.choice,
+  Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePathGeometry.pathGeometry_package_grade_target
+
+/-- info: 'PvNP.PHPMatchingEncodePathGeometry.path_geometry_encode_s2222_summary' depends on axioms: [propext,
+  Classical.choice,
+  Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.PHPMatchingEncodePathGeometry.path_geometry_encode_s2222_summary
+

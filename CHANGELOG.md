@@ -4,6 +4,11 @@
 
 ### Added
 
+- **S2222** packet-native path-geometry walked-pair encode: instantiate
+  `PathGeometryPacket` with `(G2, first-block walked pairs)` from the deep
+  feed; recover path exit by composition; package `InjOn` and grade bound
+  `H·(2w)^j` (no side-bit `4^j`) via existing `G1`/`G2` force; Fin4 `6/16`
+  remains regression-only.  Not GA-4, switching, P-vs-NP, or `v0.11.0`.
 - **S2221** path-geometry force pivot target: after S2220 stop-lossed side-bit
   product counting, pin the next force lane as packet-native path geometry /
   coupled walked-pair encode (no free `Fin t → _` stream, no side-bit `4^j`
