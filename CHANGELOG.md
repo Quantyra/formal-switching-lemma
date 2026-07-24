@@ -4,6 +4,11 @@
 
 ### Added
 
+- **S2227 Gate B Entry infrastructure**: thread the existing recurrence-width
+  schedule into the frozen-form B4 recurrence Entry width slot, add the
+  recurrence-count/root-width wrapper and same-witness numeric pins. Hypothesis
+  tightening only; no Gate A, GA-4, switching, lower-bound, P-vs-NP, or release
+  claim.
 - **S2226 Gate B weight continuation**: coefficient-9 supplied-layer schedule
   theorem plus finite two-gate pair instance at ambient `648`
   (`stars = [36, 2]`, budgets/gates `[2, 2]`) via `geometricSchedule9 2 36 2`.

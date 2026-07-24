@@ -10814,6 +10814,19 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.frozenFormEntryProduct9Rec
 
+/-! S2227 Gate B Entry infrastructure / recurrence-width Entry pins. -/
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.frozenFormEntryProduct9RecWidth' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.frozenFormEntryProduct9RecWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.normalizedFrontierWidthSchedule_le_rootRecurrenceWidthSchedule' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.normalizedFrontierWidthSchedule_le_rootRecurrenceWidthSchedule
+
 /-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.dedupRepresentativeFrontier_length_le_formulaRecurrenceCount' depends on axioms: [propext,
  Quot.sound] -/
 #guard_msgs in
@@ -10825,16 +10838,38 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.levelEntryProduct9_le_frozenFormEntryProduct9Rec
 
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.levelEntryProduct9_le_frozenFormEntryProduct9RecWidth' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.levelEntryProduct9_le_frozenFormEntryProduct9RecWidth
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.frozenFormEntryProduct9RecWidth_le_frozenFormEntryProduct9Rec' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.frozenFormEntryProduct9RecWidth_le_frozenFormEntryProduct9Rec
+
 /-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.frozenFormEntryProduct9Rec_le_frozenFormEntryProduct9' depends on axioms: [propext,
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.frozenFormEntryProduct9Rec_le_frozenFormEntryProduct9
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.frozenFormEntryProduct9RecWidth_le_frozenFormEntryProduct9' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.frozenFormEntryProduct9RecWidth_le_frozenFormEntryProduct9
 
 /-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.frozenFormB4_v1_allLevels_uniform9_recEntry' depends on axioms: [propext,
  Classical.choice,
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.frozenFormB4_v1_allLevels_uniform9_recEntry
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.frozenFormB4_v1_allLevels_uniform9_recWidthEntry' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.frozenFormB4_v1_allLevels_uniform9_recWidthEntry
 
 /-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_formulaSize' depends on axioms: [propext,
  Quot.sound] -/
@@ -10854,10 +10889,25 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_recurrenceCount_lt_formulaSize
 
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_recurrenceWidthSchedule' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_recurrenceWidthSchedule
+
 /-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_recEntry_eq' depends on axioms: [propext,
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_recEntry_eq
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_recWidthEntry_eq' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_recWidthEntry_eq
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_recWidthEntry_lt_recEntry' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_recWidthEntry_lt_recEntry
 
 /-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_sizeEntry_fails' depends on axioms: [propext,
  Quot.sound] -/
@@ -10869,6 +10919,12 @@ S2169. Decidable syntactic equality and synthesized duplicate-free representativ
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_frozenFormB4_v1_via_recEntry
+
+/-- info: 'PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_frozenFormB4_v1_via_recWidthEntry' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry.twinCubeWitnessRec9_frozenFormB4_v1_via_recWidthEntry
 
 /-! S2185 GA-1 matching composition algebra pins. -/
 

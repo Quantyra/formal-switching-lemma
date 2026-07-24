@@ -1,7 +1,7 @@
 import PvNP.FormulaRecursiveSyntacticTerminalFrozenFormB4
 
 /-!
-# Frozen-form B4 recurrence Entry (S2183)
+# Frozen-form B4 recurrence Entry (S2183/S2227)
 
 The S2181 class wrapper consumes the size-coarse Entry
 `frozenFormEntryProduct9 = 2*(9*size)^r*(9*size*size)`. The S2180 count
@@ -28,7 +28,9 @@ chain, not the count recurrence:
 
 Entry-bound bookkeeping over the existing class wrapper only: a tighter
 sufficient ambient condition for the same conclusion, with no change to the
-certificate payload and no new switching mathematics. This is not switching
+certificate payload and no new switching mathematics.  S2227 only puts the
+already-available root recurrence-width schedule into the Entry width slot as
+Gate B Entry infrastructure / hypothesis tightening. This is not switching
 non-vacuity, not full B4 beyond the nonempty-fanin normalized-view/dedup
 class, not arbitrary AC⁰ collapse, not PHP switching, not a Frege/PHP or
 NP/circuit lower bound, not Gate A, and not P-versus-NP.
@@ -44,6 +46,7 @@ open FormulaRecursiveDepth
 open FormulaRecursiveFrontierCountRecurrence
 open FormulaRecursiveLayerProfile
 open FormulaRecursiveNonempty
+open FormulaRecursiveSyntacticTerminalBoundedShallowRecurrenceWidthTightBudget
 open FormulaRecursiveSyntacticTerminalNormalizedViewRoute
 open FormulaRecursiveSyntacticTerminalRepresentativeFrontierRoute
 open FormulaRecursiveSyntacticTerminalFrozenFormB4
@@ -57,6 +60,13 @@ def frozenFormEntryProduct9Rec {n : Nat} (F : BDFormula n) (rounds : Nat) : Nat 
   2 * (9 * formulaRecurrenceCount F) ^ rounds *
     (9 * formulaRecurrenceCount F * formulaSize F)
 
+/-- Recurrence-count/root-recurrence-width ambient Entry: both count slots use
+the hypothesis-free S2180 recurrence bound, while the width slot uses the
+root recurrence-width schedule. Gate B Entry infrastructure only. -/
+def frozenFormEntryProduct9RecWidth {n : Nat} (F : BDFormula n) (rounds : Nat) : Nat :=
+  2 * (9 * formulaRecurrenceCount F) ^ rounds *
+    (9 * formulaRecurrenceCount F * recurrenceWidthSchedule F 0)
+
 /-- Synthesized dedup counts obey the S2180 recurrence bound with zero
 hypotheses: dedup length ≤ raw frontier gate count ≤ recurrence. -/
 theorem dedupRepresentativeFrontier_length_le_formulaRecurrenceCount {n : Nat}
@@ -65,6 +75,14 @@ theorem dedupRepresentativeFrontier_length_le_formulaRecurrenceCount {n : Nat}
   Nat.le_trans
     (dedupRepresentativeFrontier_length_le_frontierGateCount F level)
     (frontierLayerGateCount_le_formulaRecurrenceCount F level)
+
+/-- The normalized frontier width schedule is bounded by the root recurrence
+width schedule, which is constant in the level index. -/
+theorem normalizedFrontierWidthSchedule_le_rootRecurrenceWidthSchedule {n : Nat}
+    (F : BDFormula n) (level : Nat) :
+    normalizedFrontierWidthSchedule F level ≤ recurrenceWidthSchedule F 0 := by
+  simpa [recurrenceWidthSchedule] using
+    (normalizedFrontierWidthSchedule_le_recurrenceWidthSchedule F level)
 
 private theorem mul_le_mul_of_le_left_right {a b c d : Nat}
     (hab : a ≤ b) (hcd : c ≤ d) : a * c ≤ b * d :=
@@ -102,12 +120,37 @@ theorem levelEntryProduct9_le_frozenFormEntryProduct9Rec {n : Nat}
     (dedupRepresentativeFrontier_length_le_formulaRecurrenceCount F level)
     (normalizedFrontierWidthSchedule_le_formulaSize F level)
 
+/-- Every levelwise entry product is bounded by the recurrence-count/root-width
+Entry, with zero hypotheses on the formula. -/
+theorem levelEntryProduct9_le_frozenFormEntryProduct9RecWidth {n : Nat}
+    (F : BDFormula n) (level rounds : Nat) :
+    levelEntryProduct9 F level rounds ≤ frozenFormEntryProduct9RecWidth F rounds :=
+  entry_product_mono rounds
+    (dedupRepresentativeFrontier_length_le_formulaRecurrenceCount F level)
+    (normalizedFrontierWidthSchedule_le_rootRecurrenceWidthSchedule F level)
+
+/-- The recurrence-count/root-width Entry never exceeds the recurrence-count
+Entry whose width slot is `formulaSize`. -/
+theorem frozenFormEntryProduct9RecWidth_le_frozenFormEntryProduct9Rec {n : Nat}
+    (F : BDFormula n) (rounds : Nat) :
+    frozenFormEntryProduct9RecWidth F rounds ≤ frozenFormEntryProduct9Rec F rounds :=
+  entry_product_mono rounds (Nat.le_refl _)
+    (recurrenceWidthSchedule_le_formulaSize F 0)
+
 /-- The recurrence Entry never exceeds the size-coarse S2181 Entry. -/
 theorem frozenFormEntryProduct9Rec_le_frozenFormEntryProduct9 {n : Nat}
     (F : BDFormula n) (rounds : Nat) :
     frozenFormEntryProduct9Rec F rounds ≤ frozenFormEntryProduct9 F rounds :=
   entry_product_mono rounds (formulaRecurrenceCount_le_formulaSize F)
     (Nat.le_refl _)
+
+/-- The recurrence-count/root-width Entry never exceeds the size-coarse S2181
+Entry. -/
+theorem frozenFormEntryProduct9RecWidth_le_frozenFormEntryProduct9 {n : Nat}
+    (F : BDFormula n) (rounds : Nat) :
+    frozenFormEntryProduct9RecWidth F rounds ≤ frozenFormEntryProduct9 F rounds :=
+  Nat.le_trans (frozenFormEntryProduct9RecWidth_le_frozenFormEntryProduct9Rec F rounds)
+    (frozenFormEntryProduct9Rec_le_frozenFormEntryProduct9 F rounds)
 
 /-- Class-quantified all-level uniform-9 frozen-form wrapper under the
 recurrence Entry: same conclusion as the S2181 wrapper; the recurrence Entry
@@ -127,6 +170,25 @@ theorem frozenFormB4_v1_allLevels_uniform9_recEntry {n : Nat} (F : BDFormula n)
   intro level _hk
   exact Nat.le_trans
     (levelEntryProduct9_le_frozenFormEntryProduct9Rec F level rounds) hn
+
+/-- Class-quantified all-level uniform-9 frozen-form wrapper under the
+recurrence-count/root-width Entry: same conclusion as the S2181/S2183 wrappers;
+the ambient hypothesis is tightened only through existing recurrence-width
+infrastructure. -/
+theorem frozenFormB4_v1_allLevels_uniform9_recWidthEntry {n : Nat} (F : BDFormula n)
+    (rounds : Nat) (parent : ParentKind) (hNE : NonemptyFaninFormula F)
+    (hn : frozenFormEntryProduct9RecWidth F rounds ≤ n) :
+    ∀ level, level ≤ depth F →
+      RepresentativeNormalizedViewClassDepthFinalTreeAtUniform9 F
+        (fun _ => formulaSize F) (normalizedFrontierWidthSchedule F)
+        (depth F) rounds parent level
+        (dedupRepresentativeFrontier F level) := by
+  refine allDedupFrontiers_geometricCollapse_finalTree_uniform9_normalizedWidth
+    F (fun _ => formulaSize F) (depth F) rounds parent hNE
+    (Nat.le_refl _) (Nat.le_refl _) ?_
+  intro level _hk
+  exact Nat.le_trans
+    (levelEntryProduct9_le_frozenFormEntryProduct9RecWidth F level rounds) hn
 
 /-! ## Same-witness strict separation at the recurrence-Entry ambient -/
 
@@ -204,12 +266,36 @@ theorem twinCubeWitnessRec9_recurrenceCount_lt_formulaSize :
     twinCubeWitnessRec9_formulaSize]
   decide
 
+/-- The duplicated-subformula witness has root recurrence-width schedule `8`. -/
+theorem twinCubeWitnessRec9_recurrenceWidthSchedule :
+    recurrenceWidthSchedule twinCubeWitnessRec9 0 = 8 := by
+  simp [twinCubeWitnessRec9, twinCubeMidRec9, twinCubeInnerARec9,
+    twinCubeInnerBRec9, recurrenceWidthSchedule, formulaRecurrenceWidth_and,
+    formulaRecurrenceWidth_lit]
+
 /-- The recurrence Entry is met with **equality** at this ambient:
 `2*(9*8)^2*(9*8*15) = 11197440`. -/
 theorem twinCubeWitnessRec9_recEntry_eq :
     frozenFormEntryProduct9Rec twinCubeWitnessRec9 2 = 11197440 := by
   unfold frozenFormEntryProduct9Rec
   simp only [twinCubeWitnessRec9_recurrenceCount, twinCubeWitnessRec9_formulaSize]
+  decide
+
+/-- The recurrence-count/root-width Entry is met with equality at a smaller
+ambient: `2*(9*8)^2*(9*8*8) = 5971968`. -/
+theorem twinCubeWitnessRec9_recWidthEntry_eq :
+    frozenFormEntryProduct9RecWidth twinCubeWitnessRec9 2 = 5971968 := by
+  unfold frozenFormEntryProduct9RecWidth
+  simp only [twinCubeWitnessRec9_recurrenceCount,
+    twinCubeWitnessRec9_recurrenceWidthSchedule]
+  decide
+
+/-- Same-witness strict Entry tightening: the recurrence-count/root-width Entry
+is strictly below the S2183 recurrence Entry. -/
+theorem twinCubeWitnessRec9_recWidthEntry_lt_recEntry :
+    frozenFormEntryProduct9RecWidth twinCubeWitnessRec9 2 <
+      frozenFormEntryProduct9Rec twinCubeWitnessRec9 2 := by
+  simp only [twinCubeWitnessRec9_recWidthEntry_eq, twinCubeWitnessRec9_recEntry_eq]
   decide
 
 /-- Same-witness strict separation: the size-coarse S2181 Entry
@@ -235,6 +321,20 @@ theorem twinCubeWitnessRec9_frozenFormB4_v1_via_recEntry :
   frozenFormB4_v1_allLevels_uniform9_recEntry twinCubeWitnessRec9 2
     ParentKind.and twinCubeWitnessRec9_nonemptyFanin
     (Nat.le_of_eq twinCubeWitnessRec9_recEntry_eq)
+
+/-- Through-the-hypothesis instantiation of the recurrence-count/root-width
+Entry wrapper at the exact smaller recurrence-width ambient. -/
+theorem twinCubeWitnessRec9_frozenFormB4_v1_via_recWidthEntry :
+    ∀ level, level ≤ depth twinCubeWitnessRec9 →
+      RepresentativeNormalizedViewClassDepthFinalTreeAtUniform9
+        twinCubeWitnessRec9
+        (fun _ => formulaSize twinCubeWitnessRec9)
+        (normalizedFrontierWidthSchedule twinCubeWitnessRec9)
+        (depth twinCubeWitnessRec9) 2 ParentKind.and level
+        (dedupRepresentativeFrontier twinCubeWitnessRec9 level) :=
+  frozenFormB4_v1_allLevels_uniform9_recWidthEntry twinCubeWitnessRec9 2
+    ParentKind.and twinCubeWitnessRec9_nonemptyFanin
+    (by simp only [twinCubeWitnessRec9_recWidthEntry_eq]; decide)
 
 end FormulaRecursiveSyntacticTerminalFrozenFormB4RecurrenceEntry
 end PvNP
