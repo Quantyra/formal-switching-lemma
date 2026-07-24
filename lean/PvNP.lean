@@ -124,6 +124,7 @@ import PvNP.PHPMatchingEncodeSideBitImage
 import PvNP.PHPMatchingEncodeSideBitPackage
 import PvNP.PHPMatchingEncodeSideBitForceFreeze
 import PvNP.PHPMatchingEncodePathGeometryTarget
+import PvNP.PHPMatchingEncodePathGeometry
 import PvNP.PHPMatchingEncodePathGeometryConcrete
 import PvNP.PHPMatchingEncodePathGeometryImage
 import PvNP.PHPMatchingEncodePathGeometryForceBridge

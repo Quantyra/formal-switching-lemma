@@ -25,13 +25,21 @@
   package target with `C = 4`.  Structural β/G1/walked coupling is preserved on
   the bad-domain wrapper.  No side-bit/free-stream tax, no residual preimage
   grind, no new force gate, no GA-4, P-vs-NP, or `v0.11.0` claim.
-- **S2222** concrete path-geometry PairCode encode step: instantiate the S2221
-  packet target with existing deterministic `encodeExt`, β-blocks, and coupled
-  walked pairs; prove β well-formedness, G1 honest-space landing, walked length,
-  and fixed `searchD4mp` wrapper pins.  Structural only: no residual
-  unique-preimage grind, no side-bit/free-stream product tax, no new force,
-  no GA-4, switching, P-vs-NP, or `v0.11.0` claim.
-- **S2221** path-geometry force pivot target: after S2220 stop-lossed side-bit
+- **S2222** concrete path-geometry PairCode encode step (closed pin, split stack):
+  instantiate the S2221 packet target with existing deterministic `encodeExt`,
+  β-blocks, and coupled walked pairs; prove β well-formedness, G1 honest-space
+  landing, walked length, and fixed `searchD4mp` wrapper pins
+  (`PHPMatchingEncodePathGeometryConcrete` and successors).  Structural only: no
+  residual unique-preimage grind, no side-bit/free-stream product tax, no new
+  force, no GA-4, switching, P-vs-NP, or `v0.11.0` claim.
+- **S2222 WIP** (alternate single-module path, retained): packet-native
+  path-geometry walked-pair encode in `PHPMatchingEncodePathGeometry`: instantiate
+  `PathGeometryPacket` with `(G2, first-block walked pairs)` from the deep feed;
+  recover path exit by composition; package `InjOn` and grade bound `H·(2w)^j`
+  (no side-bit `4^j`) via existing `G1`/`G2` force; Fin4 `6/16` remains
+  regression-only.  Local Concrete stack above is the closed pin; this module is
+  kept as an alternate implementation path.  Not GA-4, switching, P-vs-NP, or
+  `v0.11.0`.- **S2221** path-geometry force pivot target: after S2220 stop-lossed side-bit
   product counting, pin the next force lane as packet-native path geometry /
   coupled walked-pair encode (no free `Fin t → _` stream, no side-bit `4^j`
   tax), with a strict encoded-bad force gate and abstract `H·C^j` grade target.
