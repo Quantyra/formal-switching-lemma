@@ -31,6 +31,11 @@ removes a supplied-start-layer obligation within this class, not arbitrary
 layered decomposition, not frozen-form B4, not PHP force/switching, and not a
 lower-bound or P-vs-NP claim.
 
+S2229 pins the residual OUTSIDE this class: the general coefficient-9/frozen
+start-layer synthesis from arbitrary depth-bounded formulas to a
+`MinimalLayeredFormula` is named below as an unproved Prop only.  It is not
+inhabited here, and this file still does not claim full B4.
+
 ## HONEST SCOPE STATEMENT (read this)
 
 * The synthesized class is the PARENT-MERGED EMBEDDED-DNF class: exactly
@@ -234,6 +239,85 @@ theorem formulaFamilyCollapse_uniform9 (k w : Nat) {n : Nat} (p : ParentKind)
     (by rw [hlen]; exact hn)
   rw [hlen, synthLayer_originalFormula] at hex
   exact hex
+
+/-! ## S2229 Gate B residual pin: class discharge plus named open obligation -/
+
+open GeneratedRefinedIteratedCertificate in
+/-- S2228 packaged as a proposition: coefficient-9 start-layer synthesis is
+discharged only for the parent-merged embedded-DNF class. -/
+def ParentMergedEmbeddedDNFUniform9StartLayerDischarged : Prop :=
+  ∀ (k w : Nat) {n : Nat} (p : ParentKind)
+    (Ds : List (DNF n)) (_hDs : ∀ D ∈ Ds, SimpleDNF D)
+    (_hm : 1 ≤ Ds.length) (_hw1 : 1 ≤ w)
+    (_hw : ∀ D ∈ Ds, widthDNF D ≤ w)
+    (_hn : 2 * (9 * Ds.length) ^ k * (9 * Ds.length * w) ≤ n),
+    ∃ cert : GeneratedRefinedIteratedCertificate n (freeRestriction n)
+        (p.merge (Ds.map dnfToBD)) (k + 1),
+      cert.stageGateCounts = List.replicate (k + 1) Ds.length ∧
+      cert.stageBudgets = List.replicate (k + 1) 2 ∧
+      cert.stageStarCounts =
+        (geometricSchedule9 Ds.length (n / (9 * Ds.length * w))
+          (k + 1)).map stageStars ∧
+      TreeBudgetFrom (fun _ _ => Ds.length) Ds.length (k + 1)
+        (geometricSchedule9 Ds.length (n / (9 * Ds.length * w)) (k + 1))
+
+/-- The S2228 class package is exactly discharged by
+`formulaFamilyCollapse_uniform9`. -/
+theorem parentMergedEmbeddedDNF_uniform9_startLayerSynthesis_discharged :
+    ParentMergedEmbeddedDNFUniform9StartLayerDischarged := by
+  intro k w n p Ds hDs hm hw1 hw hn
+  exact formulaFamilyCollapse_uniform9 k w p Ds hDs hm hw1 hw hn
+
+/-- **UNPROVED RESIDUAL (S2229).**  General coefficient-9/frozen start-layer
+synthesis for arbitrary depth-bounded formulas.  This is a bare Prop naming the
+outside-class obligation only: no constructor, axiom, theorem, or inhabitant is
+introduced here.  It asks for a supplied `MinimalLayeredFormula` start view with
+the actual fields `parent`/`gates` (through `originalFormula`) and a uniform
+bottom DNF width budget; full frozen-form B4 remains open. -/
+def S2229GeneralCoeff9FrozenStartLayerSynthesisResidual : Prop :=
+  ∀ {n : Nat} (F : BDFormula n) (d w : Nat),
+    BoundedDepthFrege.depth F ≤ d →
+      ∃ L : MinimalLayeredFormula n,
+        L.originalFormula = F ∧
+        ∀ g ∈ L.gates, widthDNF g.theDNF ≤ w
+
+open GeneratedRefinedIteratedCertificate in
+/-- Supplied-layer coefficient-9 projection: if a `MinimalLayeredFormula` start
+layer is already supplied, the existing uniform-9 geometric theorem applies. -/
+def Coeff9SuppliedMinimalLayeredFormulaProjection : Prop :=
+  ∀ (k w : Nat) {n : Nat} (L : MinimalLayeredFormula n)
+    (_hm : 1 ≤ L.gates.length) (_hw1 : 1 ≤ w)
+    (_hw : ∀ g ∈ L.gates, widthDNF g.theDNF ≤ w)
+    (_hn : 2 * (9 * L.gates.length) ^ k * (9 * L.gates.length * w) ≤ n),
+    ∃ cert : GeneratedRefinedIteratedCertificate n (freeRestriction n)
+        L.originalFormula (k + 1),
+      cert.stageGateCounts = List.replicate (k + 1) L.gates.length ∧
+      cert.stageBudgets = List.replicate (k + 1) 2 ∧
+      cert.stageStarCounts =
+        (geometricSchedule9 L.gates.length
+          (n / (9 * L.gates.length * w)) (k + 1)).map stageStars ∧
+      TreeBudgetFrom (fun _ _ => L.gates.length) L.gates.length (k + 1)
+        (geometricSchedule9 L.gates.length
+          (n / (9 * L.gates.length * w)) (k + 1))
+
+/-- Thin proved supplied-layer projection, directly via
+`geometricFamilyCollapse_universal9`. -/
+theorem coeff9_suppliedMinimalLayeredFormula_projection :
+    Coeff9SuppliedMinimalLayeredFormulaProjection := by
+  intro k w n L hm hw1 hw hn
+  exact geometricFamilyCollapse_universal9 k w L hm hw1 hw hn
+
+/-- S2229 summary pin.  It proves the already-discharged class fact and the
+supplied-layer projection, while mentioning the general residual only by name
+via reflexive equality; it does **not** prove or inhabit
+`S2229GeneralCoeff9FrozenStartLayerSynthesisResidual`. -/
+theorem gate_b_outside_class_start_layer_residual_s2229_summary :
+    ParentMergedEmbeddedDNFUniform9StartLayerDischarged ∧
+      S2229GeneralCoeff9FrozenStartLayerSynthesisResidual =
+        S2229GeneralCoeff9FrozenStartLayerSynthesisResidual ∧
+      Coeff9SuppliedMinimalLayeredFormulaProjection := by
+  exact ⟨parentMergedEmbeddedDNF_uniform9_startLayerSynthesis_discharged,
+    rfl, coeff9_suppliedMinimalLayeredFormula_projection⟩
 
 /-! ## A realized width-2 witness instance -/
 

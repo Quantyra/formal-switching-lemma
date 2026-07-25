@@ -4888,6 +4888,48 @@ frozen-form B4 in full and Gate A rung 4 remain OPEN.
 #guard_msgs in
 #print axioms PvNP.FormulaFamilyCollapse.formulaFamilyCollapse_uniform9
 
+/-!
+S2229 Gate B residual pin: the S2228 parent-merged embedded-DNF class package
+is discharged by `formulaFamilyCollapse_uniform9`; the general arbitrary
+depth-bounded coefficient-9/frozen start-layer synthesis obligation is named as
+an unproved residual Prop only and is not inhabited by the summary pin.
+-/
+
+/-- info: 'PvNP.FormulaFamilyCollapse.ParentMergedEmbeddedDNFUniform9StartLayerDischarged' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaFamilyCollapse.ParentMergedEmbeddedDNFUniform9StartLayerDischarged
+
+/-- info: 'PvNP.FormulaFamilyCollapse.parentMergedEmbeddedDNF_uniform9_startLayerSynthesis_discharged' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaFamilyCollapse.parentMergedEmbeddedDNF_uniform9_startLayerSynthesis_discharged
+
+/-- info: 'PvNP.FormulaFamilyCollapse.S2229GeneralCoeff9FrozenStartLayerSynthesisResidual' depends on axioms: [propext,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaFamilyCollapse.S2229GeneralCoeff9FrozenStartLayerSynthesisResidual
+
+/-- info: 'PvNP.FormulaFamilyCollapse.Coeff9SuppliedMinimalLayeredFormulaProjection' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaFamilyCollapse.Coeff9SuppliedMinimalLayeredFormulaProjection
+
+/-- info: 'PvNP.FormulaFamilyCollapse.coeff9_suppliedMinimalLayeredFormula_projection' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaFamilyCollapse.coeff9_suppliedMinimalLayeredFormula_projection
+
+/-- info: 'PvNP.FormulaFamilyCollapse.gate_b_outside_class_start_layer_residual_s2229_summary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.FormulaFamilyCollapse.gate_b_outside_class_start_layer_residual_s2229_summary
+
 /-- info: 'PvNP.FormulaFamilyCollapse.witnessDNF_width_realized' depends on axioms: [propext, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaFamilyCollapse.witnessDNF_width_realized

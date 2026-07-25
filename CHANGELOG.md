@@ -4,6 +4,13 @@
 
 ### Added
 
+- **S2229 Gate B residual pin**: package the S2228 parent-merged embedded-DNF
+  coefficient-9 start-layer discharge as a Prop, add the supplied
+  `MinimalLayeredFormula` projection, and name the general arbitrary
+  depth-bounded coeff-9/frozen start-layer synthesis obligation as an
+  unproved residual.  Infrastructure pin only; the residual is not inhabited,
+  and this is not full B4, Gate A, switching, lower-bound, P-vs-NP, or release
+  closure.
 - **S2228 Gate B open-obligation reduction**: add
   `formulaFamilyCollapse_uniform9`, reusing synthesized start layers for the
   parent-merged embedded-DNF class under the coefficient-9 schedule.
