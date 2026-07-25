@@ -13,6 +13,7 @@ import PvNP.RestrictionComposition
 import PvNP.GeneratedIteratedCollapseFinal
 import PvNP.RefinedSubspace
 import PvNP.SwitchingRelabel
+import PvNP.SwitchingCoreV0Shell
 import PvNP.GeneratedRefinedCollapse
 import PvNP.RefinedTwoStageInstance
 import PvNP.RefinedThreeStageInstance
@@ -866,6 +867,22 @@ This module pins the axiom profile of the publication-facing theorem surface.
 /-- info: 'PvNP.SwitchingClose2.switchingLemmaTermSimple_proved' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.SwitchingClose2.switchingLemmaTermSimple_proved
+
+/-- info: 'PvNP.SwitchingCoreV0Shell.BeameHastadCountingSwitchingForm' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.SwitchingCoreV0Shell.BeameHastadCountingSwitchingForm
+
+/-- info: 'PvNP.SwitchingCoreV0Shell.beame_hastad_counting_form_landed' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.SwitchingCoreV0Shell.beame_hastad_counting_form_landed
+
+/-- info: 'PvNP.SwitchingCoreV0Shell.GeneralDNFSwitchingLemmaResidual' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.SwitchingCoreV0Shell.GeneralDNFSwitchingLemmaResidual
+
+/-- info: 'PvNP.SwitchingCoreV0Shell.switching_core_v0_s2230_summary' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.SwitchingCoreV0Shell.switching_core_v0_s2230_summary
 
 /-- info: 'PvNP.BoundedDepthFregeSwitchingBridge.bdDNF_switching_bridge' depends on axioms: [propext,
  Classical.choice,

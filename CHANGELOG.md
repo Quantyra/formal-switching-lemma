@@ -4,6 +4,11 @@
 
 ### Added
 
+- **S2230 Beame/Håstad counting-form shell pin**: add a v0 route/alignment
+  module naming the already-proved simple-DNF term switching counting form via
+  `SwitchingClose2.switchingLemmaTermSimple_proved`, while keeping the general
+  DNF `SwitchingLemma` only as an unproved residual `Prop`. Not AC0 LB, not
+  general multi-layer Håstad, not Frege/PHP, not P-vs-NP, and not `v0.11.0`.
 - **S2229 Gate B residual pin**: package the S2228 parent-merged embedded-DNF
   coefficient-9 start-layer discharge as a Prop, add the supplied
   `MinimalLayeredFormula` projection, and name the general arbitrary
