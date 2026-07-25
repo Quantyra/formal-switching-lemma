@@ -4,6 +4,12 @@
 
 ### Added
 
+- **S2231 Path B one-step consumer instance**: add a concrete non-empty
+  singleton one-literal DNF `GeneratedOneStepInput` at ten variables, using the
+  existing factor-4 generated one-step infrastructure and the closed-form
+  `restrictionsWithStars_card` beat (`4 * |R(10,0)| < |R(10,1)|`) to produce a
+  certificate.  Infrastructure consumer only; not a general switching lemma,
+  not Gate A, not Frege/PHP, not P-vs-NP, and not `v0.11.0`.
 - **S2230 Beame/Håstad counting-form shell pin**: add a v0 route/alignment
   module naming the already-proved simple-DNF term switching counting form via
   `SwitchingClose2.switchingLemmaTermSimple_proved`, while keeping the general

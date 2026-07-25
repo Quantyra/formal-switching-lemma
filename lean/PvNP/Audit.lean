@@ -10,6 +10,7 @@ import PvNP.GeneratedGoodRestriction
 import PvNP.GeneratedIteratedCollapse
 import PvNP.GeneratedOneStepDepthReduction
 import PvNP.RestrictionComposition
+import PvNP.GeneratedOneStepLiteralInstance
 import PvNP.GeneratedIteratedCollapseFinal
 import PvNP.RefinedSubspace
 import PvNP.SwitchingRelabel
@@ -4180,6 +4181,30 @@ info: 'PvNP.GeneratedOneStepDepthReduction.singletonEmptyDNFOr_nonvacuous' depen
 -/
 #guard_msgs in
 #print axioms PvNP.GeneratedOneStepDepthReduction.singletonEmptyDNFOr_nonvacuous
+
+/--
+info: 'PvNP.GeneratedOneStepLiteralInstance.singletonOneLitDNFOrInput' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.GeneratedOneStepLiteralInstance.singletonOneLitDNFOrInput
+
+/--
+info: 'PvNP.GeneratedOneStepLiteralInstance.singletonOneLitDNFOr_nonvacuous' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.GeneratedOneStepLiteralInstance.singletonOneLitDNFOr_nonvacuous
+
+/--
+info: 'PvNP.GeneratedOneStepLiteralInstance.S2231_pathB_singletonOneLit_oneStepCertificate' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.GeneratedOneStepLiteralInstance.S2231_pathB_singletonOneLit_oneStepCertificate
 
 /-!
 Pins for `PvNP.RestrictionComposition`: B4 restriction-sequence composition,
