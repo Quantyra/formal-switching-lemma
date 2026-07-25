@@ -269,16 +269,17 @@ theorem parentMergedEmbeddedDNF_uniform9_startLayerSynthesis_discharged :
   exact formulaFamilyCollapse_uniform9 k w p Ds hDs hm hw1 hw hn
 
 /-- **UNPROVED RESIDUAL (S2229).**  General coefficient-9/frozen start-layer
-synthesis for arbitrary depth-bounded formulas.  This is a bare Prop naming the
-outside-class obligation only: no constructor, axiom, theorem, or inhabitant is
-introduced here.  It asks for a supplied `MinimalLayeredFormula` start view with
-the actual fields `parent`/`gates` (through `originalFormula`) and a uniform
-bottom DNF width budget; full frozen-form B4 remains open. -/
+synthesis for arbitrary depth-bounded formulas outside the S2228 class.
+Bare Prop only: no constructor, axiom, theorem, or inhabitant.  Asks for some
+nonempty `MinimalLayeredFormula` view of `F` with a positive uniform bottom-DNF
+width budget `w` (existential `w`, not `∀ w`).  Full frozen-form B4 remains open. -/
 def S2229GeneralCoeff9FrozenStartLayerSynthesisResidual : Prop :=
-  ∀ {n : Nat} (F : BDFormula n) (d w : Nat),
+  ∀ {n : Nat} (F : BDFormula n) (d : Nat),
     BoundedDepthFrege.depth F ≤ d →
-      ∃ L : MinimalLayeredFormula n,
+      ∃ (L : MinimalLayeredFormula n) (w : Nat),
         L.originalFormula = F ∧
+        1 ≤ L.gates.length ∧
+        1 ≤ w ∧
         ∀ g ∈ L.gates, widthDNF g.theDNF ≤ w
 
 open GeneratedRefinedIteratedCertificate in
@@ -307,17 +308,15 @@ theorem coeff9_suppliedMinimalLayeredFormula_projection :
   intro k w n L hm hw1 hw hn
   exact geometricFamilyCollapse_universal9 k w L hm hw1 hw hn
 
-/-- S2229 summary pin.  It proves the already-discharged class fact and the
-supplied-layer projection, while mentioning the general residual only by name
-via reflexive equality; it does **not** prove or inhabit
-`S2229GeneralCoeff9FrozenStartLayerSynthesisResidual`. -/
+/-- S2229 summary pin: discharged S2228 class package + supplied-layer
+projection.  The general residual
+`S2229GeneralCoeff9FrozenStartLayerSynthesisResidual` remains a separate named
+open Prop and is **not** a conjunct here (not proved, not inhabited). -/
 theorem gate_b_outside_class_start_layer_residual_s2229_summary :
     ParentMergedEmbeddedDNFUniform9StartLayerDischarged ∧
-      S2229GeneralCoeff9FrozenStartLayerSynthesisResidual =
-        S2229GeneralCoeff9FrozenStartLayerSynthesisResidual ∧
       Coeff9SuppliedMinimalLayeredFormulaProjection := by
   exact ⟨parentMergedEmbeddedDNF_uniform9_startLayerSynthesis_discharged,
-    rfl, coeff9_suppliedMinimalLayeredFormula_projection⟩
+    coeff9_suppliedMinimalLayeredFormula_projection⟩
 
 /-! ## A realized width-2 witness instance -/
 
