@@ -9935,6 +9935,11 @@ together with the already-proved simple-DNF theorem, would imply
 `SwitchingLemmaTerm`; the residual itself is NOT inhabited here.  Boundary: term
 normalization bridge bookkeeping only; no general `SwitchingLemma`, AC0,
 Frege/PHP, lower-bound, P-vs-NP, or release claim.
+
+S2234-NF adds the normalize-first capstone.  It bounds only
+badSetTerm (normalizeDNF D), not SwitchingLemmaTerm; it does not use or prove
+the false card bridge and is not a SwitchingLemma, AC0, Frege/PHP,
+lower-bound, or P-vs-NP claim.
 -/
 
 /-- info: 'PvNP.SwitchingNormalize.NormalizeBadSetCardBridge' depends on axioms: [propext, Classical.choice, Quot.sound] -/
@@ -9964,6 +9969,22 @@ Frege/PHP, lower-bound, P-vs-NP, or release claim.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.SwitchingNormalize.switchingLemmaTerm_proved_of_normalizeBridge
+
+/-- info: 'PvNP.SwitchingNormalize.SwitchingLemmaTermNormalizeFirst' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.SwitchingNormalize.SwitchingLemmaTermNormalizeFirst
+
+/-- info: 'PvNP.SwitchingNormalize.switchingLemmaTermNormalizeFirst_of_simple' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.SwitchingNormalize.switchingLemmaTermNormalizeFirst_of_simple
+
+/-- info: 'PvNP.SwitchingNormalize.switchingLemmaTermNormalizeFirst_proved' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.SwitchingNormalize.switchingLemmaTermNormalizeFirst_proved
 
 /-!
 Pins for S2233-A1': the one-variable duplicate-literal counterexample shows the

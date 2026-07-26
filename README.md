@@ -1356,6 +1356,12 @@ argument, and not a PHP switching lemma.
 
 As of `v0.10.0`, the audit surface has `2034` `#guard_msgs`-pinned `#print axioms` profiles in `lean/PvNP/Audit.lean`; none of the pinned declarations depends on `sorryAx`, and every profile is within `propext`/`Classical.choice`/`Quot.sound`. One of the pins deliberately certifies OPENNESS rather than a theorem: `PvNP.GeneratedIteratedCollapse.openObligations_nonempty` pins the intentionally nonempty frozen-form Gate B obstruction map inside the audit surface. The v0.9.0 class wrapper remains class-level only; the v0.10.0 GA-3 encode surface is packaging/bookkeeping only (no injectivity, no bad-set cardinality). Full frozen-payload B4 beyond the nonempty-fanin normalized-view/dedup class and Gate A rung 4 (a PHP switching lemma) remain open.
 
+S2234-NF adds `SwitchingNormalize.SwitchingLemmaTermNormalizeFirst`, a
+normalize-first capstone derived from `SwitchingLemmaTermSimple`.  It bounds only
+`badSetTerm (normalizeDNF D)`, not `SwitchingLemmaTerm`; it does not use or prove
+the false normalization card bridge and is not `SwitchingLemma`, AC0, Frege/PHP,
+lower-bound, or P-vs-NP.
+
 - DOI: `10.5281/zenodo.21184992`
 - Release: `https://github.com/Quantyra/formal-switching-lemma/releases/tag/v0.5.0`
 

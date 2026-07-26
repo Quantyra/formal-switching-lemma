@@ -42,6 +42,11 @@ This repository does **not** establish or imply:
 - any strength, efficiency, or size/depth-optimality claim for the local
   cut-free system from its completeness theorem (completeness alone proves no
   hardness; the naive constructed refutations are exponential-size).
+- `SwitchingNormalize.SwitchingLemmaTermNormalizeFirst` as a general term
+  switching lemma: the S2234-NF normalize-first capstone bounds only
+  `badSetTerm (normalizeDNF D)`, not `SwitchingLemmaTerm`; it does not use or
+  prove the false normalization card bridge and is not `SwitchingLemma`, AC0,
+  Frege/PHP, lower-bound, or P-vs-NP.
 - a PHP switching lemma: beyond the depth-1 single-literal and
   single-conjunctive-term collapse bounds of `PHPFullMatchingCollapseBound`
   (made exact for the single-literal event in

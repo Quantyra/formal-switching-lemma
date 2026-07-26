@@ -4,6 +4,13 @@
 
 ### Added
 
+- **S2234-NF normalize-first term switching capstone**: add
+  `SwitchingLemmaTermNormalizeFirst` and derive it from the already-proved
+  `SwitchingLemmaTermSimple`, with audit pins.  This bounds only
+  `badSetTerm (normalizeDNF D)`; it is not `SwitchingLemmaTerm`, does not use or
+  prove the false card bridge, and is not `SwitchingLemma`, AC0, Frege/PHP,
+  lower-bound, or P-vs-NP.
+
 - **S2233-A1' NormalizeBadSetCardBridge counterexample**: add a finite
   one-variable duplicate-literal DNF counterexample showing
   `not NormalizeBadSetCardBridge 1`, with card and audit pins. Counterexample to
