@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+### Paused
+
+- **S2236-A2 domination gate bounded attempt**: no proof or kernel-checked
+  counterexample landed.  The remaining formal blocker is the arbitrary-root
+  split/query-variable ladder needed to compare `canonicalDT D` with
+  `queryTerm vars D`: in particular a proved lemma of the shape
+  `dtDepth (canonicalDT D) ≤ 1 + max (dtDepth (canonicalDT (assignVar v false D)))
+  (dtDepth (canonicalDT (assignVar v true D)))`, plus the residual commutation
+  needed to iterate it through `queryTerm`.  No Path-B instances, C-only
+  packaging, `SwitchingLemma`/`SwitchingLemmaTerm` inhabitants, AC0/Frege/PHP,
+  lower-bound, P-vs-NP, or release claim is added.
+
 ### Added
 
 - **S2235-A2 canonical/term-canonical bridge residual**: add
