@@ -153,6 +153,7 @@ import PvNP.SwitchingEnteredOrder
 import PvNP.SwitchingFactB
 import PvNP.SwitchingLemmaStatement
 import PvNP.SwitchingNormalize
+import PvNP.SwitchingNormalizeCounterexample
 import PvNP.SwitchingOrder
 import PvNP.SwitchingRazborovCode
 import PvNP.SwitchingStateDecode

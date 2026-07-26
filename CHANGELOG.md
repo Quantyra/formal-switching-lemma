@@ -4,6 +4,11 @@
 
 ### Added
 
+- **S2233-A1' NormalizeBadSetCardBridge counterexample**: add a finite
+  one-variable duplicate-literal DNF counterexample showing
+  `not NormalizeBadSetCardBridge 1`, with card and audit pins. Counterexample to
+  the naive normalization bad-set card bridge only; not SwitchingLemma/Term
+  inhabited, not AC0, not Frege/PHP, not a lower bound, and not P-vs-NP.
 - **S2232-B2 two-gate one-step consumer instance**: add a concrete non-empty
   two-gate positive one-literal DNF `GeneratedOneStepInput` at seventeen
   variables, using `2 * |R(17,0)| * 4^1 < |R(17,1)|` to produce the one-step
@@ -143,6 +148,11 @@ or pivot codes; do not claim GA-4 closure or tag v0.11.0 from this stack alone.
 
 ### Added
 
+- **S2233-A1' NormalizeBadSetCardBridge counterexample**: add a finite
+  one-variable duplicate-literal DNF counterexample showing
+  `not NormalizeBadSetCardBridge 1`, with card and audit pins. Counterexample to
+  the naive normalization bad-set card bridge only; not SwitchingLemma/Term
+  inhabited, not AC0, not Frege/PHP, not a lower bound, and not P-vs-NP.
 - **S2187** GA-3 feed-parametric matching extension-encode infrastructure:
   vertex-query canonical matching DTs, walk traces/blocks/σ surfaces,
   star-code graded bounds, counterexample-disposal pins, and path-answer

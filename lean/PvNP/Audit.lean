@@ -17,6 +17,7 @@ import PvNP.RefinedSubspace
 import PvNP.SwitchingRelabel
 import PvNP.SwitchingCoreV0Shell
 import PvNP.SwitchingNormalize
+import PvNP.SwitchingNormalizeCounterexample
 import PvNP.GeneratedRefinedCollapse
 import PvNP.RefinedTwoStageInstance
 import PvNP.RefinedThreeStageInstance
@@ -9939,6 +9940,25 @@ Frege/PHP, lower-bound, P-vs-NP, or release claim.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.SwitchingNormalize.switchingLemmaTerm_proved_of_normalizeBridge
+
+/-!
+Pins for S2233-A1': the one-variable duplicate-literal counterexample shows the
+naive `NormalizeBadSetCardBridge 1` is false.  This is only a counterexample to
+that bridge; it is not a switching lemma, AC0, Frege/PHP, lower-bound, or
+P-vs-NP claim.
+-/
+
+/-- info: 'PvNP.badSetTerm_Ddup_card_gt_normalized_2_1' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.badSetTerm_Ddup_card_gt_normalized_2_1
+
+/-- info: 'PvNP.not_normalizeBadSetCardBridge_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.not_normalizeBadSetCardBridge_one
 
 /-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.NonemptyFaninFormula' does not depend on any axioms -/
 #guard_msgs in
