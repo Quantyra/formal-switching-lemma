@@ -21,6 +21,7 @@ import PvNP.SwitchingNormalizeCounterexample
 import PvNP.GeneratedRefinedCollapse
 import PvNP.RefinedTwoStageInstance
 import PvNP.RefinedThreeStageInstance
+import PvNP.RefinedTwoGateTwoStageInstance
 import PvNP.PHPMatchingDistribution
 import PvNP.PHPFullMatchingDistribution
 import PvNP.PHPFullMatchingProbability
@@ -4945,6 +4946,27 @@ info: 'PvNP.RefinedThreeStageInstance.refinedThreeStage_autoReviewed_nonemptyGat
 -/
 #guard_msgs in
 #print axioms PvNP.RefinedThreeStageInstance.refinedThreeStage_autoReviewed_nonemptyGates_nonvacuous
+
+/-!
+Pins for S2234-B4 / `PvNP.RefinedTwoGateTwoStageInstance`: concrete two-gate,
+two-stage generated/refined consumer at `n = 203`, budgets `[2, 1]`, star counts
+`[17, 1]`, and gate counts `[2, 2]`.  Stage 1 is genuinely `s = 2`; stage 2
+uses the auto-reviewed generated layer and the real two-gate renormalized
+`2 * |R(17,0)| * 4 < |R(17,1)|` beat.  Consumer infrastructure only; NOT
+general switching, AC0/Frege/PHP, lower bound, P vs NP, or release claim.
+-/
+
+/-- info: 'PvNP.RefinedTwoGateTwoStageInstance.requestedParameters_recorded' does not depend on any axioms -/
+#guard_msgs in
+#print axioms PvNP.RefinedTwoGateTwoStageInstance.requestedParameters_recorded
+
+/--
+info: 'PvNP.RefinedTwoGateTwoStageInstance.refinedTwoGateTwoStage_nonempty_twoStageCertificate' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.RefinedTwoGateTwoStageInstance.refinedTwoGateTwoStage_nonempty_twoStageCertificate
 
 /-!
 Pins for `PvNP.FormulaFamilyCollapse`: synthesized start views for the

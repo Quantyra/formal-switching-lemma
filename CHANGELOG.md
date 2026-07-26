@@ -4,6 +4,14 @@
 
 ### Added
 
+- **S2234-B4 two-gate two-stage generated/refined consumer**: add a concrete
+  `n = 203` two-stage certificate with two one-literal stage-1 gates, budgets
+  `[2, 1]`, star counts `[17, 1]`, and gate counts `[2, 2]`.  Stage 1 uses the
+  real `s = 2`, `l = 17` beat `2 * |R(203,15)| * 16 < |R(203,17)|`; stage 2 is
+  the auto-reviewed generated layer with the genuine renormalized beat
+  `2 * |R(17,0)| * 4 < |R(17,1)|`.  Multi-step consumer infrastructure only;
+  not general switching, AC0, Frege/PHP, lower bound, P-vs-NP, or `v0.11.0`.
+
 - **S2234-NF normalize-first term switching capstone**: add
   `SwitchingLemmaTermNormalizeFirst` and derive it from the already-proved
   `SwitchingLemmaTermSimple`, with audit pins.  This bounds only
