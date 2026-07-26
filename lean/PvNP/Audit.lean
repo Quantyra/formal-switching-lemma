@@ -11,6 +11,7 @@ import PvNP.GeneratedIteratedCollapse
 import PvNP.GeneratedOneStepDepthReduction
 import PvNP.RestrictionComposition
 import PvNP.GeneratedOneStepLiteralInstance
+import PvNP.GeneratedOneStepTwoGateInstance
 import PvNP.GeneratedIteratedCollapseFinal
 import PvNP.RefinedSubspace
 import PvNP.SwitchingRelabel
@@ -4205,6 +4206,30 @@ info: 'PvNP.GeneratedOneStepLiteralInstance.S2231_pathB_singletonOneLit_oneStepC
 -/
 #guard_msgs in
 #print axioms PvNP.GeneratedOneStepLiteralInstance.S2231_pathB_singletonOneLit_oneStepCertificate
+
+/--
+info: 'PvNP.GeneratedOneStepTwoGateInstance.twoGateOneLitOrInput' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.GeneratedOneStepTwoGateInstance.twoGateOneLitOrInput
+
+/--
+info: 'PvNP.GeneratedOneStepTwoGateInstance.twoGateOneLitOr_nonvacuous' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.GeneratedOneStepTwoGateInstance.twoGateOneLitOr_nonvacuous
+
+/--
+info: 'PvNP.GeneratedOneStepTwoGateInstance.S2232_pathB_twoGateOneLit_oneStepCertificate' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.GeneratedOneStepTwoGateInstance.S2232_pathB_twoGateOneLit_oneStepCertificate
 
 /-!
 Pins for `PvNP.RestrictionComposition`: B4 restriction-sequence composition,

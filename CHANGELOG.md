@@ -4,6 +4,11 @@
 
 ### Added
 
+- **S2232-B2 two-gate one-step consumer instance**: add a concrete non-empty
+  two-gate positive one-literal DNF `GeneratedOneStepInput` at seventeen
+  variables, using `2 * |R(17,0)| * 4^1 < |R(17,1)|` to produce the one-step
+  certificate. Infrastructure consumer only; not general switching, Gate A,
+  Frege/PHP, P-vs-NP, or `v0.11.0`.
 - **S2231 Path B one-step consumer instance**: add a concrete non-empty
   singleton one-literal DNF `GeneratedOneStepInput` at ten variables, using the
   existing factor-4 generated one-step infrastructure and the closed-form
