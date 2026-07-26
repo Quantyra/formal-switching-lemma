@@ -4,6 +4,13 @@
 
 ### Added
 
+- **S2235-A2 canonical/term-canonical bridge residual**: add
+  `SwitchingCanonicalBridge` with the residual proposition
+  `CanonicalTermDepthDomination`, proved terminal/root unfoldings, and conditional
+  bad-set plus switching-statement conversions under that residual.  The full
+  domination is not inhabited here; no `SwitchingLemma`/`SwitchingLemmaTerm`, AC0,
+  Frege/PHP, lower-bound, P-vs-NP, or `v0.11.0` claim is made.
+
 - **S2234-B4 two-gate two-stage generated/refined consumer**: add a concrete
   `n = 203` two-stage certificate with two one-literal stage-1 gates, budgets
   `[2, 1]`, star counts `[17, 1]`, and gate counts `[2, 2]`.  Stage 1 uses the

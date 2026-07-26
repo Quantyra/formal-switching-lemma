@@ -17,6 +17,7 @@ import PvNP.RefinedSubspace
 import PvNP.SwitchingRelabel
 import PvNP.SwitchingCoreV0Shell
 import PvNP.SwitchingNormalize
+import PvNP.SwitchingCanonicalBridge
 import PvNP.SwitchingNormalizeCounterexample
 import PvNP.GeneratedRefinedCollapse
 import PvNP.RefinedTwoStageInstance
@@ -149,6 +150,22 @@ import PvNP.FormulaSyntacticSimpleBridge
 import PvNP.FormulaVarWidthSchedule
 import PvNP.MixedFormulaFamilyCollapse
 import PvNP.ScheduledCollapseDemo
+
+/-! S2235-A2 canonical/term-canonical residual bridge pins. -/
+
+/-- info: 'PvNP.SwitchingCanonicalBridge.CanonicalTermDepthDomination' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.SwitchingCanonicalBridge.CanonicalTermDepthDomination
+/-- info: 'PvNP.SwitchingCanonicalBridge.badSet_subset_badSetTerm_of_depthDomination' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.SwitchingCanonicalBridge.badSet_subset_badSetTerm_of_depthDomination
+/-- info: 'PvNP.SwitchingCanonicalBridge.switchingLemma_of_switchingLemmaTerm_of_depthDomination' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.SwitchingCanonicalBridge.switchingLemma_of_switchingLemmaTerm_of_depthDomination
 
 /-! S2175 Gate B Route C1 bounded coefficient-17 arithmetic and packaging pins. -/
 
@@ -4210,11 +4227,7 @@ info: 'PvNP.GeneratedOneStepLiteralInstance.S2231_pathB_singletonOneLit_oneStepC
 #guard_msgs in
 #print axioms PvNP.GeneratedOneStepLiteralInstance.S2231_pathB_singletonOneLit_oneStepCertificate
 
-/--
-info: 'PvNP.GeneratedOneStepTwoGateInstance.twoGateOneLitOrInput' depends on axioms: [propext,
- Classical.choice,
- Quot.sound]
--/
+/-- info: 'PvNP.GeneratedOneStepTwoGateInstance.twoGateOneLitOrInput' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.GeneratedOneStepTwoGateInstance.twoGateOneLitOrInput
 
@@ -10015,15 +10028,11 @@ that bridge; it is not a switching lemma, AC0, Frege/PHP, lower-bound, or
 P-vs-NP claim.
 -/
 
-/-- info: 'PvNP.badSetTerm_Ddup_card_gt_normalized_2_1' depends on axioms: [propext,
- Classical.choice,
- Quot.sound] -/
+/-- info: 'PvNP.badSetTerm_Ddup_card_gt_normalized_2_1' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.badSetTerm_Ddup_card_gt_normalized_2_1
 
-/-- info: 'PvNP.not_normalizeBadSetCardBridge_one' depends on axioms: [propext,
- Classical.choice,
- Quot.sound] -/
+/-- info: 'PvNP.not_normalizeBadSetCardBridge_one' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.not_normalizeBadSetCardBridge_one
 

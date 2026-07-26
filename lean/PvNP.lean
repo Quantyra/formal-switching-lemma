@@ -140,6 +140,7 @@ import PvNP.ScheduledAutoCollapse
 import PvNP.ScheduledCollapseDemo
 import PvNP.SwitchingAssemble
 import PvNP.SwitchingCardLemma
+import PvNP.SwitchingCanonicalBridge
 import PvNP.SwitchingClose
 import PvNP.SwitchingClose2
 import PvNP.SwitchingCoreV0Shell
