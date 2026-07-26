@@ -4233,6 +4233,30 @@ info: 'PvNP.GeneratedOneStepTwoGateInstance.S2232_pathB_twoGateOneLit_oneStepCer
 #guard_msgs in
 #print axioms PvNP.GeneratedOneStepTwoGateInstance.S2232_pathB_twoGateOneLit_oneStepCertificate
 
+/--
+info: 'PvNP.GeneratedOneStepTwoGateInstance.twoGateOneLitOrInput_s2' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.GeneratedOneStepTwoGateInstance.twoGateOneLitOrInput_s2
+
+/--
+info: 'PvNP.GeneratedOneStepTwoGateInstance.twoGateOneLitOr_s2_nonvacuous' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.GeneratedOneStepTwoGateInstance.twoGateOneLitOr_s2_nonvacuous
+
+/--
+info: 'PvNP.GeneratedOneStepTwoGateInstance.S2233_B3_twoGateOneLit_s2_oneStepCertificate' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+-/
+#guard_msgs in
+#print axioms PvNP.GeneratedOneStepTwoGateInstance.S2233_B3_twoGateOneLit_s2_oneStepCertificate
+
 /-!
 Pins for `PvNP.RestrictionComposition`: B4 restriction-sequence composition,
 consistent-subspace counting, and the closed-form star-space cardinality.

@@ -2,16 +2,18 @@ import PvNP.GeneratedOneStepDepthReduction
 import PvNP.RestrictionSpaceCard
 
 /-!
-# S2232-B2: two-gate generated one-step consumer instance
+# S2232-B2 / S2233-B3: two-gate generated one-step consumer instances
 
-This module gives a small richer generated one-step infrastructure consumer:
+This module gives small richer generated one-step infrastructure consumers:
 two distinct one-literal positive DNF gates, on variables `0` and `1`, under an
 `or` parent at ambient size `17`.
 
 It uses only the already-proved factor-4 generated one-step route and the
 closed-form `restrictionsWithStars_card` count to discharge the strict beat
-`2 * |R(17,0)| * 4^1 < |R(17,1)|`.  It is not a general switching lemma, not a
-Frege/PHP/P-vs-NP claim, not `v0.11.0`, and not Gate A.
+`2 * |R(17,0)| * 4^1 < |R(17,1)|` for `s = 1`, and the analogous
+`2 * |R(17,0)| * 16 < |R(17,2)|` for `s = 2`.  This is consumer-only: not a
+general switching lemma, not AC0, not Frege/PHP/P-vs-NP, not `v0.11.0`, and not
+Gate A.
 
 INTEGRITY: no `sorry`, no `admit`, no new `axiom`, no `native_decide`.
 -/
@@ -137,6 +139,71 @@ theorem S2232_pathB_twoGateOneLit_oneStepCertificate :
       C.ρ ∈ restrictionsWithStars 17 1 ∧
       C.reducedChildren.length = 2 := by
   obtain ⟨C, hρ, hcount, _hdepth⟩ := twoGateOneLitOr_nonvacuous
+  exact ⟨C, hρ, hcount⟩
+
+private theorem restrictionsWithStars_17_s2_beat :
+    2 * ((restrictionsWithStars 17 (2 - 2)).card * (4 * 1) ^ 2) <
+      (restrictionsWithStars 17 2).card := by
+  have h0 : (restrictionsWithStars 17 0).card = 131072 := by
+    rw [restrictionsWithStars_card 17 0]
+    decide
+  have h2 : (restrictionsWithStars 17 2).card = 4456448 := by
+    rw [restrictionsWithStars_card 17 2]
+    decide
+  rw [show 2 - 2 = 0 by rfl, h0, h2]
+  decide
+
+private theorem twoGateOneLitOrLayer_s2_beat :
+    twoGateOneLitOrLayer.gates.length *
+        ((restrictionsWithStars 17 (2 - 2)).card * (4 * 1) ^ 2) <
+      (restrictionsWithStars 17 2).card := by
+  have hlen : twoGateOneLitOrLayer.gates.length = 2 := rfl
+  rw [hlen]
+  exact restrictionsWithStars_17_s2_beat
+
+/-- S2233-B3 concrete two-gate positive-literal DNF layer under an `or` parent,
+consumed at `s = 2`, `ℓ = 2`.  The only arithmetic ingredient is the named
+closed-form beat `2 * |R(17,0)| * 16 < |R(17,2)|`; this remains a one-step
+infrastructure consumer, not a general switching or lower-bound claim. -/
+def twoGateOneLitOrInput_s2 : GeneratedOneStepInput 17 where
+  layer := twoGateOneLitOrLayer
+  w := 1
+  s := 2
+  ℓ := 2
+  width := by
+    intro g hg
+    change g ∈ [oneLitVar0DNFGate17, oneLitVar1DNFGate17] at hg
+    simp only [List.mem_cons, List.mem_nil_iff, or_false] at hg
+    rcases hg with h | h
+    · subst g
+      exact oneLitVar0DNFGate17_width
+    · subst g
+      exact oneLitVar1DNFGate17_width
+  beat := by
+    exact twoGateOneLitOrLayer_s2_beat
+
+/-- S2233-B3 non-vacuity pin for the same concrete two-gate layer, now consuming
+the generated one-step theorem at `s = 2`, `ℓ = 2`. -/
+theorem twoGateOneLitOr_s2_nonvacuous :
+    ∃ C : GeneratedOneStepCertificate twoGateOneLitOrInput_s2,
+      C.ρ ∈ restrictionsWithStars 17 2 ∧
+      C.reducedChildren.length = 2 ∧
+      depth C.reducedFormula ≤ 4 := by
+  obtain ⟨C, hρ, _hsem, hcount, hdepth⟩ :=
+    generatedOneStepDepthReduction_exists twoGateOneLitOrInput_s2
+  have hgates : twoGateOneLitOrInput_s2.layer.gates.length = 2 := rfl
+  refine ⟨C, hρ, ?_, ?_⟩
+  · rw [hcount, hgates]
+  · simpa [twoGateOneLitOrInput_s2] using hdepth
+
+/-- Summary pin for S2233-B3: the concrete two-gate, one-literal bottom layer
+also instantiates the one-step certificate at `s = 2`, `ℓ = 2`.  Consumer-only;
+no general switching, AC0, Frege/PHP, P-vs-NP, or release claim. -/
+theorem S2233_B3_twoGateOneLit_s2_oneStepCertificate :
+    ∃ C : GeneratedOneStepCertificate twoGateOneLitOrInput_s2,
+      C.ρ ∈ restrictionsWithStars 17 2 ∧
+      C.reducedChildren.length = 2 := by
+  obtain ⟨C, hρ, hcount, _hdepth⟩ := twoGateOneLitOr_s2_nonvacuous
   exact ⟨C, hρ, hcount⟩
 
 end GeneratedOneStepTwoGateInstance

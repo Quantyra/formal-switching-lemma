@@ -9,6 +9,12 @@
   `not NormalizeBadSetCardBridge 1`, with card and audit pins. Counterexample to
   the naive normalization bad-set card bridge only; not SwitchingLemma/Term
   inhabited, not AC0, not Frege/PHP, not a lower bound, and not P-vs-NP.
+- **S2233-B3 two-gate `s = 2` one-step consumer**: reuse the concrete
+  two-gate positive one-literal DNF layer at seventeen variables with
+  `s = 2`, `ℓ = 2`, backed by `2 * |R(17,0)| * 16 < |R(17,2)|`, producing the
+  one-step certificate with reduced-child length `2` and depth bound `≤ 4`.
+  Infrastructure consumer only; not general switching, AC0, Frege/PHP,
+  P-vs-NP, Gate A, or `v0.11.0`.
 - **S2232-B2 two-gate one-step consumer instance**: add a concrete non-empty
   two-gate positive one-literal DNF `GeneratedOneStepInput` at seventeen
   variables, using `2 * |R(17,0)| * 4^1 < |R(17,1)|` to produce the one-step
