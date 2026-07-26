@@ -152,6 +152,7 @@ import PvNP.SwitchingEncodeLocal
 import PvNP.SwitchingEnteredOrder
 import PvNP.SwitchingFactB
 import PvNP.SwitchingLemmaStatement
+import PvNP.SwitchingNormalize
 import PvNP.SwitchingOrder
 import PvNP.SwitchingRazborovCode
 import PvNP.SwitchingStateDecode

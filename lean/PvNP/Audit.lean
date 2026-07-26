@@ -16,6 +16,7 @@ import PvNP.GeneratedIteratedCollapseFinal
 import PvNP.RefinedSubspace
 import PvNP.SwitchingRelabel
 import PvNP.SwitchingCoreV0Shell
+import PvNP.SwitchingNormalize
 import PvNP.GeneratedRefinedCollapse
 import PvNP.RefinedTwoStageInstance
 import PvNP.RefinedThreeStageInstance
@@ -9898,6 +9899,46 @@ P-vs-NP.
  Quot.sound] -/
 #guard_msgs in
 #print axioms PvNP.FormulaSyntacticDNFNormalization.widthDNF_normalizedDNFView_le
+
+/-!
+Pins for S2232-A1 SwitchingNormalize honest term bridge:
+`SwitchingNormalize` records proved restriction-normalization semantic,
+simplicity, and width facts, then isolates the missing arbitrary-DNF to
+normalized-DNF bad-set cardinality transfer as the named residual
+`NormalizeBadSetCardBridge`.  The conditional capstones show that this residual,
+together with the already-proved simple-DNF theorem, would imply
+`SwitchingLemmaTerm`; the residual itself is NOT inhabited here.  Boundary: term
+normalization bridge bookkeeping only; no general `SwitchingLemma`, AC0,
+Frege/PHP, lower-bound, P-vs-NP, or release claim.
+-/
+
+/-- info: 'PvNP.SwitchingNormalize.NormalizeBadSetCardBridge' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.SwitchingNormalize.NormalizeBadSetCardBridge
+
+/-- info: 'PvNP.SwitchingNormalize.dnfEval_normalizeDNF_dnfRestrict' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.SwitchingNormalize.dnfEval_normalizeDNF_dnfRestrict
+
+/-- info: 'PvNP.SwitchingNormalize.simpleDNF_normalizeDNF_dnfRestrict' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.SwitchingNormalize.simpleDNF_normalizeDNF_dnfRestrict
+
+/-- info: 'PvNP.SwitchingNormalize.widthDNF_normalizeDNF_dnfRestrict_le' depends on axioms: [propext, Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.SwitchingNormalize.widthDNF_normalizeDNF_dnfRestrict_le
+
+/-- info: 'PvNP.SwitchingNormalize.switchingLemmaTerm_of_simple_with_normalizeBridge' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.SwitchingNormalize.switchingLemmaTerm_of_simple_with_normalizeBridge
+
+/-- info: 'PvNP.SwitchingNormalize.switchingLemmaTerm_proved_of_normalizeBridge' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound] -/
+#guard_msgs in
+#print axioms PvNP.SwitchingNormalize.switchingLemmaTerm_proved_of_normalizeBridge
 
 /-- info: 'PvNP.FormulaRecursiveSyntacticTerminalNormalizedViewRoute.NonemptyFaninFormula' does not depend on any axioms -/
 #guard_msgs in

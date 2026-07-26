@@ -9,6 +9,12 @@
   variables, using `2 * |R(17,0)| * 4^1 < |R(17,1)|` to produce the one-step
   certificate. Infrastructure consumer only; not general switching, Gate A,
   Frege/PHP, P-vs-NP, or `v0.11.0`.
+- **S2232-A1 SwitchingNormalize honest term bridge**: add
+  `PvNP.SwitchingNormalize` with proved restrict-normalize semantic, simplicity,
+  and width facts, plus a conditional reduction from the already-proved
+  `SwitchingLemmaTermSimple` to `SwitchingLemmaTerm` under the named residual
+  `NormalizeBadSetCardBridge`.  The residual is not inhabited; no general
+  switching, AC0, Frege/PHP, lower-bound, P-vs-NP, or release claim.
 - **S2231 Path B one-step consumer instance**: add a concrete non-empty
   singleton one-literal DNF `GeneratedOneStepInput` at ten variables, using the
   existing factor-4 generated one-step infrastructure and the closed-form
